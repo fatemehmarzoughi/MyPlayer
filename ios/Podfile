@@ -18,4 +18,6 @@ target 'MyPlayer' do
   #     flipper_post_install(installer)
   #   end
   # end
+  pod 'RealmJS', :path => '../node_modules/realm'
+
 end
