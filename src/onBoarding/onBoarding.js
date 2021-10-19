@@ -1,18 +1,16 @@
 import React from 'react';
-import { Text, Image, View, Animated, Dimensions } from 'react-native';
+import { Text, View, Animated, Dimensions } from 'react-native';
 import { styles } from './style';
 import { StatusBar } from 'expo-status-bar';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import { height, width } from '../assets/constants/Units';
 import { mainColor, white } from '../assets/constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AnimatedLoader from 'react-native-animated-loader'
 import LottieView from 'lottie-react-native';
 import context from '../context/context';
 
 const unset = '#70757a00';
 
-// deafault (3*width/2), width/2 , -width/2, -3*width/2
 export default class OnBoarding extends React.Component{
 
     static contextType = context;
