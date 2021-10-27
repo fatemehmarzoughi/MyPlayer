@@ -10,6 +10,7 @@ import {POST} from "../../../API/index";
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
 import LottieView from 'lottie-react-native';
+import Icon2 from "react-native-vector-icons/EvilIcons";
 
 
 export default class Login_CreateAccount extends React.Component{
@@ -313,12 +314,19 @@ export default class Login_CreateAccount extends React.Component{
                    </View>
                    <View style={styles.input}>
                        <TouchableOpacity 
-                       style={styles.textInput} 
-                       onPress={() => {
-                           this.setState({countrySelectorVisibility : true
-                        })}}
-                       >
-                           <Text style={styles.text}>{this.state.countryCode}</Text>
+                         style={styles.picker}
+                         onPress={() => {
+                            this.setState({countrySelectorVisibility : true
+                         })}}
+                         >
+                           <Icon2 name="chevron-down" size={40} color={gray} />
+                           <View 
+
+                           >
+                               <Text style={styles.text}>{this.state.countryCode}</Text>
+                               {/* <Icon2 name="chevron-down" size={40} color={gray}/> */}
+    
+                           </View>
                        </TouchableOpacity>
                        <CountryPicker 
                         preferredCountries={['US', 'GB']}

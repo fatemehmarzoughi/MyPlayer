@@ -28,12 +28,14 @@ export const styles = StyleSheet.create({
     input : {
         width : width - 30,
         padding : 15,
+
     },
     textInput : {
         borderBottomColor : 'red',
         borderBottomWidth : .5,
         padding : 20,
-        color : gray
+        color : gray,
+
     },
     text : {
         color : gray
@@ -149,5 +151,16 @@ export const styles = StyleSheet.create({
     },
     loadingIcon:{
         opacity : 0,
-    }
+    },
+    picker : {
+        display : 'flex',
+        alignItems : 'flex-end',
+        justifyContent : 'space-between',
+        flexDirection : 'row-reverse',
+        borderBottomColor : 'red',
+        borderBottomWidth : .5,
+        padding : 20,
+        color : gray,
+    },
+
 })

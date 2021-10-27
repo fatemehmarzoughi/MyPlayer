@@ -30,6 +30,10 @@ export const styles = StyleSheet.create({
         width : usedWidth - 20,
         borderRadius : 10,
         marginTop : 10,
+        display : 'flex',
+        alignItems : 'center',
+        justifyContent : 'space-between',
+        flexDirection : 'row'
     },
     inputs : {
         marginTop : 20,

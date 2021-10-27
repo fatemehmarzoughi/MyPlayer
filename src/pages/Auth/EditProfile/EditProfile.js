@@ -4,6 +4,10 @@ import Header2 from "../../../components/pagesHeader/Header2";
 import {styles} from './style';
 import Context from "../../../context/context";
 import ModalClass from "../../../components/Modal";
+import CountryPicker from 'react-native-country-picker-modal'
+import Icon from "react-native-vector-icons/EvilIcons";
+import { gray, lightGray } from "../../../assets/constants/Colors";
+
 
 export default class EditProfile extends React.Component{
 
@@ -13,6 +17,8 @@ export default class EditProfile extends React.Component{
         super();
         this.state = {
             modalVisible : false,
+            countrySelectorVisibility : false,
+            choosedCountry : ''
         }
     }
 
@@ -62,10 +68,34 @@ export default class EditProfile extends React.Component{
                           placeholder = {this.context.userEmail}
                           style={styles.input}
                         />
-                        <TextInput
-                          placeholder = {this.context.userCountry}
-                          style={styles.input}
-                        />
+                        <TouchableOpacity style={styles.input} onPress={() => this.setState({ countrySelectorVisibility : true })}>
+                            <CountryPicker 
+                            theme={{
+                                primaryColor : 'red'
+                            }}
+                             preferredCountries={['US', 'IR']}
+                             withFilter={true}
+                             withCountryNameButton={true}
+                             withFlag={true}
+                             withEmoji={true}
+                             placeholder={(this.state.choosedCountry === '') ? this.context.userCountry : this.state.choosedCountry}
+                             onSelect={(val) => {
+                                 this.setState({
+                                     countryCode: val.name,
+                                     choosedCountry : val.name,
+                                 });
+                                 this.setState({countryFlag : val.flag})
+                             }}
+                             onClose = {() => {
+                                 this.setState({
+                                     countrySelectorVisibility : false,
+                                 })
+                             }}
+                             
+                              visible = {this.state.countrySelectorVisibility}
+                            />
+                            <Icon name="chevron-down" size={40} color={gray}/>
+                        </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={() => this.showModal()} style={styles.deleteBtn}>
                         <Text style={styles.deleteBtnText}>Delete Account</Text>

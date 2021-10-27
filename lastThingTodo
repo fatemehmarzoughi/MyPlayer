@@ -5,16 +5,15 @@ https://lottiefiles.com/7899-loading
 https://lottiefiles.com/9037-loading
 
 
-1- use splash screen instead of landing page
 
+1- Set the App Notification status in realm
 
-2- Set the App Notification status in realm
+2- activate the push notifications
 
+3- use splash screen instead of landing page
 
-3- compelete the edit profile page 
-   3-1- insert the country selector in edit profile
-   3-2- create the change profile page.
+4- compelete the edit profile page 
+   4-1- create the change profile page.
 
-4- activate the push notifications
 
 5- create the server for editing user info, then activating save btns in edit page
