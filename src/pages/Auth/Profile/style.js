@@ -155,38 +155,4 @@ export const styles = StyleSheet.create({
         width : 100,
         height : 100,
     },
-    modalStyle : {
-       backgroundColor : mainColor,
-       display : 'flex',
-       alignItems : 'center',
-       justifyContent :'center',
-       marginTop : 'auto',
-       marginBottom : 'auto',
-       marginRight : 'auto',
-       marginLeft : 'auto',
-       width : usedWidth,
-       padding : 30,
-       borderRadius : 10,
-    },
-    btns : {
-        display : 'flex',
-        alignItems : 'center',
-        justifyContent : 'space-around',
-        width : usedWidth,
-        flexDirection : 'row-reverse',
-        marginTop : 30,
-    },
-    btnStyle : {
-        padding : 20,
-        paddingRight : 30,
-        paddingLeft : 30,
-        borderStyle : 'solid',
-        borderColor : white,
-        borderRadius : 10,
-        borderWidth : 1,
-    },
-    textColor : {
-        color : white,
-        fontWeight : 'bold'
-    }
 })
