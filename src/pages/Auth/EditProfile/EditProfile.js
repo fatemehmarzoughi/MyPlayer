@@ -1,9 +1,13 @@
 import React from "react";
-import { ScrollView, Text, View, Image, TextInput, TouchableOpacity, Modal } from "react-native";
+import { ScrollView, Text, View, Image, TextInput, TouchableOpacity } from "react-native";
 import Header2 from "../../../components/pagesHeader/Header2";
 import {styles} from './style';
+import Context from "../../../context/context";
+import ModalClass from "../../../components/Modal";
 
 export default class EditProfile extends React.Component{
+
+    static contextType = Context;
 
     constructor(){
         super();
@@ -21,6 +25,7 @@ export default class EditProfile extends React.Component{
     }
 
     cancelModal = () => {
+        console.log('cancel modal')
         this.setState({
             modalVisible : false
         })
@@ -50,39 +55,28 @@ export default class EditProfile extends React.Component{
                     <Text onPress={() => this.changeProfilePhoto()} style={styles.changePhoto}>Change Profile Photo</Text>
                     <View style={styles.inputs}>
                         <TextInput
-                          placeholder = "Name"
+                          placeholder = {this.context.userName}
                           style={styles.input}
                         />
                         <TextInput
-                          placeholder = "Email"
+                          placeholder = {this.context.userEmail}
                           style={styles.input}
                         />
                         <TextInput
-                          placeholder = "Select Your Country"
+                          placeholder = {this.context.userCountry}
                           style={styles.input}
                         />
                     </View>
                     <TouchableOpacity onPress={() => this.showModal()} style={styles.deleteBtn}>
                         <Text style={styles.deleteBtnText}>Delete Account</Text>
                     </TouchableOpacity>
-                    <Modal
-                     visible={this.state.modalVisible}
-                     transparent={true}
-                     animationType="slide"
-                     onRequestClose={() => this.cancelModal()}
-                    >
-                        <View style={styles.modalStyle}>
-                          <Text style={styles.textColor}>Are you sure, you want to delete your account?</Text>
-                          <View style={styles.btns}>
-                             <TouchableOpacity style={styles.btnStyle} onPress={() => this.handleDeleteAccount()}>
-                                 <Text style={styles.textColor}>Delete Account</Text>
-                             </TouchableOpacity>
-                             <TouchableOpacity style={styles.btnStyle} onPress={() => this.cancelModal()}>
-                                 <Text style={styles.textColor}>Cancel</Text>
-                             </TouchableOpacity>
-                          </View>
-                        </View>
-                    </Modal>
+                    <ModalClass 
+                      question="Are you sure, you want to delete your account?" 
+                      modalVisible={this.state.modalVisible} 
+                      btnTitle="Delete Account"
+                      handleMainBtn = {() => this.handleDeleteAccount()}
+                      handleCancelBtn = {() => this.cancelModal()}
+                    />
                 </View>
             </ScrollView>
         )

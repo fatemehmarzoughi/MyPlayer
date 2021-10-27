@@ -9,6 +9,7 @@ import {validateEmail , validatePassword} from './validation';
 import {POST} from "../../../API/index";
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
+import LottieView from 'lottie-react-native';
 
 
 export default class Login_CreateAccount extends React.Component{
@@ -65,6 +66,8 @@ export default class Login_CreateAccount extends React.Component{
             emailErrorMessage : '',
             emailErrorDisplay : 'none',
             passwordErrorDisplay : 'none',
+
+            createingAccount : false,
         }
     }
 
@@ -199,6 +202,10 @@ export default class Login_CreateAccount extends React.Component{
 
     handleCreateAccount  = () => {
 
+        this.setState({
+            createingAccount : true
+        })
+
         console.log(this.state.email)
 
         if(!this.inputValidation()) return;
@@ -213,6 +220,10 @@ export default class Login_CreateAccount extends React.Component{
         .then((res) => {
             console.log(res.status)
             if(res.status === 200)
+            {
+                this.setState({
+                    createingAccount : false
+                })
                 Toast.show({
                   type: 'success',
                   position: 'top',
@@ -223,8 +234,13 @@ export default class Login_CreateAccount extends React.Component{
                   topOffset: 30,
                   bottomOffset: 40,
                 });
+            }
+                
             else 
             {
+                this.setState({
+                    createingAccount : false
+                })
                 console.log(JSON.stringify(res.headers.map.errormsg))
                 Toast.show({
                     type: 'error',
@@ -239,6 +255,9 @@ export default class Login_CreateAccount extends React.Component{
             }
         })
         .catch((err) => {
+            this.setState({
+                createingAccount : false
+            })
             console.log(err)
             Toast.show({
                 type: 'error',
@@ -374,6 +393,7 @@ export default class Login_CreateAccount extends React.Component{
                         />
                    </View>
                    <TouchableOpacity style={styles.btn} onPress={() => this.handleCreateAccount()}>
+                       <LottieView style={(this.state.createingAccount) ? {opacity : 1} : {opacity : 0}} loop={true} autoPlay={true} source={require('../../../assets/Images/loading.json')} />
                        <Text style={styles.btnText}>Create Account</Text>
                     </TouchableOpacity>
 

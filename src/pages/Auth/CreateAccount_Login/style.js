@@ -46,6 +46,7 @@ export const styles = StyleSheet.create({
         display : 'flex',
         alignItems : 'center',
         justifyContent : 'center',
+        flexDirection : 'row',
         margin : 15,
     },
     btnText : {
@@ -145,5 +146,8 @@ export const styles = StyleSheet.create({
         color : 'red',
         marginTop : 7,
         display : 'none'
+    },
+    loadingIcon:{
+        opacity : 0,
     }
 })

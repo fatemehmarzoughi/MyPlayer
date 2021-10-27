@@ -12,12 +12,9 @@ https://lottiefiles.com/9037-loading
 
 
 3- compelete the edit profile page 
-   3-1- get the infos of the user from the context (needs to save the info in context) and insert them in the placeholder of the textinputs
-   3-2- insert the country selector in edit profile
-   3-3- create the change profile page.
+   3-1- insert the country selector in edit profile
+   3-2- create the change profile page.
 
 4- activate the push notifications
 
 5- create the server for editing user info, then activating save btns in edit page
-
-6- insert the modal code into another component

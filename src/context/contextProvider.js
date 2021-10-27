@@ -12,6 +12,10 @@ export default class ContextProvider extends React.Component{
             // isLogin : false,
             accessToken : 0,
             isFirstInstallation : false,
+
+            userName : '',
+            userCountry : '',
+            userEmail : ''
         }
     }
 
@@ -38,6 +42,22 @@ export default class ContextProvider extends React.Component{
             isFirstInstallation : value,
         })
     }
+
+    setUserEmail = (value) => {
+        this.setState({
+            userEmail : value,
+        })
+    }
+    setUserCountry = (value) => {
+        this.setState({
+            userCountry : value,
+        })
+    }
+    setUserName = (value) => {
+        this.setState({
+            userName : value,
+        })
+    }
  
     render(){
         return(
@@ -54,6 +74,15 @@ export default class ContextProvider extends React.Component{
 
                  isFirstInstallation : this.state.isFirstInstallation,
                  setIsFirstInstallation : this.setIsFirstInstallation,
+
+                 userName : this.state.userName,
+                 setUserName : this.setUserName,
+
+                 userEmail : this.state.userEmail,
+                 setUserEmail : this.setUserEmail,
+
+                 userCountry : this.state.userCountry,
+                 setUserCountry : this.setUserCountry,
              }}
             >
                 {this.props.children}

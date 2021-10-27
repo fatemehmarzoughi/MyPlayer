@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, ScrollView, RefreshControl, Modal, TouchableOpacity } from "react-native";
+import { View, Text, Image, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import {GET} from '../../../API/index'
@@ -11,6 +11,7 @@ import ToggleSwitch from 'toggle-switch-react-native'
 import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
+import ModalClass from "../../../components/Modal";
 
 export default class Profile extends React.Component{
 
@@ -92,6 +93,9 @@ export default class Profile extends React.Component{
                 country : res.headers.map.country,
                 refreshing : false,
             })
+            this.context.setUserName(this.state.name)
+            this.context.setUserEmail(this.state.email)
+            this.context.setUserCountry(this.state.country)
         }
         catch{
             (err) => console.log(err)
@@ -250,7 +254,14 @@ export default class Profile extends React.Component{
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <Modal 
+                    <ModalClass 
+                      question="Are you sure, you want to logout?" 
+                      modalVisible={this.state.modalVisible} 
+                      btnTitle="Logout"
+                      handleMainBtn = {() => this.handleLogOut()}
+                      handleCancelBtn = {() => this.cancelModal()}
+                    />
+                    {/* <Modal 
                        visible={this.state.modalVisible}
                        transparent={true}
                        animationType="slide"
@@ -267,7 +278,7 @@ export default class Profile extends React.Component{
                                  </TouchableOpacity>
                               </View>
                            </View>
-                    </Modal>
+                    </Modal> */}
                 </View>
             </ScrollView>
         )

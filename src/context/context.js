@@ -13,4 +13,12 @@ export default React.createContext({
 
     isFirstInstallation : false,
     setIsFirstInstallation : () => {},
+
+    userName : '',
+    setUserName : () => {}, 
+    userCountry : '',
+    setCountry : () => {}, 
+    userEmail : '',
+    setEmail : () => {}, 
+
 })

@@ -9,6 +9,8 @@ import Context from "../../../context/context";
 import realm from "../../../Realm/realmConnection";
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
+import LottieView from 'lottie-react-native';
+
 
 export default class Login_CreateAccount extends React.Component{
 
@@ -27,10 +29,16 @@ export default class Login_CreateAccount extends React.Component{
 
             email : '',
             password : '',
+
+            loggingIn : false,
         }
     }
 
     handleLogin = async () => {
+
+        this.setState({
+            loggingIn : true
+        })
 
         POST('/login/user' , {
             email : this.state.email,
@@ -61,6 +69,9 @@ export default class Login_CreateAccount extends React.Component{
                         topOffset: 30,
                         bottomOffset: 40,
                     });
+                    this.setState({
+                        loggingIn : false
+                    })
                     (this.context.isFirstInstallation) ? 
                     this.props.navigation.navigate('Home') : 
                     this.props.navigation.navigate('Profile')
@@ -83,6 +94,9 @@ export default class Login_CreateAccount extends React.Component{
             }
             else
             {
+                this.setState({
+                    loggingIn : false
+                })
                 Toast.show({
                     type: 'error',
                     position: 'bottom',
@@ -97,6 +111,9 @@ export default class Login_CreateAccount extends React.Component{
         })
         .catch((err) => 
         {
+            this.setState({
+                loggingIn : false
+            })
             console.log('couldnt connect to server = ' + JSON.stringify(err));
             Toast.show({
                 type: 'error',
@@ -163,9 +180,9 @@ export default class Login_CreateAccount extends React.Component{
                        </View>
                    </View>
                    <TouchableOpacity onPress={() => this.handleLogin()} style={styles.btn}>
+                       <LottieView style={(this.state.loggingIn) ? {opacity : 1} : {opacity : 0}} loop={true} autoPlay={true} source={require('../../../assets/Images/loading.json')} />
                        <Text style={styles.btnText}>Login</Text>
                     </TouchableOpacity>
-
                     <View style={styles.seperator}>
                         <View style={styles.line}></View>
                         <Text>OR</Text>
