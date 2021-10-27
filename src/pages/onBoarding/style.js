@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { width, height } from '../assets/constants/Units';
-import { mainColor, white, dark } from "../assets/constants/Colors";
-import { statusBar } from "../assets/constants/Units";
+import { width, height } from '../../assets/constants/Units';
+import { mainColor, white, dark } from "../../assets/constants/Colors";
+import { statusBar } from "../../assets/constants/Units";
 
 export const styles = StyleSheet.create({
     container : {

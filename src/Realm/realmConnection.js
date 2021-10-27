@@ -8,10 +8,18 @@ realm = new Realm({
             properties : {
                 isFirstInstallation : 'string'
             }
+        },
+        {
+            name : 'Authentication',
+            properties : {
+                accessToken : 'string'
+            }
         }
     ]
 })
 
-let realm = new Realm({ path: 'Database.realm' });
+let realm = new Realm({
+    path : 'Database.realm',
+})
 
 export default realm;

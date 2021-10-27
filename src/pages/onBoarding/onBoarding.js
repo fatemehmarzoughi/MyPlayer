@@ -3,20 +3,24 @@ import { Text, View, Animated, Dimensions } from 'react-native';
 import { styles } from './style';
 import { StatusBar } from 'expo-status-bar';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import { height, width } from '../assets/constants/Units';
-import { mainColor, white } from '../assets/constants/Colors';
+import { height, width } from '../../assets/constants/Units';
+import { mainColor, white } from '../../assets/constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
-import context from '../context/context';
+import context from '../../context/context';
 
 const unset = '#70757a00';
+const animation1Source = '../../assets/Images/offline2.json'
+const animation2Source = '../../assets/Images/bookmark.json'
+const animation3Source = '../../assets/Images/premium.json'
+const animation4Source = '../../assets/Images/live2.json'
 
 export default class OnBoarding extends React.Component{
 
     static contextType = context;
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state={
             currentStatus : 1,
             translateXValue : new Animated.Value(3*width/2),
@@ -197,6 +201,12 @@ export default class OnBoarding extends React.Component{
         }
     }
 
+    gotoNextComponent = () => {
+
+        this.props.navigation.navigate('Landing')
+        
+    }
+
     componentDidMount(){
         console.log(this.state.progress)
         Animated.timing(this.state.progress, {
@@ -242,25 +252,25 @@ export default class OnBoarding extends React.Component{
                     >
                         <View style={[this.context.isRotate ? styles.pageStyleIsRotate : styles.pageStyle]}>
                         <View style={styles.content}>
-                             <LottieView style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require('../assets/Images/offline2.json')} progress={this.state.progress}/>
+                             <LottieView loop={true} autoPlay={true} style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require(animation1Source)} />
                              <Text style={styles.contentText}>You can enjoy listening to Musics or Watching Videos by saving your lovly items and using the MyApp Offline feature</Text>
                         </View>
                     </View>
                         <View style={[this.context.isRotate ? styles.pageStyleIsRotate : styles.pageStyle]}>
                        <View style={styles.content}>
-                            <LottieView style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require('../assets/Images/offline2.json')} progress={this.state.progress}/>
+                            <LottieView loop={true} autoPlay={true} style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require(animation2Source)} />
                             <Text style={styles.contentText}>Second page</Text>
                         </View>
                     </View>
                         <View style={[this.context.isRotate ? styles.pageStyleIsRotate : styles.pageStyle]}>
                        <View style={styles.content}>
-                            <LottieView style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require('../assets/Images/offline2.json')} progress={this.state.progress}/>
+                            <LottieView loop={true} autoPlay={true} style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require(animation3Source)} />
                             <Text style={styles.contentText}>Third page</Text>
                         </View>
                     </View>
                         <View style={[this.context.isRotate ? styles.pageStyleIsRotate : styles.pageStyle]}>
                        <View style={styles.content}>
-                            <LottieView style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require('../assets/Images/offline2.json')} progress={this.state.progress}/>
+                            <LottieView loop={true} autoPlay={true} style={[this.context.isRotate ? styles.ImageIsRotate : styles.image]} source={require(animation4Source)} />
                             <Text style={styles.contentText}>Fourth page</Text>
                         </View>
                     </View>
@@ -273,7 +283,7 @@ export default class OnBoarding extends React.Component{
                        <View style={[styles.dot, {backgroundColor : this.state.case4}]}></View>
                 </View>
                 <View style={[styles.bottomBarStyle]}>
-                    <TouchableOpacity style={[styles.nextBtn]} onPress={() => this.swipeLeft('state')}>
+                    <TouchableOpacity style={[styles.nextBtn]} onPress={(this.state.nextText == 'Get Started') ? () => this.gotoNextComponent() : () => this.swipeLeft('state')}>
                        <Text style={{color : white}}>{this.state.nextText}</Text>
                     </TouchableOpacity>
 
@@ -281,7 +291,7 @@ export default class OnBoarding extends React.Component{
                    {(this.state.lastPage) ? (
                        <Text></Text>
                    ) : (
-                       <TouchableOpacity>
+                       <TouchableOpacity onPress={() => this.gotoNextComponent()}>
                            <Text style={[styles.skipBtn]}>Skip</Text>
                        </TouchableOpacity>
                    )}

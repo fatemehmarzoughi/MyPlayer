@@ -20,4 +20,8 @@ target 'MyPlayer' do
   # end
   pod 'RealmJS', :path => '../node_modules/realm'
 
+  pod 'react-native-pager-view', :path => '../node_modules/react-native-pager-view'
+
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
 end
