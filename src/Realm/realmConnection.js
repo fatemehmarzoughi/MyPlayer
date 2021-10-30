@@ -4,26 +4,16 @@ realm = Realm.open({
     path : "Database.realm",
     schema : [
         {
-            name : 'userInstallation',
+            name : 'MyVariables',
             properties : {
-                isFirstInstallation : 'string'
-            }
-        },
-        {
-            name : 'Authentication',
-            properties : {
-                accessToken : 'string'
-            }
-        },
-        {
-            name : 'Notification',
-            properties : {
+                isFirstInstallation : 'string',
+                accessToken : 'string',
                 emailNotification : {
-                    default : true,
+                    default : 'true',
                     type : 'string'
                 },
                 appNotification : {
-                    default : true,
+                    default : 'true',
                     type : 'string'
                 }
             }
