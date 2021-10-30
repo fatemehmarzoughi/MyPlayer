@@ -4,35 +4,38 @@ import LottieView from 'lottie-react-native';
 import {styles} from './styles.js'
 import realm  from '../../Realm/realmConnection';
 import Context from "../../context/context.js";
+import Realm from 'realm';
+
 
 
 export default class Landing extends React.Component{
 
     static contextType = Context;
 
-    componentDidMount(){
+    async componentDidMount(){
      
         if(realm.objects("userInstallation")[0] === undefined)
         { 
-          
-          try{
-            realm.write(() => {
-              realm.create('userInstallation' , {
-                isFirstInstallation : 'true',
+              realm.write(() => {
+                realm.create('userInstallation' , {
+                  isFirstInstallation : 'true',
+                })
               })
+
               this.context.setIsFirstInstallation(true)
-            })
+
             this.setState({
               isFirstInstallation : true,
             })
-          }
-          catch{(err) => console.log(err)}
+          // }
+          // catch{(err) => console.log(err)}
         }
   
         else
         {
 
-          try{
+          // try{
+            Realm.open({ path : 'Database.realm',})
             realm.write(() => {
               let object = realm.objects("userInstallation");
               object.isFirstInstallation = "false"
@@ -40,8 +43,9 @@ export default class Landing extends React.Component{
             this.setState({
               isFirstInstallation : false,
             })
-          }
-          catch{(err) => console.log(err)}
+            // realm.close()
+          // }
+          // catch{(err) => console.log(err)}
         }
         
     }

@@ -1,6 +1,6 @@
 import Realm from 'realm';
 
-realm = new Realm({
+realm = Realm.open({
     path : "Database.realm",
     schema : [
         {
@@ -14,12 +14,28 @@ realm = new Realm({
             properties : {
                 accessToken : 'string'
             }
+        },
+        {
+            name : 'Notification',
+            properties : {
+                emailNotification : {
+                    default : true,
+                    type : 'string'
+                },
+                appNotification : {
+                    default : true,
+                    type : 'string'
+                }
+            }
         }
     ]
 })
 
-let realm = new Realm({
+realm = new Realm({
     path : 'Database.realm',
 })
+// realm = new Realm({
+//     schema : ['userInstallation' , 'Authentication' , 'Notification'],
+// })
 
 export default realm;

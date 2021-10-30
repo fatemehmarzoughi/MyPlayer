@@ -6,6 +6,7 @@ export default class ContextProvider extends React.Component{
 
     constructor(){
         super();
+
         this.state={
             isRotate : false,
             isLogin : (realm.objects('Authentication')[0] === undefined) ? false : true,
@@ -60,6 +61,7 @@ export default class ContextProvider extends React.Component{
     }
  
     render(){
+        
         return(
             <Context.Provider
              value = {{
