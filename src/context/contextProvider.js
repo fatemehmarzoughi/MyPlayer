@@ -1,22 +1,24 @@
 import React from "react";
 import Context from "./context";
-import realm from "../Realm/realmConnection";
+import {getData} from '../LocalStorage/AsyncStorageData'
 
 export default class ContextProvider extends React.Component{
 
     constructor(){
         super();
+
         this.state={
             isRotate : false,
-            isLogin : (realm.objects('Authentication')[0] === undefined) ? false : true,
-            // isLogin : false,
+            isLogin : false ,
             accessToken : 0,
-            isFirstInstallation : false,
-
+            isFirstInstallation : true,
             userName : '',
             userCountry : '',
             userEmail : ''
         }
+    }
+
+    async componentDidMount(){
     }
 
     setIsRotate = (value) => {
@@ -60,6 +62,7 @@ export default class ContextProvider extends React.Component{
     }
  
     render(){
+        
         return(
             <Context.Provider
              value = {{

@@ -11,7 +11,7 @@ export default React.createContext({
     accessToken : 0,
     setAccessToken : () => {},
 
-    isFirstInstallation : false,
+    isFirstInstallation : null,
     setIsFirstInstallation : () => {},
 
     userName : '',

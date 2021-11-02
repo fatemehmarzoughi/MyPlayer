@@ -7,7 +7,6 @@ import OnBoarding from "./onBoarding/onBoarding";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import realm  from '../Realm/realmConnection';
 import Home from './Home/Home';
 import Profile from './Auth/Profile/Profile';
 import Landing from './Landing/Landing'
@@ -145,7 +144,9 @@ function AppRoute() {
 
     return (
         <NavigationContainer>
-           <Stack.Navigator initialRouteName = {(realm.objects("userInstallation")[0] === undefined) ? "OnBoarding" : "Landing" }>
+           <Stack.Navigator 
+             initialRouteName =  "OnBoarding"
+            >
 
             <Stack.Screen 
                name="OnBoarding" 

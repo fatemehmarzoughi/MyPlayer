@@ -5,7 +5,7 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import {GET} from '../../../API/index'
 import { dark, gray, mainColor, white } from "../../../assets/constants/Colors";
 import { styles } from "./style";
-import realm from "../../../Realm/realmConnection";
+// import realm from "../../../Realm/realmConnection";
 import Context from "../../../context/context";
 import ToggleSwitch from 'toggle-switch-react-native'
 import LottieView from 'lottie-react-native';
@@ -25,7 +25,7 @@ export default class Profile extends React.Component{
             name : '',
             country : '',
 
-            appNotification : true,
+            // appNotification : (realm.objects('Notification')[0].appNotification === 'true') ? true : false,
             refreshing : false,
             modalVisible : false,
         }
@@ -54,10 +54,10 @@ export default class Profile extends React.Component{
 
     handleLogOut = () => {
 
-        realm.write(() => {
-            realm.delete(realm.objects('Authentication')[0]);
-            console.log('deleted')
-        })
+        // realm.write(() => {
+        //     realm.delete(realm.objects('Authentication')[0]);
+        //     console.log('deleted')
+        // })
         this.context.setIsLogin(false);
         // this.props.navigation.navigate('home')
         this.setState({
@@ -75,7 +75,12 @@ export default class Profile extends React.Component{
         this.props.navigation.navigate('UpgradeToPremium')
     }
 
-    setAppNotification = () => {
+    setAppNotification = async () => {
+        let newState = '' + !this.state.appNotification + '';
+        // realm.write(() => {
+        //     let object = realm.objects('Notification')[0];
+        //     object.appNotification = newState
+        // })
         this.setState({
             appNotification : !this.state.appNotification
         })
@@ -113,12 +118,18 @@ export default class Profile extends React.Component{
         }
     }
 
-    componentDidMount (){
+    async componentDidMount (){
+
+        // await Realm.open({ path : 'Database.realm' })
 
         this.getUserInfo();
         console.log(this.state.name)
         console.log(this.state.email)
         
+    }
+
+    componentWillUnmount(){
+        // realm.close();
     }
     
     render(){
@@ -221,8 +232,8 @@ export default class Profile extends React.Component{
                                 </View>
                                 {/* <Icon2 name="toggle" size={35} color={gray}/> */}
                                 <ToggleSwitch
-                                  isOn={false}
-                                  onColor={mainColor}
+                                  isOn={true}
+                                  onColor={gray}
                                   offColor={gray}
                                   size="small"
                                   onToggle={() => {}}
@@ -240,7 +251,7 @@ export default class Profile extends React.Component{
                               onColor={mainColor}
                               offColor={dark}
                               size="small"
-                              onToggle={() => {}}
+                              onToggle={() => this.setAppNotification()}
                             />
                         </TouchableOpacity>
 

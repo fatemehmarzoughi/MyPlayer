@@ -6,10 +6,12 @@ import { mainColor } from "../../../assets/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {POST} from '../../../API/index';
 import Context from "../../../context/context";
-import realm from "../../../Realm/realmConnection";
+// import realm from "../../../Realm/realmConnection";
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
 import LottieView from 'lottie-react-native';
+// import Realm from 'realm';
+
 
 
 export default class Login_CreateAccount extends React.Component{
@@ -52,12 +54,15 @@ export default class Login_CreateAccount extends React.Component{
                 const token = res.headers.map.accesstoken
                 console.log(token)
                 this.context.setIsLogin(true)
+                // Realm.open({ path : 'Database.realm',})
                 // try{
-                    realm.write(() => {
-                        realm.create('Authentication' , {
-                            accessToken : token
-                        })
-                    })
+                    // realm.write(() => {
+                    //     realm.create('Authentication' , {
+                    //         accessToken : token
+                    //     })
+                    // })
+                    // Realm.close()
+                    // realm.close()
                     // console.log('realm auth = ' + JSON.stringify(realm.objects('Authentication')[0]))
                     Toast.show({
                         type: 'success',
