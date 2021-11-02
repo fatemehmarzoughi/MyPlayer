@@ -4,11 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 
-import io.realm.react.RealmReactPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.reactnativepagerview.PagerViewPackage;
-import io.realm.react.RealmReactPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

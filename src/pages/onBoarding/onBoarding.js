@@ -8,6 +8,7 @@ import { mainColor, white } from '../../assets/constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
 import context from '../../context/context';
+import { getData, storeData } from '../../LocalStorage/AsyncStorageData';
 
 const unset = '#70757a00';
 const animation1Source = '../../assets/Images/offline2.json'
@@ -202,12 +203,11 @@ export default class OnBoarding extends React.Component{
     }
 
     gotoNextComponent = () => {
-
         this.props.navigation.navigate('Landing')
-        
     }
 
-    componentDidMount(){
+
+    async componentDidMount(){
         console.log(this.state.progress)
         Animated.timing(this.state.progress, {
             toValue: 1,

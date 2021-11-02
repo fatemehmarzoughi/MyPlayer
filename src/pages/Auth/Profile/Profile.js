@@ -5,7 +5,7 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import {GET} from '../../../API/index'
 import { dark, gray, mainColor, white } from "../../../assets/constants/Colors";
 import { styles } from "./style";
-import realm from "../../../Realm/realmConnection";
+// import realm from "../../../Realm/realmConnection";
 import Context from "../../../context/context";
 import ToggleSwitch from 'toggle-switch-react-native'
 import LottieView from 'lottie-react-native';
@@ -25,7 +25,7 @@ export default class Profile extends React.Component{
             name : '',
             country : '',
 
-            appNotification : (realm.objects('Notification')[0].appNotification === 'true') ? true : false,
+            // appNotification : (realm.objects('Notification')[0].appNotification === 'true') ? true : false,
             refreshing : false,
             modalVisible : false,
         }
@@ -54,10 +54,10 @@ export default class Profile extends React.Component{
 
     handleLogOut = () => {
 
-        realm.write(() => {
-            realm.delete(realm.objects('Authentication')[0]);
-            console.log('deleted')
-        })
+        // realm.write(() => {
+        //     realm.delete(realm.objects('Authentication')[0]);
+        //     console.log('deleted')
+        // })
         this.context.setIsLogin(false);
         // this.props.navigation.navigate('home')
         this.setState({
@@ -77,10 +77,10 @@ export default class Profile extends React.Component{
 
     setAppNotification = async () => {
         let newState = '' + !this.state.appNotification + '';
-        realm.write(() => {
-            let object = realm.objects('Notification')[0];
-            object.appNotification = newState
-        })
+        // realm.write(() => {
+        //     let object = realm.objects('Notification')[0];
+        //     object.appNotification = newState
+        // })
         this.setState({
             appNotification : !this.state.appNotification
         })
@@ -120,7 +120,7 @@ export default class Profile extends React.Component{
 
     async componentDidMount (){
 
-        await Realm.open({ path : 'Database.realm' })
+        // await Realm.open({ path : 'Database.realm' })
 
         this.getUserInfo();
         console.log(this.state.name)
@@ -129,7 +129,7 @@ export default class Profile extends React.Component{
     }
 
     componentWillUnmount(){
-        realm.close();
+        // realm.close();
     }
     
     render(){

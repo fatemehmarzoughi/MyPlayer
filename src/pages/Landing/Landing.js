@@ -2,11 +2,8 @@ import React from "react";
 import { Text, View } from 'react-native'
 import LottieView from 'lottie-react-native';
 import {styles} from './styles.js'
-import realm  from '../../Realm/realmConnection';
 import Context from "../../context/context.js";
-import Realm from 'realm';
-
-
+import {getData, storeData} from '../../LocalStorage/AsyncStorageData';
 
 export default class Landing extends React.Component{
 
@@ -14,48 +11,20 @@ export default class Landing extends React.Component{
 
     async componentDidMount(){
      
-        if(realm.objects("userInstallation")[0] === undefined)
-        { 
-              realm.write(() => {
-                realm.create('userInstallation' , {
-                  isFirstInstallation : 'true',
-                })
-              })
-
-              this.context.setIsFirstInstallation(true)
-
-            this.setState({
-              isFirstInstallation : true,
-            })
-          // }
-          // catch{(err) => console.log(err)}
-        }
-  
-        else
-        {
-
-          // try{
-            Realm.open({ path : 'Database.realm',})
-            realm.write(() => {
-              let object = realm.objects("userInstallation");
-              object.isFirstInstallation = "false"
-            })
-            this.setState({
-              isFirstInstallation : false,
-            })
-            // realm.close()
-          // }
-          // catch{(err) => console.log(err)}
-        }
-        
     }
+
 
     constructor(){
         super();
         this.state={
           isFirstInstallation : true,
+          startTimer : true,
         }
-
+      }
+      
+      render(){ 
+      if(this.state.startTimer)
+      {
         setTimeout(() => {
           if(this.state.isFirstInstallation)
           {
@@ -67,9 +36,7 @@ export default class Landing extends React.Component{
             this.props.navigation.navigate("EnteriesOptions");
           }
         }, 6000);
-    }
-
-    render(){ 
+      }
         return(
             <View style={styles.container}>
               <View style={styles.topBox}>
