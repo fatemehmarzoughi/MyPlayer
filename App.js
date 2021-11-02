@@ -7,13 +7,16 @@ import AppRoute from './src/pages/AppRoute';
 import Toast from 'react-native-toast-message';
 import Context from './src/context/context';
 import { getData } from './src/LocalStorage/AsyncStorageData';
+import SplashScreen from 'react-native-splash-screen'
 
 export default class App extends React.Component {
 
   static contextType = Context;
 
-  async componentDidMount (){
-
+  componentDidMount (){
+    setTimeout(() => {
+      SplashScreen.hide()
+    } , 6000)
   }
   
   constructor(){
