@@ -14,7 +14,6 @@ export default class ModalClass extends React.Component{
     }
 
     render(){
-        console.log(this.props.modalVisible)
         return(
             <Modal 
             visible={this.props.modalVisible}

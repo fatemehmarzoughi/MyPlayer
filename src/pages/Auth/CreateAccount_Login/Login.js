@@ -6,16 +6,13 @@ import { mainColor } from "../../../assets/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {POST} from '../../../API/index';
 import Context from "../../../context/context";
-// import realm from "../../../Realm/realmConnection";
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
 import LottieView from 'lottie-react-native';
-// import Realm from 'realm';
-
+import { storeData } from "../../../LocalStorage/AsyncStorageData";
 
 
 export default class Login_CreateAccount extends React.Component{
-
 
     static contextType = Context;
 
@@ -36,65 +33,61 @@ export default class Login_CreateAccount extends React.Component{
         }
     }
 
+    validation = () => {
+        if(this.state.email == '' || this.state.password == '')
+        {
+            Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: 'Failed logging in',
+                text2: 'Email and Password are required.',
+                visibilityTime: toastMessageDuration,
+                autoHide: true,
+                topOffset: 30,
+                bottomOffset: 40,
+            });
+            this.setState({
+                loggingIn : false
+            })
+        }
+    }
+
     handleLogin = async () => {
 
+        
         this.setState({
             loggingIn : true
         })
-
+        
+        if(!this.validation()) return;
         POST('/login/user' , {
             email : this.state.email,
             password : this.state.password
         })
-        .then((res) => {
+        .then(async (res) => {
             if(res.status === 200)
             {
                 console.log('logged in');
-                // console.log('token = ' + JSON.stringify(res.headers.map.accesstoken))
                 const token = res.headers.map.accesstoken
                 console.log(token)
                 this.context.setIsLogin(true)
-                // Realm.open({ path : 'Database.realm',})
-                // try{
-                    // realm.write(() => {
-                    //     realm.create('Authentication' , {
-                    //         accessToken : token
-                    //     })
-                    // })
-                    // Realm.close()
-                    // realm.close()
-                    // console.log('realm auth = ' + JSON.stringify(realm.objects('Authentication')[0]))
-                    Toast.show({
-                        type: 'success',
-                        position: 'top',
-                        text1: 'Logged in Successfully',
-                        text2: 'Welcome to MyApp',
-                        visibilityTime: toastMessageDuration,
-                        autoHide: true,
-                        topOffset: 30,
-                        bottomOffset: 40,
-                    });
-                    this.setState({
-                        loggingIn : false
-                    })
-                    (this.context.isFirstInstallation) ? 
-                    this.props.navigation.navigate('Home') : 
-                    this.props.navigation.navigate('Profile')
-                // }
-                // catch
-                // {
-                //     (err) => console.log(err)
-                //     Toast.show({
-                //         type: 'error',
-                //         position: 'bottom',
-                //         text1: 'Something went wrong',
-                //         text2: 'Please try again',
-                //         visibilityTime: toastMessageDuration,
-                //         autoHide: true,
-                //         topOffset: 30,
-                //         bottomOffset: 40,
-                //     });
-                // }
+                await storeData('accessToken' , token);
+                Toast.show({
+                    type: 'success',
+                    position: 'top',
+                    text1: 'Logged in Successfully',
+                    text2: 'Welcome to MyApp',
+                    visibilityTime: toastMessageDuration,
+                    autoHide: true,
+                    topOffset: 30,
+                    bottomOffset: 40,
+                });
+                this.setState({
+                    loggingIn : false
+                })
+                (this.context.isFirstInstallation) ? 
+                this.props.navigation.navigate('Home') : 
+                this.props.navigation.navigate('Profile')
 
             }
             else

@@ -19,6 +19,7 @@ import ChangeProfilePhoto from './Auth/ChangeProfilePhoto/ChangeProfilePhoto'
 import { styles } from './Auth/CreateAccount_Login/style';
 import { mainColor } from '../assets/constants/Colors';
 import UpgradeToPremium from './Auth/UpgradeToPremium/UpgradeToPremium';
+import { getData } from '../LocalStorage/AsyncStorageData';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -49,6 +50,8 @@ function Login_CreateAccount(){
         </Tab.Navigator>
     )
 }
+
+
 
 function Auth() {
     const contextVars = useContext(Context);

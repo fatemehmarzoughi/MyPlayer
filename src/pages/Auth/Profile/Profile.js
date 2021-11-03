@@ -5,13 +5,14 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import {GET} from '../../../API/index'
 import { dark, gray, mainColor, white } from "../../../assets/constants/Colors";
 import { styles } from "./style";
-// import realm from "../../../Realm/realmConnection";
 import Context from "../../../context/context";
 import ToggleSwitch from 'toggle-switch-react-native'
 import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
 import ModalClass from "../../../components/Modal";
+import {getData , storeData} from '../../../LocalStorage/AsyncStorageData'
+import { checkLoginStatus } from "../checkLoginStatus";
 
 export default class Profile extends React.Component{
 
@@ -24,8 +25,7 @@ export default class Profile extends React.Component{
             plan : '',
             name : '',
             country : '',
-
-            // appNotification : (realm.objects('Notification')[0].appNotification === 'true') ? true : false,
+            appNotification : true,
             refreshing : false,
             modalVisible : false,
         }
@@ -52,19 +52,14 @@ export default class Profile extends React.Component{
         })
     }
 
-    handleLogOut = () => {
-
-        // realm.write(() => {
-        //     realm.delete(realm.objects('Authentication')[0]);
-        //     console.log('deleted')
-        // })
+    handleLogOut = async () => {
         this.context.setIsLogin(false);
-        // this.props.navigation.navigate('home')
+        await storeData('accessToken' , '');
         this.setState({
             modalVisible : false,
         })
+        await checkLoginStatus(this.context.setIsLogin);
         this.props.navigation.navigate('Auth')
-
     }
 
     handleReportABug = () => {
@@ -77,10 +72,7 @@ export default class Profile extends React.Component{
 
     setAppNotification = async () => {
         let newState = '' + !this.state.appNotification + '';
-        // realm.write(() => {
-        //     let object = realm.objects('Notification')[0];
-        //     object.appNotification = newState
-        // })
+        await storeData('appNotification' , newState)
         this.setState({
             appNotification : !this.state.appNotification
         })
@@ -120,16 +112,15 @@ export default class Profile extends React.Component{
 
     async componentDidMount (){
 
-        // await Realm.open({ path : 'Database.realm' })
-
         this.getUserInfo();
+        const appNotification = await getData('appNotification');
+        (appNotification === 'false') ? this.setState({appNotification : false}) : this.setState({appNotification : true})
         console.log(this.state.name)
         console.log(this.state.email)
         
     }
 
     componentWillUnmount(){
-        // realm.close();
     }
     
     render(){
@@ -272,24 +263,6 @@ export default class Profile extends React.Component{
                       handleMainBtn = {() => this.handleLogOut()}
                       handleCancelBtn = {() => this.cancelModal()}
                     />
-                    {/* <Modal 
-                       visible={this.state.modalVisible}
-                       transparent={true}
-                       animationType="slide"
-                       onRequestClose={() => this.cancelModal()}
-                       >
-                           <View style={styles.modalStyle}>
-                              <Text style={styles.textColor}>Are you sure, you want to logout?</Text>
-                              <View style={styles.btns}>
-                                 <TouchableOpacity style={styles.btnStyle} onPress={() => this.handleLogOut()}>
-                                     <Text style={styles.textColor}>Logout</Text>
-                                 </TouchableOpacity>
-                                 <TouchableOpacity style={styles.btnStyle} onPress={() => this.cancelModal()}>
-                                     <Text style={styles.textColor}>Cancel</Text>
-                                 </TouchableOpacity>
-                              </View>
-                           </View>
-                    </Modal> */}
                 </View>
             </ScrollView>
         )

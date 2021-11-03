@@ -209,7 +209,7 @@ export default class OnBoarding extends React.Component{
 
     async componentDidMount(){
         
-        console.log(this.state.progress)
+        console.log('progress'+this.state.progress)
         Animated.timing(this.state.progress, {
             toValue: 1,
             duration: 6000,
@@ -231,7 +231,7 @@ export default class OnBoarding extends React.Component{
 
     
     render(){
-        console.log(this.context.isRotate)
+        // console.log(this.context.isRotate)
         return(
             <View style={[this.context.isRotate ? styles.containerIsRotate : styles.container]}>
                 <StatusBar backgroundColor = '#333' translucent={false} hidden />
