@@ -9,7 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Home from './Home/Home';
 import Profile from './Auth/Profile/Profile';
-import Landing from './Landing/Landing'
+
 import Login from './Auth/CreateAccount_Login/Login'
 import ReportABug from './Auth/Report-a-Bug/ReportABug'
 import CreateAccount from './Auth/CreateAccount_Login/CraeteAccount'
@@ -163,15 +163,6 @@ function AppRoute() {
                options={{
                    tabBarVisible: false,
                    headerShown : false,
-               }}
-            />
-
-            <Stack.Screen 
-               name="Landing" 
-               component={Landing}
-               options={{
-                   tabBarVisible: false,
-                   headerShown : false
                }}
             />
 

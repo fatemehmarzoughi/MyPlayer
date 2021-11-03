@@ -13,4 +13,7 @@
     <item name="android:windowBackground">@drawable/splashscreen</item>
     <!-- Customize your splash screen theme here -->
   </style>
+      <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@drawable/splashscreen</item>
+    </style>
 </resources>

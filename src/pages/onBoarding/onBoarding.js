@@ -203,7 +203,7 @@ export default class OnBoarding extends React.Component{
     }
 
     gotoNextComponent = () => {
-        this.props.navigation.navigate('Landing')
+        this.props.navigation.navigate('EnteriesOptions')
     }
 
 

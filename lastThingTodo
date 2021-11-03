@@ -6,13 +6,14 @@ https://lottiefiles.com/9037-loading
 
 
 
+2- Removing Landing component
 
-2- activate the push notifications
+3- creating a logic with asyncstorage for handling first time users
 
-3- use splash screen instead of landing page
+4- activate the push notifications
 
-4- compelete the edit profile page 
-   4-1- create the change profile page.
+5- compelete the edit profile page 
+   5-1- create the change profile picture page.
 
 
-5- create the server for editing user info, then activating save btns in edit page
+6- create the server for editing user info, then activating save btns in edit page
