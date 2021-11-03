@@ -202,12 +202,13 @@ export default class OnBoarding extends React.Component{
         }
     }
 
-    gotoNextComponent = () => {
+    gotoNextComponent = async () => {
         this.props.navigation.navigate('EnteriesOptions')
     }
 
 
     async componentDidMount(){
+        
         console.log(this.state.progress)
         Animated.timing(this.state.progress, {
             toValue: 1,

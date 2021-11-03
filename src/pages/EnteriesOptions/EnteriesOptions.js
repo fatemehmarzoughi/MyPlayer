@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import LottieView from 'lottie-react-native';
 import { width } from "../../assets/constants/Units";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { storeData } from "../../LocalStorage/AsyncStorageData";
+import { getData, storeData } from "../../LocalStorage/AsyncStorageData";
 
 
 export default class EnteriesOptions extends React.Component{

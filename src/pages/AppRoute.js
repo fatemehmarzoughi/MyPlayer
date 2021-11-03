@@ -140,12 +140,12 @@ function Auth() {
 }
 
 
-function AppRoute() {
+function AppRoute(props) {
 
     return (
         <NavigationContainer>
            <Stack.Navigator 
-             initialRouteName =  "OnBoarding"
+             initialRouteName = {props.isFirstInstallation ? "OnBoarding" : 'Home'}
             >
 
             <Stack.Screen 

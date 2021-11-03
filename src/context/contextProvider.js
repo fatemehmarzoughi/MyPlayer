@@ -11,7 +11,7 @@ export default class ContextProvider extends React.Component{
             isRotate : false,
             isLogin : false ,
             accessToken : 0,
-            isFirstInstallation : true,
+            isFirstInstallation : false,
             userName : '',
             userCountry : '',
             userEmail : ''
