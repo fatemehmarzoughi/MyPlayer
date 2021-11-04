@@ -9,7 +9,7 @@ import Context from "../../../context/context";
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
 import LottieView from 'lottie-react-native';
-import { storeData } from "../../../LocalStorage/AsyncStorageData";
+import { getData, storeData } from "../../../LocalStorage/AsyncStorageData";
 
 
 export default class Login_CreateAccount extends React.Component{
@@ -49,17 +49,19 @@ export default class Login_CreateAccount extends React.Component{
             this.setState({
                 loggingIn : false
             })
+            return false;
         }
+        return true
     }
 
     handleLogin = async () => {
-
         
         this.setState({
             loggingIn : true
         })
         
         if(!this.validation()) return;
+        console.log('validation')
         POST('/login/user' , {
             email : this.state.email,
             password : this.state.password
@@ -85,10 +87,10 @@ export default class Login_CreateAccount extends React.Component{
                 this.setState({
                     loggingIn : false
                 })
-                (this.context.isFirstInstallation) ? 
+                const isFirstInstallation = await getData('isFirstInstallation')
+                (isFirstInstallation === null) ? 
                 this.props.navigation.navigate('Home') : 
                 this.props.navigation.navigate('Profile')
-
             }
             else
             {
@@ -162,6 +164,7 @@ export default class Login_CreateAccount extends React.Component{
                          style={styles.textInput}
                          placeholder="Email"
                          onChangeText = {(input) => {this.setState({email : input})}}
+                         autoCapitalize="none"
                        ></TextInput>
                    </View>
                    <View style={styles.input}>
@@ -170,6 +173,7 @@ export default class Login_CreateAccount extends React.Component{
                          placeholder="Password"
                          secureTextEntry={this.state.passwordIsSecure}
                          onChangeText = {(input) => {this.setState({password : input})}}
+                         autoCapitalize="none"
                        >
                        </TextInput>
                        <View style={styles.eyeIconsStyle}>
@@ -189,7 +193,7 @@ export default class Login_CreateAccount extends React.Component{
    
                    <TouchableOpacity style={styles.googleBtn} onPress={() => this.handleLoginWithGoogle()}>
                        <Icon name="logo-google" size={30} color={mainColor} style={styles.googleLogo} />
-                       <Text>Login with google</Text>
+                       <Text>Login with Google</Text>
                    </TouchableOpacity>
                </View>
             </ScrollView>

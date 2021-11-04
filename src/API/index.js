@@ -1,7 +1,4 @@
-import React from 'react';
 import { SITE_URL } from '../assets/constants/General';
-// import realm from '../Realm/realmConnection'
-
 
 async function POST(endpoint , reqBody){
     const url = SITE_URL + endpoint;
@@ -28,7 +25,6 @@ async function GET(endpoint , reqbody){
     try
     {
         const accessToken = '';
-        // const accessToken = await realm.objects('Authentication')[0].accessToken;
         console.log('accessToken = ' + accessToken)
         const res = await fetch(url , {
             method : 'GET',

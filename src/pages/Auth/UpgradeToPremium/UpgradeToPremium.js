@@ -1,6 +1,8 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Linking } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
+import { toastMessageDuration } from "../../../assets/constants/Units";
 import Icon from "react-native-vector-icons/Ionicons";
 import { gray, mainColor } from "../../../assets/constants/Colors";
 import Header from '../../../components/pagesHeader/Header'
@@ -21,8 +23,26 @@ export default class UpgradeToPremium extends React.Component{
         })
     }
 
-    handleSelectPlan = () => {
-        alert('selected the plan number = ' + this.state.selectedPlan)
+    handleSelectPlan = async () => {
+        const url = 'http://www.google.com';
+
+        const canOpen = await Linking.canOpenURL(url);
+        console.log(canOpen)
+        if(!canOpen) {
+            Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: "Something went wrong",
+                text2: 'Please Report this as a bug',
+                visibilityTime: toastMessageDuration,
+                autoHide: true,
+                topOffset: 30,
+                bottomOffset: 40,
+            })
+            return;
+        }
+
+        await Linking.openURL(url);
     }
 
     render()

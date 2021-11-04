@@ -13,6 +13,7 @@ import {toastMessageDuration} from '../../../assets/constants/Units'
 import ModalClass from "../../../components/Modal";
 import {getData , storeData} from '../../../LocalStorage/AsyncStorageData'
 import { checkLoginStatus } from "../checkLoginStatus";
+import Notification from "../../../Notification/NotificationSetup";
 
 export default class Profile extends React.Component{
 
@@ -76,6 +77,8 @@ export default class Profile extends React.Component{
         this.setState({
             appNotification : !this.state.appNotification
         })
+        if(!this.state.appNotification)
+            Notification.notifyOnMessage(new Date(Date.now() + (2*1000)));
     }
 
     getUserInfo = async () => {

@@ -295,6 +295,7 @@ export default class Login_CreateAccount extends React.Component{
                          style={styles.textInput}
                          placeholder="Email"
                          onChangeText = {(input) => this.handleEmailInput(input)}
+                         autoCapitalize="none"
                        ></TextInput>
                        <Text style={[styles.errorMessage , {display : this.state.emailErrorDisplay}]}>{this.state.emailErrorMessage}</Text>
                    </View>

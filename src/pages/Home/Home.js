@@ -1,6 +1,6 @@
 import React from "react";
-import { Text } from 'react-native';
-
+import { Text, View } from 'react-native';
+import Notification from "../../Notification/NotificationSetup";
 
 export default class Home extends React.Component{
 
@@ -11,7 +11,15 @@ export default class Home extends React.Component{
         }
     }
 
+    notify = () => {
+        Notification.scheduleNotification(new Date(Date.now() + (5*1000)));
+    }
+ 
     render(){
-        return(<Text>Home</Text>)
+        return(
+            <View>
+                <Text onPress={() => this.notify()}>Text notification</Text>
+            </View>
+        )
     }
 }

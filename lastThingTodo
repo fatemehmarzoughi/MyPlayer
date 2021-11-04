@@ -5,12 +5,12 @@ https://lottiefiles.com/7899-loading
 https://lottiefiles.com/9037-loading
 
 
+1- create the change profile picture page.
 
-4- activate the push notifications
-https://wix.github.io/react-native-notifications/docs/getting-started
+2- activate the login/createAccount with google btns 
+https://github.com/react-native-google-signin/google-signin
 
-5- compelete the edit profile page 
-   5-1- create the change profile picture page.
+3- create the server for editing user info, then activating save btns in edit page
 
+4- design the splash screen on android
 
-6- create the server for editing user info, then activating save btns in edit page
