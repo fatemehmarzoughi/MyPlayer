@@ -13,7 +13,7 @@ export default class ContextProvider extends React.Component{
             accessToken : 0,
             isFirstInstallation : false,
             userName : '',
-            userCountry : '',
+            userCountry : 'Select Your Country',
             userEmail : ''
         }
     }

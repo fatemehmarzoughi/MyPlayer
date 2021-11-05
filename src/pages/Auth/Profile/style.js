@@ -38,6 +38,9 @@ export const styles = StyleSheet.create({
     nameEmail:{
         marginLeft : 40,
     },
+    email: {
+        width : 170,
+    },
     nameText : {
         fontWeight : 'bold',
         fontSize :  18,

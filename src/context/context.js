@@ -17,8 +17,8 @@ export default React.createContext({
     userName : '',
     setUserName : () => {}, 
     userCountry : '',
-    setCountry : () => {}, 
+    setUserCountry : () => {}, 
     userEmail : '',
-    setEmail : () => {}, 
+    setUserEmail : () => {}, 
 
 })

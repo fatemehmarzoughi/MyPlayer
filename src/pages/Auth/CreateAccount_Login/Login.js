@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
 import LottieView from 'lottie-react-native';
 import { getData, storeData } from "../../../LocalStorage/AsyncStorageData";
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 
 export default class Login_CreateAccount extends React.Component{
@@ -61,7 +62,7 @@ export default class Login_CreateAccount extends React.Component{
         })
         
         if(!this.validation()) return;
-        console.log('validation')
+
         POST('/login/user' , {
             email : this.state.email,
             password : this.state.password
@@ -128,8 +129,79 @@ export default class Login_CreateAccount extends React.Component{
         })
     }
 
-    handleLoginWithGoogle = () => {
+    handleLoginWithGoogle = async () => {
         console.log('login with google')
+
+        const iosClientId = '630054268059-506r6g9fq6latvlc5g158g5b69l4gkqm.apps.googleusercontent.com';
+        const androidClientId = '630054268059-7790a4rn17bj5o5heaua0qtn4ttesd6c.apps.googleusercontent.com'
+
+        GoogleSignin.configure({
+            androidClientId,
+            iosClientId,
+        })
+
+        try
+        {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            this.context.setUserName(userInfo.user.givenName)
+            this.context.setUserEmail(userInfo.user.email)
+            await storeData('accessToken' , 'GoogleToken');
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Logged in Successfully',
+                text2: 'Welcome to MyApp',
+                visibilityTime: toastMessageDuration,
+                autoHide: true,
+                topOffset: 30,
+                bottomOffset: 40,
+            });
+            this.context.setIsLogin(true)
+            this.props.navigation.navigate('Profile');
+        }
+        catch(err)
+        {
+            switch(err.code)
+            {
+                case statusCodes.SIGN_IN_CANCELLED :
+                    Toast.show({
+                        type : 'error',
+                        position : 'bottom',
+                        text1 : 'Create Account canceled',
+                        text2 : 'Please try again',
+                        autoHide : true,
+                        visibilityTime : toastMessageDuration,
+                        topOffset: 30,
+                        bottomOffset: 40,
+                    })
+                break;
+                case statusCodes.IN_PROGRESS : 
+                    Toast.show({
+                        type : 'error',
+                        position : 'bottom',
+                        text1 : 'Create Account is in Progress',
+                        text2 : 'Please wait',
+                        autoHide : true,
+                        topOffset : 30,
+                        bottomOffset : 40,
+                        visibilityTime : toastMessageDuration,
+                    })
+                break;
+                case statusCodes.PLAY_SERVICES_NOT_AVAILABLE : 
+                    Toast.show({
+                        type : 'error',
+                        position : 'bottom',
+                        text1 : 'Play services not available',
+                        text2 : 'Please try again.',
+                        autoHide : true,
+                        topOffset : 30,
+                        bottomOffset : 40,
+                        visibilityTime : toastMessageDuration,
+                    })
+                break;
+            }
+        }
     }
 
     passwordVisibility = () => {

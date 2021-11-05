@@ -11,6 +11,8 @@ import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
 import LottieView from 'lottie-react-native';
 import Icon2 from "react-native-vector-icons/EvilIcons";
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { storeData } from "../../../LocalStorage/AsyncStorageData";
 
 
 export default class Login_CreateAccount extends React.Component{
@@ -236,7 +238,6 @@ export default class Login_CreateAccount extends React.Component{
                   bottomOffset: 40,
                 });
             }
-                
             else 
             {
                 this.setState({
@@ -273,8 +274,78 @@ export default class Login_CreateAccount extends React.Component{
         })
 
     }
-    handleCreateAccountWithGoogle = () => {
-        console.log('create account with google')
+    handleCreateAccountWithGoogle = async () => {
+        console.log('create account with google');
+
+        const iosClientId = '630054268059-506r6g9fq6latvlc5g158g5b69l4gkqm.apps.googleusercontent.com';
+        const androidClientId = '630054268059-7790a4rn17bj5o5heaua0qtn4ttesd6c.apps.googleusercontent.com'
+
+        GoogleSignin.configure({
+            androidClientId,
+            iosClientId,
+        })
+
+        try
+        {
+            await GoogleSignin.hasPlayServices()
+            const userInfo = await GoogleSignin.signIn();
+            console.log(userInfo);
+            await storeData('accessToken' , 'GoogleToken');
+            Toast.show({
+                type: 'success',
+                position: 'top',
+                text1: 'Registered Successfully',
+                text2: 'Please Login',
+                visibilityTime: toastMessageDuration,
+                autoHide: true,
+                topOffset: 30,
+                bottomOffset: 40,
+            });
+
+        }
+        catch(err)
+        {
+            switch(err.code)
+            {
+                case statusCodes.SIGN_IN_CANCELLED :
+                    Toast.show({
+                        type : 'error',
+                        position : 'bottom',
+                        text1 : 'Create Account canceled',
+                        text2 : 'Please try again',
+                        autoHide : true,
+                        visibilityTime : toastMessageDuration,
+                        topOffset: 30,
+                        bottomOffset: 40,
+                    })
+                break;
+                case statusCodes.IN_PROGRESS : 
+                    Toast.show({
+                        type : 'error',
+                        position : 'bottom',
+                        text1 : 'Create Account is in Progress',
+                        text2 : 'Please wait',
+                        autoHide : true,
+                        topOffset : 30,
+                        bottomOffset : 40,
+                        visibilityTime : toastMessageDuration,
+                    })
+                break;
+                case statusCodes.PLAY_SERVICES_NOT_AVAILABLE : 
+                    Toast.show({
+                        type : 'error',
+                        position : 'bottom',
+                        text1 : 'Play services not available',
+                        text2 : 'Please try again.',
+                        autoHide : true,
+                        topOffset : 30,
+                        bottomOffset : 40,
+                        visibilityTime : toastMessageDuration,
+                    })
+                break;
+            }
+        }
+
     }
 
     render(){

@@ -1,4 +1,5 @@
 import { SITE_URL } from '../assets/constants/General';
+import { getData } from '../LocalStorage/AsyncStorageData';
 
 async function POST(endpoint , reqBody){
     const url = SITE_URL + endpoint;
@@ -18,13 +19,12 @@ async function POST(endpoint , reqBody){
     }
 }
 
-async function GET(endpoint , reqbody){
+async function GET(endpoint , accessToken){
     // const vars = useContext(Context);
     const url = SITE_URL + endpoint;
     const Headers = {'Content-Type' : 'application/json'};
     try
     {
-        const accessToken = '';
         console.log('accessToken = ' + accessToken)
         const res = await fetch(url , {
             method : 'GET',

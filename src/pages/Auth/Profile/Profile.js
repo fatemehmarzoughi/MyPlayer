@@ -14,6 +14,8 @@ import ModalClass from "../../../components/Modal";
 import {getData , storeData} from '../../../LocalStorage/AsyncStorageData'
 import { checkLoginStatus } from "../checkLoginStatus";
 import Notification from "../../../Notification/NotificationSetup";
+import { GoogleSignin} from '@react-native-google-signin/google-signin';
+
 
 export default class Profile extends React.Component{
 
@@ -29,6 +31,7 @@ export default class Profile extends React.Component{
             appNotification : true,
             refreshing : false,
             modalVisible : false,
+            isGoogleAccount : false,
         }
     }
 
@@ -54,13 +57,17 @@ export default class Profile extends React.Component{
     }
 
     handleLogOut = async () => {
-        this.context.setIsLogin(false);
-        await storeData('accessToken' , '');
-        this.setState({
-            modalVisible : false,
-        })
-        await checkLoginStatus(this.context.setIsLogin);
-        this.props.navigation.navigate('Auth')
+        try{
+            await GoogleSignin.signOut();
+            this.context.setIsLogin(false);
+            await storeData('accessToken' , '');
+            this.setState({
+                modalVisible : false,
+            })
+            await checkLoginStatus(this.context.setIsLogin);
+            this.props.navigation.navigate('Auth')
+        }
+        catch(err) {console.log(err)}
     }
 
     handleReportABug = () => {
@@ -82,10 +89,26 @@ export default class Profile extends React.Component{
     }
 
     getUserInfo = async () => {
+
+        const token = await getData('accessToken');
+        console.log('token = ' + token)
+        if(token == 'GoogleToken') 
+        {
+            this.setState({
+                email : this.context.userEmail,
+                name : this.context.userName,
+                refreshing : false,
+                isGoogleAccount : true,
+            })
+            return
+        }
+
+
         console.log(this.state.name)
         console.log(this.state.email)
         try{
-            const res = await GET('/dashboard' , '');
+            const token = await getData('accessToken');
+            const res = await GET('/dashboard' , token);
             this.setState({
                 email : res.headers.map.email,
                 name : res.headers.map.firstname,
@@ -115,15 +138,12 @@ export default class Profile extends React.Component{
 
     async componentDidMount (){
 
-        this.getUserInfo();
+        await this.getUserInfo();
         const appNotification = await getData('appNotification');
         (appNotification === 'false') ? this.setState({appNotification : false}) : this.setState({appNotification : true})
         console.log(this.state.name)
         console.log(this.state.email)
         
-    }
-
-    componentWillUnmount(){
     }
     
     render(){
@@ -189,6 +209,20 @@ export default class Profile extends React.Component{
                             </View>
                             <Icon name="chevron-right" size={35} color={dark}/>
                         </TouchableOpacity>
+                        
+                        <>
+                        {this.state.isGoogleAccount ? (
+                        <TouchableOpacity style={styles.premiumOption}>
+                            <View style={styles.premium}>
+                                <View style={styles.optionTitleIcon}>
+                                   <Icon2 name="basket" size={20} color={gray}/>
+                                   <Text style={styles.premiumOptionTitle}>Reset Password</Text>
+                                </View>
+                                <Icon name="chevron-right" size={35} color={gray}/>
+                            </View>
+                            <Text style={styles.premiumOptionText}>Only available for MyPlayer accounts</Text>
+                        </TouchableOpacity>
+                        ) : (
                         <TouchableOpacity onPress={() => this.handleResetPassword()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="basket" size={20} color={dark}/>
@@ -196,6 +230,10 @@ export default class Profile extends React.Component{
                             </View>
                             <Icon name="chevron-right" size={35} color={dark}/>
                         </TouchableOpacity>
+                        )}
+                        </>
+
+
                         <TouchableOpacity onPress={() => this.handleReportABug()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="bug" size={20} color={dark}/>

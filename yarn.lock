@@ -1602,6 +1602,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-google-signin/google-signin@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-7.0.1.tgz#a03f1a3e43ddb1bb092679bfdd6e38ff6ed819a1"
+  integrity sha512-iG1OkFx1ohSupofWnlbV+Re74L2HF823SOL1KNl1gGDiVxzNKJTZm/wuaPuujzci4kr8GuwR9PRgxLShiAZwlg==
+
 "@react-navigation/bottom-tabs@^6.0.9":
   version "6.0.9"
   resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-6.0.9.tgz#916b6a4b495ea8fdcace98dab727064876875d09"
