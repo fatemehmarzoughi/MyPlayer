@@ -5,11 +5,10 @@ https://lottiefiles.com/7899-loading
 https://lottiefiles.com/9037-loading
 
 
-1- create the change profile picture page.
+1- create the server for editing user info, then activating save btns in edit page
 
-2- activate the login/createAccount with google btns 
-https://github.com/react-native-google-signin/google-signin
+2- make the code secure for google ids
 
-3- create the server for editing user info, then activating save btns in edit page
+3- design the splash screen on android
 
-4- design the splash screen on android
+4- create the test files

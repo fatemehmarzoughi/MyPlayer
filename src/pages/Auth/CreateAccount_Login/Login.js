@@ -11,6 +11,9 @@ import {toastMessageDuration} from '../../../assets/constants/Units'
 import LottieView from 'lottie-react-native';
 import { getData, storeData } from "../../../LocalStorage/AsyncStorageData";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import Config from "react-native-config";
+import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General'
+
 
 
 export default class Login_CreateAccount extends React.Component{
@@ -132,8 +135,8 @@ export default class Login_CreateAccount extends React.Component{
     handleLoginWithGoogle = async () => {
         console.log('login with google')
 
-        const iosClientId = '630054268059-506r6g9fq6latvlc5g158g5b69l4gkqm.apps.googleusercontent.com';
-        const androidClientId = '630054268059-7790a4rn17bj5o5heaua0qtn4ttesd6c.apps.googleusercontent.com'
+        const iosClientId = REACT_APP_IOS_CLIENT_ID;
+        const androidClientId = REACT_APP_ANDROID_CLIENT_ID;
 
         GoogleSignin.configure({
             androidClientId,

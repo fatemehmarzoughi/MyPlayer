@@ -13,9 +13,13 @@ import LottieView from 'lottie-react-native';
 import Icon2 from "react-native-vector-icons/EvilIcons";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { storeData } from "../../../LocalStorage/AsyncStorageData";
-
+import Config from "react-native-config";
+import Context from "../../../context/context";
+import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General'
 
 export default class Login_CreateAccount extends React.Component{
+
+    static contextType = Context;
 
     constructor(){
         super();
@@ -277,8 +281,8 @@ export default class Login_CreateAccount extends React.Component{
     handleCreateAccountWithGoogle = async () => {
         console.log('create account with google');
 
-        const iosClientId = '630054268059-506r6g9fq6latvlc5g158g5b69l4gkqm.apps.googleusercontent.com';
-        const androidClientId = '630054268059-7790a4rn17bj5o5heaua0qtn4ttesd6c.apps.googleusercontent.com'
+        const iosClientId = REACT_APP_IOS_CLIENT_ID;
+        const androidClientId = REACT_APP_ANDROID_CLIENT_ID;
 
         GoogleSignin.configure({
             androidClientId,
@@ -291,16 +295,20 @@ export default class Login_CreateAccount extends React.Component{
             const userInfo = await GoogleSignin.signIn();
             console.log(userInfo);
             await storeData('accessToken' , 'GoogleToken');
+            this.context.setUserName(userInfo.user.givenName)
+            this.context.setUserEmail(userInfo.user.email)
             Toast.show({
                 type: 'success',
                 position: 'top',
-                text1: 'Registered Successfully',
-                text2: 'Please Login',
+                text1: 'Logged in Successfully',
+                text2: 'Welcome to MyApp',
                 visibilityTime: toastMessageDuration,
                 autoHide: true,
                 topOffset: 30,
                 bottomOffset: 40,
             });
+            this.context.setIsLogin(true)
+            this.props.navigation.navigate('Profile');
 
         }
         catch(err)
