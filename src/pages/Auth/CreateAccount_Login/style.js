@@ -162,5 +162,20 @@ export const styles = StyleSheet.create({
         padding : 20,
         color : gray,
     },
+    resetPassword : {
+        width : width - 50,
+        margin : 10,
+        display : 'flex',
+        alignItems : 'center',
+        justifyContent : 'flex-end',
+        flexDirection : 'row'
+    },
+    resetText : {
+        textDecorationLine : 'underline',
+        color : dark
+    },
+    forgetPassText : {
+        color : dark
+    }
 
 })

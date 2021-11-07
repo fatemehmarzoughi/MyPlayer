@@ -229,6 +229,10 @@ export default class Login_CreateAccount extends React.Component{
         }
     }
 
+    handleResetPass = () => {
+        this.props.navigation.navigate('ForgetPassword');
+    }
+
     render(){
         return(
             <ScrollView>
@@ -256,6 +260,10 @@ export default class Login_CreateAccount extends React.Component{
                           <Icon onPress={() => this.passwordVisibility()} style={[styles.eyeIconStyle , {opacity : this.state.passwordIconVisible}]} name="eye-off-outline" size={20} color={mainColor} />
                        </View>
                    </View>
+                   <TouchableOpacity onPress={() => this.handleResetPass()} style={styles.resetPassword}>
+                       <Text style={styles.forgetPassText}>Forgot Your Password?</Text>
+                       <Text style={styles.resetText}> Reset</Text>
+                   </TouchableOpacity>
                    <TouchableOpacity onPress={() => this.handleLogin()} style={styles.btn}>
                        <LottieView style={(this.state.loggingIn) ? {opacity : 1} : {opacity : 0}} loop={true} autoPlay={true} source={require('../../../assets/Images/loading.json')} />
                        <Text style={styles.btnText}>Login</Text>

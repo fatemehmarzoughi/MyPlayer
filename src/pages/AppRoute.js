@@ -14,6 +14,7 @@ import Login from './Auth/CreateAccount_Login/Login'
 import ReportABug from './Auth/Report-a-Bug/ReportABug'
 import CreateAccount from './Auth/CreateAccount_Login/CraeteAccount'
 import ResetPassword from './Auth/ResetPassword/ResetPassword';
+import ForgetPassword from './Auth/ForgetPassword/ForgetPassword';
 import EditProfile from '../pages/Auth/EditProfile/EditProfile'
 import ChangeProfilePhoto from './Auth/ChangeProfilePhoto/ChangeProfilePhoto'
 import { styles } from './Auth/CreateAccount_Login/style';
@@ -125,14 +126,14 @@ function Auth() {
                     }}
                    />
    
-                   {/* <Stack.Screen 
+                   <Stack.Screen 
                     name="ForgetPassword"
                     component={ForgetPassword}
                     options={{
                        tabBarVisible: false,
-                       headerShown : true
+                       headerShown : false
                     }}
-                   /> */}
+                   />
 
                    </>
                 )}
