@@ -20,5 +20,7 @@ export default React.createContext({
     setUserCountry : () => {}, 
     userEmail : '',
     setUserEmail : () => {}, 
+    userImage : '',
+    setUserImage : () => {},
 
 })

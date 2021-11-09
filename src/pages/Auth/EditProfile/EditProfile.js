@@ -7,6 +7,11 @@ import ModalClass from "../../../components/Modal";
 import CountryPicker from 'react-native-country-picker-modal'
 import Icon from "react-native-vector-icons/EvilIcons";
 import { gray, lightGray } from "../../../assets/constants/Colors";
+import {DELETE} from '../../../API/index'
+import { storeData } from "../../../LocalStorage/AsyncStorageData";
+import {POST} from '../../../API/index'
+import Toast from "react-native-toast-message";
+import { toastMessageDuration } from "../../../assets/constants/Units";
 
 
 export default class EditProfile extends React.Component{
@@ -18,7 +23,9 @@ export default class EditProfile extends React.Component{
         this.state = {
             modalVisible : false,
             countrySelectorVisibility : false,
-            choosedCountry : ''
+            choosedCountry : '',
+            name : '',
+            email : '',
         }
     }
 
@@ -37,8 +44,21 @@ export default class EditProfile extends React.Component{
         })
     }
 
-    handleDeleteAccount = () => {
-        console.log('deleted account')
+    handleDeleteAccount = async () => {
+        try{
+
+            const result = await DELETE('/editProfile/deleteAccount');
+            const message = await result.text();
+            console.log(message);
+            await storeData('accessToken' , '');
+            this.context.setIsLogin(false);
+            this.props.navigation.navigate('Auth');
+
+        }
+        catch(err){
+            console.log(err)
+        }
+
     }
 
     showModal = () => {
@@ -47,26 +67,100 @@ export default class EditProfile extends React.Component{
         })
     }
 
+    handleName = (name) => {
+        this.setState({
+            name,
+        })
+    }
+    handleEmail = (email) => {
+        this.setState({
+            email,
+        })
+    }
+
+    onSave = async () => {
+
+        const reqBodyUserInfo = { 
+            name : this.state.name,
+            email : this.state.email,
+            country : this.state.choosedCountry,
+            imageURL :  this.context.userImage ,
+        }
+
+        try{
+
+            //saving the users info (name, email, country)
+            const result = await POST('/editProfile/setInfo' , reqBodyUserInfo);
+            const message = await result.text();
+
+            if(result.status === 200)
+            {
+                Toast.show({
+                    type : 'success',
+                    position : 'top',
+                    text1 : message,
+                    text2 : 'Saved changes',
+                    autoHide : true,
+                    visibilityTime : toastMessageDuration,
+                    topOffset : 30,
+                    bottomOffset : 40,
+                })
+                this.props.navigation.navigate('Profile')
+
+            }
+            else {
+                Toast.show({
+                    type : 'error',
+                    position : 'bottom',
+                    text1 : message,
+                    text2 : 'Please try again',
+                    autoHide : true,
+                    visibilityTime : toastMessageDuration,
+                    topOffset : 30,
+                    bottomOffset : 40,
+                })
+            }
+
+        }catch(err){
+            console.log(err);
+            Toast.show({
+                type : 'error',
+                position : 'bottom',
+                text1 : 'Something went wrong',
+                text2 : 'Please check your internet connection',
+                autoHide : true,
+                visibilityTime : toastMessageDuration,
+                topOffset : 30,
+                bottomOffset : 40,
+            })
+        }
+
+
+    }
+ 
     render()
     {
+
         return(
             <ScrollView>
                 <View style={styles.container}>
                     <Header2 
                       title="Edit Profile" 
                       onCancel={() => this.onCancel()} 
-                      onSave={() => {}} 
+                      onSave={() => this.onSave()} 
                     />
-                    <Image style={styles.image} source={require('../../../assets/Images/Windows-11.jpeg')} />
+                    <Image style={styles.image} source={{uri : this.context.userImage}} />
                     <Text onPress={() => this.changeProfilePhoto()} style={styles.changePhoto}>Change Profile Photo</Text>
                     <View style={styles.inputs}>
                         <TextInput
                           placeholder = {this.context.userName}
                           style={styles.input}
+                          onChangeText={(input) => this.handleName(input)}
                         />
                         <TextInput
                           placeholder = {this.context.userEmail}
                           style={styles.input}
+                          onChangeText={(input) => this.handleEmail(input)}
                         />
                         <TouchableOpacity style={styles.input} onPress={() => this.setState({ countrySelectorVisibility : true })}>
                             <CountryPicker 

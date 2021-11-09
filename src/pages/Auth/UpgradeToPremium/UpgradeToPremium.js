@@ -7,6 +7,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { gray, mainColor } from "../../../assets/constants/Colors";
 import Header from '../../../components/pagesHeader/Header'
 import { styles } from "./style";
+import { POST } from '../../../API/index';
 
 export default class UpgradeToPremium extends React.Component{
 
@@ -24,25 +25,70 @@ export default class UpgradeToPremium extends React.Component{
     }
 
     handleSelectPlan = async () => {
-        const url = 'http://www.google.com';
+        // const url = 'http://www.google.com';
 
-        const canOpen = await Linking.canOpenURL(url);
-        console.log(canOpen)
-        if(!canOpen) {
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: "Something went wrong",
-                text2: 'Please Report this as a bug',
-                visibilityTime: toastMessageDuration,
-                autoHide: true,
-                topOffset: 30,
-                bottomOffset: 40,
-            })
-            return;
+        // const canOpen = await Linking.canOpenURL(url);
+        // console.log(canOpen)
+        // if(!canOpen) {
+        //     Toast.show({
+        //         type: 'error',
+        //         position: 'bottom',
+        //         text1: "Something went wrong",
+        //         text2: 'Please Report this as a bug',
+        //         visibilityTime: toastMessageDuration,
+        //         autoHide: true,
+        //         topOffset: 30,
+        //         bottomOffset: 40,
+        //     })
+        //     return;
+        // }
+
+        // await Linking.openURL(url);
+
+        const reqBody = {
+            planId : this.state.selectedPlan
         }
 
-        await Linking.openURL(url);
+        try{
+            const result = await POST('/editProfile/changePlan' , reqBody)
+            const messageText = await result.text();
+            if(result.status === 200)
+                Toast.show({
+                    type : 'success',
+                    position : 'top',
+                    text1 : messageText,
+                    text2 : 'Your Account upgraded successfully',
+                    visibilityTime : toastMessageDuration,
+                    bottomOffset : 40,
+                    topOffset : 30,
+                    autoHide: true,
+                })
+            else
+                Toast.show({
+                    type : 'error',
+                    position : 'bottom',
+                    text1 : messageText,
+                    text2 : 'Please try again.',
+                    visibilityTime : toastMessageDuration,
+                    bottomOffset : 40,
+                    topOffset : 30,
+                    autoHide: true,
+                })
+        }
+        catch(err) {
+            console.log(err)
+            Toast.show({
+                type : 'error',
+                position : 'bottom',
+                text1 : 'Something went wrong',
+                text2 : 'Please try again',
+                visibilityTime : toastMessageDuration,
+                bottomOffset : 40,
+                topOffset : 30,
+                autoHide: true,
+            })
+        }
+
     }
 
     render()

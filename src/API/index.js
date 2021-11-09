@@ -1,6 +1,23 @@
 import { SITE_URL } from '../assets/constants/General';
 import { getData } from '../LocalStorage/AsyncStorageData';
 
+
+async function DELETE(endpoint){
+    
+    try{
+        const url = SITE_URL + endpoint;
+        const res = await fetch(url , {
+            method : 'DELETE',
+            headers : {"Content-Type" : "application/json"},
+        })
+        return res;
+    }
+    catch(err){
+        return err;
+    }
+    
+}
+
 async function POST(endpoint , reqBody){
     const url = SITE_URL + endpoint;
     try
@@ -19,16 +36,34 @@ async function POST(endpoint , reqBody){
     }
 }
 
-async function GET(endpoint , accessToken){
-    // const vars = useContext(Context);
+async function GET_noToken(endpoint){
+
     const url = SITE_URL + endpoint;
-    const Headers = {'Content-Type' : 'application/json'};
+    try
+    {
+        const res = await fetch(url , {
+            method : 'GET',
+            headers : {'Content-Type' : 'application/json'}
+        })
+        return res
+    }
+    catch
+    {
+        (err) => {return err}
+    }
+}
+
+async function GET(endpoint , accessToken){
+    const url = SITE_URL + endpoint;
     try
     {
         console.log('accessToken = ' + accessToken)
         const res = await fetch(url , {
             method : 'GET',
-            headers : Headers['authToken'] = `Bearer ${accessToken}`,
+            headers : new Headers({
+                'Content-Type' : 'application/json',
+                'authToken' : accessToken
+            }),
         })
         return res
     }
@@ -40,3 +75,5 @@ async function GET(endpoint , accessToken){
 
 module.exports.POST = POST;
 module.exports.GET = GET;
+module.exports.GET_noToken = GET_noToken;
+module.exports.DELETE = DELETE;

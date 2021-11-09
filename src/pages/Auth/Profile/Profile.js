@@ -109,16 +109,23 @@ export default class Profile extends React.Component{
         try{
             const token = await getData('accessToken');
             const res = await GET('/dashboard' , token);
+            const user = await res.json();
+            console.log(user)
             this.setState({
-                email : res.headers.map.email,
-                name : res.headers.map.firstname,
-                plan : res.headers.map.plan,
-                country : res.headers.map.country,
+                // email : res.headers.map.email,
+                // name : res.headers.map.firstname,
+                // plan : res.headers.map.plan,
+                // country : res.headers.map.country,
+                email : user.email,
+                name : user.firstName,
+                plan : user.plan,
+                country : user.country,
                 refreshing : false,
             })
             this.context.setUserName(this.state.name)
             this.context.setUserEmail(this.state.email)
             this.context.setUserCountry(this.state.country)
+            this.context.setUserImage(user.imageURL)
         }
         catch{
             (err) => console.log(err)
@@ -139,6 +146,14 @@ export default class Profile extends React.Component{
     async componentDidMount (){
 
         await this.getUserInfo();
+
+        const {
+            navigation
+         } = this.props;
+         this.focusListener = navigation.addListener('focus', async () => {
+            await this.getUserInfo();
+         });
+
         const appNotification = await getData('appNotification');
         (appNotification === 'false') ? this.setState({appNotification : false}) : this.setState({appNotification : true})
         console.log(this.state.name)
@@ -160,7 +175,7 @@ export default class Profile extends React.Component{
                     <View style={styles.header}>
                     <Text style={styles.title}>Profile</Text>
                     <View style={styles.row1}>
-                        <Image style={styles.profileImg} source={require('../../../assets/Images/Windows-11.jpeg')} />
+                        <Image style={styles.profileImg} source={{ uri : this.context.userImage }} />
                         <View style={styles.nameEmail}>
                             <>
                             {((this.state.email === '' && this.state.name === '') || (this.state.email === undefined && this.state.name === undefined)) ? (

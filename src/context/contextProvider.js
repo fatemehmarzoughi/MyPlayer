@@ -1,6 +1,7 @@
 import React from "react";
 import Context from "./context";
 import {getData} from '../LocalStorage/AsyncStorageData'
+import { SITE_URL } from "../assets/constants/General";
 
 export default class ContextProvider extends React.Component{
 
@@ -14,7 +15,8 @@ export default class ContextProvider extends React.Component{
             isFirstInstallation : false,
             userName : '',
             userCountry : 'Select Your Country',
-            userEmail : ''
+            userEmail : '',
+            userImage : `${SITE_URL}/images/makeURLs/default/png`,
         }
     }
 
@@ -60,6 +62,12 @@ export default class ContextProvider extends React.Component{
             userName : value,
         })
     }
+
+    setUserImage = (value) => {
+        this.setState({
+            userImage : value,
+        })
+    } 
  
     render(){
         
@@ -86,6 +94,9 @@ export default class ContextProvider extends React.Component{
 
                  userCountry : this.state.userCountry,
                  setUserCountry : this.setUserCountry,
+
+                 userImage : this.state.userImage,
+                 setUserImage : this.setUserImage,
              }}
             >
                 {this.props.children}
