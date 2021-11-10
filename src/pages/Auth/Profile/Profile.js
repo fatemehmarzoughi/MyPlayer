@@ -91,7 +91,6 @@ export default class Profile extends React.Component{
     getUserInfo = async () => {
 
         const token = await getData('accessToken');
-        console.log('token = ' + token)
         if(token == 'GoogleToken') 
         {
             this.setState({
@@ -104,13 +103,10 @@ export default class Profile extends React.Component{
         }
 
 
-        console.log(this.state.name)
-        console.log(this.state.email)
         try{
             const token = await getData('accessToken');
             const res = await GET('/dashboard' , token);
             const user = await res.json();
-            console.log(user)
             this.setState({
                 // email : res.headers.map.email,
                 // name : res.headers.map.firstname,

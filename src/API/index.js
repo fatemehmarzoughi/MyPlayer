@@ -1,5 +1,5 @@
 import { SITE_URL } from '../assets/constants/General';
-import { getData } from '../LocalStorage/AsyncStorageData';
+import { getData, storeData } from '../LocalStorage/AsyncStorageData';
 
 
 async function DELETE(endpoint){
@@ -20,19 +20,45 @@ async function DELETE(endpoint){
 
 async function POST(endpoint , reqBody){
     const url = SITE_URL + endpoint;
-    try
+    const accessToken = await getData('accessToken');
+    console.log('accessToken on post = ' + accessToken)
+    if(accessToken != 'GoogleToken' && accessToken != null)
     {
-        const res = await fetch(url , {
-            // mode: "cors",
-            method : 'POST',
-            headers : {'Content-Type' : "application/json"},
-            body : JSON.stringify(reqBody)
-        })
-        console.log('res in api func = ' + JSON.stringify(res));
-        return res;
+        console.log('inside if')
+        try
+        {
+            const res = await fetch(url , {
+                // mode: "cors",
+                method : 'POST',
+                headers : new Headers({
+                    'Content-Type' : 'application/json',
+                    'authtoken' : accessToken
+                }),
+                body : JSON.stringify(reqBody)
+            })
+            console.log('res in api func = ' + JSON.stringify(res));
+            return res;
+        }
+        catch{
+            (err) => {return err.text()}
+        }
     }
-    catch{
-        (err) => {return err}
+    else{
+        console.log('inside else')
+        try
+        {
+            const res = await fetch(url , {
+                // mode: "cors",
+                method : 'POST',
+                headers : {'Content-Type' : 'application/json'},
+                body : JSON.stringify(reqBody)
+            })
+            console.log('res in api func = ' + JSON.stringify(res));
+            return res;
+        }
+        catch{
+            (err) => {return err}
+        }
     }
 }
 
@@ -69,7 +95,10 @@ async function GET(endpoint , accessToken){
     }
     catch
     {
-        (err) => {return err}
+        (err) => {
+            console.log('error in get func = ' + err)
+            return err
+        }
     }
 }
 
