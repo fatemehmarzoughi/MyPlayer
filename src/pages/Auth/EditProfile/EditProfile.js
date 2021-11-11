@@ -1,12 +1,13 @@
 import React from "react";
-import { ScrollView, Text, View, Image, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, Text, View, Image, TextInput, TouchableOpacity, Modal } from "react-native";
 import Header2 from "../../../components/pagesHeader/Header2";
 import {styles} from './style';
 import Context from "../../../context/context";
-import ModalClass from "../../../components/Modal";
+import ModalClass from "../../../components/Modals/QuestionBoxModal";
+import SavingModal from "../../../components/Modals/SavingBoxModal";
 import CountryPicker from 'react-native-country-picker-modal'
 import Icon from "react-native-vector-icons/EvilIcons";
-import { gray, lightGray } from "../../../assets/constants/Colors";
+import { dark, gray, lightGray } from "../../../assets/constants/Colors";
 import {DELETE} from '../../../API/index'
 import { storeData } from "../../../LocalStorage/AsyncStorageData";
 import {POST} from '../../../API/index'
@@ -26,6 +27,7 @@ export default class EditProfile extends React.Component{
             choosedCountry : '',
             name : '',
             email : '',
+            saving : false,
         }
     }
 
@@ -106,6 +108,10 @@ export default class EditProfile extends React.Component{
 
     onSave = async () => {
 
+        this.setState({
+            saving : true
+        })
+
         const reqBodyUserInfo = { 
             name : this.state.name,
             email : this.state.email,
@@ -131,6 +137,9 @@ export default class EditProfile extends React.Component{
                     topOffset : 30,
                     bottomOffset : 40,
                 })
+                this.setState({
+                    saving : false
+                })
                 this.props.navigation.navigate('Profile')
 
             }
@@ -144,6 +153,9 @@ export default class EditProfile extends React.Component{
                     visibilityTime : toastMessageDuration,
                     topOffset : 30,
                     bottomOffset : 40,
+                })
+                this.setState({
+                    saving : false
                 })
             }
 
@@ -159,6 +171,9 @@ export default class EditProfile extends React.Component{
                 topOffset : 30,
                 bottomOffset : 40,
             })
+            this.setState({
+                saving : false
+            })
         }
 
 
@@ -169,7 +184,7 @@ export default class EditProfile extends React.Component{
 
         return(
             <ScrollView>
-                <View style={styles.container}>
+                <View style={[styles.container]}>
                     <Header2 
                       title="Edit Profile" 
                       onCancel={() => this.onCancel()} 
@@ -226,6 +241,9 @@ export default class EditProfile extends React.Component{
                       btnTitle="Delete Account"
                       handleMainBtn = {() => this.handleDeleteAccount()}
                       handleCancelBtn = {() => this.cancelModal()}
+                    />
+                    <SavingModal
+                     modalVisible = {this.state.saving}
                     />
                 </View>
             </ScrollView>

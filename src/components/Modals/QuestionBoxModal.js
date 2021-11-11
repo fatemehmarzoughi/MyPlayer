@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { mainColor, white } from "../assets/constants/Colors";
-import { width } from "../assets/constants/Units";
+import { mainColor, white } from "../../assets/constants/Colors";
+import { width, height } from "../../assets/constants/Units";
 
 
 export default class ModalClass extends React.Component{
@@ -21,16 +21,18 @@ export default class ModalClass extends React.Component{
             animationType="slide"
             onRequestClose={this.props.cancelModal}
             >
-                <View style={styles.modalStyle}>
-                   <Text style={styles.textColor}>{this.props.question}</Text>
-                   <View style={styles.btns}>
-                      <TouchableOpacity style={styles.btnStyle} onPress={this.props.handleMainBtn}>
-                          <Text style={styles.textColor}>{this.props.btnTitle}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles.btnStyle} onPress={this.props.handleCancelBtn}>
-                          <Text style={styles.textColor}>Cancel</Text>
-                      </TouchableOpacity>
-                   </View>
+                <View style={styles.container}>
+                    <View style={styles.modalStyle}>
+                       <Text style={styles.textColor}>{this.props.question}</Text>
+                       <View style={styles.btns}>
+                          <TouchableOpacity style={styles.btnStyle} onPress={this.props.handleMainBtn}>
+                              <Text style={styles.textColor}>{this.props.btnTitle}</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity style={styles.btnStyle} onPress={this.props.handleCancelBtn}>
+                              <Text style={styles.textColor}>Cancel</Text>
+                          </TouchableOpacity>
+                       </View>
+                    </View>
                 </View>
          </Modal>
         )
@@ -72,5 +74,10 @@ const styles = StyleSheet.create({
      textColor : {
         color : white,
         fontWeight : 'bold'
+    },
+    container : {
+        backgroundColor : 'rgba(0,0,0,0.6)',
+        height : height,
+        width : width
     }
 })

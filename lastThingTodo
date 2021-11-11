@@ -10,8 +10,6 @@ https://support.github.com/ticket/personal/0/1386019
 
 1- create account in db for users who sign in with google, and set the accessToken for them too (instead of what we have right now in acces token which is GoogleToken);
 
-3- create a modal for showing the status of "saving" in reset password
-
 4- make the code secure for google ids
 
 5- design the splash screen on android

@@ -5,6 +5,7 @@ import {styles} from './style';
 import { POST } from '../../../API/index'
 import Toast from 'react-native-toast-message';
 import { toastMessageDuration } from "../../../assets/constants/Units";
+import SavingModal from "../../../components/Modals/SavingBoxModal";
 
 
 export default class ResetPassword extends React.Component{
@@ -14,6 +15,7 @@ export default class ResetPassword extends React.Component{
         this.state = {
             oldPass : '',
             newPass : '',
+            saving : false,
         }
     }
 
@@ -22,6 +24,9 @@ export default class ResetPassword extends React.Component{
     }
 
     onSave = async () => {
+        this.setState({
+            saving : true
+        })
 
         const reqBody = {
             oldPass : this.state.oldPass,
@@ -43,6 +48,10 @@ export default class ResetPassword extends React.Component{
                     topOffset : 30,
                     bottomOffset : 40
                 })
+                this.setState({
+                    saving : false
+                })
+                this.props.navigation.navigate('Profile')
             }
             else
                 Toast.show({
@@ -54,6 +63,9 @@ export default class ResetPassword extends React.Component{
                     visibilityTime : toastMessageDuration,
                     topOffset : 30,
                     bottomOffset : 40
+                })
+                this.setState({
+                    saving : false
                 })
         }
         catch(err){
@@ -67,6 +79,9 @@ export default class ResetPassword extends React.Component{
                 visibilityTime : toastMessageDuration,
                 topOffset : 30,
                 bottomOffset : 40
+            })
+            this.setState({
+                saving : false
             })
         }
 
@@ -106,6 +121,7 @@ export default class ResetPassword extends React.Component{
                       onChangeText={(input) => this.handleNewPass(input) }
                     />
                 </View>
+                <SavingModal modalVisible={this.state.saving} />
             </ScrollView>
         )
     }

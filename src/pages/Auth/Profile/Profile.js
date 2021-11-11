@@ -10,7 +10,7 @@ import ToggleSwitch from 'toggle-switch-react-native'
 import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import {toastMessageDuration} from '../../../assets/constants/Units'
-import ModalClass from "../../../components/Modal";
+import ModalClass from "../../../components/Modals/QuestionBoxModal";
 import {getData , storeData} from '../../../LocalStorage/AsyncStorageData'
 import { checkLoginStatus } from "../checkLoginStatus";
 import Notification from "../../../Notification/NotificationSetup";
