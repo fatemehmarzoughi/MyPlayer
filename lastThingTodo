@@ -8,9 +8,7 @@ https://lottiefiles.com/9037-loading
 My github ticket : 
 https://support.github.com/ticket/personal/0/1386019
 
-1- Tokens are not sent by the client
-
-2- change the way we get the result of sent message from the server in refreshing profile( use .text())
+1- create account in db for users who sign in with google, and set the accessToken for them too (instead of what we have right now in acces token which is GoogleToken);
 
 3- create a modal for showing the status of "saving" in reset password
 
@@ -18,4 +16,4 @@ https://support.github.com/ticket/personal/0/1386019
 
 5- design the splash screen on android
 
-6- create the test files
+6- create the test files 

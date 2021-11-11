@@ -3,12 +3,17 @@ import { getData, storeData } from '../LocalStorage/AsyncStorageData';
 
 
 async function DELETE(endpoint){
-    
+    // if(accessToken != 'GoogleToken' && accessToken != null)
+    const accessToken = await getData('accessToken');
+    console.log(`accessToken in delete method = ${accessToken}`)
     try{
         const url = SITE_URL + endpoint;
         const res = await fetch(url , {
             method : 'DELETE',
-            headers : {"Content-Type" : "application/json"},
+            headers : new Headers({
+                'Content-Type' : 'application/json',
+                'authtoken' : accessToken
+            }),
         })
         return res;
     }
@@ -24,7 +29,6 @@ async function POST(endpoint , reqBody){
     console.log('accessToken on post = ' + accessToken)
     if(accessToken != 'GoogleToken' && accessToken != null)
     {
-        console.log('inside if')
         try
         {
             const res = await fetch(url , {
@@ -44,7 +48,6 @@ async function POST(endpoint , reqBody){
         }
     }
     else{
-        console.log('inside else')
         try
         {
             const res = await fetch(url , {

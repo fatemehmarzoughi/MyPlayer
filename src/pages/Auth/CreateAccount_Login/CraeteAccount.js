@@ -132,7 +132,8 @@ export default class Login_CreateAccount extends React.Component{
         {
             this.setState({
                 nameErrorDisplay : 'flex',
-                nameErrorMessage : 'Name is required'
+                nameErrorMessage : 'Name is required',
+                createingAccount : false
             })
             nameIsValid = false;
         }
@@ -141,13 +142,15 @@ export default class Login_CreateAccount extends React.Component{
             this.setState({
                 nameErrorDisplay : 'flex',
                 nameErrorMessage : 'Name must be more than 2 characters',
+                createingAccount : false
             })
             nameIsValid = false;
         }
         else
         {
             this.setState({
-                nameErrorDisplay : 'none'
+                nameErrorDisplay : 'none',
+                createingAccount : false
             })
             nameIsValid = true;
         }
@@ -158,21 +161,24 @@ export default class Login_CreateAccount extends React.Component{
         {
             this.setState({
                 emailErrorDisplay : 'flex',
-                emailErrorMessage : 'Email is required'
+                emailErrorMessage : 'Email is required',
+                createingAccount : false
             })
             emailIsValid = false;
         }
         else if(!validateEmail(this.state.email)){
             this.setState({
                 emailErrorDisplay : 'flex',
-                emailErrorMessage : 'Please Enter a Valid Email'
+                emailErrorMessage : 'Please Enter a Valid Email',
+                createingAccount : false
             })
             emailIsValid = false;
         }
         else
         {
             this.setState({
-                emailErrorDisplay : 'none'
+                emailErrorDisplay : 'none',
+                createingAccount : false
             })
             emailIsValid = true;
         }
@@ -182,7 +188,8 @@ export default class Login_CreateAccount extends React.Component{
         {
             this.setState({
                 passwordErrorMessage : 'Password is required',
-                passwordErrorDisplay : 'flex'
+                passwordErrorDisplay : 'flex',
+                createingAccount : false
             })
             passwordIsValid = false;
         }
@@ -190,14 +197,16 @@ export default class Login_CreateAccount extends React.Component{
         {
             this.setState({
                 passwordErrorMessage : 'Password must be at least 5, at most 20 characters',
-                passwordErrorDisplay : 'flex'
+                passwordErrorDisplay : 'flex',
+                createingAccount : false
             })
             passwordIsValid = false;
         }
         else 
         {
             this.setState({
-                passwordErrorDisplay : 'none'
+                passwordErrorDisplay : 'none',
+                createingAccount : false
             })
             passwordIsValid = true;
         }
@@ -224,7 +233,7 @@ export default class Login_CreateAccount extends React.Component{
             plan : this.state.choosedPlan,
             country : this.state.choosedCountry
         })
-        .then((res) => {
+        .then( async (res) => {
             console.log(res.status)
             if(res.status === 200)
             {
@@ -247,11 +256,12 @@ export default class Login_CreateAccount extends React.Component{
                 this.setState({
                     createingAccount : false
                 })
-                console.log(JSON.stringify(res.headers.map.errormsg))
+                const message = await res.json();
+                console.log(message)
                 Toast.show({
                     type: 'error',
                     position: 'bottom',
-                    text1: res.headers.map.errormsg,
+                    text1: message.message,
                     text2: 'Please try again',
                     visibilityTime: toastMessageDuration,
                     autoHide: true,

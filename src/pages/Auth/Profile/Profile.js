@@ -115,13 +115,14 @@ export default class Profile extends React.Component{
                 email : user.email,
                 name : user.firstName,
                 plan : user.plan,
-                country : user.country,
+                country : (user.country === '') ? 'Select Your Country' : user.country,
                 refreshing : false,
             })
             this.context.setUserName(this.state.name)
             this.context.setUserEmail(this.state.email)
             this.context.setUserCountry(this.state.country)
             this.context.setUserImage(user.imageURL)
+            console.log(`user = ${JSON.stringify(user)}`)
         }
         catch{
             (err) => console.log(err)
@@ -141,7 +142,7 @@ export default class Profile extends React.Component{
 
     async componentDidMount (){
 
-        await this.getUserInfo();
+        // await this.getUserInfo();
 
         const {
             navigation

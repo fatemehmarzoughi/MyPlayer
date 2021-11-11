@@ -71,11 +71,13 @@ export default class Login_CreateAccount extends React.Component{
             password : this.state.password
         })
         .then(async (res) => {
+            const result = await res.text()
+            console.log(result)
             if(res.status === 200)
             {
                 console.log('logged in');
-                const token = res.headers.map.accesstoken
-                console.log(token)
+                // const token = res.headers.map.accesstoken
+                const token = result;
                 this.context.setIsLogin(true)
                 await storeData('accessToken' , token);
                 Toast.show({
@@ -98,13 +100,14 @@ export default class Login_CreateAccount extends React.Component{
             }
             else
             {
+
                 this.setState({
                     loggingIn : false
                 })
                 Toast.show({
                     type: 'error',
                     position: 'bottom',
-                    text1: res.headers.map.errormsg,
+                    text1: result,
                     text2: 'Please try again',
                     visibilityTime: toastMessageDuration,
                     autoHide: true,
@@ -118,17 +121,17 @@ export default class Login_CreateAccount extends React.Component{
             this.setState({
                 loggingIn : false
             })
-            console.log('couldnt connect to server = ' + JSON.stringify(err));
             Toast.show({
                 type: 'error',
                 position: 'bottom',
-                text1: "Something went wrong.",
+                text1: 'couldnt connect to server',
                 text2: 'Please try again',
                 visibilityTime: toastMessageDuration,
                 autoHide: true,
                 topOffset: 30,
                 bottomOffset: 40,
               });
+            console.log('couldnt connect to server = ' + err);
         })
     }
 

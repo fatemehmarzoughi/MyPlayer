@@ -50,9 +50,35 @@ export default class EditProfile extends React.Component{
             const result = await DELETE('/editProfile/deleteAccount');
             const message = await result.text();
             console.log(message);
-            await storeData('accessToken' , '');
-            this.context.setIsLogin(false);
-            this.props.navigation.navigate('Auth');
+            if(result.status === 200)
+            {
+                await storeData('accessToken' , '');
+                this.context.setIsLogin(false);
+                this.props.navigation.navigate('Auth');
+                Toast.show({
+                    type : 'success',
+                    position : 'top',
+                    text1 : message,
+                    text2 : '',
+                    topOffset : 30,
+                    bottomOffset : 40,
+                    visibilityTime : toastMessageDuration,
+                    autoHide : true
+                })
+            }
+            else
+            {
+                Toast.show({
+                    type : 'error',
+                    position : 'bottom',
+                    text1 : message,
+                    text2 : 'Please try again',
+                    topOffset : 30,
+                    bottomOffset : 40,
+                    visibilityTime : toastMessageDuration,
+                    autoHide : true
+                })
+            }
 
         }
         catch(err){
