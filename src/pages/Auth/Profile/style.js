@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { getCountryInfoAsync } from "react-native-country-picker-modal/lib/CountryService";
 import { statusBarIOS, width } from "../../../assets/constants/Units";
-import {dark, gray, mainColor, white} from '../../../assets/constants/Colors'
+import {dark, gray, lightGray, mainColor, white} from '../../../assets/constants/Colors'
 
 const usedWidth = width - 30;
 export const styles = StyleSheet.create({
@@ -55,7 +55,8 @@ export const styles = StyleSheet.create({
     profileImg : {
         width : 120,
         height : 120,
-        borderRadius : 10
+        borderRadius : 10,
+        backgroundColor : lightGray
     },
     row2 : {
         display : 'flex',

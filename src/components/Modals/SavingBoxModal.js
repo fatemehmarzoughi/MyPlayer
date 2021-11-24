@@ -18,7 +18,6 @@ export default class SavingModal extends React.Component{
                 <Modal 
                 visible={this.props.modalVisible}
                 transparent={true}
-                animationType="slide"
                 onRequestClose={this.props.cancelModal}
                 >
                     <View style={styles.container}>

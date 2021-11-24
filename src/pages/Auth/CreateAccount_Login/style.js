@@ -101,8 +101,8 @@ export const styles = StyleSheet.create({
         marginLeft : 0,
         // width : 160,
         // height : 250,
-        width : width / 2,
-        height : width / 1.5,
+        width : width / 3,
+        height : width / 2,
         borderRadius : 10,
         display : 'flex',
         alignItems : 'center',
@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
         borderColor : gray
     },
     planSection : {
-        height : 450,
+        alignSelf : 'center',
         width : width - 50,
         marginLeft : 15,
         color : gray
@@ -129,6 +129,7 @@ export const styles = StyleSheet.create({
     },
     plansFlatlist : {
         marginTop : 15,
+        alignSelf : 'center'
     },
     planIcon : {
         color : gray

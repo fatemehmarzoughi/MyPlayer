@@ -17,6 +17,8 @@ export default class ContextProvider extends React.Component{
             userCountry : 'Select Your Country',
             userEmail : '',
             userImage : `${SITE_URL}/images/makeURLs/default/png`,
+            theme : true, // light = true , dark = false
+            isAuthPage : false,
         }
     }
 
@@ -68,6 +70,18 @@ export default class ContextProvider extends React.Component{
             userImage : value,
         })
     } 
+
+    setTheme = () => {
+        this.setState({
+            theme : !this.state.theme
+        })
+    }
+
+    setIsAuthPage = (isAuthPage) => {
+        this.setState({
+            isAuthPage,
+        })
+    }
  
     render(){
         
@@ -97,6 +111,12 @@ export default class ContextProvider extends React.Component{
 
                  userImage : this.state.userImage,
                  setUserImage : this.setUserImage,
+
+                 theme : this.state.theme,
+                 setTheme : this.setTheme,
+
+                 isAuthPage : this.state.isAuthPage,
+                 setIsAuthPage : this.setIsAuthPage,
              }}
             >
                 {this.props.children}

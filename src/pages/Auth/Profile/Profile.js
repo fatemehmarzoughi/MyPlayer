@@ -58,7 +58,9 @@ export default class Profile extends React.Component{
 
     handleLogOut = async () => {
         try{
-            await GoogleSignin.signOut();
+            const accessToken = await getData('accessToken')
+            if(accessToken === 'GoogleToken')
+               await GoogleSignin.signOut();
             this.context.setIsLogin(false);
             await storeData('accessToken' , '');
             this.setState({

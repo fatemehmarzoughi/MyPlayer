@@ -1,11 +1,8 @@
-import React, {lazy} from "react";
-import { Text, View, Image, BackHandler } from 'react-native';
+import React from "react";
+import { Text, View } from 'react-native';
 import {styles} from './styles';
-import { StatusBar } from "expo-status-bar";
 import LottieView from 'lottie-react-native';
-import { width } from "../../assets/constants/Units";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getData, storeData } from "../../LocalStorage/AsyncStorageData";
 import { checkLoginStatus } from "../Auth/checkLoginStatus";
 import Context from "../../context/context";
 

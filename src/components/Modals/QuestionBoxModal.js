@@ -18,7 +18,6 @@ export default class ModalClass extends React.Component{
             <Modal 
             visible={this.props.modalVisible}
             transparent={true}
-            animationType="slide"
             onRequestClose={this.props.cancelModal}
             >
                 <View style={styles.container}>
@@ -29,7 +28,7 @@ export default class ModalClass extends React.Component{
                               <Text style={styles.textColor}>{this.props.btnTitle}</Text>
                           </TouchableOpacity>
                           <TouchableOpacity style={styles.btnStyle} onPress={this.props.handleCancelBtn}>
-                              <Text style={styles.textColor}>Cancel</Text>
+                              <Text style={[styles.textColor]}>Cancel</Text>
                           </TouchableOpacity>
                        </View>
                     </View>

@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
         height : 130,
         borderRadius : 10,
         marginTop : 40,
+        backgroundColor : lightGray
     },
     changePhoto : {
         margin : 15,

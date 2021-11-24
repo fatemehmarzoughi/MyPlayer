@@ -8,6 +8,8 @@ import { mainColor, white } from '../../assets/constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
 import context from '../../context/context';
+// import { login } from '../../Redux/actions/Authentication/Login';
+// import { connect } from 'react-redux';
 
 const unset = '#70757a00';
 const animation1Source = '../../assets/Images/offline2.json'
@@ -15,7 +17,7 @@ const animation2Source = '../../assets/Images/bookmark.json'
 const animation3Source = '../../assets/Images/premium.json'
 const animation4Source = '../../assets/Images/live2.json'
 
-export default class OnBoarding extends React.Component{
+class OnBoarding extends React.Component{
 
     static contextType = context;
 
@@ -36,6 +38,7 @@ export default class OnBoarding extends React.Component{
             isRotate : false,
         }
     }
+    
 
     swipeLeft = (state) => {
         switch(this.state.currentStatus)
@@ -230,7 +233,6 @@ export default class OnBoarding extends React.Component{
 
     
     render(){
-        // console.log(this.context.isRotate)
         return(
             <View style={[this.context.isRotate ? styles.containerIsRotate : styles.container]}>
                 <StatusBar backgroundColor = '#333' translucent={false} hidden />
@@ -301,3 +303,14 @@ export default class OnBoarding extends React.Component{
         )
     }
 }
+
+// const mapDispatchToProps = { login };
+
+// const mapStateToProps = state => {
+//     return {
+//         states : state
+//     }
+// }
+
+// export default connect(mapStateToProps , mapDispatchToProps)(OnBoarding);
+export default OnBoarding;

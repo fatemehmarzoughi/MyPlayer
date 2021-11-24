@@ -366,6 +366,17 @@ export default class Login_CreateAccount extends React.Component{
 
     }
 
+    // *****************************************************
+    componentDidMount(){
+        console.log('this is component mount')
+        this.context.setIsAuthPage(true)
+    }
+    componentWillUnmount(){
+        console.log('this is component unmount')
+        this.context.setIsAuthPage(false)
+    }
+    // *****************************************************
+
     render(){
         return(
             <ScrollView>
