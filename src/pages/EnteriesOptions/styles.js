@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { statusbar, height, width } from '../../assets/constants/Units'
-import { dark, mainColor, white } from "../../assets/constants/Colors";
+import { height, width } from 'assets/constants/Units'
+import { dark, mainColor, white } from "assets/constants/Colors";
 
 export const styles = StyleSheet.create({
     container : {

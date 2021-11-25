@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Text , Dimensions} from "react-native";
-import Context from "../context/context";
+import { useEffect, useContext } from "react";
+import { Dimensions} from "react-native";
+import Context from "context/context";
 
 export default function IsRotate(){
 

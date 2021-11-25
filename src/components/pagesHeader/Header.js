@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
-import { mainColor, white } from "../../assets/constants/Colors";
+import { white } from "assets/constants/Colors";
 import { styles } from "./style";
 
 export default class Header extends React.Component{

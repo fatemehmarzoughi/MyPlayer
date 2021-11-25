@@ -1,7 +1,6 @@
 import React from "react";
 import Context from "./context";
-import {getData} from '../LocalStorage/AsyncStorageData'
-import { SITE_URL } from "../assets/constants/General";
+import { SITE_URL } from "assets/constants/General";
 
 export default class ContextProvider extends React.Component{
 

@@ -1,11 +1,11 @@
 import React from "react";
-import { ScrollView, Text, TextInput, ToastAndroid, TouchableOpacity, View } from "react-native";
-import Header2 from "../../../components/pagesHeader/Header2";
+import { ScrollView, TextInput, View } from "react-native";
+import Header2 from "components/pagesHeader/Header2";
 import {styles} from './style';
-import { POST } from '../../../API/index'
+import { POST } from 'API/index'
 import Toast from 'react-native-toast-message';
-import { toastMessageDuration } from "../../../assets/constants/Units";
-import SavingModal from "../../../components/Modals/SavingBoxModal";
+import { toastMessageDuration } from "assets/constants/Units";
+import SavingModal from "components/Modals/SavingBoxModal";
 
 
 export default class ResetPassword extends React.Component{

@@ -2,13 +2,13 @@ import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import ContextProvider from './src/context/contextProvider';
-import AppRoute from './src/pages/AppRoute';
+import ContextProvider from 'context/contextProvider';
+import AppRoute from 'pages/AppRoute';
 import Toast from 'react-native-toast-message';
-import { getData, storeData } from './src/LocalStorage/AsyncStorageData';
+import { getData, storeData } from 'LocalStorage/AsyncStorageData';
 import SplashScreen from 'react-native-splash-screen'
 import LottieView from 'lottie-react-native';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 // import { createStore, applyMiddleware } from 'redux';
 // import thunk from 'redux-thunk';
 

@@ -2,11 +2,11 @@ import React from "react";
 import { Text, View, ScrollView, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { styles } from "./style";
-import Header from "../../../components/pagesHeader/Header";
+import Header from "components/pagesHeader/Header";
 import Toast from 'react-native-toast-message';
-import { toastMessageDuration } from "../../../assets/constants/Units";
+import { toastMessageDuration } from "assets/constants/Units";
 import LottieView from 'lottie-react-native';
-import {POST} from '../../../API/index'
+import {POST} from 'API/index'
 
 export default class ReportABug extends React.Component{
 

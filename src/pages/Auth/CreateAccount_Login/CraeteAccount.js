@@ -2,19 +2,19 @@ import React from "react";
 import { Text, View, ScrollView , TextInput, FlatList} from 'react-native'
 import { styles } from "./style";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { gray, mainColor } from "../../../assets/constants/Colors";
+import { gray, mainColor } from "assets/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CountryPicker from 'react-native-country-picker-modal'
 import {validateEmail , validatePassword} from './validation';
-import {POST} from "../../../API/index";
+import {POST} from "API/index";
 import Toast from 'react-native-toast-message';
-import {toastMessageDuration} from '../../../assets/constants/Units'
+import {toastMessageDuration} from 'assets/constants/Units'
 import LottieView from 'lottie-react-native';
 import Icon2 from "react-native-vector-icons/EvilIcons";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { storeData } from "../../../LocalStorage/AsyncStorageData";
+import { storeData } from "LocalStorage/AsyncStorageData";
 import Config from "react-native-config";
-import Context from "../../../context/context";
+import Context from "context/context";
 import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General'
 
 export default class Login_CreateAccount extends React.Component{

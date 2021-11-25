@@ -1,13 +1,13 @@
 import React from "react";
-import { Text, View, Linking } from "react-native";
+import { Text, View } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
-import { toastMessageDuration } from "../../../assets/constants/Units";
+import { toastMessageDuration } from "assets/constants/Units";
 import Icon from "react-native-vector-icons/Ionicons";
-import { gray, mainColor } from "../../../assets/constants/Colors";
-import Header from '../../../components/pagesHeader/Header'
+import { gray, mainColor } from "assets/constants/Colors";
+import Header from 'components/pagesHeader/Header'
 import { styles } from "./style";
-import { POST } from '../../../API/index';
+import { POST } from 'API/index';
 
 export default class UpgradeToPremium extends React.Component{
 

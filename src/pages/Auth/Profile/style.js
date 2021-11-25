@@ -1,8 +1,6 @@
-import React from "react";
 import { StyleSheet } from "react-native";
-import { getCountryInfoAsync } from "react-native-country-picker-modal/lib/CountryService";
-import { statusBarIOS, width } from "../../../assets/constants/Units";
-import {dark, gray, lightGray, mainColor, white} from '../../../assets/constants/Colors'
+import { statusBarIOS, width } from "assets/constants/Units";
+import {dark, gray, lightGray, mainColor, white} from 'assets/constants/Colors'
 
 const usedWidth = width - 30;
 export const styles = StyleSheet.create({

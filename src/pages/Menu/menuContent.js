@@ -5,10 +5,10 @@ import { Text, View, ScrollView , Image} from 'react-native';
 import React , { useContext, useState } from "react";
 import { styles } from './styles';
 import ToggleSwitch from 'toggle-switch-react-native';
-import { gray, dark } from '../../assets/constants/Colors';
+import { gray, dark } from 'assets/constants/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
-import context from '../../context/context';
-import { changeColor, changeBackgroundColor } from '../../components/lightDarkTheme';
+import context from 'context/context';
+import { changeColor, changeBackgroundColor } from 'components/lightDarkTheme';
 
 export function MenuContent(props) {
 

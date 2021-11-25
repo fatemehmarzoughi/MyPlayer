@@ -2,18 +2,18 @@ import React from "react";
 import { View, Text, Image, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
-import {GET} from '../../../API/index'
-import { dark, gray, mainColor, white } from "../../../assets/constants/Colors";
+import {GET} from 'API/index'
+import { dark, gray, mainColor, white } from "assets/constants/Colors";
 import { styles } from "./style";
-import Context from "../../../context/context";
+import Context from "context/context";
 import ToggleSwitch from 'toggle-switch-react-native'
 import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
-import {toastMessageDuration} from '../../../assets/constants/Units'
-import ModalClass from "../../../components/Modals/QuestionBoxModal";
-import {getData , storeData} from '../../../LocalStorage/AsyncStorageData'
+import {toastMessageDuration} from 'assets/constants/Units'
+import ModalClass from "components/Modals/QuestionBoxModal";
+import {getData , storeData} from 'LocalStorage/AsyncStorageData'
 import { checkLoginStatus } from "../checkLoginStatus";
-import Notification from "../../../Notification/NotificationSetup";
+import Notification from "Notification/NotificationSetup";
 import { GoogleSignin} from '@react-native-google-signin/google-signin';
 
 

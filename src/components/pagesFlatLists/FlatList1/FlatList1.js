@@ -2,7 +2,6 @@ import React from "react";
 import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native'
 import { styles } from "./style";
 import LottieView from 'lottie-react-native';
-import { width } from "../../../assets/constants/Units";
 
 
 export default class FlatList1 extends React.Component{

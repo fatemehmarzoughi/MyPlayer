@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { width } from "../../assets/constants/Units";
-import { mainColor } from "../../assets/constants/Colors";
+import { width } from "assets/constants/Units";
+import { mainColor } from "assets/constants/Colors";
 
 const usedWidth = width - 20;
 

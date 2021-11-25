@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import { dark, gray } from "../../assets/constants/Colors";
-import { width } from "../../assets/constants/Units";
+import { gray } from "assets/constants/Colors";
 
 export const styles = StyleSheet.create({
     backBtn : {

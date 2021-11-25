@@ -1,18 +1,18 @@
 import React from "react";
-import { ScrollView, Text, View, Image, TextInput, TouchableOpacity, Modal } from "react-native";
-import Header2 from "../../../components/pagesHeader/Header2";
+import { ScrollView, Text, View, Image, TextInput, TouchableOpacity } from "react-native";
+import Header2 from "components/pagesHeader/Header2";
 import {styles} from './style';
-import Context from "../../../context/context";
-import ModalClass from "../../../components/Modals/QuestionBoxModal";
-import SavingModal from "../../../components/Modals/SavingBoxModal";
+import Context from "context/context";
+import ModalClass from "components/Modals/QuestionBoxModal";
+import SavingModal from "components/Modals/SavingBoxModal";
 import CountryPicker from 'react-native-country-picker-modal'
 import Icon from "react-native-vector-icons/EvilIcons";
-import { dark, gray, lightGray } from "../../../assets/constants/Colors";
-import {DELETE} from '../../../API/index'
-import { storeData } from "../../../LocalStorage/AsyncStorageData";
-import {POST} from '../../../API/index'
+import { gray } from "assets/constants/Colors";
+import {DELETE} from 'API/index'
+import { storeData } from "LocalStorage/AsyncStorageData";
+import {POST} from 'API/index'
 import Toast from "react-native-toast-message";
-import { toastMessageDuration } from "../../../assets/constants/Units";
+import { toastMessageDuration } from "assets/constants/Units";
 
 
 export default class EditProfile extends React.Component{

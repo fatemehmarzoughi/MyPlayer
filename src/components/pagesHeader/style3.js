@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import {statusBarIOS, width} from '../../assets/constants/Units'
+import {statusBarIOS, width} from 'assets/constants/Units'
 
 export const styles = StyleSheet.create({
     container : {

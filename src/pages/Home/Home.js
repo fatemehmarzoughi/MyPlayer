@@ -1,9 +1,9 @@
 import React from "react";
 import { Text, View } from 'react-native';
-import MainHeader from "../../components/pagesHeader/MainHeader";
+import MainHeader from "components/pagesHeader/MainHeader";
 import Notification from "../../Notification/NotificationSetup";
-import { changeBackgroundColor } from "../../components/lightDarkTheme";
-import context from "../../context/context";
+import { changeBackgroundColor } from "components/lightDarkTheme";
+import context from "context/context";
 
 export default class Home extends React.Component{
 

@@ -1,8 +1,8 @@
 import React from "react";
-import MainHeader from '../../components/pagesHeader/MainHeader'
+import MainHeader from 'components/pagesHeader/MainHeader'
 import { View, Text } from "react-native";
-import context from "../../context/context";
-import { changeBackgroundColor } from "../../components/lightDarkTheme";
+import context from "context/context";
+import { changeBackgroundColor } from "components/lightDarkTheme";
 
 export default class About extends React.Component{
 

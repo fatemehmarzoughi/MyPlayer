@@ -1,4 +1,4 @@
-import { dark, white } from "../assets/constants/Colors"
+import { dark, white } from "assets/constants/Colors"
 
 export function changeColor(theme){
     return (theme) ? {color : dark} : {color : white}

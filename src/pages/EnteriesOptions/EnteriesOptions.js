@@ -4,7 +4,7 @@ import {styles} from './styles';
 import LottieView from 'lottie-react-native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { checkLoginStatus } from "../Auth/checkLoginStatus";
-import Context from "../../context/context";
+import Context from "context/context";
 
 
 export default class EnteriesOptions extends React.Component{

@@ -1,10 +1,10 @@
 import React from "react";
 import { ScrollView, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import Header from "../../../components/pagesHeader/Header";
+import Header from "components/pagesHeader/Header";
 import { styles } from "./style";
 import Toast from 'react-native-toast-message';
-import { toastMessageDuration } from "../../../assets/constants/Units";
-import {POST} from '../../../API/index'
+import { toastMessageDuration } from "assets/constants/Units";
+import {POST} from 'API/index'
 import LottieView from 'lottie-react-native';
 
 

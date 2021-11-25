@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, View, ScrollView, FlatList, Image, RefreshControl } from "react-native";
-import Header  from "../../../components/pagesHeader/Header";
+import Header  from "components/pagesHeader/Header";
 import { styles } from "./style";
-import FlatList1 from "../../../components/pagesFlatLists/FlatList1/FlatList1";
-import {GET_noToken} from '../../../API/index'
-import Context from "../../../context/context";
+import FlatList1 from "components/pagesFlatLists/FlatList1/FlatList1";
+import {GET_noToken} from 'API/index'
+import Context from "context/context";
 
 
 export default class ChangeProfilePhoto extends React.Component{

@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
-import React , { useEffect, useContext } from "react";
-import Context from '../context/context';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React , { useContext } from "react";
+import Context from 'context/context';
 import EnteriesOptions from "./EnteriesOptions/EnteriesOptions";
 import OnBoarding from "./onBoarding/onBoarding";
 import { NavigationContainer, useRoute } from '@react-navigation/native';
@@ -10,21 +9,19 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from './Home/Home';
 import Profile from './Auth/Profile/Profile';
-
 import Login from './Auth/CreateAccount_Login/Login'
 import ReportABug from './Auth/Report-a-Bug/ReportABug'
 import CreateAccount from './Auth/CreateAccount_Login/CraeteAccount'
 import ResetPassword from './Auth/ResetPassword/ResetPassword';
 import ForgetPassword from './Auth/ForgetPassword/ForgetPassword';
-import EditProfile from '../pages/Auth/EditProfile/EditProfile'
+import EditProfile from 'pages/Auth/EditProfile/EditProfile'
 import ChangeProfilePhoto from './Auth/ChangeProfilePhoto/ChangeProfilePhoto'
 import { styles } from './Auth/CreateAccount_Login/style';
-import { dark, mainColor, white } from '../assets/constants/Colors';
+import { dark, mainColor, white } from 'assets/constants/Colors';
 import UpgradeToPremium from './Auth/UpgradeToPremium/UpgradeToPremium';
 import { MenuContent } from './Menu/menuContent';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { changeBackgroundColor, changeColor } from '../components/lightDarkTheme';
-import context from '../context/context';
+import { changeBackgroundColor } from 'components/lightDarkTheme';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import About from './About/About';
 import TermsAndPolicy from './TermsAndPolicy/TermsAndPolicy'
@@ -154,7 +151,7 @@ function Auth() {
 
 function BottomTabs() {
 
-    const contexts = useContext(context)
+    const contexts = useContext(Context)
     return(
     <BottomTab.Navigator 
         initialRouteName="Home" 

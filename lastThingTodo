@@ -8,6 +8,8 @@ https://lottiefiles.com/9037-loading
 My github ticket : 
 https://support.github.com/ticket/personal/0/1386019
 
+1- create About, Terms&Policy, Help and Home pages
+
 1- Check the performance of the app
 1.1- check the modal component and see if they rerender every time we call them. same for flatlists
 

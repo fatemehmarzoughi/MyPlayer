@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { mainColor, white } from "../../assets/constants/Colors";
-import { width, height } from "../../assets/constants/Units";
+import { mainColor, white } from "assets/constants/Colors";
+import { width, height } from "assets/constants/Units";
 
 
 export default class ModalClass extends React.Component{

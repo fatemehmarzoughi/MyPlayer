@@ -1,5 +1,5 @@
 
-import { storeData, getData } from "../../LocalStorage/AsyncStorageData"
+import { getData } from "LocalStorage/AsyncStorageData"
 
 
 export const checkLoginStatus = async (setIsLogin) => {

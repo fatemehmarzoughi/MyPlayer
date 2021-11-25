@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from "./style3";
 import { changeColor } from "../lightDarkTheme";
-import context from "../../context/context";
+import context from "context/context";
 
 export default class MainHeader extends React.Component{
 

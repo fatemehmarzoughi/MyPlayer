@@ -1,5 +1,5 @@
-import { SITE_URL } from '../assets/constants/General';
-import { getData, storeData } from '../LocalStorage/AsyncStorageData';
+import { SITE_URL } from 'assets/constants/General';
+import { getData, storeData } from 'LocalStorage/AsyncStorageData';
 
 
 async function DELETE(endpoint){

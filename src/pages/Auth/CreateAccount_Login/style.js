@@ -1,7 +1,7 @@
 import { DarkTheme } from "@react-navigation/native"
 import { StyleSheet } from "react-native"
-import { width, statusbar, statusBarIOS } from "../../../assets/constants/Units"
-import {dark, mainColor, white, gray} from "../../../assets/constants/Colors"
+import { width, statusbar, statusBarIOS } from "assets/constants/Units"
+import {dark, mainColor, white, gray} from "assets/constants/Colors"
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export const styles = StyleSheet.create({

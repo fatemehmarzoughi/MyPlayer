@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { gray, mainColor, white } from "../../../assets/constants/Colors";
-import { statusBarIOS } from "../../../assets/constants/Units";
-import { width } from "../../../assets/constants/Units";
+import { gray, mainColor, white } from "assets/constants/Colors";
+import { statusBarIOS } from "assets/constants/Units";
+import { width } from "assets/constants/Units";
 
 const usedWidth = width - 20
 export const styles = StyleSheet.create({

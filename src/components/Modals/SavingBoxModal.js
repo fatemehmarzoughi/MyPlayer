@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, StyleSheet, View, Text } from 'react-native';
 import LottieView from 'lottie-react-native';
-import { height, width } from '../../assets/constants/Units';
-import { mainColor, white, dark } from '../../assets/constants/Colors';
+import { height, width } from 'assets/constants/Units';
+import { mainColor, white, dark } from 'assets/constants/Colors';
 
 export default class SavingModal extends React.Component{
 

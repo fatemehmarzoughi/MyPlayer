@@ -2,13 +2,13 @@ import React from 'react';
 import { Text, View, Animated, Dimensions } from 'react-native';
 import { styles } from './style';
 import { StatusBar } from 'expo-status-bar';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import { height, width } from '../../assets/constants/Units';
-import { mainColor, white } from '../../assets/constants/Colors';
+import GestureRecognizer from 'react-native-swipe-gestures';
+import { height, width } from 'assets/constants/Units';
+import { mainColor, white } from 'assets/constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
-import context from '../../context/context';
-// import { login } from '../../Redux/actions/Authentication/Login';
+import context from 'context/context';
+// import { login } from 'Redux/actions/Authentication/Login';
 // import { connect } from 'react-redux';
 
 const unset = '#70757a00';
