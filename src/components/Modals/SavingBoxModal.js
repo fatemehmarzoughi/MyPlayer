@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, StyleSheet, View, Text } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { height, width } from 'assets/constants/Units';
-import { mainColor, white, dark } from 'assets/constants/Colors';
+import * as Colors from 'assets/constants/Colors';
 
 export default class SavingModal extends React.Component{
 
@@ -33,7 +33,7 @@ export default class SavingModal extends React.Component{
 
 const styles = StyleSheet.create({
     modalStyle : {
-        backgroundColor : mainColor,
+        backgroundColor : Colors.mainColor,
         display : 'flex',
         alignItems : 'center',
         justifyContent :'center',
@@ -45,12 +45,12 @@ const styles = StyleSheet.create({
         height : 150,
         padding : 30,
         borderRadius : 10,
-        borderColor : mainColor,
+        borderColor : Colors.mainColor,
         borderStyle : 'solid',
         borderWidth : 5,
      },
      text : {
-         color : white
+         color : Colors.white
      },
      container : {
          backgroundColor : 'rgba(0,0,0,0.6)',

@@ -3,7 +3,7 @@ import { View, Text, Image, ScrollView, RefreshControl, TouchableOpacity } from 
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import {GET} from 'API/index'
-import { dark, gray, mainColor, white } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 import { styles } from "./style";
 import Context from "context/context";
 import ToggleSwitch from 'toggle-switch-react-native'
@@ -203,7 +203,7 @@ export default class Profile extends React.Component{
                             <Text style={styles.MyText}>My playlist</Text>
                         </View>
                         <TouchableOpacity onPress={() => this.EditProfile()} style={styles.editProfile}>
-                            <Icon name="pencil" size={20} color={white} />
+                            <Icon name="pencil" size={20} color={Colors.white} />
                             <Text style={styles.editProfileText}>Edit Profile</Text>
                         </TouchableOpacity>
                     </View>
@@ -218,10 +218,10 @@ export default class Profile extends React.Component{
                         <Text style={styles.subTitle}>Account Settings</Text>
                         <TouchableOpacity onPress={() => this.handleUpgradeToPremium()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="logo-usd" size={20} color={dark}/>
+                               <Icon2 name="logo-usd" size={20} color={Colors.dark}/>
                                <Text style={styles.optionTitle}>Upgrade to premium</Text>
                             </View>
-                            <Icon name="chevron-right" size={35} color={dark}/>
+                            <Icon name="chevron-right" size={35} color={Colors.dark}/>
                         </TouchableOpacity>
                         
                         <>
@@ -229,20 +229,20 @@ export default class Profile extends React.Component{
                         <TouchableOpacity style={styles.premiumOption}>
                             <View style={styles.premium}>
                                 <View style={styles.optionTitleIcon}>
-                                   <Icon2 name="basket" size={20} color={gray}/>
+                                   <Icon2 name="basket" size={20} color={Colors.gray}/>
                                    <Text style={styles.premiumOptionTitle}>Reset Password</Text>
                                 </View>
-                                <Icon name="chevron-right" size={35} color={gray}/>
+                                <Icon name="chevron-right" size={35} color={Colors.gray}/>
                             </View>
                             <Text style={styles.premiumOptionText}>Only available for MyPlayer accounts</Text>
                         </TouchableOpacity>
                         ) : (
                         <TouchableOpacity onPress={() => this.handleResetPassword()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="basket" size={20} color={dark}/>
+                               <Icon2 name="basket" size={20} color={Colors.dark}/>
                                <Text style={styles.optionTitle}>Reset Password</Text>
                             </View>
-                            <Icon name="chevron-right" size={35} color={dark}/>
+                            <Icon name="chevron-right" size={35} color={Colors.dark}/>
                         </TouchableOpacity>
                         )}
                         </>
@@ -250,18 +250,18 @@ export default class Profile extends React.Component{
 
                         <TouchableOpacity onPress={() => this.handleReportABug()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="bug" size={20} color={dark}/>
+                               <Icon2 name="bug" size={20} color={Colors.dark}/>
                                <Text style={styles.optionTitle}>Report a Bug</Text>
                             </View>
-                            <Icon name="chevron-right" size={35} color={dark}/>
+                            <Icon name="chevron-right" size={35} color={Colors.dark}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.premiumOption}>
                             <View style={styles.premium}>
                                 <View style={styles.optionTitleIcon}>
-                                   <Icon2 name="bookmark" size={20} color={gray}/>
+                                   <Icon2 name="bookmark" size={20} color={Colors.gray}/>
                                    <Text style={styles.premiumOptionTitle}>Restore my Saved</Text>
                                 </View>
-                                <Icon name="chevron-right" size={35} color={gray}/>
+                                <Icon name="chevron-right" size={35} color={Colors.gray}/>
                             </View>
                             <Text style={styles.premiumOptionText}>Only available in premium accounts</Text>
                         </TouchableOpacity>
@@ -273,14 +273,14 @@ export default class Profile extends React.Component{
                         <TouchableOpacity style={styles.premiumOption}>
                             <View style={styles.premium}>
                                 <View style={styles.optionTitleIcon}>
-                                   <Icon2 name="mail" size={20} color={gray}/>
+                                   <Icon2 name="mail" size={20} color={Colors.gray}/>
                                    <Text style={styles.premiumOptionTitle}>Email Notification</Text>
                                 </View>
-                                {/* <Icon2 name="toggle" size={35} color={gray}/> */}
+                                {/* <Icon2 name="toggle" size={35} color={Colors.gray}/> */}
                                 <ToggleSwitch
                                   isOn={true}
-                                  onColor={gray}
-                                  offColor={gray}
+                                  onColor={Colors.gray}
+                                  offColor={Colors.gray}
                                   size="small"
                                   onToggle={() => {}}
                                 />
@@ -289,13 +289,13 @@ export default class Profile extends React.Component{
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.setAppNotification()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="alarm" size={20} color={dark}/>
+                               <Icon2 name="alarm" size={20} color={Colors.dark}/>
                                <Text style={styles.optionTitle}>App notification</Text>
                             </View>
                             <ToggleSwitch
                               isOn={this.state.appNotification}
-                              onColor={mainColor}
-                              offColor={dark}
+                              onColor={Colors.mainColor}
+                              offColor={Colors.dark}
                               size="small"
                               onToggle={() => this.setAppNotification()}
                             />
@@ -306,7 +306,7 @@ export default class Profile extends React.Component{
                         <Text style={styles.subTitle}>Setup</Text>
                         <TouchableOpacity onPress={() => this.showLogoutMessage()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="power" size={20} color={mainColor}/>
+                               <Icon2 name="power" size={20} color={Colors.mainColor}/>
                                <Text style={styles.optionTitle}>Logout</Text>
                             </View>
                         </TouchableOpacity>

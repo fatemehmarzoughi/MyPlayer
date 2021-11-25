@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
-import { white } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 import { styles } from "./style";
 
 export default class Header extends React.Component{
@@ -9,7 +9,7 @@ export default class Header extends React.Component{
         return(
             <View style={styles.header}>
                 <TouchableOpacity onPress={this.props.customClick} style={styles.iconBack}>
-                   <Icon name="chevron-left" size={40} color={white} />
+                   <Icon name="chevron-left" size={40} color={Colors.white} />
                 </TouchableOpacity>
                 <Text style={styles.title}>{this.props.title}</Text>
                 <Text></Text>

@@ -4,7 +4,7 @@ import { styles } from './style';
 import { StatusBar } from 'expo-status-bar';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { height, width } from 'assets/constants/Units';
-import { mainColor, white } from 'assets/constants/Colors';
+import * as Colors from 'assets/constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
 import context from 'context/context';
@@ -27,7 +27,7 @@ class OnBoarding extends React.Component{
             currentStatus : 1,
             translateXValue : new Animated.Value(3*width/2),
             translateXValueIsRotate : new Animated.Value(3*height/2),
-            case1 : mainColor,
+            case1 : Colors.mainColor,
             case2 : unset,
             case3 : unset,
             case4 : unset,
@@ -60,7 +60,7 @@ class OnBoarding extends React.Component{
 
                 this.setState({
                     case1 : unset,
-                    case2 : mainColor,
+                    case2 : Colors.mainColor,
                     currentStatus : 2,
                     nextText : 'Next',
                 });
@@ -83,7 +83,7 @@ class OnBoarding extends React.Component{
 
                 this.setState({
                     case2 : unset,
-                    case3 : mainColor,
+                    case3 : Colors.mainColor,
                     currentStatus : 3,
                     nextText : 'Next'
                 });
@@ -105,7 +105,7 @@ class OnBoarding extends React.Component{
                  }).start();
                 this.setState({
                     case3 : unset,
-                    case4 : mainColor,
+                    case4 : Colors.mainColor,
                     currentStatus : 4,
                     nextText : 'Get Started',
                     lastPage : true,
@@ -141,7 +141,7 @@ class OnBoarding extends React.Component{
                 }).start();
 
                 this.setState({
-                    case1 : mainColor,
+                    case1 : Colors.mainColor,
                     case2 : unset,
                     currentStatus : 1,
                     nextText : 'Next',
@@ -169,7 +169,7 @@ class OnBoarding extends React.Component{
                 }).start();
 
                 this.setState({
-                    case2 : mainColor,
+                    case2 : Colors.mainColor,
                     case3 : unset,
                     currentStatus : 2,
                     nextText : 'Next'
@@ -192,7 +192,7 @@ class OnBoarding extends React.Component{
                 }).start();
 
                 this.setState({
-                    case3 : mainColor,
+                    case3 : Colors.mainColor,
                     case4 : unset,
                     currentStatus : 3,
                     nextText : 'Next',
@@ -286,7 +286,7 @@ class OnBoarding extends React.Component{
                 </View>
                 <View style={[styles.bottomBarStyle]}>
                     <TouchableOpacity style={[styles.nextBtn]} onPress={(this.state.nextText == 'Get Started') ? () => this.gotoNextComponent() : () => this.swipeLeft('state')}>
-                       <Text style={{color : white}}>{this.state.nextText}</Text>
+                       <Text style={{color : Colors.white}}>{this.state.nextText}</Text>
                     </TouchableOpacity>
 
                    <>

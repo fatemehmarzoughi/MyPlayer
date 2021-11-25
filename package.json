@@ -51,7 +51,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.0",
     "thunk": "^0.0.1",
-    "toggle-switch-react-native": "^3.2.0"
+    "toggle-switch-react-native": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

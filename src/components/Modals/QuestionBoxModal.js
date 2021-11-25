@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { mainColor, white } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 import { width, height } from "assets/constants/Units";
 
 
@@ -41,7 +41,7 @@ export default class ModalClass extends React.Component{
 const usedWidth = width - 20
 const styles = StyleSheet.create({
     modalStyle : {
-        backgroundColor : mainColor,
+        backgroundColor : Colors.mainColor,
         display : 'flex',
         alignItems : 'center',
         justifyContent :'center',
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
          paddingRight : 30,
          paddingLeft : 30,
          borderStyle : 'solid',
-         borderColor : white,
+         borderColor : Colors.white,
          borderRadius : 10,
          borderWidth : 1,
      },
      textColor : {
-        color : white,
+        color : Colors.white,
         fontWeight : 'bold'
     },
     container : {

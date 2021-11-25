@@ -11,7 +11,6 @@ import {toastMessageDuration} from 'assets/constants/Units'
 import LottieView from 'lottie-react-native';
 import { getData, storeData } from "LocalStorage/AsyncStorageData";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import Config from "react-native-config";
 import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General'
 
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { gray, mainColor, white } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 import { statusBarIOS } from "assets/constants/Units";
 import { width } from "assets/constants/Units";
 
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
         marginTop : statusBarIOS,
     },
     subTitle : {
-        color : gray,
+        color : Colors.gray,
         textAlign : 'center'
     },
     plans : {
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
         borderStyle : 'solid',
         borderWidth : 1,
         borderRadius : 10,
-        borderColor : gray,
+        borderColor : Colors.gray,
         padding : 5,
     },
     planSubTitle : {
@@ -52,13 +52,13 @@ export const styles = StyleSheet.create({
     },
     btn : {
         width : usedWidth ,
-        backgroundColor : mainColor,
+        backgroundColor : Colors.mainColor,
         alignItems : 'center',
         padding : 17,
         borderRadius : 10,
         marginTop : 20,
     },
     btnText : {
-        color : white
+        color : Colors.white
     }
 })

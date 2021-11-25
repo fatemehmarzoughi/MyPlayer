@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { width, height } from 'assets/constants/Units';
-import { mainColor, white } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 
 export const styles = StyleSheet.create({
     container : {
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
         justifyContent : "center",
     },
     contentText : {
-        color : white,
+        color : Colors.white,
         margin : 20,
         textAlign : 'center',
         fontWeight : 'bold',
@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
         marginLeft : 'auto',
     },
     nextBtn : {
-        color : white
+        color : Colors.white
     },
     bottomBarStyle : {
         display : 'flex',
@@ -85,16 +85,16 @@ export const styles = StyleSheet.create({
         zIndex : 30,
     },
     nextBtn : {
-        backgroundColor : mainColor,
+        backgroundColor : Colors.mainColor,
         paddingRight : 25,
         paddingLeft : 25,
         paddingTop : 10,
         paddingBottom : 10,
         borderRadius : 10,
-        color : white
+        color : Colors.white
     },
     skipBtn : {
-        borderColor : mainColor,
+        borderColor : Colors.mainColor,
         borderWidth : 1,
         borderStyle : 'solid',
         paddingRight : 25,
@@ -102,7 +102,7 @@ export const styles = StyleSheet.create({
         paddingTop : 10,
         paddingBottom : 10,
         borderRadius : 10,
-        color : mainColor
+        color : Colors.mainColor
     }, 
     dots : {
         display : 'flex',
@@ -118,6 +118,6 @@ export const styles = StyleSheet.create({
         margin : 3,
         borderStyle : 'solid',
         borderWidth : 1,
-        borderColor : mainColor,
+        borderColor : Colors.mainColor,
     }
 })

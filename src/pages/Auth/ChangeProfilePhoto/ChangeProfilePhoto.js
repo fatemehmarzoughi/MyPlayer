@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, ScrollView, FlatList, Image, RefreshControl } from "react-native";
+import { View, ScrollView, RefreshControl } from "react-native";
 import Header  from "components/pagesHeader/Header";
 import { styles } from "./style";
 import FlatList1 from "components/pagesFlatLists/FlatList1/FlatList1";

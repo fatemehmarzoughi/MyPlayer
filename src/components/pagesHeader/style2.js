@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { titleFontSize, width} from 'assets/constants/Units'
-import {mainColor} from 'assets/constants/Colors'
+import * as Colors from 'assets/constants/Colors'
 
 const usedWidth = width - 20
 export const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
         flexDirection : 'row-reverse'
     },
     saveText : {
-        color : mainColor,
+        color : Colors.mainColor,
         fontWeight : 'bold',
         fontSize : 18,
     },

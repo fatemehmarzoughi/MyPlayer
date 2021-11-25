@@ -1,3 +1,5 @@
+var path = require('path')
+
 module.exports = function(api) {
   api.cache(true);
   return {
@@ -5,9 +7,10 @@ module.exports = function(api) {
     plugins: [
       'react-native-reanimated/plugin',
       ['babel-plugin-module-resolver' , 
-      {
-        root: ['./src']
-      }]
+        {
+          root: ['./src'],
+        }
+      ]
     ]
   };
 };

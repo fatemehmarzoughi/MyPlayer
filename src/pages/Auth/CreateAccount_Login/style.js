@@ -1,19 +1,17 @@
-import { DarkTheme } from "@react-navigation/native"
 import { StyleSheet } from "react-native"
-import { width, statusbar, statusBarIOS } from "assets/constants/Units"
-import {dark, mainColor, white, gray} from "assets/constants/Colors"
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { width, statusBarIOS } from "assets/constants/Units"
+import * as Colors from "assets/constants/Colors"
 
 export const styles = StyleSheet.create({
     topTabBar : {
         elevation:0,
         paddingTop : statusBarIOS,
-        backgroundColor : white
+        backgroundColor : Colors.white
     },
     mainTitle : {
         fontWeight : 'bold',
         fontSize : 16,
-        color : dark
+        color : Colors.dark
     },
     container : {
         // display : 'flex',
@@ -34,15 +32,15 @@ export const styles = StyleSheet.create({
         borderBottomColor : 'red',
         borderBottomWidth : .5,
         padding : 20,
-        color : gray,
+        color : Colors.gray,
 
     },
     text : {
-        color : gray
+        color : Colors.gray
     },
     btn : {
         padding : 20,
-        backgroundColor : mainColor,
+        backgroundColor : Colors.mainColor,
         borderRadius : 10,
         width : width - 50,
         display : 'flex',
@@ -52,7 +50,7 @@ export const styles = StyleSheet.create({
         margin : 15,
     },
     btnText : {
-        color : white,
+        color : Colors.white,
     },
     googleBtn : {
         display : 'flex',
@@ -61,7 +59,7 @@ export const styles = StyleSheet.create({
         flexDirection : 'row',
         margin  : 10,
         padding : 15,
-        borderColor : mainColor,
+        borderColor : Colors.mainColor,
         borderStyle : 'solid',
         borderWidth : 1,
         width : width - 50,
@@ -80,7 +78,7 @@ export const styles = StyleSheet.create({
         margin : 20,
     },
     line : {
-        borderTopColor : gray,
+        borderTopColor : Colors.gray,
         borderTopWidth : .5,
         borderStyle : 'solid',
         width : (width - 100)/2,
@@ -109,13 +107,13 @@ export const styles = StyleSheet.create({
         justifyContent : "space-evenly",
         borderStyle : 'solid',
         borderWidth : 1,
-        borderColor : gray
+        borderColor : Colors.gray
     },
     planSection : {
         alignSelf : 'center',
         width : width - 50,
         marginLeft : 15,
-        color : gray
+        color : Colors.gray
     },
     planTitle : {
         // fontWeight : 'bold',
@@ -123,7 +121,7 @@ export const styles = StyleSheet.create({
         marginBottom : 10,
     },
     planSubTitle : {
-        color : gray,
+        color : Colors.gray,
         // marginLeft : 5,
         marginRight : 5,
     },
@@ -132,7 +130,7 @@ export const styles = StyleSheet.create({
         alignSelf : 'center'
     },
     planIcon : {
-        color : gray
+        color : Colors.gray
     },
     planText : {
         fontWeight : 'normal'
@@ -143,7 +141,7 @@ export const styles = StyleSheet.create({
         justifyContent : 'center'
     },
     description : {
-        color : gray
+        color : Colors.gray
     },
     errorMessage : {
         color : 'red',
@@ -161,7 +159,7 @@ export const styles = StyleSheet.create({
         borderBottomColor : 'red',
         borderBottomWidth : .5,
         padding : 20,
-        color : gray,
+        color : Colors.gray,
     },
     resetPassword : {
         width : width - 50,
@@ -173,10 +171,10 @@ export const styles = StyleSheet.create({
     },
     resetText : {
         textDecorationLine : 'underline',
-        color : dark
+        color : Colors.dark
     },
     forgetPassText : {
-        color : dark
+        color : Colors.dark
     }
 
 })

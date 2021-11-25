@@ -5,7 +5,7 @@ import { Text, View, ScrollView , Image} from 'react-native';
 import React , { useContext, useState } from "react";
 import { styles } from './styles';
 import ToggleSwitch from 'toggle-switch-react-native';
-import { gray, dark } from 'assets/constants/Colors';
+import * as Colors from 'assets/constants/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import context from 'context/context';
 import { changeColor, changeBackgroundColor } from 'components/lightDarkTheme';
@@ -34,8 +34,8 @@ export function MenuContent(props) {
                     <Icon style={[styles.switcherText , changeColor(contexts.theme)]} name="sunny-outline" size={25} />
                     <ToggleSwitch
                       isOn={toggleIsOn}
-                      onColor={gray}
-                      offColor={dark}
+                      onColor={Colors.gray}
+                      offColor={Colors.dark}
                       size="small"
                       onToggle={() => this.themeSwitcher()}
                     />

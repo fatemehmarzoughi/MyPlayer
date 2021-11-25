@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { width } from "assets/constants/Units";
-import { mainColor } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 
 const usedWidth = width - 20;
 
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
         // margin : 10,
     }, 
     iconBack : {
-        backgroundColor : mainColor,
+        backgroundColor : Colors.mainColor,
         borderRadius : 15,
         width : 40,
         height : 40,

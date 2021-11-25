@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, ScrollView , TextInput, FlatList} from 'react-native'
 import { styles } from "./style";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { gray, mainColor } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CountryPicker from 'react-native-country-picker-modal'
 import {validateEmail , validatePassword} from './validation';
@@ -13,7 +13,6 @@ import LottieView from 'lottie-react-native';
 import Icon2 from "react-native-vector-icons/EvilIcons";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { storeData } from "LocalStorage/AsyncStorageData";
-import Config from "react-native-config";
 import Context from "context/context";
 import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General'
 
@@ -31,8 +30,8 @@ export default class Login_CreateAccount extends React.Component{
             isVisible : true,
             passwordIsSecure : true,
 
-            activeColor : mainColor,
-            notActiveColor : gray,
+            activeColor : Colors.mainColor,
+            notActiveColor : Colors.gray,
 
             activeWeight : 'bold',
             notActiveWeight : 'normal',
@@ -408,8 +407,8 @@ export default class Login_CreateAccount extends React.Component{
                        >
                        </TextInput>
                        <View style={styles.eyeIconsStyle}>
-                          <Icon onPress={() => this.passwordVisibility()} style={[styles.eyeIconStyle , {opacity : this.state.passwordIconNotVisisble}]} name="eye-outline" size={20} color={mainColor} />
-                          <Icon onPress={() => this.passwordVisibility()} style={[styles.eyeIconStyle , {opacity : this.state.passwordIconVisible}]} name="eye-off-outline" size={20} color={mainColor} />
+                          <Icon onPress={() => this.passwordVisibility()} style={[styles.eyeIconStyle , {opacity : this.state.passwordIconNotVisisble}]} name="eye-outline" size={20} color={Colors.mainColor} />
+                          <Icon onPress={() => this.passwordVisibility()} style={[styles.eyeIconStyle , {opacity : this.state.passwordIconVisible}]} name="eye-off-outline" size={20} color={Colors.mainColor} />
                        </View>
                        <Text style={[styles.errorMessage , {display : this.state.passwordErrorDisplay}]}>{this.state.passwordErrorMessage}</Text>
                    </View>
@@ -420,7 +419,7 @@ export default class Login_CreateAccount extends React.Component{
                             this.setState({countrySelectorVisibility : true
                          })}}
                          >
-                           <Icon2 name="chevron-down" size={40} color={gray} />
+                           <Icon2 name="chevron-down" size={40} color={Colors.gray} />
                            <View 
 
                            >
@@ -513,7 +512,7 @@ export default class Login_CreateAccount extends React.Component{
                     </View>
    
                    <TouchableOpacity onPress={() => this.handleCreateAccountWithGoogle()} style={styles.googleBtn}>
-                       <Icon name="logo-google" size={30} color={mainColor} style={styles.googleLogo} />
+                       <Icon name="logo-google" size={30} color={Colors.mainColor} style={styles.googleLogo} />
                        <Text>Join with google for free</Text>
                    </TouchableOpacity>
                </View>

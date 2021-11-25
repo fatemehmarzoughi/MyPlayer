@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { statusBarIOS } from "assets/constants/Units";
 import { width } from "assets/constants/Units";
-import { lightGray, mainColor, white } from "assets/constants/Colors";
+import * as Colors from "assets/constants/Colors";
 
 const usedWidth = width - 30;
 export const styles = StyleSheet.create({
@@ -19,20 +19,19 @@ export const styles = StyleSheet.create({
         paddingLeft : 20,
         paddingTop : 20,
         paddingBottom : 20,
-        backgroundColor : lightGray,
-        // marginBottom : 5,
+        backgroundColor : Colors.lightGray,
         marginTop : 20,
         borderRadius : 10,
     },
     btn : {
         width : usedWidth ,
-        backgroundColor : mainColor,
+        backgroundColor : Colors.mainColor,
         alignItems : 'center',
         padding : 17,
         borderRadius : 10,
         marginTop : 20,
     },
     btnText : {
-        color : white
+        color : Colors.white
     }
 })
