@@ -1,9 +1,9 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { styles } from "./style3";
 import { changeColor } from "../lightDarkTheme";
 import context from "context/context";
+import {statusBarIOS, width} from 'assets/constants/Units'
 
 export default class MainHeader extends React.Component{
 
@@ -33,3 +33,21 @@ export default class MainHeader extends React.Component{
         )
     }
 }
+
+
+export const styles = StyleSheet.create({
+    container : {
+        width : width,
+        flexDirection : 'row',
+        justifyContent : 'space-between',
+        marginTop : statusBarIOS,
+        padding : 15
+    },
+    title : {
+        fontSize : 18,
+    },
+    icon : {
+        paddingRight : 10,
+        paddingLeft : 10,
+    }
+})

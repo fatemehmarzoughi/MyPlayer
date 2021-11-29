@@ -6,9 +6,13 @@ import Header from "components/pagesHeader/Header";
 import Toast from 'react-native-toast-message';
 import { toastMessageDuration } from "assets/constants/Units";
 import LottieView from 'lottie-react-native';
-import {POST} from 'API/index'
+import {POST} from 'API/index';
+import context from 'context/context';
+import * as Colors from 'assets/constants/Colors'
 
 export default class ReportABug extends React.Component{
+
+    static contextType = context;
 
     constructor(){
         super();
@@ -115,6 +119,7 @@ export default class ReportABug extends React.Component{
                     <Header title="Report a Bug" customClick={() => this.props.navigation.navigate('Profile')}/>
                     <TextInput
                     placeholder = "Your explenation goes here ... "
+                    placeholderTextColor = {this.context.theme ? Colors.dark : Colors.white}
                     style={styles.input}
                     onChangeText={(input) => this.handleTextInput(input) }
                     />

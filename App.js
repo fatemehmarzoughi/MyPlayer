@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -8,6 +7,7 @@ import Toast from 'react-native-toast-message';
 import { getData, storeData } from 'LocalStorage/AsyncStorageData';
 import SplashScreen from 'react-native-splash-screen'
 import LottieView from 'lottie-react-native';
+import { NativeBaseProvider } from 'native-base';
 // import { Provider } from 'react-redux';
 // import { createStore, applyMiddleware } from 'redux';
 // import thunk from 'redux-thunk';
@@ -55,6 +55,7 @@ export default class App extends React.Component {
     
     return(
       // <Provider store={store}>
+      <NativeBaseProvider>
         <ContextProvider>
             <StatusBar style="auto" hidden />
             <>
@@ -65,7 +66,8 @@ export default class App extends React.Component {
             )}
             </>
             <Toast ref={(ref) => Toast.setRef(ref)} />
-        </ContextProvider>
+         </ContextProvider>
+        </NativeBaseProvider>
       // </Provider>
 
   );}

@@ -322,7 +322,7 @@ PODS:
   - RNGoogleSignin (7.0.1):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
-  - RNReanimated (2.2.3):
+  - RNReanimated (2.3.0-beta.4):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -348,13 +348,14 @@ PODS:
     - React-RCTNetwork
     - React-RCTSettings
     - React-RCTText
-    - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
   - RNScreens (3.8.0):
     - React-Core
     - React-RCTImage
-  - RNVectorIcons (8.1.0):
+  - RNSVG (12.1.1):
+    - React
+  - RNVectorIcons (9.0.0):
     - React-Core
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
@@ -418,6 +419,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - "UMCore (from `../node_modules/@unimodules/core/ios`)"
@@ -533,6 +535,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   UMAppLoader:
@@ -600,9 +604,10 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
-  RNReanimated: 8744fb15baf4c582367d910f4f32f5097fb350cb
+  RNReanimated: 450b75d536ef8557713a07b03c728ed5429464ea
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
-  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785

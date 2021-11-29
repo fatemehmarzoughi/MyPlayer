@@ -12,10 +12,11 @@ import LottieView from 'lottie-react-native';
 import { getData, storeData } from "LocalStorage/AsyncStorageData";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General'
+import { changeColor } from 'components/lightDarkTheme'
+import * as Colors from 'assets/constants/Colors'
 
 
-
-export default class Login_CreateAccount extends React.Component{
+export default class Login extends React.Component{
 
     static contextType = Context;
 
@@ -239,10 +240,11 @@ export default class Login_CreateAccount extends React.Component{
         return(
             <ScrollView>
                <View style={styles.container}>
-                   <Text style={styles.mainTitle}>Login</Text>
+                   <Text style={[styles.mainTitle , changeColor(this.context.theme)]}>Login</Text>
                    <View style={styles.input}>
                       <TextInput 
                          style={styles.textInput}
+                         placeholderTextColor={(this.context.theme) ? Colors.gray : Colors.lightGray}
                          placeholder="Email"
                          onChangeText = {(input) => {this.setState({email : input})}}
                          autoCapitalize="none"
@@ -251,6 +253,7 @@ export default class Login_CreateAccount extends React.Component{
                    <View style={styles.input}>
                       <TextInput 
                          style={styles.textInput}
+                         placeholderTextColor={(this.context.theme) ? Colors.gray : Colors.lightGray}
                          placeholder="Password"
                          secureTextEntry={this.state.passwordIsSecure}
                          onChangeText = {(input) => {this.setState({password : input})}}
@@ -263,8 +266,8 @@ export default class Login_CreateAccount extends React.Component{
                        </View>
                    </View>
                    <TouchableOpacity onPress={() => this.handleResetPass()} style={styles.resetPassword}>
-                       <Text style={styles.forgetPassText}>Forgot Your Password?</Text>
-                       <Text style={styles.resetText}> Reset</Text>
+                       <Text style={[styles.forgetPassText , changeColor(this.state.theme)]}>Forgot Your Password?</Text>
+                       <Text style={[styles.resetText , changeColor(this.state.theme)]}> Reset</Text>
                    </TouchableOpacity>
                    <TouchableOpacity onPress={() => this.handleLogin()} style={styles.btn}>
                        <LottieView style={(this.state.loggingIn) ? {opacity : 1} : {opacity : 0}} loop={true} autoPlay={true} source={require('../../../assets/Images/loading.json')} />
@@ -278,7 +281,7 @@ export default class Login_CreateAccount extends React.Component{
    
                    <TouchableOpacity style={styles.googleBtn} onPress={() => this.handleLoginWithGoogle()}>
                        <Icon name="logo-google" size={30} color={mainColor} style={styles.googleLogo} />
-                       <Text>Login with Google</Text>
+                       <Text style={changeColor(this.context.theme)}>Login with Google</Text>
                    </TouchableOpacity>
                </View>
             </ScrollView>

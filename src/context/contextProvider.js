@@ -2,6 +2,7 @@ import React from "react";
 import Context from "./context";
 import { SITE_URL } from "assets/constants/General";
 
+
 export default class ContextProvider extends React.Component{
 
     constructor(){
@@ -22,6 +23,7 @@ export default class ContextProvider extends React.Component{
     }
 
     async componentDidMount(){
+
     }
 
     setIsRotate = (value) => {

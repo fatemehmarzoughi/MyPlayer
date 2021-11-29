@@ -8,6 +8,7 @@ import * as Colors from "assets/constants/Colors";
 import Header from 'components/pagesHeader/Header'
 import { styles } from "./style";
 import { POST } from 'API/index';
+import {changeColor} from 'components/lightDarkTheme'
 
 export default class UpgradeToPremium extends React.Component{
 
@@ -102,16 +103,16 @@ export default class UpgradeToPremium extends React.Component{
                         <TouchableOpacity onPress={() => this.selectPlan(1)} style={[styles.plan , (this.state.selectedPlan == 1) ? {borderColor : Colors.mainColor, borderWidth : 3,} : {borderColor : Colors.gray, borderWidth : 1,}]}>
                             <Icon name="checkmark-outline" size={45} color={(this.state.selectedPlan == 1) ? Colors.mainColor : Colors.gray} />
                             <View style={styles.planTitle}>
-                                <Text style={[styles.planTitleText , (this.state.selectedPlan == 1) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>30Days</Text>
-                                <Text style={[styles.planTitleText , (this.state.selectedPlan == 1) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>12$</Text>
+                                <Text style={[styles.planTitleText, changeColor(this.context.theme) , (this.state.selectedPlan == 1) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>30Days</Text>
+                                <Text style={[styles.planTitleText, changeColor(this.context.theme) , (this.state.selectedPlan == 1) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>12$</Text>
                             </View>
                             <Text style={[styles.planSubTitle , (this.state.selectedPlan == 1) ? {color : Colors.mainColor} : {color : Colors.gray}]}>Premium Account</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.selectPlan(2)} style={[styles.plan , (this.state.selectedPlan == 2) ? {borderColor : Colors.mainColor, borderWidth : 3,} : {borderColor : Colors.gray, borderWidth : 1,}]}>
                             <Icon name="checkmark-outline" size={45} color={(this.state.selectedPlan == 2) ? Colors.mainColor : Colors.gray} />
                             <View style={styles.planTitle}>
-                                <Text style={[styles.planTitleText , (this.state.selectedPlan == 2) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>30Days</Text>
-                                <Text style={[styles.planTitleText , (this.state.selectedPlan == 2) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>12$</Text>
+                                <Text style={[styles.planTitleText, changeColor(this.context.theme) , (this.state.selectedPlan == 2) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>30Days</Text>
+                                <Text style={[styles.planTitleText, changeColor(this.context.theme) , (this.state.selectedPlan == 2) ? {fontWeight : 'bold'} : {fontWeight : 'normal'}]}>12$</Text>
                             </View>
                             <Text style={[styles.planSubTitle , (this.state.selectedPlan == 2) ? {color : Colors.mainColor} : {color : Colors.gray}]}>Premium Account</Text>
                         </TouchableOpacity>

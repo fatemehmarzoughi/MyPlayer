@@ -15,9 +15,9 @@ import {getData , storeData} from 'LocalStorage/AsyncStorageData'
 import { checkLoginStatus } from "../checkLoginStatus";
 import Notification from "Notification/NotificationSetup";
 import { GoogleSignin} from '@react-native-google-signin/google-signin';
+import { changeColor } from 'components/lightDarkTheme'
 
-
-export default class Profile extends React.Component{
+export default class Profile extends React.PureComponent{
 
     static contextType = Context;
 
@@ -172,7 +172,7 @@ export default class Profile extends React.Component{
             >
                 <View style={styles.container}>
                     <View style={styles.header}>
-                    <Text style={styles.title}>Profile</Text>
+                    <Text style={[styles.title , changeColor(this.context.theme)]}>Profile</Text>
                     <View style={styles.row1}>
                         <Image style={styles.profileImg} source={{ uri : this.context.userImage }} />
                         <View style={styles.nameEmail}>
@@ -184,10 +184,10 @@ export default class Profile extends React.Component{
                             ) : (
                                 <>
                                     <View style={styles.name}>
-                                        <Icon2 name="person" size={25}  />
-                                        <Text style={styles.nameText}>{this.state.name}</Text>
+                                        <Icon2 name="person" size={25} color={this.context.theme ? Colors.dark : Colors.white}  />
+                                        <Text style={[styles.nameText , changeColor(this.context.theme)]}>{this.state.name}</Text>
                                     </View>
-                                    <Text style={styles.email}>{this.state.email}</Text>
+                                    <Text style={[styles.email , changeColor(this.context.theme)]}>{this.state.email}</Text>
                                 </>
                             )}
                             </>
@@ -195,12 +195,12 @@ export default class Profile extends React.Component{
                     </View>
                     <View style={styles.row2}>
                         <View style={styles.My}>
-                            <Text style={styles.MyText}>12</Text>
-                            <Text style={styles.MyText}>My Saved</Text>
+                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>12</Text>
+                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>My Saved</Text>
                         </View>
                         <View style={styles.My}>
-                            <Text style={styles.MyText}>2</Text>
-                            <Text style={styles.MyText}>My playlist</Text>
+                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>2</Text>
+                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>My playlist</Text>
                         </View>
                         <TouchableOpacity onPress={() => this.EditProfile()} style={styles.editProfile}>
                             <Icon name="pencil" size={20} color={Colors.white} />
@@ -215,13 +215,13 @@ export default class Profile extends React.Component{
                     </View>
 
                     <View style={styles.part}>
-                        <Text style={styles.subTitle}>Account Settings</Text>
-                        <TouchableOpacity onPress={() => this.handleUpgradeToPremium()} style={styles.option}>
+                        <Text style={[styles.subTitle , changeColor(this.context.theme)]}>Account Settings</Text>
+                        <TouchableOpacity onPress={() => this.handleUpgradeToPremium()} style={[styles.option , {borderColor : Colors.white}]}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="logo-usd" size={20} color={Colors.dark}/>
-                               <Text style={styles.optionTitle}>Upgrade to premium</Text>
+                               <Icon2 name="logo-usd" size={20} color={(this.context.theme) ? Colors.dark : Colors.white}/>
+                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Upgrade to premium</Text>
                             </View>
-                            <Icon name="chevron-right" size={35} color={Colors.dark}/>
+                            <Icon name="chevron-right" size={35} color={(this.context.theme) ? Colors.dark : Colors.white}/>
                         </TouchableOpacity>
                         
                         <>
@@ -239,10 +239,10 @@ export default class Profile extends React.Component{
                         ) : (
                         <TouchableOpacity onPress={() => this.handleResetPassword()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="basket" size={20} color={Colors.dark}/>
-                               <Text style={styles.optionTitle}>Reset Password</Text>
+                               <Icon2 name="basket" size={20} color={ this.context.theme ? Colors.dark : Colors.white}/>
+                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Reset Password</Text>
                             </View>
-                            <Icon name="chevron-right" size={35} color={Colors.dark}/>
+                            <Icon name="chevron-right" size={35} color={ this.context.theme ? Colors.dark : Colors.white}/>
                         </TouchableOpacity>
                         )}
                         </>
@@ -250,10 +250,10 @@ export default class Profile extends React.Component{
 
                         <TouchableOpacity onPress={() => this.handleReportABug()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="bug" size={20} color={Colors.dark}/>
-                               <Text style={styles.optionTitle}>Report a Bug</Text>
+                               <Icon2 name="bug" size={20} color={this.context.theme ? Colors.dark : Colors.white}/>
+                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Report a Bug</Text>
                             </View>
-                            <Icon name="chevron-right" size={35} color={Colors.dark}/>
+                            <Icon name="chevron-right" size={35} color={this.context.theme ? Colors.dark : Colors.white}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.premiumOption}>
                             <View style={styles.premium}>
@@ -268,7 +268,7 @@ export default class Profile extends React.Component{
 
                     </View>
                     <View style={styles.part}>
-                        <Text style={styles.subTitle}>Notifications</Text>
+                        <Text style={[styles.subTitle, changeColor(this.context.theme)]}>Notifications</Text>
 
                         <TouchableOpacity style={styles.premiumOption}>
                             <View style={styles.premium}>
@@ -289,8 +289,8 @@ export default class Profile extends React.Component{
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.setAppNotification()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
-                               <Icon2 name="alarm" size={20} color={Colors.dark}/>
-                               <Text style={styles.optionTitle}>App notification</Text>
+                               <Icon2 name="alarm" size={20} color={this.context.theme ? Colors.dark : Colors.white}/>
+                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>App notification</Text>
                             </View>
                             <ToggleSwitch
                               isOn={this.state.appNotification}
@@ -303,11 +303,11 @@ export default class Profile extends React.Component{
 
                     </View>
                     <View style={styles.part}>
-                        <Text style={styles.subTitle}>Setup</Text>
+                        <Text style={[styles.subTitle , changeColor(this.context.theme)]}>Setup</Text>
                         <TouchableOpacity onPress={() => this.showLogoutMessage()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="power" size={20} color={Colors.mainColor}/>
-                               <Text style={styles.optionTitle}>Logout</Text>
+                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Logout</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

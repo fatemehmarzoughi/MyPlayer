@@ -14,9 +14,10 @@ import Icon2 from "react-native-vector-icons/EvilIcons";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { storeData } from "LocalStorage/AsyncStorageData";
 import Context from "context/context";
-import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General'
+import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General';
+import { changeBackgroundColor, changeColor } from 'components/lightDarkTheme'
 
-export default class Login_CreateAccount extends React.Component{
+export default class CreateAccount extends React.Component{
 
     static contextType = Context;
 
@@ -365,34 +366,25 @@ export default class Login_CreateAccount extends React.Component{
 
     }
 
-    // *****************************************************
-    componentDidMount(){
-        console.log('this is component mount')
-        this.context.setIsAuthPage(true)
-    }
-    componentWillUnmount(){
-        console.log('this is component unmount')
-        this.context.setIsAuthPage(false)
-    }
-    // *****************************************************
-
     render(){
         return(
             <ScrollView>
                <View style={styles.container}>
-                   <Text style={styles.mainTitle}>Create Account</Text>
+                   <Text style={[styles.mainTitle , changeColor(this.context.theme)]}>Create Account</Text>
                    <View style={styles.input}>
                        <TextInput 
-                         style={styles.textInput}
+                         style={[styles.textInput]}
                          placeholder="Name"
+                         placeholderTextColor={(this.context.theme) ? Colors.gray : Colors.lightGray}
                          onChangeText = {(input) => this.handleNameInput(input)}
                        ></TextInput>
                        <Text style={[styles.errorMessage , {display : this.state.nameErrorDisplay}]}>{this.state.nameErrorMessage}</Text>
                    </View>
                    <View style={styles.input}>
                       <TextInput 
-                         style={styles.textInput}
+                         style={[styles.textInput]}
                          placeholder="Email"
+                         placeholderTextColor={(this.context.theme) ? Colors.gray : Colors.lightGray}
                          onChangeText = {(input) => this.handleEmailInput(input)}
                          autoCapitalize="none"
                        ></TextInput>
@@ -400,8 +392,9 @@ export default class Login_CreateAccount extends React.Component{
                    </View>
                    <View style={styles.input}>
                       <TextInput 
-                         style={styles.textInput}
+                         style={[styles.textInput]}
                          placeholder="Password"
+                         placeholderTextColor={(this.context.theme) ? Colors.gray : Colors.lightGray}
                          secureTextEntry={this.state.passwordIsSecure}
                          onChangeText = {(input) => this.handlePasswordInput(input)}
                        >
@@ -452,7 +445,7 @@ export default class Login_CreateAccount extends React.Component{
                        />
                    </View>
                    <View style={styles.planSection}>
-                       <Text style={styles.planTitle}>Choose Your Plan</Text>
+                       <Text style={[styles.planTitle , changeColor(this.context.theme)]}>Choose Your Plan</Text>
                        <Text style={styles.planSubTitle}>By choosing our premium account, you can watch with no ads.</Text>
                        <FlatList 
                          style = {styles.plansFlatlist}
@@ -477,14 +470,16 @@ export default class Login_CreateAccount extends React.Component{
                                     <Text 
                                       style={[
                                           styles.planText ,
-                                          this.state.selectedId === item.id ? {fontWeight : this.state.activeWeight} : {fontWeight : this.state.notActiveWeight}]}
+                                          this.state.selectedId === item.id ? {fontWeight : this.state.activeWeight} : {fontWeight : this.state.notActiveWeight},
+                                          changeColor(this.context.theme)]}
                                     >
                                               {item.name}
                                     </Text>
                                     <Text 
                                       style={[
                                           styles.planText ,
-                                          this.state.selectedId === item.id ? {fontWeight : this.state.activeWeight} : {fontWeight : this.state.notActiveWeight}]}
+                                          this.state.selectedId === item.id ? {fontWeight : this.state.activeWeight} : {fontWeight : this.state.notActiveWeight},
+                                          changeColor(this.context.theme)]}
                                     >
                                               {item.price}
                                     </Text>
@@ -492,7 +487,8 @@ export default class Login_CreateAccount extends React.Component{
                                  <Text 
                                    style={[
                                        styles.description ,
-                                       this.state.selectedId === item.id ? {color : this.state.activeColor} : {color : this.state.notActiveColor}]}
+                                       this.state.selectedId === item.id ? {color : this.state.activeColor} : {color : this.state.notActiveColor},
+                                       changeColor(this.context.theme)]}
                                 >
                                            {item.description}
                                     </Text>
@@ -507,13 +503,13 @@ export default class Login_CreateAccount extends React.Component{
 
                     <View style={styles.seperator}>
                         <View style={styles.line}></View>
-                        <Text>OR</Text>
+                        <Text style={changeColor(this.context.theme)}>OR</Text>
                         <View style={styles.line}></View>
                     </View>
    
                    <TouchableOpacity onPress={() => this.handleCreateAccountWithGoogle()} style={styles.googleBtn}>
                        <Icon name="logo-google" size={30} color={Colors.mainColor} style={styles.googleLogo} />
-                       <Text>Join with google for free</Text>
+                       <Text style={changeColor(this.context.theme)}>Join with google for free</Text>
                    </TouchableOpacity>
                </View>
             </ScrollView>

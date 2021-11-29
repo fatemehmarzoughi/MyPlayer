@@ -6,7 +6,8 @@ import { POST } from 'API/index'
 import Toast from 'react-native-toast-message';
 import { toastMessageDuration } from "assets/constants/Units";
 import SavingModal from "components/Modals/SavingBoxModal";
-
+import * as Colors from 'assets/constants/Colors';
+import {changeBackgroundColor} from 'components/lightDarkTheme'
 
 export default class ResetPassword extends React.Component{
 
@@ -107,16 +108,19 @@ export default class ResetPassword extends React.Component{
                       title="Reset Password"
                       onCancel={() => this.onCancel()}
                       onSave={() => this.onSave()}
+                      theme={this.context.theme}
                     />
                     <TextInput 
                       placeholder="Old Password"
-                      style={styles.input}
+                      placeholderTextColor={this.context.theme ? Colors.dark : Colors.white}
+                      style={[styles.input , changeBackgroundColor(this.context.theme)]}
                       secureTextEntry={true}
                       onChangeText={(input) => this.handleOldPass(input) }
                     />
                     <TextInput 
                       placeholder="New Password"
-                      style={styles.input}
+                      placeholderTextColor={this.context.theme ? Colors.dark : Colors.white}
+                      style={[styles.input , changeBackgroundColor(this.context.theme)]}
                       secureTextEntry={true}
                       onChangeText={(input) => this.handleNewPass(input) }
                     />

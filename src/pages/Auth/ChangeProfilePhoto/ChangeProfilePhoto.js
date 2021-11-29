@@ -65,43 +65,59 @@ export default class ChangeProfilePhoto extends React.Component{
             }
             >
                 <View style={styles.container}>
-                   <Header title="Choose a Photo" customClick={() => this.props.navigation.navigate('EditProfile')} />
+                   <Header 
+                     title="Choose a Photo" 
+                     customClick={() => this.props.navigation.navigate('EditProfile')} 
+                     theme={this.context.theme}
+                    />
                    <>
                    {(this.state.Animation.length == 0 || this.state.Actors.length == 0 || this.state.Artists.length == 0) ? (
                        <View>
                            <FlatList1 
                               data={this.state.Animation} 
-                              title="Animation" func={() => {}} 
+                              title="Animation" 
+                              func={() => {}} 
                               loading={true}
+                              theme={this.context.theme}
                            />
             
                            <FlatList1 
                               data={this.state.Artists} 
-                              title="Artists" func={() => {}} 
+                              title="Artists" 
+                              func={() => {}} 
                               loading={true}
+                              theme={this.context.theme}
                            />
             
                            <FlatList1 
                               data={this.state.Actors} 
-                              title="Actors" func={() => {}} 
+                              title="Actors" 
+                              func={() => {}} 
                               loading={true}
+                              theme={this.context.theme}
                            />
                        </View>
                    ) : (
                        <View>
                            <FlatList1 
                               data={this.state.Animation} 
-                              title="Animation" func={(imageURL) => this.onPress(imageURL)} 
+                              title="Animation" 
+                              func={(imageURL) => this.onPress(imageURL)} 
+                              theme={this.context.theme}
                            />
             
                            <FlatList1 
                               data={this.state.Artists} 
-                              title="Artists" func={(imageURL) => this.onPress(imageURL)} 
+                              title="Artists" 
+                              func={(imageURL) => this.onPress(imageURL)} 
+                              theme={this.context.theme}
                            />
             
                            <FlatList1 
                               data={this.state.Actors} 
-                              title="Actors" func={(imageURL) => this.onPress(imageURL)} 
+                              title="Actors" 
+                              func={(imageURL) => this.onPress(imageURL)} 
+                              theme={this.context.theme}
                            />
                        </View>
                    )}

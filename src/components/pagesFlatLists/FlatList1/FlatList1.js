@@ -2,6 +2,8 @@ import React from "react";
 import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native'
 import { styles } from "./style";
 import LottieView from 'lottie-react-native';
+import {changeBackgroundColor} from 'components/lightDarkTheme'
+import Animated , { BounceIn , AnimatedLayout} from 'react-native-reanimated'; 
 
 
 export default class FlatList1 extends React.Component{
@@ -35,7 +37,7 @@ export default class FlatList1 extends React.Component{
                      style={styles.flatlist}
                      keyExtractor={(item , index) => index.toString()}
                      renderItem={({item}) => (
-                         <TouchableOpacity style={styles.Image}>
+                         <TouchableOpacity style={[styles.Image , changeBackgroundColor(this.props.theme)]}>
                              <LottieView autoPlay={true} loop={true} source={require('../../../assets/Images/loading2.json')} />
                          </TouchableOpacity>
                       )}
@@ -51,7 +53,9 @@ export default class FlatList1 extends React.Component{
                      keyExtractor={(item , index) => index.toString()}
                      renderItem={({item}) => (
                          <TouchableOpacity onPress={() => this.props.func(item.imageURL)}>
-                             <Image style={styles.Image} source={{uri : item.imageURL}} />
+                            <Animated.View entering={BounceIn.duration(500).delay(300)}>
+                                <Image style={[styles.Image , changeBackgroundColor(this.props.theme)]} source={{uri : item.imageURL}} />
+                            </Animated.View>
                          </TouchableOpacity>
                       )}
                     />

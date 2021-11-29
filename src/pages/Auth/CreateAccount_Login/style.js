@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     topTabBar : {
         elevation:0,
         paddingTop : statusBarIOS,
-        backgroundColor : Colors.white
+        // backgroundColor : Colors.white
     },
     mainTitle : {
         fontWeight : 'bold',
