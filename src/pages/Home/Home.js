@@ -41,6 +41,7 @@ class Home extends React.Component{
                     id : '0',
                     name : 'All',
                     size : 8,
+                    subCategory : [],
                 },
                 { 
                     id : '1',
@@ -65,11 +66,13 @@ class Home extends React.Component{
                     id : '2',
                     name : 'Sports',
                     size : 1,
+                    subCategory : [],
                 },
                 { 
                     id : '3',
                     name : 'Albums',
                     size : 1,
+                    subCategory : [],
                 },
                 { 
                     id : '4',
@@ -94,6 +97,7 @@ class Home extends React.Component{
                     id : '5',
                     name : 'Radio',
                     size : 1,
+                    subCategory : [],
                 },
             ],
             dotPosition : 25,
@@ -117,7 +121,8 @@ class Home extends React.Component{
         let categoryItems = [...this.state.data];
         categoryItems.map(item => item.size = 1);
         categoryItems[id].size = 8;
-        let showSubCategory = categoryItems[id].subCategory !== undefined ? true : false
+        console.log(`category pressed = ${categoryItems[id].subCategory.length !== 0}`)
+        let showSubCategory = categoryItems[id].subCategory.length !== 0 ? true : false;
         this.setState({
             data : categoryItems,
             showSubCategory,
@@ -206,7 +211,7 @@ class Home extends React.Component{
 
                 <Modal
                  subCategoryVisibility = {this.state.subCategoryVisibility}
-                 data = {this.state.data}
+                 data = {this.state.data[this.state.selectedCategory].subCategory}
                  selectedCategory = {this.state.selectedCategory}
                  selectedSbCategory = {this.selectedSbCategory}
                  />

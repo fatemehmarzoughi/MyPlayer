@@ -116,7 +116,7 @@ export default class ReportABug extends React.Component{
         return(
             <ScrollView>
                 <View style={styles.container}>
-                    <Header title="Report a Bug" customClick={() => this.props.navigation.navigate('Profile')}/>
+                    <Header theme={this.context.theme} title="Report a Bug" customClick={() => this.props.navigation.navigate('Profile')}/>
                     <TextInput
                     placeholder = "Your explenation goes here ... "
                     placeholderTextColor = {this.context.theme ? Colors.dark : Colors.white}

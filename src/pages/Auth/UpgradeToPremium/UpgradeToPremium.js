@@ -9,8 +9,11 @@ import Header from 'components/pagesHeader/Header'
 import { styles } from "./style";
 import { POST } from 'API/index';
 import {changeColor} from 'components/lightDarkTheme'
+import context from 'context/context'
 
 export default class UpgradeToPremium extends React.Component{
+
+    static contextType = context;
 
     constructor(){
         super();
@@ -97,7 +100,7 @@ export default class UpgradeToPremium extends React.Component{
         return(
             <ScrollView>
                 <View style={styles.container}>
-                    <Header title="Choose Your Plan" customClick={() => this.props.navigation.navigate('Profile')} />
+                    <Header theme={this.context.theme} title="Choose Your Plan" customClick={() => this.props.navigation.navigate('Profile')} />
                     <Text style={styles.subTitle}>By choosing our premium account, you can watch with no ads.</Text>
                     <View style={styles.plans}>
                         <TouchableOpacity onPress={() => this.selectPlan(1)} style={[styles.plan , (this.state.selectedPlan == 1) ? {borderColor : Colors.mainColor, borderWidth : 3,} : {borderColor : Colors.gray, borderWidth : 1,}]}>

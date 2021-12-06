@@ -26,7 +26,7 @@ export default class SavingModal extends React.Component{
                             <Text style={styles.text}>Saving</Text>
                         </View>
                     </View>
-                 </Modal>
+                </Modal>
         )
     }
 }

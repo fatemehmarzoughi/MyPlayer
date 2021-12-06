@@ -7,9 +7,12 @@ import Toast from 'react-native-toast-message';
 import { toastMessageDuration } from "assets/constants/Units";
 import SavingModal from "components/Modals/SavingBoxModal";
 import * as Colors from 'assets/constants/Colors';
-import {changeBackgroundColor} from 'components/lightDarkTheme'
+import {changeBackgroundColor} from 'components/lightDarkTheme';
+import context from 'context/context'
 
 export default class ResetPassword extends React.Component{
+
+    static contextType = context;
 
     constructor(){
         super();

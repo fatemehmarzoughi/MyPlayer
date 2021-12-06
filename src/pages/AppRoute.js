@@ -65,7 +65,7 @@ function Login_CreateAccount(){
 
 function Auth(){
     const contextVars = useContext(Context);
-    checkLoginStatus(contextVars.setIsLogin)
+    // checkLoginStatus(contextVars.setIsLogin);
     return (
             <Stack.Navigator>
                 <>
@@ -125,7 +125,9 @@ function Auth(){
 
                     </>
 
-                ) : (
+                ) 
+                : 
+                (
                     <>
                     <Stack.Screen 
                     name="Login_CreateAccount"
@@ -262,6 +264,7 @@ function AppRoute(props) {
             <Stack.Screen 
                name="Home" 
                component={DrawerPages}
+            //    component={Home}
                options={{
                    tabBarVisible: false,
                    headerShown : false

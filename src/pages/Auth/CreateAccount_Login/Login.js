@@ -93,10 +93,7 @@ export default class Login extends React.Component{
                 this.setState({
                     loggingIn : false
                 })
-                const isFirstInstallation = await getData('isFirstInstallation')
-                (isFirstInstallation === null) ? 
-                this.props.navigation.navigate('Home') : 
-                this.props.navigation.navigate('Profile')
+                this.props.navigation.navigate('Home') 
             }
             else
             {
@@ -164,7 +161,7 @@ export default class Login extends React.Component{
                 bottomOffset: 40,
             });
             this.context.setIsLogin(true)
-            this.props.navigation.navigate('Profile');
+            this.props.navigation.navigate('Home');
         }
         catch(err)
         {
