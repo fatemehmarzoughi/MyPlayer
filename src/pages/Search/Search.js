@@ -16,10 +16,10 @@ export default class Search extends React.Component{
     render(){
         return(
             <View style={changeBackgroundColor(this.context.theme)}>
-                <MainHeader 
+                {/* <MainHeader 
                   menuOnPress = {() => this.props.navigation.openDrawer()}
-                  searchOnPress = {() => this.props.navigation.openDrawer()}
-                />
+                  searchOnPress = {() => console.log('open search')}
+                /> */}
                 <Text>Search</Text>
             </View>
         )

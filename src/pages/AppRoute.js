@@ -224,10 +224,10 @@ function DrawerPages() {
              component={TermsAndPolicy}
             />
 
-            <Drawer.Screen 
+            {/* <Drawer.Screen 
              name="Search"
              component={Search}
-            />
+            /> */}
 
         </Drawer.Navigator>
     )
@@ -258,6 +258,15 @@ function AppRoute(props) {
                options={{
                    tabBarVisible: false,
                    headerShown : false,
+               }}
+            />
+
+            <Stack.Screen 
+               name="Search" 
+               component={Search}
+               options={{
+                   tabBarVisible: true,
+                   headerShown : true,
                }}
             />
 

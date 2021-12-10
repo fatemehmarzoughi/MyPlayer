@@ -1,81 +1,70 @@
 import React from 'react';
-import { Modal , StyleSheet, View , Text, TouchableOpacity, FlatList, ScrollView, Dimensions, Image} from 'react-native';
+import { 
+    Modal ,
+    StyleSheet,
+    View , 
+    Text, 
+    TouchableOpacity, 
+    FlatList, 
+    ScrollView, 
+    Dimensions, 
+    Image, 
+    Animated,
+} from 'react-native';
 import * as Colors from 'assets/constants/Colors';
 import {statusBarIOS } from 'assets/constants/Units'
 import { width, height } from 'assets/constants/Units';
 import { FocusScrollView } from 'react-native-focus-scroll';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const dim = Dimensions.get("screen")
 
-class BeerComponent extends React.Component {
-    render() {
-
-        return (
-            <View style={{paddingTop : 50}} onLayout={this.props.onLayout} >
-            {(this.props.name === '') ? 
-               <Text onPress={() => this.props.selectedSbCategory('saba')} style={styles.text}></Text>
-             :
-               <Text 
-               style={[styles.text , this.props.isFocused ? {color : Colors.white, fontSize : 42} : {color : Colors.gray, fontSize : 30}]} 
-               onPress={() => this.props.selectedSbCategory(this.props.name)} 
-               >
-                  {this.props.name}
-               </Text>
-             }
-            </View>
-
-        )
-    }
+const AnimatedValues = {
+    fontSize1 : 40,
+    fontSize2 : 30,
+    fontSize3 : 20,
 }
-
 
 export default class SubCategoryModal extends React.Component{
     constructor(){
         super();
-        this.state = {
+        this.state = { 
+            itemFocus : 6,
+            itemClose1 : 0,
+            itemClose2 : 0,
         }
+        this.viewabilityConfig = {
+            waitForInteraction: true,
+            viewAreaCoveragePercentThreshold: 120
+        }
+    }
+
+    scroller = (name) => {
+        this.props.selectedSbCategory(name)
+    }
+
+    onViewableItemsChanged = (ViewTokens) => {
+        const length = Math.round(ViewTokens.viewableItems.length);
+        this.setState({
+            itemFocus : ViewTokens.viewableItems[1].index,
+            itemClose1 : ViewTokens.viewableItems[0].index,
+            itemClose2 : ViewTokens.viewableItems[2].index,
+        })
+    }
+
+    textType = (index) => {
+        if(this.state.itemFocus === index) return 'focusedText'
+        else if(this.state.itemClose1 === index) return 'closeText';
+        else if(this.state.itemClose2 === index) return 'closeText';
     }
 
 
     render(){
-        let style;
-        let beers = [
-            {name: ""},
-            {name: ""},
-            {name: ""},
-            {name: ""},
-            {name: ""},
-            {name: ""},
-            {name: "KILKENNY"},
-            {name: "GUINESS"},
-            {name: "YAMATANO-OROCHI"},
-            {name: "PAULANER"},
-            {name: "KILKENNY"},
-            {name: "GUINESS"},
-            {name: "YAMATANO-OROCHI"},
-            {name: "PAULANER"},
-            {name: "KILKENNY"},
-            {name: "GUINESS"},
-            {name: "YAMATANO-OROCHI"},
-            {name: "PAULANER"},
-            {name: "KILKENNY"},
-            {name: "GUINESS"},
-            {name: "YAMATANO-OROCHI"},
-            {name: "PAULANER"},
-            {name: "KILKENNY"},
-            {name: "GUINESS"},
-            {name: "YAMATANO-OROCHI"},
-            {name: "PAULANER"},
-            {name: "KILKENNY"},
-            {name: "GUINESS"},
-            {name: "YAMATANO-OROCHI"},
-            {name: ""},
-            {name: ""},
-            {name: ""},
-            {name: ""},
-            {name: ""},
-            {name: ""},
-        ];
+
+        let viewabilityConfig = {
+          waitForInteraction: true,
+          viewAreaCoveragePercentThreshold: 90,
+          itemVisiblePercentThreshold: 120
+        }
 
         let extraData = [
             {name: ""},
@@ -96,9 +85,35 @@ export default class SubCategoryModal extends React.Component{
              style={styles.subCategoryModal}
             >
                 <View style={styles.container}>
-                    <FocusScrollView style={styles.scroll} threshold={50}>
-                        {data.map((beer, index) => <BeerComponent selectedSbCategory={this.props.selectedSbCategory} key={index} name={beer.name} />)}
-                    </FocusScrollView>
+                    <FlatList
+                        initialScrollIndex={5}
+                        viewabilityConfig={{
+                          waitForInteraction: true,
+                          viewAreaCoveragePercentThreshold: 0,
+                          viewAreaCoveragePercentThreshold: 120,
+                        }}
+                        getItemLayout={(data, index) => (
+                          {length: 120, offset: 120 * index, index}
+                        )}
+                        onViewableItemsChanged={this.onViewableItemsChanged}
+                        data={data}
+                        keyExtractor={(item , index) => index.toString()}
+                        renderItem={({item, index}) => (
+                            <>
+                            <TouchableOpacity key={index} onPress={() => this.scroller(item.name)} style={styles.item}>
+                              <Text 
+                                style={[styles.text , styles[this.textType(index)]]} 
+                                key={index}
+                              >
+                                {item.name}
+                              </Text>
+                            </TouchableOpacity>
+                            </>
+                        )}
+                    />
+                    <TouchableOpacity onPress={() => this.props.closeModal()} style={styles.closeBtn}>
+                       <Icon name="close-outline" color={Colors.dark} size={40} />
+                    </TouchableOpacity>
                 </View>
             </Modal>
         )
@@ -106,24 +121,36 @@ export default class SubCategoryModal extends React.Component{
 }
 
 const styles = StyleSheet.create({
+
+    focusedText : {
+        color : Colors.white,
+        fontSize : AnimatedValues.fontSize1,
+        
+    },
+    closeText : {
+        color : Colors.gray,
+        fontSize : AnimatedValues.fontSize2,
+    },
+
     container: {
         top: 20,
-        backgroundColor : Colors.dark,
+        backgroundColor : Colors.darkOpacity2,
+        // backgroundColor : '#000000e0',
         flex : 1,
     },
     square: {
-        width: dim.width,
-        height: dim.width,
+        width: width,
+        // height: dim.width,
     },
 
     text: {
-        color: "#fff",
-        fontSize: 30,
+        color: "gray",
+        // fontSize: AnimatedValues.fontSize3,
         fontWeight: "bold",
         alignContent: "center",
         alignSelf: "center",
-    },
-    scroll : {
+        width : width,
+        textAlign : 'center',
     },
 
 
@@ -141,13 +168,17 @@ const styles = StyleSheet.create({
         
     },
     item : {
-        color : Colors.white,
-        padding : 55,
-        fontSize : 20,
-        textAlign : 'center',
-        borderStyle : 'solid',
-        borderBottomColor : Colors.white,
-        borderBottomWidth : 1,
-        width : width
+        height : 120,
+        width : width,
+        justifyContent : 'center'
     },
+
+    closeBtn : {
+        backgroundColor : Colors.white,
+        padding : 10,
+        borderRadius : 60,
+        position : 'absolute',
+        bottom : 40,
+        left : width / 2 - 25,
+    }
 })

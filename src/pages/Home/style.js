@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
         height : 2*width/3,
     },
     banner : {
-
     },
     bannerContent : {
         position : 'absolute',
@@ -54,7 +53,6 @@ export const styles = StyleSheet.create({
         backgroundColor : Colors.lightGray,
         borderRadius : 10
     },
-
 
 
 

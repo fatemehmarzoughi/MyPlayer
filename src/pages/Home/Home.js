@@ -9,7 +9,7 @@ import { styles } from './style';
 import { Image, Heading, Text, VStack, FlatList } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'components/Modals/subCategoryModal';
-
+import FlatLists from 'components/pagesFlatLists/HomeFlatLists/FlatList'
 
 function useHook(Component){
     return (props) => {
@@ -59,7 +59,19 @@ class Home extends React.Component{
                         },
                         { 
                             name : 'Comedy'
-                        }
+                        },
+                        { 
+                            name : "All2"
+                        },
+                        { 
+                            name : "Horror2"
+                        },
+                        { 
+                            name : 'Iranian2'
+                        },
+                        { 
+                            name : 'Comedy2'
+                        },
                     ]
                 },
                 { 
@@ -100,6 +112,14 @@ class Home extends React.Component{
                     subCategory : [],
                 },
             ],
+            falstListData : [
+                { id : 0, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
+                { id : 1, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
+                { id : 2, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
+                { id : 3, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
+            ],
+
+
             dotPosition : 25,
             showSubCategory : false,
             subCategoryTitle : '',
@@ -146,6 +166,12 @@ class Home extends React.Component{
         })
     }
 
+    closeModal = () => {
+        this.setState({
+            subCategoryVisibility : false
+        })
+    }
+
     render(){
         return(
             <ScrollView>
@@ -154,8 +180,9 @@ class Home extends React.Component{
                   menuOnPress={() => this.props.navigation.openDrawer()} 
                 />
 
+                {/* Top Banner */}
                 <View style={styles.banner}>
-                  <Image size="2xl" resizeMode="cover" alt="banner" style={styles.bannerImage} source={require('../../assets/Images/Windows-11.jpeg')} />
+                  <Image alt="Audio/Video of the Day" size="2xl" resizeMode="cover" alt="banner" style={styles.bannerImage} source={require('../../assets/Images/Windows-11.jpeg')} />
                   <View style={styles.bannerContent}>
                     <VStack space={2}>
                       <Text style={styles.texts} fontSize="lg">Audio/Video of the day</Text>
@@ -172,6 +199,7 @@ class Home extends React.Component{
                   </View>
                 </View>
 
+                {/* Category Tabs */}
                 <FlatList 
                   showsHorizontalScrollIndicator={false}
                   horizontal
@@ -187,6 +215,7 @@ class Home extends React.Component{
                   )} 
                 />
 
+                {/* Sub Category Tab */}
                 <>
                 {this.state.showSubCategory ? (
                     <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
@@ -205,7 +234,17 @@ class Home extends React.Component{
                     </VStack>
                     </Animated.View>
                 ) : (
-                    <Text></Text>
+                    <View>
+                    <VStack flexDirection="row" style={styles.subCategory}>
+                       <Text style={changeColor(this.context.theme)}></Text>
+                       <TouchableOpacity >
+                          <VStack flexDirection="row" alignItems="center">
+                            <Text style={{padding : 4}}></Text>
+                          </VStack>
+                       </TouchableOpacity>
+
+                    </VStack>
+                    </View>
                 )}
                 </>
 
@@ -214,7 +253,29 @@ class Home extends React.Component{
                  data = {this.state.data[this.state.selectedCategory].subCategory}
                  selectedCategory = {this.state.selectedCategory}
                  selectedSbCategory = {this.selectedSbCategory}
-                 />
+                 closeModal = {this.closeModal}
+                />
+
+                <FlatLists 
+                 title="My Playlist" 
+                 data = {this.state.falstListData}
+                 type = "small"
+                 onPress={(id) => console.log(id)}
+                />
+
+                <FlatLists 
+                 title="Recommended" 
+                 data = {this.state.falstListData}
+                 type = "medium"
+                 onPress={(id) => console.log(id)}
+                />
+
+                <FlatLists 
+                 title="Trending Now" 
+                 data = {this.state.falstListData}
+                 type = "large"
+                 onPress={(id) => console.log(id)}
+                />
 
 
                 {/* <Text onPress={() => this.notify()}>Text notification</Text>
