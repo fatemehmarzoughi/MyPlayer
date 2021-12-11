@@ -234,27 +234,9 @@ class Home extends React.Component{
                     </VStack>
                     </Animated.View>
                 ) : (
-                    <View>
-                    <VStack flexDirection="row" style={styles.subCategory}>
-                       <Text style={changeColor(this.context.theme)}></Text>
-                       <TouchableOpacity >
-                          <VStack flexDirection="row" alignItems="center">
-                            <Text style={{padding : 4}}></Text>
-                          </VStack>
-                       </TouchableOpacity>
-
-                    </VStack>
-                    </View>
+                    <Text></Text>
                 )}
                 </>
-
-                <Modal
-                 subCategoryVisibility = {this.state.subCategoryVisibility}
-                 data = {this.state.data[this.state.selectedCategory].subCategory}
-                 selectedCategory = {this.state.selectedCategory}
-                 selectedSbCategory = {this.selectedSbCategory}
-                 closeModal = {this.closeModal}
-                />
 
                 <FlatLists 
                  title="My Playlist" 
@@ -275,6 +257,14 @@ class Home extends React.Component{
                  data = {this.state.falstListData}
                  type = "large"
                  onPress={(id) => console.log(id)}
+                />
+
+                <Modal
+                 subCategoryVisibility = {this.state.subCategoryVisibility}
+                 data = {this.state.data[this.state.selectedCategory].subCategory}
+                 selectedCategory = {this.state.selectedCategory}
+                 selectedSbCategory = {this.selectedSbCategory}
+                 closeModal = {this.closeModal}
                 />
 
 
