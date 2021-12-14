@@ -67,7 +67,7 @@ export default class Profile extends React.PureComponent{
                 modalVisible : false,
             })
             await checkLoginStatus(this.context.setIsLogin);
-            this.props.navigation.navigate('Auth')
+            this.props.navigation.navigate('Home')
         }
         catch(err) {console.log(err)}
     }
