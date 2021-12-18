@@ -31,7 +31,7 @@ export default class FlatLists extends React.Component {
                             (this.props.type === 'medium') ? styles.itemMid : 
                             styles.itemSmall
                         ]} 
-                        source={{uri : item.uri}}
+                        source={{uri : item.largImageUrl}}
                         />
                     </TouchableOpacity>
                  )}

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, ScrollView, FlatList as FlatList2 } from 'react-native';
+import { View, TouchableOpacity, ScrollView, FlatList as FlatList2, RefreshControl } from 'react-native';
 import MainHeader from "components/pagesHeader/MainHeader";
 import Notification from "../../Notification/NotificationSetup";
 import { changeBackgroundColor , changeColor} from "components/lightDarkTheme";
@@ -9,7 +9,20 @@ import { styles } from './style';
 import { Image, Heading, Text, VStack, FlatList } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'components/Modals/subCategoryModal';
-import FlatLists from 'components/pagesFlatLists/HomeFlatLists/FlatList'
+import FlatLists from 'components/pagesFlatLists/HomeFlatLists/FlatList';
+import Categories from './HomeCategories'
+import mainReducer from '/Redux/reducers/index';
+import { connect } from 'react-redux';
+import { 
+    getAllRecommended,
+    getAllMostWatched,
+    getAllTrendingNow,
+    getAllNewReleases
+} from '/Redux/actions/getAllItems';
+import {
+    getBanner
+} from '/Redux/actions/getBanner';
+
 
 function useHook(Component){
     return (props) => {
@@ -45,80 +58,55 @@ class Home extends React.Component{
                 },
                 { 
                     id : '1',
-                    name : 'Movies',
+                    name : 'Musics',
                     size : 1,
                     subCategory : [
-                        { 
-                            name : "All"
+                        {
+                            name: "All"
                         },
-                        { 
-                            name : "Horror"
+                        {
+                            name: "Happy"
                         },
-                        { 
-                            name : 'Iranian'
+                        {
+                            name: "Sad"
                         },
-                        { 
-                            name : 'Comedy'
-                        },
-                        { 
-                            name : "All2"
-                        },
-                        { 
-                            name : "Horror2"
-                        },
-                        { 
-                            name : 'Iranian2'
-                        },
-                        { 
-                            name : 'Comedy2'
-                        },
+                        {
+                            name: "jazz"
+                        }
                     ]
                 },
                 { 
                     id : '2',
+                    name : 'Movies',
+                    size : 1,
+                    subCategory : [
+                        {
+                            name: "All"
+                        },
+                        {
+                            name: "horror"
+                        },
+                        {
+                            name: "comedy"
+                        },
+                        {
+                            name: "action"
+                        }
+                    ]
+                },
+                { 
+                    id : '3',
                     name : 'Sports',
                     size : 1,
                     subCategory : [],
                 },
                 { 
-                    id : '3',
-                    name : 'Albums',
-                    size : 1,
-                    subCategory : [],
-                },
-                { 
                     id : '4',
-                    name : 'Musics',
-                    size : 1,
-                    subCategory : [
-                        { 
-                            name : "All"
-                        },
-                        { 
-                            name : "Happy"
-                        },
-                        { 
-                            name : 'Sad'
-                        },
-                        { 
-                            name : 'jazz'
-                        }
-                    ]
-                },
-                { 
-                    id : '5',
                     name : 'Radio',
                     size : 1,
                     subCategory : [],
                 },
             ],
-            falstListData : [
-                { id : 0, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
-                { id : 1, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
-                { id : 2, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
-                { id : 3, uri : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/10/jpeg' },
-            ],
-
 
             dotPosition : 25,
             showSubCategory : false,
@@ -126,18 +114,33 @@ class Home extends React.Component{
             subCategoryVisibility : false,
             selectedSubCategory : 'All', //selected subCategory
             selectedCategory : 0, //selected category
+
+            loading : false,
+            loadingCategory : false,
         }
+        this._isMounted = false;
     }
 
     notify = () => {
         Notification.scheduleNotification(new Date(Date.now() + (5*1000)));
     }
 
-    componentDidMount(){
-        this.props.offset.value = withRepeat(withTiming(0), 10000, true)
+    async componentDidMount(){
+        this._isMounted = true;
+        this._isMounted && await this.props.getBanner();
+        this._isMounted && await this.props.getAllRecommended();
+        this._isMounted && await this.props.getAllMostWatched();
+        this._isMounted && await this.props.getAllTrendingNow();
+        this._isMounted && await this.props.getAllNewReleases();
+        this.props.offset.value = withRepeat(withTiming(0), 10000, true);
+    }
+
+    componentWillUnmount(){
+        this._isMounted = false
     }
 
     categoryPressed = (id) => {
+        this.setState({ loadingCategory : true });
         let categoryItems = [...this.state.data];
         categoryItems.map(item => item.size = 1);
         categoryItems[id].size = 8;
@@ -148,8 +151,10 @@ class Home extends React.Component{
             showSubCategory,
             subCategoryTitle : categoryItems[id].name,
             selectedCategory : id,
-            selectedSubCategory : 'All'
-        })
+            selectedSubCategory : 'All',
+        });
+
+
     }
 
     subCategoryOpenModal = () => {
@@ -172,17 +177,51 @@ class Home extends React.Component{
         })
     }
 
-    render(){
-        return(
-            <ScrollView>
-                <MainHeader 
-                  searchOnPress={() => this.props.navigation.navigate('Search') } 
-                  menuOnPress={() => this.props.navigation.openDrawer()} 
-                />
+    onRefresh = async () => {
+        this.setState({
+            loading : true,
+        })
+        try{
+           this._isMounted && await this.props.getBanner();
+           this._isMounted && await this.props.getAllRecommended();
+           this._isMounted && await this.props.getAllMostWatched();
+           this._isMounted && await this.props.getAllTrendingNow();
+           this._isMounted && await this.props.getAllNewReleases();
+           console.log(this.props.banner.banner[0].largImageUrl)
+           this.setState({
+               loading : false,
+           })
+        }
+        catch{(err) => console.log(err)}
+    }
 
-                {/* Top Banner */}
-                <View style={styles.banner}>
-                  <Image alt="Audio/Video of the Day" size="2xl" resizeMode="cover" alt="banner" style={styles.bannerImage} source={require('../../assets/Images/Windows-11.jpeg')} />
+    render(){
+        console.log(this.state.selectedCategory)
+        const { loading, trendingNow, recommended, newReleases, mostWatched } = this.props.AllItems;
+        const { loadingBanner, banner } = this.props.banner;
+        return(
+            <ScrollView 
+              refreshControl = {
+                <RefreshControl
+                  refreshing = {this.state.loading}
+                  onRefresh = {() => this.onRefresh()}
+                />
+              }
+            >
+            <MainHeader 
+              searchOnPress={() => this.props.navigation.navigate('Search') } 
+              menuOnPress={() => this.props.navigation.openDrawer()} 
+            />
+            {/* Top Banner */}
+            <View style={styles.banner}>
+                  <Image 
+                     alt="Audio/Video of the Day" 
+                     size="2xl" 
+                     resizeMode="cover" 
+                     alt="banner" 
+                     style={styles.bannerImage} 
+                     source={{ uri : banner[0].largImageUrl }}
+                   />
                   <View style={styles.bannerContent}>
                     <VStack space={2}>
                       <Text style={styles.texts} fontSize="lg">Audio/Video of the day</Text>
@@ -197,10 +236,10 @@ class Home extends React.Component{
                       </TouchableOpacity>
                     </VStack>
                   </View>
-                </View>
+            </View>
 
-                {/* Category Tabs */}
-                <FlatList 
+            {/* Category Tabs */}
+            <FlatList 
                   showsHorizontalScrollIndicator={false}
                   horizontal
                   data={this.state.data}
@@ -213,12 +252,12 @@ class Home extends React.Component{
                           <Icon style={[changeColor(this.context.theme)]} size={item.size} name="ellipse" />
                       </VStack>
                   )} 
-                />
+            />
 
-                {/* Sub Category Tab */}
-                <>
-                {this.state.showSubCategory ? (
-                    <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
+            {/* Sub Category Tab */}
+            <>
+            {this.state.showSubCategory ? (
+                <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
                     <VStack flexDirection="row" style={styles.subCategory}>
                        <Text style={changeColor(this.context.theme)}>{this.state.subCategoryTitle} > </Text>
                        <TouchableOpacity 
@@ -232,33 +271,25 @@ class Home extends React.Component{
                        </TouchableOpacity>
 
                     </VStack>
-                    </Animated.View>
-                ) : (
-                    <Text></Text>
-                )}
-                </>
+                </Animated.View>
+            ) : (
+                <Text></Text>
+            )}
+            </>
 
-                <FlatLists 
-                 title="My Playlist" 
-                 data = {this.state.falstListData}
-                 type = "small"
-                 onPress={(id) => console.log(id)}
-                />
-
-                <FlatLists 
-                 title="Recommended" 
-                 data = {this.state.falstListData}
-                 type = "medium"
-                 onPress={(id) => console.log(id)}
-                />
-
-                <FlatLists 
-                 title="Trending Now" 
-                 data = {this.state.falstListData}
-                 type = "large"
-                 onPress={(id) => console.log(id)}
-                />
-
+            <>
+            {this.state.loadingCategory ? (
+                <Text>Loading</Text>
+            ) : (
+                <Categories
+                 recommended={recommended}
+                 mostWatched={mostWatched}
+                 trendingNow={trendingNow}
+                 newReleases={newReleases}
+                 refreshing={this.state.loadingCategory}
+                 />
+            )}
+            </>
                 <Modal
                  subCategoryVisibility = {this.state.subCategoryVisibility}
                  data = {this.state.data[this.state.selectedCategory].subCategory}
@@ -266,8 +297,6 @@ class Home extends React.Component{
                  selectedSbCategory = {this.selectedSbCategory}
                  closeModal = {this.closeModal}
                 />
-
-
                 {/* <Text onPress={() => this.notify()}>Text notification</Text>
                 <Text onPress={() => this.props.navigation.openDrawer()}>Text notification</Text> */}
             </ScrollView>
@@ -275,4 +304,19 @@ class Home extends React.Component{
     }
 }
 
-export default useHook(Home);
+
+mapStateToProps = (state) => {
+    return {
+        AllItems : state.allItems,
+        banner : state.banner
+    }
+}
+const mapDispatchToProps = { 
+    getBanner,
+    getAllRecommended,
+    getAllMostWatched,
+    getAllTrendingNow,
+    getAllNewReleases,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(useHook(Home));

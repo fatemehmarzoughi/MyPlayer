@@ -9,7 +9,6 @@ import {
     ScrollView, 
     Dimensions, 
     Image, 
-    Animated,
 } from 'react-native';
 import * as Colors from 'assets/constants/Colors';
 import {statusBarIOS } from 'assets/constants/Units'
