@@ -6,5 +6,7 @@ export function changeColor(theme){
 }
 export function changeBackgroundColor(theme){
     return (theme) ? {backgroundColor : Colors.white} : {backgroundColor : Colors.black}
-    // return (theme) ? {backgroundColor : Colors.white} : {backgroundColor : Colors.dark}
+}
+export function changeBackgroundColor2(theme){
+    return (theme) ? {backgroundColor : Colors.lightGray} : {backgroundColor : Colors.dark}
 }

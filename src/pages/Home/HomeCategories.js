@@ -14,6 +14,10 @@ export default class Categories extends React.Component{
     componentDidMount(){
     }
 
+    shouldComponentUpdate(){
+        return true
+    }
+
     render(){
         // this.props.refreshing ? {} : {}
         return(

@@ -1,10 +1,25 @@
 import React from "react";
-import { View, TouchableOpacity, ScrollView, FlatList as FlatList2, RefreshControl } from 'react-native';
+import { 
+    View, 
+    TouchableOpacity, 
+    ScrollView, 
+    FlatList as FlatList2, 
+    RefreshControl
+} from 'react-native';
 import MainHeader from "components/pagesHeader/MainHeader";
 import Notification from "../../Notification/NotificationSetup";
 import { changeBackgroundColor , changeColor} from "components/lightDarkTheme";
 import context from "context/context";
-import Animated , { useSharedValue, useAnimatedStyle,withSpring, withTiming ,withRepeat, Easing, FadeInLeft, FadeOutLeft} from 'react-native-reanimated';
+import Animated , {
+     useSharedValue, 
+     useAnimatedStyle,
+     withSpring, 
+     withTiming ,
+     withRepeat, 
+     Easing, 
+     FadeInLeft, 
+     FadeOutLeft
+} from 'react-native-reanimated';
 import { styles } from './style';
 import { Image, Heading, Text, VStack, FlatList } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -152,6 +167,7 @@ class Home extends React.Component{
             subCategoryTitle : categoryItems[id].name,
             selectedCategory : id,
             selectedSubCategory : 'All',
+            loadingCategory : false
         });
 
 
@@ -276,20 +292,22 @@ class Home extends React.Component{
                 <Text></Text>
             )}
             </>
-
-            <>
-            {this.state.loadingCategory ? (
-                <Text>Loading</Text>
-            ) : (
                 <Categories
-                 recommended={recommended}
+                 recommended={this.state.selectedCategory === 0 ? recommended : mostWatched}
                  mostWatched={mostWatched}
                  trendingNow={trendingNow}
                  newReleases={newReleases}
                  refreshing={this.state.loadingCategory}
-                 />
-            )}
-            </>
+                />
+                {/* ) : (
+                <Categories
+                 recommended={mostWatched}
+                 mostWatched={mostWatched}
+                 trendingNow={trendingNow}
+                 newReleases={newReleases}
+                 refreshing={this.state.loadingCategory}
+                /> */}
+
                 <Modal
                  subCategoryVisibility = {this.state.subCategoryVisibility}
                  data = {this.state.data[this.state.selectedCategory].subCategory}
