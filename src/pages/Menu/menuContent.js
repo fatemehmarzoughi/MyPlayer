@@ -9,6 +9,7 @@ import * as Colors from 'assets/constants/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import context from 'context/context';
 import { changeColor, changeBackgroundColor } from 'components/lightDarkTheme';
+import { Text as NativeText } from 'native-base'
 
 export function MenuContent(props) {
 
@@ -29,7 +30,7 @@ export function MenuContent(props) {
             <View style={styles.logoSection}>
                 <Image style={styles.logo} source={require('../../assets/Images/Windows-11.jpeg')} />
                 <Text style={[styles.title , changeColor(contexts.theme)]}>MyPlayer</Text>
-                <Text style={styles.subTitle}>Here can be a slogan sentence</Text>
+                <NativeText style={styles.subTitle} textAlign="center">Here can be a slogan sentence</NativeText>
                 <View style={styles.switcherContent}>
                     <Icon style={[styles.switcherText , changeColor(contexts.theme)]} name="sunny-outline" size={25} />
                     <ToggleSwitch

@@ -37,6 +37,9 @@ import {
 import {
     getBanner
 } from '/Redux/actions/getBanner';
+import { getAllMusics } from '/Redux/actions/getMusics'
+import { getAllMovies } from '/Redux/actions/getMovies'
+import { getAllSports } from '/Redux/actions/getSports'
 
 
 function useHook(Component){
@@ -66,13 +69,13 @@ class Home extends React.Component{
         this.state={
             data : [
                 { 
-                    id : '0',
+                    id : 0,
                     name : 'All',
                     size : 8,
                     subCategory : [],
                 },
                 { 
-                    id : '1',
+                    id : 1,
                     name : 'Musics',
                     size : 1,
                     subCategory : [
@@ -91,7 +94,7 @@ class Home extends React.Component{
                     ]
                 },
                 { 
-                    id : '2',
+                    id : 2,
                     name : 'Movies',
                     size : 1,
                     subCategory : [
@@ -110,13 +113,13 @@ class Home extends React.Component{
                     ]
                 },
                 { 
-                    id : '3',
+                    id : 3,
                     name : 'Sports',
                     size : 1,
                     subCategory : [],
                 },
                 { 
-                    id : '4',
+                    id : 4,
                     name : 'Radio',
                     size : 1,
                     subCategory : [],
@@ -131,7 +134,9 @@ class Home extends React.Component{
             selectedCategory : 0, //selected category
 
             loading : false,
-            loadingCategory : false,
+
+            showAllCategory : 0,
+            refreshingCategories : false,
         }
         this._isMounted = false;
     }
@@ -147,6 +152,11 @@ class Home extends React.Component{
         this._isMounted && await this.props.getAllMostWatched();
         this._isMounted && await this.props.getAllTrendingNow();
         this._isMounted && await this.props.getAllNewReleases();
+
+        this._isMounted && await this.props.getAllMusics();
+        this._isMounted && await this.props.getAllMovies();
+        this._isMounted && await this.props.getAllSports();
+
         this.props.offset.value = withRepeat(withTiming(0), 10000, true);
     }
 
@@ -155,11 +165,10 @@ class Home extends React.Component{
     }
 
     categoryPressed = (id) => {
-        this.setState({ loadingCategory : true });
+        this.setState({ refreshingCategories : true });
         let categoryItems = [...this.state.data];
         categoryItems.map(item => item.size = 1);
         categoryItems[id].size = 8;
-        console.log(`category pressed = ${categoryItems[id].subCategory.length !== 0}`)
         let showSubCategory = categoryItems[id].subCategory.length !== 0 ? true : false;
         this.setState({
             data : categoryItems,
@@ -167,10 +176,8 @@ class Home extends React.Component{
             subCategoryTitle : categoryItems[id].name,
             selectedCategory : id,
             selectedSubCategory : 'All',
-            loadingCategory : false
+            showAllCategory : id
         });
-
-
     }
 
     subCategoryOpenModal = () => {
@@ -203,6 +210,11 @@ class Home extends React.Component{
            this._isMounted && await this.props.getAllMostWatched();
            this._isMounted && await this.props.getAllTrendingNow();
            this._isMounted && await this.props.getAllNewReleases();
+
+           this._isMounted && await this.props.getAllMusics();
+           this._isMounted && await this.props.getAllMovies();
+           this._isMounted && await this.props.getAllSports();
+
            console.log(this.props.banner.banner[0].largImageUrl)
            this.setState({
                loading : false,
@@ -212,9 +224,68 @@ class Home extends React.Component{
     }
 
     render(){
-        console.log(this.state.selectedCategory)
-        const { loading, trendingNow, recommended, newReleases, mostWatched } = this.props.AllItems;
+        // console.log(this.state.selectedCategory)
         const { loadingBanner, banner } = this.props.banner;
+        const { loading, trendingNow, recommended, newReleases, mostWatched } = this.props.AllItems;
+        const { loadingMusics, trendingNowMusics, recommendedMusics, newReleasesMusics, mostWatchedMusics } = this.props.musics;
+        const { loadingMovies, trendingNowMovies, recommendedMovies, newReleasesMovies, mostWatchedMovies } = this.props.movies;
+        const { loadingSports, trendingNowSports, recommendedSports, newReleasesSports, mostWatchedSports } = this.props.sports;
+
+        // console.log('loading all = ' + loading)
+        // console.log('loading musics = ' + loadingMusics)
+        // console.log('loading movies = ' + loadingMovies)
+        // console.log('loading sports = ' + loadingSports)
+        // console.log(trendingNowSports)
+
+        let myRecommended, myTrendingNow, myNewReleases, myMostWatched;
+        if(this.state.selectedCategory === 0) 
+        {
+            if(!loading)
+                setTimeout(() => {
+                    this.setState({ refreshingCategories : false });
+                }, 1000);
+            myRecommended = recommended;
+            myTrendingNow = trendingNow;
+            myNewReleases = newReleases;
+            myMostWatched = mostWatched;
+        }
+        else if(this.state.selectedCategory === 1) 
+        {
+            if(!loadingMusics)
+                setTimeout(() => {
+                    this.setState({ refreshingCategories : false });
+                }, 1000);
+            myRecommended = recommendedMusics;
+            myMostWatched = mostWatchedMusics;
+            myNewReleases = newReleasesMusics;
+            myTrendingNow = trendingNowMusics;
+        }
+        else if(this.state.selectedCategory === 2)
+        {
+            if(!loadingMovies)
+                setTimeout(() => {
+                    this.setState({ refreshingCategories : false });
+                }, 1000);
+            myRecommended = recommendedMovies;
+            myMostWatched = mostWatchedMovies;
+            myNewReleases = newReleasesMovies;
+            myTrendingNow = trendingNowMovies;
+        }
+        else if(this.state.selectedCategory === 3)
+        {
+            if(!loadingSports)
+            {
+                setTimeout(() => {
+                    this.setState({ refreshingCategories : false });
+                }, 1000);
+            }
+            myRecommended = recommendedSports;
+            myMostWatched = mostWatchedSports;
+            myNewReleases = newReleasesSports;
+            myTrendingNow = trendingNowSports;
+        }
+        else myRecommended = mostWatched
+
         return(
             <ScrollView 
               refreshControl = {
@@ -224,12 +295,12 @@ class Home extends React.Component{
                 />
               }
             >
-            <MainHeader 
-              searchOnPress={() => this.props.navigation.navigate('Search') } 
-              menuOnPress={() => this.props.navigation.openDrawer()} 
-            />
-            {/* Top Banner */}
-            <View style={styles.banner}>
+                <MainHeader 
+                  searchOnPress={() => this.props.navigation.navigate('Search') } 
+                  menuOnPress={() => this.props.navigation.openDrawer()} 
+                />
+                {/* Top Banner */}
+                <View style={styles.banner}>
                   <Image 
                      alt="Audio/Video of the Day" 
                      size="2xl" 
@@ -252,14 +323,14 @@ class Home extends React.Component{
                       </TouchableOpacity>
                     </VStack>
                   </View>
-            </View>
-
-            {/* Category Tabs */}
-            <FlatList 
+                </View>
+    
+                {/* Category Tabs */}
+                <FlatList 
                   showsHorizontalScrollIndicator={false}
                   horizontal
                   data={this.state.data}
-                  keyExtractor={(item) => item.id}
+                  keyExtractor={(item) => item.id.toString()}
                   renderItem = {({item}) => (
                       <VStack alignItems="center">
                           <Text onPress={() => this.categoryPressed(item.id)} style={[styles.categoryName , changeColor(this.context.theme)]}>
@@ -268,11 +339,11 @@ class Home extends React.Component{
                           <Icon style={[changeColor(this.context.theme)]} size={item.size} name="ellipse" />
                       </VStack>
                   )} 
-            />
-
-            {/* Sub Category Tab */}
-            <>
-            {this.state.showSubCategory ? (
+                />
+    
+                {/* Sub Category Tab */}
+                <>
+                {this.state.showSubCategory ? (
                 <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
                     <VStack flexDirection="row" style={styles.subCategory}>
                        <Text style={changeColor(this.context.theme)}>{this.state.subCategoryTitle} > </Text>
@@ -288,26 +359,19 @@ class Home extends React.Component{
 
                     </VStack>
                 </Animated.View>
-            ) : (
-                <Text></Text>
-            )}
-            </>
+                ) : (
+                    <Text></Text>
+                )}
+                </>
+    
                 <Categories
-                 recommended={this.state.selectedCategory === 0 ? recommended : mostWatched}
-                 mostWatched={mostWatched}
-                 trendingNow={trendingNow}
-                 newReleases={newReleases}
-                 refreshing={this.state.loadingCategory}
+                 recommended={myRecommended}
+                 mostWatched={myMostWatched}
+                 trendingNow={myTrendingNow}
+                 newReleases={myNewReleases}
+                 refreshing={this.state.refreshingCategories}
                 />
-                {/* ) : (
-                <Categories
-                 recommended={mostWatched}
-                 mostWatched={mostWatched}
-                 trendingNow={trendingNow}
-                 newReleases={newReleases}
-                 refreshing={this.state.loadingCategory}
-                /> */}
-
+    
                 <Modal
                  subCategoryVisibility = {this.state.subCategoryVisibility}
                  data = {this.state.data[this.state.selectedCategory].subCategory}
@@ -315,6 +379,8 @@ class Home extends React.Component{
                  selectedSbCategory = {this.selectedSbCategory}
                  closeModal = {this.closeModal}
                 />
+
+
                 {/* <Text onPress={() => this.notify()}>Text notification</Text>
                 <Text onPress={() => this.props.navigation.openDrawer()}>Text notification</Text> */}
             </ScrollView>
@@ -326,7 +392,10 @@ class Home extends React.Component{
 mapStateToProps = (state) => {
     return {
         AllItems : state.allItems,
-        banner : state.banner
+        banner : state.banner,
+        musics : state.musics,
+        movies : state.movies,
+        sports : state.sports
     }
 }
 const mapDispatchToProps = { 
@@ -335,6 +404,10 @@ const mapDispatchToProps = {
     getAllMostWatched,
     getAllTrendingNow,
     getAllNewReleases,
+
+    getAllMusics,
+    getAllMovies,
+    getAllSports,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(useHook(Home));

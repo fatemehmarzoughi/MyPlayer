@@ -36,7 +36,7 @@ export default class About extends React.Component{
 
     render(){
         return(
-            <View style={[changeBackgroundColor(this.context.theme) , { flexGrow : 1 }]}>
+            <View style={[changeBackgroundColor(this.context.theme) , { flex : 1 }]}>
                 <MainHeader 
                   menuOnPress = {() => this.props.navigation.openDrawer()}
                   searchOnPress = {() => this.props.navigation.navigate('Search')}
@@ -66,13 +66,26 @@ export default class About extends React.Component{
                       </Collapsible>
                     </TouchableOpacity>
     
-                    <TouchableOpacity onPress={() => this.collapse(1)} style={[changeBackgroundColor2(this.context.theme), styles.box]}>
+                    <TouchableOpacity onPress={() => this.collapse(1)} style={[changeBackgroundColor2(this.context.theme), styles.box, {marginBottom:100}]}>
                       <View style={{ flexDirection : 'row' , justifyContent : 'space-between'}}>
                         <Text style={changeColor(this.context.theme)} bold={true}>Contact US</Text>
                         <Icon style={changeColor(this.context.theme)} size={20} name="chevron-up" />
                       </View>
                       <Collapsible duration={500} collapsed={this.state.item2IsCollapse} enablePointerEvents={true}>
-                        <VStack flexDirection="row" marginTop={5}>
+                      <VStack flexDirection="row" marginTop={5}>
+                            <Text style={changeColor(this.context.theme)} bold={true}>Phone Number : </Text>
+                            <Text style={changeColor(this.context.theme)}>001-11111111</Text>
+                      </VStack>
+                      <VStack flexDirection="row">
+                            <Text style={changeColor(this.context.theme)} bold={true}>Email : </Text>
+                            <Text style={changeColor(this.context.theme)}>myplayer@gmail.com</Text>
+                         
+                      </VStack>
+                      <VStack flexDirection="row">
+                            <Text style={changeColor(this.context.theme)} bold={true}>Website : </Text>
+                            <Text style={changeColor(this.context.theme)}>www.myplayer.com</Text>
+                      </VStack>
+                        {/* <VStack flexDirection="row" marginTop={5}>
                           <VStack>
                             <Text style={changeColor(this.context.theme)} bold={true}>Phone Number : </Text>
                             <Text style={changeColor(this.context.theme)} bold={true}>Email : </Text>
@@ -83,7 +96,7 @@ export default class About extends React.Component{
                             <Text style={changeColor(this.context.theme)}>myplayer@gmail.com</Text>
                             <Text style={changeColor(this.context.theme)}>www.myplayer.com</Text>
                           </VStack>
-                        </VStack>
+                        </VStack> */}
                       </Collapsible>
                     </TouchableOpacity>
                 </ScrollView>

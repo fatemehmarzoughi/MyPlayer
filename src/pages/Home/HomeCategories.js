@@ -4,11 +4,25 @@ import {
     View,
 } from 'react-native';
 import FlatLists from 'components/pagesFlatLists/HomeFlatLists/FlatList';
-
+import LottieView from 'lottie-react-native';
+import { VStack } from 'native-base'
 
 export default class Categories extends React.Component{
     constructor(){
         super();
+        this.state = {
+            fakeData : [
+                {
+                    largImageUrl : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/42314/jpg'
+                },
+                {
+                    largImageUrl : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/42314/jpg'
+                },
+                {
+                    largImageUrl : 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/42314/jpg'
+                },
+            ]
+        }
     }
 
     componentDidMount(){
@@ -21,6 +35,17 @@ export default class Categories extends React.Component{
     render(){
         // this.props.refreshing ? {} : {}
         return(
+
+            <>
+            {this.props.refreshing ? (
+                <LottieView 
+                  loop={true} 
+                  autoPlay={true} 
+                  source={require('../../assets/Images/loading.json')} 
+                  size={10}
+                  style={{ width : 50, height : 50, marginLeft : 'auto', marginRight : 'auto' }}
+                />
+            ) : (
             <View>
                 {/* <FlatLists 
                  title="My Playlist" 
@@ -58,6 +83,8 @@ export default class Categories extends React.Component{
                 />
                     
             </View>
+            )}
+            </>
         )
     }
 }

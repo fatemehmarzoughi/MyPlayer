@@ -39,14 +39,14 @@ export default class About extends React.Component{
 
     render(){
         return(
-            <View style={[changeBackgroundColor(this.context.theme) , { flexGrow : 1 }]}>
+            <View style={[changeBackgroundColor(this.context.theme) , { flex : 1 }]}>
                 <MainHeader 
                   menuOnPress = {() => this.props.navigation.openDrawer()}
                   searchOnPress = {() => this.props.navigation.navigate('Search')}
                 />
                 <ScrollView style={{ paddingBottom : 100 }} >
                     <Text style={changeColor(this.context.theme)} bold={true} textAlign="center" fontSize='xl' marginTop={5}>Terms and Policy</Text>
-                    <Text style={changeColor(this.context.theme)} textAlign="center" marginRight={20} marginLeft={20} marginTop={5}>By installing the app you have already accepted our Terms and Policies</Text>
+                    <Text style={changeColor(this.context.theme)} textAlign="center" marginRight={10} marginLeft={10} marginTop={5}>By installing the app you have already accepted our Terms and Policies</Text>
                     <TouchableOpacity onPress={() => this.collapse(0)} style={[changeBackgroundColor2(this.context.theme), styles.box]}>
                       <View style={{ flexDirection : 'row' , justifyContent : 'space-between'}}>
                         <Text style={changeColor(this.context.theme)} bold={true}>Terms of Service</Text>
@@ -57,7 +57,7 @@ export default class About extends React.Component{
                       </Collapsible>
                     </TouchableOpacity>
     
-                    <TouchableOpacity onPress={() => this.collapse(1)} style={[changeBackgroundColor2(this.context.theme), styles.box]}>
+                    <TouchableOpacity onPress={() => this.collapse(1)} style={[changeBackgroundColor2(this.context.theme), styles.box, {marginBottom : 100}]}>
                       <View style={{ flexDirection : 'row' , justifyContent : 'space-between'}}>
                         <Text style={changeColor(this.context.theme)} bold={true}>Acceptance of terms</Text>
                         <Icon style={changeColor(this.context.theme)} size={20} name="chevron-up" />
