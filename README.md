@@ -23,7 +23,12 @@ NodeJS(express), mongoose, heroku<br>
 https://www.figma.com/file/KYC4fXrUc3ePssg8t0FvBS/MyPlayer?node-id=0%3A1
 
 # What I built
-https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-8251-ecb529e9f593.mp4
+<!-- https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-8251-ecb529e9f593.mp4 -->
+
+
+https://user-images.githubusercontent.com/48021528/146699996-e4d2c141-24b6-452e-a248-2f22d152d8e5.mp4
+
+
 
 # ScreenShots
 <b> Authentication Pages </b><br>
@@ -47,12 +52,16 @@ https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-
 </div>
 <b> Main Pages </b><br>
 <div>
-  <img src="https://user-images.githubusercontent.com/48021528/145693053-5a9ff991-1068-4ef4-86d2-7893e7c84e61.png" alt="Home" width="180" height="400">
+  <img src="https://user-images.githubusercontent.com/48021528/146699680-0ea86bdf-e470-4ff0-b4d3-bbc6bc3ba252.png" alt="Home" width="180" height="400">
+  <img src="https://user-images.githubusercontent.com/48021528/146699724-35845a27-5c7d-458e-b890-25654e774728.png" alt="about" width="180" height="400">
+  <img src="https://user-images.githubusercontent.com/48021528/146699834-d74bc555-aac2-4321-aeb1-86c66fcbd3dc.png" alt="policy" width="180" height="400">
   <img src="https://user-images.githubusercontent.com/48021528/145693054-c4e3f9f5-5fb3-4e13-b867-76056adf283f.png" alt="menu" width="180" height="400">
   <img src="https://user-images.githubusercontent.com/48021528/145693058-777d3055-cb62-4075-92fe-56811a5aee1b.png" alt="subCategory" width="180" height="400">
 </div>
 <div>
-  <img src="https://user-images.githubusercontent.com/48021528/145693167-7b0d4106-de37-45c0-b1c8-73f61b89d3af.png" alt="Home" width="180" height="400">
+  <img src="https://user-images.githubusercontent.com/48021528/146699697-e8f6833a-151d-4884-889d-73d25ec30414.png" alt="Home" width="180" height="400">
+  <img src="https://user-images.githubusercontent.com/48021528/146699819-ee157e3d-9391-4ad5-bdf4-45b1b2bc61c5.png" alt="about" width="180" height="400">
+  <img src="https://user-images.githubusercontent.com/48021528/146699830-a53e89e4-edfb-45aa-b1d9-e47d77eef015.png" alt="policy" width="180" height="400">
   <img src="https://user-images.githubusercontent.com/48021528/145693162-f1f91e52-a42b-44f7-b525-611b55a3ff28.png" alt="menu" width="180" height="400">
   <img src="https://user-images.githubusercontent.com/48021528/145693165-f46d72fa-a72c-45e8-b543-d32748abcdc2.png" alt="subCategory" width="180" height="400">
 </div>
