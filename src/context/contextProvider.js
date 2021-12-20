@@ -1,7 +1,7 @@
 import React from "react";
 import Context from "./context";
 import { SITE_URL } from "assets/constants/General";
-
+import { getData, storeData } from '/LocalStorage/AsyncStorageData'
 
 export default class ContextProvider extends React.Component{
 
@@ -23,7 +23,17 @@ export default class ContextProvider extends React.Component{
     }
 
     async componentDidMount(){
-
+        try{
+            const theme = await getData('theme');
+            console.log('theme is = ' + theme)
+            (theme === 'true') ? 
+            this.setState({
+                theme : true,
+            }) : 
+            this.setState({
+                theme : false
+            })
+        }catch{(err) => console.log(err)}
     }
 
     setIsRotate = (value) => {
@@ -72,7 +82,8 @@ export default class ContextProvider extends React.Component{
         })
     } 
 
-    setTheme = () => {
+    setTheme = async () => {
+        await storeData('theme' , `${this.state.theme}`);
         this.setState({
             theme : !this.state.theme
         })

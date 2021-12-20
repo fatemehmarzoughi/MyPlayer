@@ -26,6 +26,7 @@ export default class Categories extends React.Component{
     }
 
     componentDidMount(){
+        console.log('categories is rendering')
     }
 
     shouldComponentUpdate(){

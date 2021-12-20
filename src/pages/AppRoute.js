@@ -65,7 +65,7 @@ function Login_CreateAccount(){
 
 function Auth(){
     const contextVars = useContext(Context);
-    // checkLoginStatus(contextVars.setIsLogin);
+    checkLoginStatus(contextVars.setIsLogin);
     return (
             <Stack.Navigator>
                 <>

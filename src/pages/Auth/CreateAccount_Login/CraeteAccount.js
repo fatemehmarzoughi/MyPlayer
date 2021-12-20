@@ -12,7 +12,7 @@ import {toastMessageDuration} from 'assets/constants/Units'
 import LottieView from 'lottie-react-native';
 import Icon2 from "react-native-vector-icons/EvilIcons";
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { storeData } from "LocalStorage/AsyncStorageData";
+import { storeData, getData } from "LocalStorage/AsyncStorageData";
 import Context from "context/context";
 import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from '../../../assets/constants/General';
 import { changeBackgroundColor, changeColor } from 'components/lightDarkTheme'

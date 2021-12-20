@@ -2,7 +2,7 @@ import {
     DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import { Text, View, ScrollView , Image} from 'react-native';
-import React , { useContext, useState } from "react";
+import React , { useContext, useState, useEffect } from "react";
 import { styles } from './styles';
 import ToggleSwitch from 'toggle-switch-react-native';
 import * as Colors from 'assets/constants/Colors';
@@ -10,18 +10,28 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import context from 'context/context';
 import { changeColor, changeBackgroundColor } from 'components/lightDarkTheme';
 import { Text as NativeText } from 'native-base'
+import { storeData, getData } from '/LocalStorage/AsyncStorageData'
 
 export function MenuContent(props) {
 
     const contexts = useContext(context);
     const [toggleIsOn , setToggleIsOn] = useState(false);
 
-    themeSwitcher = () => {
-        console.log('inside switcher = ' + toggleIsOn)
+    themeSwitcher = async () => {
         contexts.setTheme();
         setToggleIsOn(contexts.theme)
-        console.log('inside switcher2 = ' + toggleIsOn)
     }
+
+    // useEffect(() => {
+    //   async function getCurrentTheme(){
+    //     try{
+    //       const theme = await getData('theme');
+    //       console.log('theme = ' + theme)
+    //       (theme === 'true') ? setToggleIsOn(true) : setToggleIsOn(false);
+    //     }catch{(err) => console.log(err)}
+    //   }
+    //   getCurrentTheme();
+    // }) 
 
     return (
       <DrawerContentScrollView {...props} style={changeBackgroundColor(contexts.theme)}>

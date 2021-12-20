@@ -41,6 +41,7 @@ import { getAllMusics } from '/Redux/actions/getMusics'
 import { getAllMovies } from '/Redux/actions/getMovies'
 import { getAllSports } from '/Redux/actions/getSports'
 import { getAllRadio } from '/Redux/actions/getRadio'
+import FastImage from 'react-native-fast-image'
 
 
 function useHook(Component){
@@ -227,19 +228,12 @@ class Home extends React.Component{
     }
 
     render(){
-        // console.log(this.state.selectedCategory)
         const { loadingBanner, banner } = this.props.banner;
         const { loading, trendingNow, recommended, newReleases, mostWatched } = this.props.AllItems;
         const { loadingMusics, trendingNowMusics, recommendedMusics, newReleasesMusics, mostWatchedMusics } = this.props.musics;
         const { loadingMovies, trendingNowMovies, recommendedMovies, newReleasesMovies, mostWatchedMovies } = this.props.movies;
         const { loadingSports, trendingNowSports, recommendedSports, newReleasesSports, mostWatchedSports } = this.props.sports;
         const { loadingRadio, trendingNowRadio, recommendedRadio, newReleasesRadio, mostWatchedRadio } = this.props.radio;
-
-        // console.log('loading all = ' + loading)
-        // console.log('loading musics = ' + loadingMusics)
-        // console.log('loading movies = ' + loadingMovies)
-        // console.log('loading sports = ' + loadingSports)
-        // console.log(trendingNowSports)
 
         let myRecommended, myTrendingNow, myNewReleases, myMostWatched;
         if(this.state.selectedCategory === 0) 
@@ -317,13 +311,14 @@ class Home extends React.Component{
                 />
                 {/* Top Banner */}
                 <View style={styles.banner}>
-                  <Image 
-                     alt="Audio/Video of the Day" 
-                     size="2xl" 
-                     resizeMode="cover" 
-                     alt="banner" 
-                     style={styles.bannerImage} 
-                     source={{ uri : banner[0].largImageUrl }}
+                   <FastImage
+                       alt="Audio/Video of the Day" 
+                       style={styles.bannerImage} 
+                       source={{
+                           uri: banner[0].largImageUrl,
+                           priority: FastImage.priority.high,
+                       }}
+                       resizeMode={FastImage.resizeMode.cover}
                    />
                   <View style={styles.bannerContent}>
                     <VStack space={2}>

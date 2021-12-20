@@ -37,6 +37,10 @@ export default class SubCategoryModal extends React.Component{
         }
     }
 
+    componentDidMount(){
+        console.log('modal rendering')
+    }
+
     scroller = (name) => {
         this.props.selectedSbCategory(name)
     }

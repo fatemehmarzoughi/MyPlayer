@@ -8,8 +8,6 @@ https://lottiefiles.com/9037-loading
 My github ticket : 
 https://support.github.com/ticket/personal/0/1386019
 
-1- when navigating to search page we must be able to press back btn
-
 1- replace the subcategory part in home page with the main tabs
 
 2- use fastimage in react native for change profile image page instead of flatlist
@@ -18,8 +16,6 @@ https://support.github.com/ticket/personal/0/1386019
 
 1- Check the performance of the app
 1.1- check the modal component and see if they rerender every time we call them. same for flatlists
-
-2- use Redux for getting APIs (not for authentication)
 
 3- create account in db for users who sign in with google, and set the accessToken for them too (instead of what we have right now in access token which is GoogleToken);
 
