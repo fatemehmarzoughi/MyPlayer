@@ -14,11 +14,13 @@ import { Text as NativeText } from 'native-base'
 export function MenuContent(props) {
 
     const contexts = useContext(context);
-    const [toggleIsOn , setToggleIsOn] = useState(contexts.theme);
+    const [toggleIsOn , setToggleIsOn] = useState(false);
 
     themeSwitcher = () => {
+        console.log('inside switcher = ' + toggleIsOn)
         contexts.setTheme();
         setToggleIsOn(contexts.theme)
+        console.log('inside switcher2 = ' + toggleIsOn)
     }
 
     return (
@@ -35,6 +37,7 @@ export function MenuContent(props) {
                     <Icon style={[styles.switcherText , changeColor(contexts.theme)]} name="sunny-outline" size={25} />
                     <ToggleSwitch
                       isOn={toggleIsOn}
+                    //   isOn={true}
                       onColor={Colors.gray}
                       offColor={Colors.dark}
                       size="small"

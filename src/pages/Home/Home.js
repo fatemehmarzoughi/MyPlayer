@@ -40,6 +40,7 @@ import {
 import { getAllMusics } from '/Redux/actions/getMusics'
 import { getAllMovies } from '/Redux/actions/getMovies'
 import { getAllSports } from '/Redux/actions/getSports'
+import { getAllRadio } from '/Redux/actions/getRadio'
 
 
 function useHook(Component){
@@ -136,7 +137,7 @@ class Home extends React.Component{
             loading : false,
 
             showAllCategory : 0,
-            refreshingCategories : false,
+            refreshingCategories : true,
         }
         this._isMounted = false;
     }
@@ -156,6 +157,7 @@ class Home extends React.Component{
         this._isMounted && await this.props.getAllMusics();
         this._isMounted && await this.props.getAllMovies();
         this._isMounted && await this.props.getAllSports();
+        this._isMounted && await this.props.getAllRadio();
 
         this.props.offset.value = withRepeat(withTiming(0), 10000, true);
     }
@@ -214,6 +216,7 @@ class Home extends React.Component{
            this._isMounted && await this.props.getAllMusics();
            this._isMounted && await this.props.getAllMovies();
            this._isMounted && await this.props.getAllSports();
+           this._isMounted && await this.props.getAllRadio();
 
            console.log(this.props.banner.banner[0].largImageUrl)
            this.setState({
@@ -230,6 +233,7 @@ class Home extends React.Component{
         const { loadingMusics, trendingNowMusics, recommendedMusics, newReleasesMusics, mostWatchedMusics } = this.props.musics;
         const { loadingMovies, trendingNowMovies, recommendedMovies, newReleasesMovies, mostWatchedMovies } = this.props.movies;
         const { loadingSports, trendingNowSports, recommendedSports, newReleasesSports, mostWatchedSports } = this.props.sports;
+        const { loadingRadio, trendingNowRadio, recommendedRadio, newReleasesRadio, mostWatchedRadio } = this.props.radio;
 
         // console.log('loading all = ' + loading)
         // console.log('loading musics = ' + loadingMusics)
@@ -284,7 +288,19 @@ class Home extends React.Component{
             myNewReleases = newReleasesSports;
             myTrendingNow = trendingNowSports;
         }
-        else myRecommended = mostWatched
+        else if(this.state.selectedCategory === 4)
+        {
+            if(!loadingRadio)
+            {
+                setTimeout(() => {
+                    this.setState({ refreshingCategories : false });
+                }, 1000);
+            }
+            myRecommended = recommendedRadio;
+            myMostWatched = mostWatchedRadio;
+            myNewReleases = newReleasesRadio;
+            myTrendingNow = trendingNowRadio;
+        }
 
         return(
             <ScrollView 
@@ -395,7 +411,8 @@ mapStateToProps = (state) => {
         banner : state.banner,
         musics : state.musics,
         movies : state.movies,
-        sports : state.sports
+        sports : state.sports,
+        radio : state.radio
     }
 }
 const mapDispatchToProps = { 
@@ -408,6 +425,7 @@ const mapDispatchToProps = {
     getAllMusics,
     getAllMovies,
     getAllSports,
+    getAllRadio,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(useHook(Home));

@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         height : 200,
         borderRadius : 20,
         marginLeft : 20,
-        backgroundColor : Colors.darkOpacity
+        backgroundColor : Colors.gray
     },
     itemLarge : {
         width : 250,

@@ -245,7 +245,7 @@ PODS:
     - react-native-config/App (= 1.4.5)
   - react-native-config/App (1.4.5):
     - React-Core
-  - react-native-pager-view (5.4.7):
+  - react-native-pager-view (5.4.9):
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
@@ -586,7 +586,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
-  react-native-pager-view: 741e7606ee2f6e399fc7da777f5519454a4b38c5
+  react-native-pager-view: 3ee7d4c7697fb3ef788346e834a60cca97ed8540
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
