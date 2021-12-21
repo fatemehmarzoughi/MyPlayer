@@ -8,14 +8,14 @@ workflows:
         instance_type: mac_mini
         environment:
             groups:
-            # Add the group environment variables in Codemagic UI (either in Application/Team variables) - https://docs.codemagic.io/variables/environment-variable-groups/
-                - keystore_credentials # <-- (Includes CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS_PASSWORD, CM_KEY_ALIAS_USERNAME)
-                  # CM_KEYSTORE <-- Put your keystore file here
-                  # CM_KEYSTORE_PASSWORD <-- Put your keystore password here
-                  # CM_KEY_ALIAS_PASSWORD <-- Put your keystore alias password here
-                  # CM_KEY_ALIAS_USERNAME <-- Put your keystore alias username here
-                - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS <-- Put your google-services.json)
-                - other
+            # # Add the group environment variables in Codemagic UI (either in Application/Team variables) - https://docs.codemagic.io/variables/environment-variable-groups/
+            #     - keystore_credentials # <-- (Includes CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS_PASSWORD, CM_KEY_ALIAS_USERNAME)
+            #       # CM_KEYSTORE <-- Put your keystore file here
+            #       # CM_KEYSTORE_PASSWORD <-- Put your keystore password here
+            #       # CM_KEY_ALIAS_PASSWORD <-- Put your keystore alias password here
+            #       # CM_KEY_ALIAS_USERNAME <-- Put your keystore alias username here
+            #     - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS <-- Put your google-services.json)
+            #     - other
             vars:
                 PACKAGE_NAME: "YOUR_PACKAGE_NAME" # <-- Put your package name here e.g. com.domain.myapp
             node: latest
@@ -71,7 +71,7 @@ workflows:
                 failure: false              # To not receive a notification when a build fails
             google_play:
               # See the following link for information regarding publishing to Google Play - https://docs.codemagic.io/publishing-yaml/distribution/#google-play
-              credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+              # credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
               track: alpha   # Any default or custom track that is not in ‘draft’ status
     react-native-ios:
         name: React Native iOS
