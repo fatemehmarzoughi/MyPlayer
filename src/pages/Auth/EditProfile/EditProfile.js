@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, Text, View, Image, TextInput, TouchableOpacity } from "react-native";
-import Header2 from "components/pagesHeader/Header2";
+// import Header2 from "components/pagesHeader/Header2";
 import {styles} from './style';
 import Context from "context/context";
 import ModalClass from "components/Modals/QuestionBoxModal";
@@ -197,12 +197,21 @@ export default class EditProfile extends React.Component{
         return(
             <ScrollView>
                 <View style={[styles.container]}>
-                    <Header2 
-                      title="Edit Profile" 
-                      onCancel={() => this.onCancel()} 
-                      onSave={() => this.onSave()} 
-                      theme={this.context.theme}
-                    />
+
+                    <View style={styles.header}>
+                        <View style={styles.row1}>
+                           <TouchableOpacity onPress={() => this.onSave()} style={styles.btn}>
+                               <Text style={styles.saveText}>Save</Text>
+                            </TouchableOpacity>
+                           <TouchableOpacity onPress={() => this.onCancel()} style={styles.btn}>
+                               <Text style={[styles.cancelText, changeColor(this.context.theme)]}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <Text style={styles.title}>Edit Profile</Text>
+                        </View>
+                    </View>
+
                     <Image style={styles.image} source={{uri : this.context.userImage}} />
                     <Text onPress={() => this.changeProfilePhoto()} style={[styles.changePhoto , changeColor(this.context.theme)]}>Change Profile Photo</Text>
                     <View style={styles.inputs}>

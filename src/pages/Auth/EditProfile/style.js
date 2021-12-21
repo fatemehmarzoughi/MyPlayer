@@ -53,4 +53,32 @@ export const styles = StyleSheet.create({
         color : Colors.mainColor,
         fontWeight : 'bold',
     },
+
+        header : {
+        width : usedWidth,
+        display : 'flex',
+        alignItems : 'center',
+        justifyContent : 'center'
+    },
+    row1 : {
+        display : 'flex',
+        alignItems : 'center',
+        justifyContent : 'space-between',
+        width : usedWidth,
+        flexDirection : 'row-reverse'
+    },
+    saveText : {
+        color : Colors.mainColor,
+        fontWeight : 'bold',
+        fontSize : 18,
+    },
+    cancelText : {
+        fontSize : 18
+    },
+    btn : {
+        padding : 20,
+    },
+    title : {
+        fontSize : titleFontSize,
+    }
 })

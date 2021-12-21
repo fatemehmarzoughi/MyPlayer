@@ -60,28 +60,28 @@ export default class Categories extends React.Component{
                  title="Recommended" 
                  data = {this.props.recommended}
                  type = "medium"
-                 onPress={(id) => console.log(id)}
+                //  onPress={(id) => console.log(id)}
                 />
 
                 <FlatLists 
                  title="Most Watched" 
                  data = {this.props.mostWatched}
                  type = "medium"
-                 onPress={(id) => console.log(id)}
+                //  onPress={(id) => console.log(id)}
                 />
 
                 <FlatLists 
                  title="Trending Now" 
                  data = {this.props.trendingNow}
                  type = "large"
-                 onPress={(id) => console.log(id)}
+                //  onPress={(id) => console.log(id)}
                 />
 
                 <FlatLists 
                  title="New Releases" 
                  data = {this.props.newReleases}
                  type = "medium"
-                 onPress={(id) => console.log(id)}
+                //  onPress={(id) => console.log(id)}
                 />
                     
             </View>

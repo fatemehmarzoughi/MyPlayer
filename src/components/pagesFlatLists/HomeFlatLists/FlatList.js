@@ -21,7 +21,8 @@ export default class FlatLists extends React.Component {
                  style={styles.items}
                  keyExtractor={(item , index) => index.toString()}
                  renderItem={({item}) => (
-                    <TouchableOpacity onPress={() => this.props.onPress(item.id)}>
+                    // <TouchableOpacity onPress={() => this.props.onPress(item.id)}>
+                    <TouchableOpacity>
                         <FastImage
                             alt="images"
                             style={[ styles.item ,

@@ -107,12 +107,21 @@ export default class ResetPassword extends React.Component{
         return(
             <ScrollView>
                 <View style={styles.container}>
-                    <Header2 
-                      title="Reset Password"
-                      onCancel={() => this.onCancel()}
-                      onSave={() => this.onSave()}
-                      theme={this.context.theme}
-                    />
+
+                    <View style={styles.header}>
+                        <View style={styles.row1}>
+                           <TouchableOpacity onPress={() => this.onSave()} style={styles.btn}>
+                               <Text style={styles.saveText}>Save</Text>
+                            </TouchableOpacity>
+                           <TouchableOpacity onPress={() => this.onCancel()} style={styles.btn}>
+                               <Text style={[styles.cancelText, changeColor(this.context.theme)]}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <Text style={styles.title}>Reset Password</Text>
+                        </View>
+                    </View>
+
                     <TextInput 
                       placeholder="Old Password"
                       placeholderTextColor={this.context.theme ? Colors.dark : Colors.white}
