@@ -26,7 +26,7 @@ export default class Categories extends React.Component{
     }
 
     componentDidMount(){
-        console.log('categories is rendering')
+        console.log('categories is rendering');
     }
 
     shouldComponentUpdate(){
@@ -35,6 +35,7 @@ export default class Categories extends React.Component{
 
     render(){
         // this.props.refreshing ? {} : {}
+
         return(
 
             <>

@@ -242,6 +242,11 @@ class Home extends React.Component{
                 setTimeout(() => {
                     this.setState({ refreshingCategories : false });
                 }, 1000);
+            myRecommended = [];
+            myTrendingNow = [];
+            myNewReleases = [];
+            myMostWatched = [];
+
             myRecommended = recommended;
             myTrendingNow = trendingNow;
             myNewReleases = newReleases;
@@ -253,10 +258,16 @@ class Home extends React.Component{
                 setTimeout(() => {
                     this.setState({ refreshingCategories : false });
                 }, 1000);
+            myRecommended = [];
+            myTrendingNow = [];
+            myNewReleases = [];
+            myMostWatched = [];
+
             myRecommended = recommendedMusics;
             myMostWatched = mostWatchedMusics;
             myNewReleases = newReleasesMusics;
             myTrendingNow = trendingNowMusics;
+
         }
         else if(this.state.selectedCategory === 2)
         {
@@ -264,6 +275,12 @@ class Home extends React.Component{
                 setTimeout(() => {
                     this.setState({ refreshingCategories : false });
                 }, 1000);
+
+            myRecommended = [];
+            myTrendingNow = [];
+            myNewReleases = [];
+            myMostWatched = [];
+            
             myRecommended = recommendedMovies;
             myMostWatched = mostWatchedMovies;
             myNewReleases = newReleasesMovies;
@@ -277,6 +294,12 @@ class Home extends React.Component{
                     this.setState({ refreshingCategories : false });
                 }, 1000);
             }
+
+            myRecommended = [];
+            myTrendingNow = [];
+            myNewReleases = [];
+            myMostWatched = [];
+
             myRecommended = recommendedSports;
             myMostWatched = mostWatchedSports;
             myNewReleases = newReleasesSports;
@@ -290,6 +313,12 @@ class Home extends React.Component{
                     this.setState({ refreshingCategories : false });
                 }, 1000);
             }
+
+            myRecommended = [];
+            myTrendingNow = [];
+            myNewReleases = [];
+            myMostWatched = [];
+
             myRecommended = recommendedRadio;
             myMostWatched = mostWatchedRadio;
             myNewReleases = newReleasesRadio;
