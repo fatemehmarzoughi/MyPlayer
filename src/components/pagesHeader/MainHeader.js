@@ -22,7 +22,9 @@ export default class MainHeader extends React.Component{
                   style={[styles.icon , changeColor(this.context.theme)]} 
                   name="menu" 
                 />
-                <Text style={[styles.title, changeColor(this.context.theme)]}>MyPlayer</Text>
+                <Text style={[styles.title, changeColor(this.context.theme)]}>
+                   {this.props.isLive ? "Live" : "MyPlayer"}
+                </Text>
                 <Icon 
                   onPress={this.props.searchOnPress} 
                   size={22} 

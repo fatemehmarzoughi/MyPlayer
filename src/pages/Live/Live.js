@@ -7,7 +7,8 @@ import { Text as NativeText } from 'native-base';
 import About from '/pages/About/About';
 import { mainColor, gray } from '/assets/constants/Colors';
 import { TabView, SceneMap } from 'react-native-tab-view';
-
+import Tabs from './Tabs';
+import { NativeBaseProvider } from 'native-base'
 
 export default class Live extends React.Component{
     constructor(){
@@ -31,50 +32,16 @@ export default class Live extends React.Component{
 
     render(){
         return(
-            <View>
+            <NativeBaseProvider>
                 <MainHeader
+                    isLive={true}
                     searchOnPress={() => this.props.navigation.navigate('Search') } 
                     menuOnPress={() => this.props.navigation.openDrawer()} 
                 />
                 {/* <Animated.Text entering={this.state.animation}>my text</Animated.Text> */}
-                <NativeText bold={true} textAlign="center" fontSize={20}>Live</NativeText>
-                {/* <TabView
-                  navigationState={ this.state.index, this.state.routes }
-                  renderScene={SceneMap({
-                    first: <Text>first</Text>,
-                    second: <Text>second</Text>,
-                  })}
-                  onIndexChange={(index) => this.setState({ index })}
-                  initialLayout={{ width: width }}
-                /> */}
-            </View>
+                {/* <NativeText bold={true} textAlign="center" fontSize={20}>Live</NativeText> */}
+                <Tabs />
+            </NativeBaseProvider>
         )
     }
-}
-
-function LiveTabs(){
-    return (
-        <Tab.Navigator style={[styles.topTabBar]}
-         screenOptions={{
-            tabBarActiveTintColor : mainColor,
-            tabBarInactiveTintColor : gray,
-            tabBarPressColor : gray,
-            tabBarStyle: { padding : 5, shadowColor : mainColor, elevation:0},
-            tabBarIndicatorStyle : { backgroundColor : mainColor, elevation:0},
-         }}
-        >
-            <Tab.Screen 
-            //  screenOptions={{
-            //     title : 'Create Account'
-            //  }}‍‍
-             name="tab1"
-             component={Live}
-            />
-            <Tab.Screen 
-             name="tab2"
-             component={Live}
-            />
-
-        </Tab.Navigator>
-    )
 }
