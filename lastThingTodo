@@ -10,6 +10,8 @@ https://support.github.com/ticket/personal/0/1386019
 
 1- replace the subcategory part in home page with the main tabs
 
+
+my changes
 2- use fastimage in react native for change profile image page instead of flatlist
 
 3- use react-form-hook in login and createaccount screens
