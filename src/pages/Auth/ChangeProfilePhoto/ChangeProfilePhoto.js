@@ -1,13 +1,22 @@
 import React from "react";
-import { View, ScrollView, RefreshControl } from "react-native";
+import { 
+    View, 
+    ScrollView, 
+    RefreshControl, 
+    TouchableOpacity,
+    Text 
+} from "react-native";
 import Header  from "components/pagesHeader/Header";
 import { styles } from "./style";
 import FlatList1 from "components/pagesFlatLists/FlatList1/FlatList1";
 import {GET_noToken} from 'API/index'
 import Context from "context/context";
+import Icon from "react-native-vector-icons/EvilIcons";
+import * as Colors from "assets/constants/Colors";
+import {changeColor} from 'components/lightDarkTheme'
+import { width } from "assets/constants/Units";
 
-
-export default class ChangeProfilePhoto extends React.Component{
+export default class ChangeProfilePhoto extends React.PureComponent{
 
     static contextType = Context
 
@@ -65,11 +74,17 @@ export default class ChangeProfilePhoto extends React.Component{
             }
             >
                 <View style={styles.container}>
-                   <Header 
+                    <View style={[styles.header ]}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.iconBack}>
+                           <Icon name="chevron-left" size={40} color={Colors.white} />
+                        </TouchableOpacity>
+                        <Text style={[styles.titleHeader , changeColor(this.context.theme)]}>Choose a Photo</Text>
+                    </View>  
+                   {/* <Header 
                      title="Choose a Photo" 
                      customClick={() => this.props.navigation.navigate('EditProfile')} 
                      theme={this.context.theme}
-                    />
+                    /> */}
                    <>
                    {(this.state.Animation.length == 0 || this.state.Actors.length == 0 || this.state.Artists.length == 0) ? (
                        <View>

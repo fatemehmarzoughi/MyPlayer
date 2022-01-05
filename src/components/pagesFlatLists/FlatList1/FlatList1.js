@@ -4,6 +4,7 @@ import { styles } from "./style";
 import LottieView from 'lottie-react-native';
 import {changeBackgroundColor} from 'components/lightDarkTheme'
 import Animated , { BounceIn , AnimatedLayout} from 'react-native-reanimated'; 
+import FastImage from 'react-native-fast-image'
 
 
 export default class FlatList1 extends React.Component{
@@ -54,7 +55,19 @@ export default class FlatList1 extends React.Component{
                      renderItem={({item}) => (
                          <TouchableOpacity onPress={() => this.props.func(item.imageURL)}>
                             <Animated.View entering={BounceIn.duration(500).delay(300)}>
-                                <Image style={[styles.Image , changeBackgroundColor(this.props.theme)]} source={{uri : item.imageURL}} />
+                                {/* <Image style={[styles.Image , changeBackgroundColor(this.props.theme)]} source={{uri : item.imageURL}} /> */}
+                                <FastImage
+                                    alt="images"
+                                    style={[
+                                        styles.Image , 
+                                        changeBackgroundColor(this.props.theme)
+                                    ]}
+                                    source={{
+                                        uri: item.imageURL,
+                                        priority: FastImage.priority.high,
+                                    }}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                />
                             </Animated.View>
                          </TouchableOpacity>
                       )}

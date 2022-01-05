@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import * as Colors from "assets/constants/Colors";
 import { statusBarIOS, width } from "assets/constants/Units";
+import { titleFontSize} from 'assets/constants/Units'
 
 const usedWidth = width - 20;
 export const styles = StyleSheet.create({

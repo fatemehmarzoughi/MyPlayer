@@ -12,6 +12,7 @@ import {
 
 export const getAllRecommended = () => {
     return async (dispatch) => {
+        try{
         const res = await GET_noToken('/items/status/0/category/0/subCategory/0');
         if(res.status === 200)
         {
@@ -19,6 +20,8 @@ export const getAllRecommended = () => {
             dispatch({ type : GET_ALL_ITEMS_RECOMMENDED, recommended : result });
         }
         else dispatch({ type : GET_ALL_ITEMS_RECOMMENDED_FAILED, error : 'Something went wrong' });
+        }
+        catch{(err) => {throw new Error(err)}}
     }
 }
 

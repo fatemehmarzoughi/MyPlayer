@@ -366,6 +366,9 @@ PODS:
   - RNScreens (3.9.0):
     - React-Core
     - React-RCTImage
+  - RNSentry (3.2.10):
+    - React-Core
+    - Sentry (= 7.7.0)
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (9.0.0):
@@ -376,6 +379,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - Sentry (7.7.0):
+    - Sentry/Core (= 7.7.0)
+  - Sentry/Core (7.7.0)
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
   - UMReactNativeAdapter (6.3.9):
@@ -439,6 +445,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
@@ -458,6 +465,7 @@ SPEC REPOS:
     - lottie-ios
     - SDWebImage
     - SDWebImageWebPCoder
+    - Sentry
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -560,6 +568,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -633,10 +643,12 @@ SPEC CHECKSUMS:
   RNGoogleSignin: a51c9c7419262c75748ddcee3f735bb42da5def1
   RNReanimated: 450b75d536ef8557713a07b03c728ed5429464ea
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
+  RNSentry: 04bb48bfdd435f5b218cf363f89e6419e9a2460c
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
+  Sentry: e58e062056a061ae1145e22ad3dff6e506bff177
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785

@@ -17,16 +17,29 @@ import {mainReducer} from './src/Redux/reducers/index.js';
 import {composeWithDevTools} from 'redux-devtools-extension';
 const store = createStore(mainReducer, composeWithDevTools(applyMiddleware(thunk)))
 
+
 export default class App extends React.Component {
 
+  constructor(){
+    super();
+    this.state={
+      checkingFirstTimeUsers : true,
+      isFirstInstallation : false,
+    }
+
+    this._isMount = false;
+  }
+
   async componentDidMount (){
+    // routingInstrumentation.registerAppContainer(this.appContainer);
+    this._isMount = true
     try{
       const isFirstInstallation = await getData('isFirstInstallation');
       if(isFirstInstallation === null)
       // if(isFirstInstallation !== null)
       {
         await storeData('isFirstInstallation' , 'false')
-        this.setState({
+        this._isMount && this.setState({
           isFirstInstallation : true,
           checkingFirstTimeUsers : false
         })
@@ -34,7 +47,7 @@ export default class App extends React.Component {
       }
       else
       {
-        this.setState({
+        this._isMount && this.setState({
           isFirstInstallation : false,
           checkingFirstTimeUsers : false
         })
@@ -43,16 +56,13 @@ export default class App extends React.Component {
     catch{(err) => console.log(err)}
 
   }
-  
-  constructor(){
-    super();
-    this.state={
-      checkingFirstTimeUsers : true,
-      isFirstInstallation : false,
-    }
+
+  componentWillUnmount(){
+    this._isMount = false
   }
   
   render (){
+
     if(!this.state.checkingFirstTimeUsers) SplashScreen.hide();
     
     return(

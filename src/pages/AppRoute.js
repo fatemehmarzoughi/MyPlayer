@@ -29,14 +29,16 @@ import TermsAndPolicy from './TermsAndPolicy/TermsAndPolicy'
 import Search from './Search/Search';
 import { checkLoginStatus } from 'pages/Auth/checkLoginStatus'
 
+
 const BottomTab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 
 
-function Login_CreateAccount(){
-    const contextVars = useContext(Context);
+
+
+const Login_CreateAccount = React.memo(function Login_CreateAccount(){
     return (
         <Tab.Navigator style={[styles.topTabBar]}
          screenOptions={{
@@ -61,9 +63,9 @@ function Login_CreateAccount(){
 
         </Tab.Navigator>
     )
-}
+})
 
-function Auth(){
+const Auth = React.memo(function Auth(){
     const contextVars = useContext(Context);
     checkLoginStatus(contextVars.setIsLogin);
     return (
@@ -153,9 +155,9 @@ function Auth(){
                 </>
             </Stack.Navigator>
     )
-}
+})
 
-function BottomTabs() {
+const BottomTabs = React.memo(function BottomTabs() {
 
     const contexts = useContext(Context)
     return(
@@ -163,9 +165,12 @@ function BottomTabs() {
         initialRouteName="Home" 
         shifting={true}
         activeColor={mainColor}
-        inactiveColor={(contexts.theme) ? dark : white}
-        barStyle={changeBackgroundColor(contexts.theme)}
-
+        // inactiveColor={(contexts.theme) ? dark : white}
+        // barStyle={changeBackgroundColor(contexts.theme)}
+        inactiveColor="black"
+        barStyle={
+            {backgroundColor : 'white'}
+        }
     >
         <BottomTab.Screen
          name="Home"
@@ -198,9 +203,9 @@ function BottomTabs() {
 
     </BottomTab.Navigator>
     )
-}
+})
 
-function DrawerPages() {
+const DrawerPages = React.memo(function DrawerPages() {
     return(
         <Drawer.Navigator 
           initialRouteName="MyPlayer" 
@@ -231,7 +236,7 @@ function DrawerPages() {
 
         </Drawer.Navigator>
     )
-}
+})
 
 
 function AppRoute(props) {
@@ -282,7 +287,7 @@ function AppRoute(props) {
 
             <Stack.Screen 
                name="Auth" 
-               component={Auth}
+               component={Login_CreateAccount}
                options={{
                    tabBarVisible: false,
                    headerShown : false

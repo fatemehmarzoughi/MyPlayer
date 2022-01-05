@@ -42,6 +42,7 @@ import { getAllMovies } from '/Redux/actions/getMovies'
 import { getAllSports } from '/Redux/actions/getSports'
 import { getAllRadio } from '/Redux/actions/getRadio'
 import FastImage from 'react-native-fast-image'
+import LottieView from 'lottie-react-native';
 
 
 function useHook(Component){
@@ -404,13 +405,55 @@ class Home extends React.Component{
                 )}
                 </>
     
-                <Categories
-                 recommended={myRecommended}
-                 mostWatched={myMostWatched}
-                 trendingNow={myTrendingNow}
-                 newReleases={myNewReleases}
-                 refreshing={this.state.refreshingCategories}
+            <>
+            {this.state.refreshingCategories ? (
+                <LottieView 
+                  loop={true} 
+                  autoPlay={true} 
+                  source={require('../../assets/Images/loading.json')} 
+                  size={10}
+                  style={{ width : 50, height : 50, marginLeft : 'auto', marginRight : 'auto' }}
                 />
+            ) : (
+            <View>
+                {/* <FlatLists 
+                 title="My Playlist" 
+                 data = {this.state.falstListData}
+                 type = "small"
+                 onPress={(id) => console.log(id)}
+                /> */}
+
+                <FlatLists 
+                 title="Recommended" 
+                 data = {myRecommended}
+                 type = "medium"
+                //  onPress={(id) => console.log(id)}
+                />
+
+                <FlatLists 
+                 title="Most Watched" 
+                 data = {myMostWatched}
+                 type = "medium"
+                //  onPress={(id) => console.log(id)}
+                />
+
+                <FlatLists 
+                 title="Trending Now" 
+                 data = {myTrendingNow}
+                 type = "large"
+                //  onPress={(id) => console.log(id)}
+                />
+
+                <FlatLists 
+                 title="New Releases" 
+                 data = {myNewReleases}
+                 type = "medium"
+                //  onPress={(id) => console.log(id)}
+                />
+                    
+            </View>
+            )}
+            </>
     
                 <Modal
                  subCategoryVisibility = {this.state.subCategoryVisibility}
