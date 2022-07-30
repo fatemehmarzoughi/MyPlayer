@@ -19,10 +19,7 @@ Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google 
 <b>Backend</b><br>
 NodeJS(express), mongoose, heroku<br>
 
-# What I wanted to build 
-https://www.figma.com/file/KYC4fXrUc3ePssg8t0FvBS/MyPlayer?node-id=0%3A1
-
-# What I built
+# Application 
 <!-- https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-8251-ecb529e9f593.mp4 -->
 
 
