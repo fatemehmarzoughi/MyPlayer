@@ -1,32 +1,32 @@
 import React from "react";
 
 export default React.createContext({
-    isRotate : false,
-    setIsRotate : () => {},
+  isRotate: false,
+  setIsRotate: () => {},
 
-    isLogin : false,
-    setIsLogin : () => {},
+  isLogin: false,
+  setIsLogin: () => {},
 
-    //just a temporary state
-    accessToken : 0,
-    setAccessToken : () => {},
+  // just a temporary state
+  accessToken: 0,
+  setAccessToken: () => {},
 
-    isFirstInstallation : false,
-    setIsFirstInstallation : () => {},
+  isFirstInstallation: false,
+  setIsFirstInstallation: () => {},
 
-    userName : '',
-    setUserName : () => {}, 
-    userCountry : '',
-    setUserCountry : () => {}, 
-    userEmail : '',
-    setUserEmail : () => {}, 
-    userImage : '',
-    setUserImage : () => {},
+  userName: "",
+  setUserName: () => {},
+  userCountry: "",
+  setUserCountry: () => {},
+  userEmail: "",
+  setUserEmail: () => {},
+  userImage: "",
+  setUserImage: () => {},
 
-    theme : false,
-    setTheme : () => {},
+  theme: false,
+  setTheme: () => {},
 
-    isAuthPage : false,
-    setIsAuthPage : () => {},
+  isAuthPage: false,
+  setIsAuthPage: () => {}
 
-})
+});

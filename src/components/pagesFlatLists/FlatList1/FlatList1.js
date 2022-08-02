@@ -1,80 +1,77 @@
 import React from "react";
-import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native'
+import { Text, View, FlatList, TouchableOpacity, Image } from "react-native";
 import { styles } from "./style";
-import LottieView from 'lottie-react-native';
-import {changeBackgroundColor} from 'components/lightDarkTheme'
-import Animated , { BounceIn , AnimatedLayout} from 'react-native-reanimated'; 
-import FastImage from 'react-native-fast-image'
+import LottieView from "lottie-react-native";
+import { changeBackgroundColor } from "components/lightDarkTheme";
+import Animated, { BounceIn, AnimatedLayout } from "react-native-reanimated";
+import FastImage from "react-native-fast-image";
 
-
-export default class FlatList1 extends React.Component{
-
-    constructor(){
-        super();
-        this.state = {
-            loadingData : [
-                {
-                    id : 0
-                },
-                {
-                    id : 1
-                },
-                {
-                    id : 2
-                },
-            ]
+export default class FlatList1 extends React.Component {
+  constructor () {
+    super();
+    this.state = {
+      loadingData: [
+        {
+          id: 0
+        },
+        {
+          id: 1
+        },
+        {
+          id: 2
         }
-    }
+      ]
+    };
+  }
 
-    render(){
-        return(
+  render () {
+    return (
             <>
-            {this.props.loading ? (
-                <View style={styles.row}>
+            {this.props.loading
+              ? <View style={styles.row}>
                     <Text style={styles.title}>{this.props.title}</Text>
-                    <FlatList 
+                    <FlatList
                      horizontal
                      data={this.state.loadingData}
                      style={styles.flatlist}
-                     keyExtractor={(item , index) => index.toString()}
-                     renderItem={({item}) => (
-                         <TouchableOpacity style={[styles.Image , changeBackgroundColor(this.props.theme)]}>
-                             <LottieView autoPlay={true} loop={true} source={require('../../../assets/Images/loading2.json')} />
+                     keyExtractor={(item, index) => index.toString()}
+                     renderItem={({ item }) => (
+                         <TouchableOpacity style={[styles.Image, changeBackgroundColor(this.props.theme)]}>
+                             <LottieView autoPlay={true} loop={true} source={require("../../../assets/Images/loading2.json")} />
                          </TouchableOpacity>
-                      )}
+                     )}
                     />
                 </View>
-            ) : (
-                <View style={styles.row}>
+              : <View style={styles.row}>
                     <Text style={styles.title}>{this.props.title}</Text>
-                    <FlatList 
+                    <FlatList
                      horizontal
                      data={this.props.data}
                      style={styles.flatlist}
-                     keyExtractor={(item , index) => index.toString()}
-                     renderItem={({item}) => (
+                     keyExtractor={(item, index) => index.toString()}
+                     renderItem={({ item }) => (
                          <TouchableOpacity onPress={() => this.props.func(item.imageURL)}>
                             <Animated.View entering={BounceIn.duration(500).delay(300)}>
                                 {/* <Image style={[styles.Image , changeBackgroundColor(this.props.theme)]} source={{uri : item.imageURL}} /> */}
                                 <FastImage
                                     alt="images"
                                     style={[
-                                        styles.Image , 
-                                        changeBackgroundColor(this.props.theme)
+                                      styles.Image,
+                                      changeBackgroundColor(this.props.theme)
                                     ]}
                                     source={{
-                                        uri: item.imageURL,
-                                        priority: FastImage.priority.high,
+                                      uri: item.imageURL,
+                                      priority: FastImage.priority.high
                                     }}
                                     resizeMode={FastImage.resizeMode.cover}
                                 />
                             </Animated.View>
                          </TouchableOpacity>
-                      )}
+                     )}
                     />
                 </View>
-            )}
+            }
             </>
-        )
-    }
+    );
+  }
 }
