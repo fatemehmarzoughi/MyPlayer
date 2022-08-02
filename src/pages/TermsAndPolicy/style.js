@@ -1,14 +1,13 @@
-import { StyleSheet } from 'react-native'
-import * as Colors from 'assets/constants/Colors'
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    box : {
-        margin : 20,
-        marginBottom : 0,
-        padding : 20,
-        borderRadius : 10,
-    },
-    btn : { 
-        marginTop : 20
-    }
-})
+  box: {
+    margin: 20,
+    marginBottom: 0,
+    padding: 20,
+    borderRadius: 10
+  },
+  btn: {
+    marginTop: 20
+  }
+});

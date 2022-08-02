@@ -2,166 +2,157 @@ import React from "react";
 import { View, Text, Image, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
-import {GET} from 'API/index'
+import { GET } from "API/index";
 import * as Colors from "assets/constants/Colors";
 import { styles } from "./style";
 import Context from "context/context";
-import ToggleSwitch from 'toggle-switch-react-native'
-import LottieView from 'lottie-react-native';
-import Toast from 'react-native-toast-message';
-import {toastMessageDuration} from 'assets/constants/Units'
+import ToggleSwitch from "toggle-switch-react-native";
+import LottieView from "lottie-react-native";
+import Toast from "react-native-toast-message";
+import { toastMessageDuration } from "assets/constants/Units";
 import ModalClass from "components/Modals/QuestionBoxModal";
-import {getData , storeData} from 'LocalStorage/AsyncStorageData'
+import { getData, storeData } from "LocalStorage/AsyncStorageData";
 import { checkLoginStatus } from "../checkLoginStatus";
 import Notification from "Notification/NotificationSetup";
-import { GoogleSignin} from '@react-native-google-signin/google-signin';
-import { changeColor } from 'components/lightDarkTheme'
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { changeColor } from "components/lightDarkTheme";
 
-export default class Profile extends React.PureComponent{
+export default class Profile extends React.PureComponent {
+  static contextType = Context;
 
-    static contextType = Context;
+  constructor () {
+    super();
+    this.state = {
+      email: "",
+      plan: "",
+      name: "",
+      country: "",
+      appNotification: true,
+      refreshing: false,
+      modalVisible: false,
+      isGoogleAccount: false
+    };
+  }
 
-    constructor(){
-        super();
-        this.state={
-            email : '',
-            plan : '',
-            name : '',
-            country : '',
-            appNotification : true,
-            refreshing : false,
-            modalVisible : false,
-            isGoogleAccount : false,
-        }
+  EditProfile = () => {
+    this.props.navigation.navigate("EditProfile");
+  };
+
+  handleResetPassword = () => {
+    this.props.navigation.navigate("ResetPassword");
+  };
+
+  showLogoutMessage = () => {
+    this.setState({
+      modalVisible: true
+    });
+  };
+
+  cancelModal = () => {
+    console.log("cancel modal");
+    this.setState({
+      modalVisible: false
+    });
+  };
+
+  handleLogOut = async () => {
+    try {
+      const accessToken = await getData("accessToken");
+      if (accessToken === "GoogleToken") { await GoogleSignin.signOut(); }
+      this.context.setIsLogin(false);
+      await storeData("accessToken", "");
+      this.setState({
+        modalVisible: false
+      });
+      await checkLoginStatus(this.context.setIsLogin);
+      this.props.navigation.navigate("Home");
+    } catch (err) { console.log(err); }
+  };
+
+  handleReportABug = () => {
+    this.props.navigation.navigate("ReportABug");
+  };
+
+  handleUpgradeToPremium = () => {
+    this.props.navigation.navigate("UpgradeToPremium");
+  };
+
+  setAppNotification = async () => {
+    const newState = "" + !this.state.appNotification + "";
+    await storeData("appNotification", newState);
+    this.setState({
+      appNotification: !this.state.appNotification
+    });
+    if (!this.state.appNotification) { Notification.notifyOnMessage(new Date(Date.now() + (2 * 1000))); }
+  };
+
+  getUserInfo = async () => {
+    const token = await getData("accessToken");
+    if (token === "GoogleToken") {
+      this.setState({
+        email: this.context.userEmail,
+        name: this.context.userName,
+        refreshing: false,
+        isGoogleAccount: true
+      });
+      return;
     }
 
-    EditProfile = () => {
-        this.props.navigation.navigate('EditProfile');
+    try {
+      const token = await getData("accessToken");
+      const res = await GET("/dashboard", token);
+      const user = await res.json();
+      this.setState({
+        // email : res.headers.map.email,
+        // name : res.headers.map.firstname,
+        // plan : res.headers.map.plan,
+        // country : res.headers.map.country,
+        email: user.email,
+        name: user.firstName,
+        plan: user.plan,
+        country: (user.country === "") ? "Select Your Country" : user.country,
+        refreshing: false
+      });
+      this.context.setUserName(this.state.name);
+      this.context.setUserEmail(this.state.email);
+      this.context.setUserCountry(this.state.country);
+      this.context.setUserImage(user.imageURL);
+      console.log(`user = ${JSON.stringify(user)}`);
+    } catch
+    (err) {
+      console.log(err);
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        text1: "Couldn't refresh!",
+        text2: "Please Check your Network",
+        visibilityTime: toastMessageDuration,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40
+      });
+      this.setState({ refreshing: false });
     }
+  };
 
-    handleResetPassword = () => {
-        this.props.navigation.navigate('ResetPassword');
-    }
+  async componentDidMount () {
+    // await this.getUserInfo();
 
-    showLogoutMessage = () => {
-        this.setState({
-            modalVisible : true,
-        })
-    }
+    const {
+      navigation
+    } = this.props;
+    this.focusListener = navigation.addListener("focus", async () => {
+      await this.getUserInfo();
+    });
 
-    cancelModal = () => {
-        console.log('cancel modal')
-        this.setState({
-            modalVisible : false,
-        })
-    }
+    const appNotification = await getData("appNotification");
+    (appNotification === "false") ? this.setState({ appNotification: false }) : this.setState({ appNotification: true });
+    console.log(this.state.name);
+    console.log(this.state.email);
+  }
 
-    handleLogOut = async () => {
-        try{
-            const accessToken = await getData('accessToken')
-            if(accessToken === 'GoogleToken')
-               await GoogleSignin.signOut();
-            this.context.setIsLogin(false);
-            await storeData('accessToken' , '');
-            this.setState({
-                modalVisible : false,
-            })
-            await checkLoginStatus(this.context.setIsLogin);
-            this.props.navigation.navigate('Home')
-        }
-        catch(err) {console.log(err)}
-    }
-
-    handleReportABug = () => {
-        this.props.navigation.navigate('ReportABug')
-    }
-
-    handleUpgradeToPremium = () => {
-        this.props.navigation.navigate('UpgradeToPremium')
-    }
-
-    setAppNotification = async () => {
-        let newState = '' + !this.state.appNotification + '';
-        await storeData('appNotification' , newState)
-        this.setState({
-            appNotification : !this.state.appNotification
-        })
-        if(!this.state.appNotification)
-            Notification.notifyOnMessage(new Date(Date.now() + (2*1000)));
-    }
-
-    getUserInfo = async () => {
-
-        const token = await getData('accessToken');
-        if(token == 'GoogleToken') 
-        {
-            this.setState({
-                email : this.context.userEmail,
-                name : this.context.userName,
-                refreshing : false,
-                isGoogleAccount : true,
-            })
-            return
-        }
-
-
-        try{
-            const token = await getData('accessToken');
-            const res = await GET('/dashboard' , token);
-            const user = await res.json();
-            this.setState({
-                // email : res.headers.map.email,
-                // name : res.headers.map.firstname,
-                // plan : res.headers.map.plan,
-                // country : res.headers.map.country,
-                email : user.email,
-                name : user.firstName,
-                plan : user.plan,
-                country : (user.country === '') ? 'Select Your Country' : user.country,
-                refreshing : false,
-            })
-            this.context.setUserName(this.state.name)
-            this.context.setUserEmail(this.state.email)
-            this.context.setUserCountry(this.state.country)
-            this.context.setUserImage(user.imageURL)
-            console.log(`user = ${JSON.stringify(user)}`)
-        }
-        catch{
-            (err) => console.log(err)
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: "Couldn't refresh!",
-                text2: 'Please Check your Network',
-                visibilityTime: toastMessageDuration,
-                autoHide: true,
-                topOffset: 30,
-                bottomOffset: 40,
-            })
-            this.setState({refreshing : false})
-        }
-    }
-
-    async componentDidMount (){
-
-        // await this.getUserInfo();
-
-        const {
-            navigation
-         } = this.props;
-         this.focusListener = navigation.addListener('focus', async () => {
-            await this.getUserInfo();
-         });
-
-        const appNotification = await getData('appNotification');
-        (appNotification === 'false') ? this.setState({appNotification : false}) : this.setState({appNotification : true})
-        console.log(this.state.name)
-        console.log(this.state.email)
-        
-    }
-    
-    render(){
-        return(
+  render () {
+    return (
             <ScrollView
             refreshControl={
                 <RefreshControl
@@ -172,35 +163,37 @@ export default class Profile extends React.PureComponent{
             >
                 <View style={styles.container}>
                     <View style={styles.header}>
-                    <Text style={[styles.title , changeColor(this.context.theme)]}>Profile</Text>
+                    <Text style={[styles.title, changeColor(this.context.theme)]}>Profile</Text>
                     <View style={styles.row1}>
-                        <Image style={styles.profileImg} source={{ uri : this.context.userImage }} />
+                        <Image style={styles.profileImg} source={{ uri: this.context.userImage }} />
                         <View style={styles.nameEmail}>
                             <>
-                            {((this.state.email === '' && this.state.name === '') || (this.state.email === undefined && this.state.name === undefined)) ? (
+                            {((this.state.email === "" && this.state.name === "") || (this.state.email === undefined && this.state.name === undefined))
+                              ? (
                                 <>
-                                    <LottieView style={styles.loadingIcon} loop={true} autoPlay={true} source={require('../../../assets/Images/loading2.json')} />
+                                    <LottieView style={styles.loadingIcon} loop={true} autoPlay={true} source={require("../../../assets/Images/loading2.json")} />
                                 </>
-                            ) : (
+                                )
+                              : (
                                 <>
                                     <View style={styles.name}>
-                                        <Icon2 name="person" size={25} color={this.context.theme ? Colors.dark : Colors.white}  />
-                                        <Text style={[styles.nameText , changeColor(this.context.theme)]}>{this.state.name}</Text>
+                                        <Icon2 name="person" size={25} color={this.context.theme ? Colors.dark : Colors.white} />
+                                        <Text style={[styles.nameText, changeColor(this.context.theme)]}>{this.state.name}</Text>
                                     </View>
-                                    <Text style={[styles.email , changeColor(this.context.theme)]}>{this.state.email}</Text>
+                                    <Text style={[styles.email, changeColor(this.context.theme)]}>{this.state.email}</Text>
                                 </>
-                            )}
+                                )}
                             </>
                         </View>
                     </View>
                     <View style={styles.row2}>
                         <View style={styles.My}>
-                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>12</Text>
-                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>My Saved</Text>
+                            <Text style={[styles.MyText, changeColor(this.context.theme)]}>12</Text>
+                            <Text style={[styles.MyText, changeColor(this.context.theme)]}>My Saved</Text>
                         </View>
                         <View style={styles.My}>
-                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>2</Text>
-                            <Text style={[styles.MyText , changeColor(this.context.theme)]}>My playlist</Text>
+                            <Text style={[styles.MyText, changeColor(this.context.theme)]}>2</Text>
+                            <Text style={[styles.MyText, changeColor(this.context.theme)]}>My playlist</Text>
                         </View>
                         <TouchableOpacity onPress={() => this.EditProfile()} style={styles.editProfile}>
                             <Icon name="pencil" size={20} color={Colors.white} />
@@ -208,24 +201,25 @@ export default class Profile extends React.PureComponent{
                         </TouchableOpacity>
                     </View>
                 </View>
-                    
+
                     <View style={styles.seperators}>
                         <Text style={styles.seperator}></Text>
                         <Text style={styles.seperator}></Text>
                     </View>
 
                     <View style={styles.part}>
-                        <Text style={[styles.subTitle , changeColor(this.context.theme)]}>Account Settings</Text>
-                        <TouchableOpacity onPress={() => this.handleUpgradeToPremium()} style={[styles.option , {borderColor : Colors.white}]}>
+                        <Text style={[styles.subTitle, changeColor(this.context.theme)]}>Account Settings</Text>
+                        <TouchableOpacity onPress={() => this.handleUpgradeToPremium()} style={[styles.option, { borderColor: Colors.white }]}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="logo-usd" size={20} color={(this.context.theme) ? Colors.dark : Colors.white}/>
-                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Upgrade to premium</Text>
+                               <Text style={[styles.optionTitle, changeColor(this.context.theme)]}>Upgrade to premium</Text>
                             </View>
                             <Icon name="chevron-right" size={35} color={(this.context.theme) ? Colors.dark : Colors.white}/>
                         </TouchableOpacity>
-                        
+
                         <>
-                        {this.state.isGoogleAccount ? (
+                        {this.state.isGoogleAccount
+                          ? (
                         <TouchableOpacity style={styles.premiumOption}>
                             <View style={styles.premium}>
                                 <View style={styles.optionTitleIcon}>
@@ -236,22 +230,22 @@ export default class Profile extends React.PureComponent{
                             </View>
                             <Text style={styles.premiumOptionText}>Only available for MyPlayer accounts</Text>
                         </TouchableOpacity>
-                        ) : (
+                            )
+                          : (
                         <TouchableOpacity onPress={() => this.handleResetPassword()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="basket" size={20} color={ this.context.theme ? Colors.dark : Colors.white}/>
-                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Reset Password</Text>
+                               <Text style={[styles.optionTitle, changeColor(this.context.theme)]}>Reset Password</Text>
                             </View>
                             <Icon name="chevron-right" size={35} color={ this.context.theme ? Colors.dark : Colors.white}/>
                         </TouchableOpacity>
-                        )}
+                            )}
                         </>
-
 
                         <TouchableOpacity onPress={() => this.handleReportABug()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="bug" size={20} color={this.context.theme ? Colors.dark : Colors.white}/>
-                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Report a Bug</Text>
+                               <Text style={[styles.optionTitle, changeColor(this.context.theme)]}>Report a Bug</Text>
                             </View>
                             <Icon name="chevron-right" size={35} color={this.context.theme ? Colors.dark : Colors.white}/>
                         </TouchableOpacity>
@@ -290,7 +284,7 @@ export default class Profile extends React.PureComponent{
                         <TouchableOpacity onPress={() => this.setAppNotification()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="alarm" size={20} color={this.context.theme ? Colors.dark : Colors.white}/>
-                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>App notification</Text>
+                               <Text style={[styles.optionTitle, changeColor(this.context.theme)]}>App notification</Text>
                             </View>
                             <ToggleSwitch
                               isOn={this.state.appNotification}
@@ -303,23 +297,23 @@ export default class Profile extends React.PureComponent{
 
                     </View>
                     <View style={styles.part}>
-                        <Text style={[styles.subTitle , changeColor(this.context.theme)]}>Setup</Text>
+                        <Text style={[styles.subTitle, changeColor(this.context.theme)]}>Setup</Text>
                         <TouchableOpacity onPress={() => this.showLogoutMessage()} style={styles.option}>
                             <View style={styles.optionTitleIcon}>
                                <Icon2 name="power" size={20} color={Colors.mainColor}/>
-                               <Text style={[styles.optionTitle , changeColor(this.context.theme)]}>Logout</Text>
+                               <Text style={[styles.optionTitle, changeColor(this.context.theme)]}>Logout</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <ModalClass 
-                      question="Are you sure, you want to logout?" 
-                      modalVisible={this.state.modalVisible} 
+                    <ModalClass
+                      question="Are you sure, you want to logout?"
+                      modalVisible={this.state.modalVisible}
                       btnTitle="Logout"
                       handleMainBtn = {() => this.handleLogOut()}
                       handleCancelBtn = {() => this.cancelModal()}
                     />
                 </View>
             </ScrollView>
-        )
-    }
+    );
+  }
 }
