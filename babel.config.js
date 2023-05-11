@@ -3,14 +3,27 @@ const path = require("path");
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ["babel-preset-expo"],
-    plugins: [
-      ["babel-plugin-module-resolver",
+    presets: [
+      "babel-preset-expo",
+      "@babel/preset-react",
+      [
+        "@babel/preset-flow",
         {
-          root: ["./src"]
+          "allowDeclareFields": true
         }
+      ]
+    ],
+    plugins: [
+      [
+        "babel-plugin-module-resolver",
+        {
+          root: ["."],
+          alias: {
+            "~": path.resolve(__dirname, "src"),
+          },
+        },
       ],
-      "react-native-reanimated/plugin"
-    ]
+      "react-native-reanimated/plugin",
+    ],
   };
 };

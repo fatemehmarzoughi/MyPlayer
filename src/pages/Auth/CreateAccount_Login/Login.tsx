@@ -3,8 +3,7 @@ import LottieView from "lottie-react-native";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationScreenProp } from "react-navigation";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Text, View, ScrollView, TextInput } from "react-native";
+import { Text, View, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
 
 import { POST } from "~/API/index";

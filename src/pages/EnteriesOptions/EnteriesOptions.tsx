@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import LottieView from "lottie-react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 import Context from "~/context/context";
 import { NavigationScreenProp } from "react-navigation";

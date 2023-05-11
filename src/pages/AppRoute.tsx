@@ -3,7 +3,7 @@ import {
   DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native";
-import "react-native-gesture-handler";
+
 import React, { useContext } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";

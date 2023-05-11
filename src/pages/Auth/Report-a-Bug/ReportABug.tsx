@@ -2,8 +2,7 @@ import React from "react";
 import LottieView from "lottie-react-native";
 import Toast from "react-native-toast-message";
 import { NavigationScreenProp } from "react-navigation";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Text, View, ScrollView, TextInput } from "react-native";
+import { Text, View, ScrollView, TextInput, TouchableOpacity } from "react-native";
 
 import { POST } from "~/API/index";
 import context from "~/context/context";

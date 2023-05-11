@@ -3,8 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import LottieView from "lottie-react-native";
 import { NavigationScreenProp } from "react-navigation";
 import GestureRecognizer from "react-native-swipe-gestures";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Text, View, Animated, Dimensions } from "react-native";
+import { Text, View, Animated, Dimensions, TouchableOpacity } from "react-native";
 
 import context from "~/context/context";
 import * as Colors from "~/assets/constants/Colors";

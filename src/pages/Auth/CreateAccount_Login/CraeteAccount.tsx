@@ -8,11 +8,10 @@ import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationScreenProp } from "react-navigation";
 import Icon2 from "react-native-vector-icons/EvilIcons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import CountryPicker, {
   TranslationLanguageCodeMap,
 } from "react-native-country-picker-modal";
-import { Text, View, ScrollView, TextInput, FlatList } from "react-native";
+import { Text, View, ScrollView, TextInput, FlatList, TouchableOpacity } from "react-native";
 
 import {
   validateEmail,
