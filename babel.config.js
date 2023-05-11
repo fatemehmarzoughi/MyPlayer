@@ -1,16 +1,16 @@
-var path = require('path')
+const path = require("path");
 
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
-      ['babel-plugin-module-resolver' , 
+      ["babel-plugin-module-resolver",
         {
-          root: ['./src'],
+          root: ["./src"]
         }
       ],
-      'react-native-reanimated/plugin',
+      "react-native-reanimated/plugin"
     ]
   };
 };

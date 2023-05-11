@@ -1,15 +1,16 @@
-import React from "react";
 import {
-  Modal,
-  StyleSheet,
   View,
   Text,
+  Modal,
+  FlatList,
+  StyleSheet,
   TouchableOpacity,
-  FlatList
 } from "react-native";
-import * as Colors from "assets/constants/Colors";
-import { statusBarIOS, width } from "assets/constants/Units";
+import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+
+import * as Colors from "~/assets/constants/Colors";
+import { statusBarIOS, width } from "~/assets/constants/Units";
 
 const AnimatedValues = {
   fontSize1: 40,
@@ -17,9 +18,24 @@ const AnimatedValues = {
   fontSize3: 20
 };
 
-export default class SubCategoryModal extends React.Component {
-  constructor () {
-    super();
+export interface ISubCategoryModalProps {
+  selectedSbCategory: (name: string) => void,
+  subCategoryVisibility: boolean,
+  data: any,
+  closeModal : () => void,
+}
+export interface ISubCategoryModalStates {
+  itemFocus: number;
+  itemClose1: number;
+  itemClose2: number;
+}
+
+export default class SubCategoryModal extends React.Component<ISubCategoryModalProps, ISubCategoryModalStates> {
+  
+  viewabilityConfig: { waitForInteraction: boolean; viewAreaCoveragePercentThreshold: number; };
+
+  constructor (props: ISubCategoryModalProps) {
+    super(props);
     this.state = {
       itemFocus: 6,
       itemClose1: 0,
@@ -31,15 +47,15 @@ export default class SubCategoryModal extends React.Component {
     };
   }
 
-  componentDidMount () {
+  override componentDidMount () {
     console.log("modal rendering");
   }
 
-  scroller = (name) => {
+  scroller = (name: string) => {
     this.props.selectedSbCategory(name);
   };
 
-  onViewableItemsChanged = (ViewTokens) => {
+  onViewableItemsChanged = (ViewTokens: any) => {
     const length = Math.round(ViewTokens.viewableItems.length);
     this.setState({
       itemFocus: ViewTokens.viewableItems[1].index,
@@ -48,13 +64,13 @@ export default class SubCategoryModal extends React.Component {
     });
   };
 
-  textType = (index) => {
+  textType  = (index: number) : "focusedText" | "closeText" | undefined => {
     if (this.state.itemFocus === index) return "focusedText";
     else if (this.state.itemClose1 === index) return "closeText";
     else if (this.state.itemClose2 === index) return "closeText";
   };
 
-  render () {
+  override render () {
     const viewabilityConfig = {
       waitForInteraction: true,
       viewAreaCoveragePercentThreshold: 90,
@@ -97,7 +113,7 @@ export default class SubCategoryModal extends React.Component {
                             <>
                             <TouchableOpacity key={index} onPress={() => this.scroller(item.name)} style={styles.item}>
                               <Text
-                                style={[styles.text, styles[this.textType(index)]]}
+                                style={[styles.text, styles[this.textType(index) ?? "closeText"]]}
                                 key={index}
                               >
                                 {item.name}

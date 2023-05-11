@@ -7,9 +7,9 @@ import {
   GET_ALL_ITEMS_MOSTWATCHED_FAILED,
   GET_ALL_ITEMS_NEWRELEASES,
   GET_ALL_ITEMS_NEWRELEASES_FAILED
-} from "assets/constants/ActionsTypes";
+} from "~/assets/constants/ActionsTypes";
 
-const inisialState = {
+const initialState = {
   loading: true,
   recommended: [],
   trendingNow: [],
@@ -17,7 +17,17 @@ const inisialState = {
   newReleases: []
 };
 
-export const allItems = (state = inisialState, action) => {
+export type IAllItemsAction = {
+  type: string,
+  error?: string,
+  loading?: boolean,
+  recommended?: [],
+  trendingNow?: [],
+  mostWatched?: [],
+  newReleases?: []
+}
+
+export const allItems = (state = initialState, action: IAllItemsAction) => {
   switch (action.type) {
     case GET_ALL_ITEMS_RECOMMENDED:
       return {

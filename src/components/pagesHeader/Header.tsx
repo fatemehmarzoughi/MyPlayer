@@ -1,21 +1,40 @@
 import React from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
-import * as Colors from "assets/constants/Colors";
-import { changeColor } from "components/lightDarkTheme";
-import { width } from "assets/constants/Units";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+
+import context from "~/context/context";
+import { width } from "~/assets/constants/Units";
+import * as Colors from "~/assets/constants/Colors";
+import { changeColor } from "~/components/lightDarkTheme";
 
 const usedWidth = width - 20;
 
-export default class Header extends React.Component {
-  render () {
+export interface IHeaderProps {
+  customClick: () => void;
+  title: string;
+}
+
+export interface IHeaderState {}
+
+export default class Header extends React.Component<
+  IHeaderProps,
+  IHeaderState
+> {
+  declare context: React.ContextType<typeof context>
+
+  override render() {
     return (
-            <View style={[styles.header]}>
-                <TouchableOpacity onPress={this.props.customClick} style={styles.iconBack}>
-                   <Icon name="chevron-left" size={40} color={Colors.white} />
-                </TouchableOpacity>
-                <Text style={[styles.title, changeColor(this.props.theme)]}>{this.props.title}</Text>
-            </View>
+      <View style={[styles.header]}>
+        <TouchableOpacity
+          onPress={this.props.customClick}
+          style={styles.iconBack}
+        >
+          <Icon name="chevron-left" size={40} color={Colors.white} />
+        </TouchableOpacity>
+        <Text style={[styles.title, changeColor(this.context.theme)]}>
+          {this.props.title}
+        </Text>
+      </View>
     );
   }
 }
@@ -27,7 +46,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: usedWidth,
-    flexDirection: "row"
+    flexDirection: "row",
     // margin : 10,
   },
   iconBack: {
@@ -39,12 +58,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    left: 0
+    left: 0,
   },
   title: {
     fontWeight: "bold",
     marginRight: "auto",
     marginLeft: "auto",
-    alignSelf: "flex-start"
-  }
+    alignSelf: "flex-start",
+  },
 });

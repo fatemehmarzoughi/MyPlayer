@@ -1,9 +1,9 @@
 import {
   GET_ALL_MOVIES,
   GET_ALL_MOVIES_FAILED
-} from "assets/constants/ActionsTypes";
+} from "~/assets/constants/ActionsTypes";
 
-const inisialState = {
+const initialState = {
   loadingMovies: true,
   recommendedMovies: [],
   trendingNowMovies: [],
@@ -11,7 +11,17 @@ const inisialState = {
   mostWatchedMovies: []
 };
 
-export const movies = (state = inisialState, action) => {
+export type IMoviesAction = {
+  type: string,
+  error?: string,
+  loadingMovies?: boolean,
+  recommendedMovies?: [],
+  trendingNowMovies?: [],
+  newReleasesMovies?: [],
+  mostWatchedMovies?: []
+}
+
+export const movies = (state = initialState, action: IMoviesAction) => {
   switch (action.type) {
     case GET_ALL_MOVIES:
       return {

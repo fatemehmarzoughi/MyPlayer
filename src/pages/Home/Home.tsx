@@ -1,74 +1,116 @@
-import React from "react";
 import {
   View,
-  TouchableOpacity,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  TouchableOpacity,
 } from "react-native";
-import MainHeader from "components/pagesHeader/MainHeader";
-import Notification from "../../Notification/NotificationSetup";
-import { changeColor } from "components/lightDarkTheme";
-import context from "context/context";
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
   withTiming,
   withRepeat,
   FadeInLeft,
-  FadeOutLeft
+  FadeOutLeft,
+  useSharedValue,
+  useAnimatedStyle,
 } from "react-native-reanimated";
-import { styles } from "./style";
-import { Heading, Text, VStack, FlatList } from "native-base";
+import React from "react";
+import { ConnectedProps, connect } from "react-redux";
+import LottieView from "lottie-react-native";
+import FastImage from "react-native-fast-image";
 import Icon from "react-native-vector-icons/Ionicons";
-import Modal from "components/Modals/subCategoryModal";
-import FlatLists from "components/pagesFlatLists/HomeFlatLists/FlatList";
-import { connect } from "react-redux";
+import { NavigationScreenProp } from "react-navigation";
+import { Heading, Text, VStack, FlatList } from "native-base";
+
 import {
   getAllRecommended,
   getAllMostWatched,
   getAllTrendingNow,
-  getAllNewReleases
-} from "Redux/actions/getAllItems";
+  getAllNewReleases,
+} from "~/Redux/actions/getAllItems";
 import {
-  getBanner
-} from "Redux/actions/getBanner";
-import { getAllMusics } from "Redux/actions/getMusics";
-import { getAllMovies } from "Redux/actions/getMovies";
-import { getAllSports } from "Redux/actions/getSports";
-import { getAllRadio } from "Redux/actions/getRadio";
-import FastImage from "react-native-fast-image";
-import LottieView from "lottie-react-native";
+  getBanner,
+  getAllRadio,
+  getAllMovies,
+  getAllMusics,
+  getAllSports,
+} from "~/Redux/actions";
+import context from "~/context/context";
+import Modal from "~/components/Modals/subCategoryModal";
+import { changeColor } from "~/components/lightDarkTheme";
+import Notification from "~/Notification/NotificationSetup";
+import MainHeader from "~/components/pagesHeader/MainHeader";
+import FlatLists from "~/components/pagesFlatLists/HomeFlatLists/FlatList";
 
-function useHook (Component) {
-  return (props) => {
+import { styles } from "./style";
+
+export type ISubjectCategory = {
+  id: number;
+  name: "Musics" | "All" | "Movies" | "Sports" | "Radio";
+  size: number;
+  subCategory: {
+    name: string;
+  }[];
+};
+
+export interface IHomeProps
+  extends NavigationScreenProp<any, any>,
+    IHomeDispatchProps {
+  navigation: { openDrawer: () => void } & NavigationScreenProp<any, any>;
+
+  animatedStyles: any;
+  offset: { value: number };
+}
+
+export interface IHomeMapState {
+  radio: any;
+  banner: any;
+  musics: any;
+  movies: any;
+  sports: any;
+  allItems: any;
+}
+
+export interface IHomeStates {
+  loading: boolean;
+  dotPosition: number;
+  showAllCategory: number;
+  data: ISubjectCategory[];
+  showSubCategory: boolean;
+  subCategoryTitle: string;
+  selectedCategory: number; // selected category
+  selectedSubCategory: string; // selected subCategory
+  refreshingCategories: boolean;
+  subCategoryVisibility: boolean;
+}
+
+function useHook(Component: React.ComponentClass<IHomeProps, IHomeStates>) {
+  return (props: IHomeProps) => {
     const offset = useSharedValue(5);
 
     const animatedStyles = useAnimatedStyle(() => {
       return {
-
-        transform: [{ translateX: offset.value }]
-
+        transform: [{ translateX: offset.value }],
       };
     });
 
     return (
-            <Component {...props} animatedStyles={animatedStyles} offset={offset} />
+      <Component {...props} animatedStyles={animatedStyles} offset={offset} />
     );
   };
 }
 
-class Home extends React.Component {
-  static contextType = context;
+class Home extends React.Component<IHomeProps, IHomeStates> {
+  declare context: React.ContextType<typeof context>
+  private _isMounted: boolean;
 
-  constructor () {
-    super();
+  constructor(props: IHomeProps) {
+    super(props);
     this.state = {
       data: [
         {
           id: 0,
           name: "All",
           size: 8,
-          subCategory: []
+          subCategory: [],
         },
         {
           id: 1,
@@ -76,18 +118,18 @@ class Home extends React.Component {
           size: 1,
           subCategory: [
             {
-              name: "All"
+              name: "All",
             },
             {
-              name: "Happy"
+              name: "Happy",
             },
             {
-              name: "Sad"
+              name: "Sad",
             },
             {
-              name: "jazz"
-            }
-          ]
+              name: "jazz",
+            },
+          ],
         },
         {
           id: 2,
@@ -95,31 +137,31 @@ class Home extends React.Component {
           size: 1,
           subCategory: [
             {
-              name: "All"
+              name: "All",
             },
             {
-              name: "horror"
+              name: "horror",
             },
             {
-              name: "comedy"
+              name: "comedy",
             },
             {
-              name: "action"
-            }
-          ]
+              name: "action",
+            },
+          ],
         },
         {
           id: 3,
           name: "Sports",
           size: 1,
-          subCategory: []
+          subCategory: [],
         },
         {
           id: 4,
           name: "Radio",
           size: 1,
-          subCategory: []
-        }
+          subCategory: [],
+        },
       ],
 
       dotPosition: 25,
@@ -132,101 +174,127 @@ class Home extends React.Component {
       loading: false,
 
       showAllCategory: 0,
-      refreshingCategories: true
+      refreshingCategories: true,
     };
     this._isMounted = false;
   }
 
   notify = () => {
-    Notification.scheduleNotification(new Date(Date.now() + (5 * 1000)));
+    Notification.scheduleNotification(new Date(Date.now() + 5 * 1000));
   };
 
-  async componentDidMount () {
-    this._isMounted = true;
-    this._isMounted && await this.props.getBanner();
-    this._isMounted && await this.props.getAllRecommended();
-    this._isMounted && await this.props.getAllMostWatched();
-    this._isMounted && await this.props.getAllTrendingNow();
-    this._isMounted && await this.props.getAllNewReleases();
-
-    this._isMounted && await this.props.getAllMusics();
-    this._isMounted && await this.props.getAllMovies();
-    this._isMounted && await this.props.getAllSports();
-    this._isMounted && await this.props.getAllRadio();
-
-    this.props.offset.value = withRepeat(withTiming(0), 10000, true);
-  }
-
-  componentWillUnmount () {
-    this._isMounted = false;
-  }
-
-  categoryPressed = (id) => {
-    this.setState({ refreshingCategories: true });
-    const categoryItems = [...this.state.data];
-    categoryItems.map(item => item.size === 1);
-    categoryItems[id].size = 8;
-    const showSubCategory = categoryItems[id].subCategory.length !== 0;
-    this.setState({
-      data: categoryItems,
-      showSubCategory,
-      subCategoryTitle: categoryItems[id].name,
+  categoryPressed = (id: number) => {
+    this.setState(({ data }) => ({
+      data: data.filter((i) => {
+        if (i.id === id) return data.map((i) => (i.size = 8));
+        else return data;
+      }),
+      showSubCategory: data.find((i) => i.id === id)?.subCategory.length !== 0,
+      subCategoryTitle: data.find((i) => i.id === id)?.name ?? "",
       selectedCategory: id,
       selectedSubCategory: "All",
-      showAllCategory: id
-    });
+      showAllCategory: id,
+
+      refreshingCategories: true,
+    }));
   };
 
   subCategoryOpenModal = () => {
     console.log("modal");
     this.setState({
-      subCategoryVisibility: true
+      subCategoryVisibility: true,
     });
   };
 
-  selectedSbCategory = (selectedSubCategory) => {
+  selectedSbCategory = (selectedSubCategory: string) => {
     this.setState({
       selectedSubCategory,
-      subCategoryVisibility: false
+      subCategoryVisibility: false,
     });
   };
 
   closeModal = () => {
     this.setState({
-      subCategoryVisibility: false
+      subCategoryVisibility: false,
     });
   };
 
   onRefresh = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
     try {
-      this._isMounted && await this.props.getBanner();
-      this._isMounted && await this.props.getAllRecommended();
-      this._isMounted && await this.props.getAllMostWatched();
-      this._isMounted && await this.props.getAllTrendingNow();
-      this._isMounted && await this.props.getAllNewReleases();
+      this._isMounted && (await this.props.getBanner());
+      this._isMounted && (await this.props.getAllRecommended());
+      this._isMounted && (await this.props.getAllMostWatched());
+      this._isMounted && (await this.props.getAllTrendingNow());
+      this._isMounted && (await this.props.getAllNewReleases());
 
-      this._isMounted && await this.props.getAllMusics();
-      this._isMounted && await this.props.getAllMovies();
-      this._isMounted && await this.props.getAllSports();
-      this._isMounted && await this.props.getAllRadio();
+      this._isMounted && (await this.props.getAllMusics());
+      this._isMounted && (await this.props.getAllMovies());
+      this._isMounted && (await this.props.getAllSports());
+      this._isMounted && (await this.props.getAllRadio());
 
-      console.log(this.props.banner.banner[0].largImageUrl);
       this.setState({
-        loading: false
+        loading: false,
       });
-    } catch (err) { console.log(err); };
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  render () {
+  override async componentDidMount() {
+    this._isMounted = true;
+    this._isMounted && (await this.props.getBanner());
+    this._isMounted && (await this.props.getAllRecommended());
+    this._isMounted && (await this.props.getAllMostWatched());
+    this._isMounted && (await this.props.getAllTrendingNow());
+    this._isMounted && (await this.props.getAllNewReleases());
+
+    this._isMounted && (await this.props.getAllMusics());
+    this._isMounted && (await this.props.getAllMovies());
+    this._isMounted && (await this.props.getAllSports());
+    this._isMounted && (await this.props.getAllRadio());
+
+    this.props.offset.value = withRepeat(withTiming(0), 10000, true);
+  }
+
+  override componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  override render() {
     const { loadingBanner, banner } = this.props.banner;
-    const { loading, trendingNow, recommended, newReleases, mostWatched } = this.props.AllItems;
-    const { loadingMusics, trendingNowMusics, recommendedMusics, newReleasesMusics, mostWatchedMusics } = this.props.musics;
-    const { loadingMovies, trendingNowMovies, recommendedMovies, newReleasesMovies, mostWatchedMovies } = this.props.movies;
-    const { loadingSports, trendingNowSports, recommendedSports, newReleasesSports, mostWatchedSports } = this.props.sports;
-    const { loadingRadio, trendingNowRadio, recommendedRadio, newReleasesRadio, mostWatchedRadio } = this.props.radio;
+    const { loading, trendingNow, recommended, newReleases, mostWatched } =
+      this.props.AllItems;
+    const {
+      loadingMusics,
+      trendingNowMusics,
+      recommendedMusics,
+      newReleasesMusics,
+      mostWatchedMusics,
+    } = this.props.musics;
+    const {
+      loadingMovies,
+      trendingNowMovies,
+      recommendedMovies,
+      newReleasesMovies,
+      mostWatchedMovies,
+    } = this.props.movies;
+    const {
+      loadingSports,
+      trendingNowSports,
+      recommendedSports,
+      newReleasesSports,
+      mostWatchedSports,
+    } = this.props.sports;
+    const {
+      loadingRadio,
+      trendingNowRadio,
+      recommendedRadio,
+      newReleasesRadio,
+      mostWatchedRadio,
+    } = this.props.radio;
 
     let myRecommended, myTrendingNow, myNewReleases, myMostWatched;
     if (this.state.selectedCategory === 0) {
@@ -310,160 +378,178 @@ class Home extends React.Component {
     }
 
     return (
-            <ScrollView
-              refreshControl = {
-                <RefreshControl
-                  refreshing = {this.state.loading}
-                  onRefresh = {() => this.onRefresh()}
-                />
-              }
-            >
-                <MainHeader
-                  searchOnPress={() => this.props.navigation.navigate("Search") }
-                  menuOnPress={() => this.props.navigation.openDrawer()}
-                />
-                {/* Top Banner */}
-                <View style={styles.banner}>
-                   <FastImage
-                       alt="Audio/Video of the Day"
-                       style={styles.bannerImage}
-                       source={{
-                         uri: banner[0].largImageUrl,
-                         priority: FastImage.priority.high
-                       }}
-                       resizeMode={FastImage.resizeMode.cover}
-                   />
-                  <View style={styles.bannerContent}>
-                    <VStack space={2}>
-                      <Text style={styles.texts} fontSize="lg">Audio/Video of the day</Text>
-                      <Heading style={styles.texts} bold fontSize="2xl">The Item's Title</Heading>
-                      <TouchableOpacity>
-                        <VStack flexDirection='row'>
-                          <Text style={styles.texts} fontSize="sm" italic>Watch Now</Text>
-                          <Animated.View style={[this.props.animatedStyles]}>
-                             <Icon name="return-down-back-outline" style={[styles.icon]} />
-                          </Animated.View>
-                        </VStack>
-                      </TouchableOpacity>
-                    </VStack>
-                  </View>
-                </View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.loading}
+            onRefresh={() => this.onRefresh()}
+          />
+        }
+      >
+        <MainHeader
+          searchOnPress={() => this.props.navigation.navigate("Search")}
+          menuOnPress={() => this.props.navigation.openDrawer()}
+        />
+        {/* Top Banner */}
+        <View style={styles.banner}>
+          <FastImage
+            style={styles.bannerImage}
+            source={{
+              uri: banner[0].largImageUrl,
+              priority: FastImage.priority.high,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
+          />
+          <View style={styles.bannerContent}>
+            <VStack space={2}>
+              <Text style={styles.texts} fontSize="lg">
+                Audio/Video of the day
+              </Text>
+              <Heading style={styles.texts} bold fontSize="2xl">
+                The Item's Title
+              </Heading>
+              <TouchableOpacity>
+                <VStack flexDirection="row">
+                  <Text style={styles.texts} fontSize="sm" italic>
+                    Watch Now
+                  </Text>
+                  <Animated.View style={[this.props.animatedStyles]}>
+                    <Icon
+                      name="return-down-back-outline"
+                      style={[styles.icon]}
+                    />
+                  </Animated.View>
+                </VStack>
+              </TouchableOpacity>
+            </VStack>
+          </View>
+        </View>
 
-                {/* Category Tabs */}
-                <FlatList
-                  showsHorizontalScrollIndicator={false}
-                  horizontal
-                  data={this.state.data}
-                  keyExtractor={(item) => item.id.toString()}
-                  renderItem = {({ item }) => (
-                      <VStack alignItems="center">
-                          <Text onPress={() => this.categoryPressed(item.id)} style={[styles.categoryName, changeColor(this.context.theme)]}>
-                            {item.name}
-                          </Text>
-                          <Icon style={[changeColor(this.context.theme)]} size={item.size} name="ellipse" />
-                      </VStack>
-                  )}
-                />
+        {/* Category Tabs */}
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          data={this.state.data}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <VStack alignItems="center">
+              <Text
+                onPress={() => this.categoryPressed(item.id)}
+                style={[styles.categoryName, changeColor(this.context.theme)]}
+              >
+                {item.name}
+              </Text>
+              <Icon
+                style={[changeColor(this.context.theme)]}
+                size={item.size}
+                name="ellipse"
+              />
+            </VStack>
+          )}
+        />
 
-                {/* Sub Category Tab */}
-                <>
-                {this.state.showSubCategory
-                  ? (
-                <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
-                    <VStack flexDirection="row" style={styles.subCategory}>
-                       <Text style={changeColor(this.context.theme)}>{this.state.subCategoryTitle} &gt; </Text>
-                       <TouchableOpacity
-                         onPress={() => this.subCategoryOpenModal()}
-                         style={[styles.selectSubCategory]}
-                        >
-                          <VStack flexDirection="row" alignItems="center">
-                            <Text>{this.state.selectedSubCategory} </Text>
-                            <Icon name="chevron-down-outline" />
-                          </VStack>
-                       </TouchableOpacity>
+        {/* Sub Category Tab */}
+        <>
+          {this.state.showSubCategory ? (
+            <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
+              <VStack flexDirection="row" style={styles.subCategory}>
+                <Text style={changeColor(this.context.theme)}>
+                  {this.state.subCategoryTitle} &gt;{" "}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => this.subCategoryOpenModal()}
+                  style={[styles.selectSubCategory]}
+                >
+                  <VStack flexDirection="row" alignItems="center">
+                    <Text>{this.state.selectedSubCategory} </Text>
+                    <Icon name="chevron-down-outline" />
+                  </VStack>
+                </TouchableOpacity>
+              </VStack>
+            </Animated.View>
+          ) : (
+            <Text></Text>
+          )}
+        </>
 
-                    </VStack>
-                </Animated.View>
-                    )
-                  : (
-                    <Text></Text>
-                    )}
-                </>
-
-            <>
-            {this.state.refreshingCategories
-              ? <LottieView
-                  loop={true}
-                  autoPlay={true}
-                  source={require("../../assets/Images/loading.json")}
-                  size={10}
-                  style={{ width: 50, height: 50, marginLeft: "auto", marginRight: "auto" }}
-                />
-              : <View>
-                {/* <FlatLists
+        <>
+          {this.state.refreshingCategories ? (
+            <LottieView
+              loop={true}
+              autoPlay={true}
+              source={require("../../assets/Images/loading.json")}
+              style={{
+                width: 50,
+                height: 50,
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            />
+          ) : (
+            <View>
+              {/* <FlatLists
                  title="My Playlist"
                  data = {this.state.falstListData}
                  type = "small"
                  onPress={(id) => console.log(id)}
                 /> */}
 
-                <FlatLists
-                 title="Recommended"
-                 data = {myRecommended}
-                 type = "medium"
+              <FlatLists
+                title="Recommended"
+                data={myRecommended}
+                type="medium"
                 //  onPress={(id) => console.log(id)}
-                />
+              />
 
-                <FlatLists
-                 title="Most Watched"
-                 data = {myMostWatched}
-                 type = "medium"
+              <FlatLists
+                title="Most Watched"
+                data={myMostWatched}
+                type="medium"
                 //  onPress={(id) => console.log(id)}
-                />
+              />
 
-                <FlatLists
-                 title="Trending Now"
-                 data = {myTrendingNow}
-                 type = "large"
+              <FlatLists
+                title="Trending Now"
+                data={myTrendingNow}
+                type="large"
                 //  onPress={(id) => console.log(id)}
-                />
+              />
 
-                <FlatLists
-                 title="New Releases"
-                 data = {myNewReleases}
-                 type = "medium"
+              <FlatLists
+                title="New Releases"
+                data={myNewReleases}
+                type="medium"
                 //  onPress={(id) => console.log(id)}
-                />
-
+              />
             </View>
-            }
-            </>
+          )}
+        </>
 
-                <Modal
-                 subCategoryVisibility = {this.state.subCategoryVisibility}
-                 data = {this.state.data[this.state.selectedCategory].subCategory}
-                 selectedCategory = {this.state.selectedCategory}
-                 selectedSbCategory = {this.selectedSbCategory}
-                 closeModal = {this.closeModal}
-                />
-
-                {/* <Text onPress={() => this.notify()}>Text notification</Text>
-                <Text onPress={() => this.props.navigation.openDrawer()}>Text notification</Text> */}
-            </ScrollView>
+        <Modal
+          closeModal={this.closeModal}
+          selectedSbCategory={this.selectedSbCategory}
+          subCategoryVisibility={this.state.subCategoryVisibility}
+          data={
+            this.state.data.find((i) => i.id === this.state.selectedCategory)
+              ?.subCategory
+          }
+        />
+      </ScrollView>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: IHomeMapState) => {
   return {
     AllItems: state.allItems,
     banner: state.banner,
     musics: state.musics,
     movies: state.movies,
     sports: state.sports,
-    radio: state.radio
+    radio: state.radio,
   };
 };
+
 const mapDispatchToProps = {
   getBanner,
   getAllRecommended,
@@ -474,7 +560,11 @@ const mapDispatchToProps = {
   getAllMusics,
   getAllMovies,
   getAllSports,
-  getAllRadio
+  getAllRadio,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(useHook(Home));
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export type IHomeDispatchProps = ConnectedProps<typeof connector>;
+
+export default connector(useHook(Home));

@@ -1,138 +1,157 @@
 import React from "react";
-import Context from "./context";
-import { SITE_URL } from "assets/constants/General";
-import { getData, storeData } from "LocalStorage/AsyncStorageData";
 
-export default class ContextProvider extends React.Component {
-  constructor () {
-    super();
+import Context from "~/context/context";
+import { SITE_URL } from "~/assets/constants/General";
+import { getData, storeData } from "~/LocalStorage/AsyncStorageData";
+
+export type IContextProviderProps = {};
+export type IContextProviderState = {
+  isRotate: boolean;
+  isLogin: boolean;
+  accessToken: string;
+  isFirstInstallation: boolean;
+  userName: string;
+  userCountry: string;
+  userEmail: string;
+  userImage: string;
+  theme: boolean; // light = true , dark = false
+  isAuthPage: boolean;
+};
+export default class ContextProvider extends React.Component<
+  IContextProviderProps,
+  IContextProviderState
+> {
+  constructor(props: IContextProviderProps) {
+    super(props);
 
     this.state = {
       isRotate: false,
       isLogin: false,
-      accessToken: 0,
+      accessToken: "",
       isFirstInstallation: false,
       userName: "",
       userCountry: "Select Your Country",
       userEmail: "",
       userImage: `${SITE_URL}/images/makeURLs/default/png`,
       theme: true, // light = true , dark = false
-      isAuthPage: false
+      isAuthPage: false,
     };
   }
 
-  async componentDidMount () {
+  override async componentDidMount() {
     try {
       const theme = await getData("theme");
       console.log("theme is = " + theme);
-      (theme === "true")
+      theme === "true"
         ? this.setState({
-          theme: true
-        })
+            theme: true,
+          })
         : this.setState({
-          theme: false
-        });
-    } catch (err) { console.log(err); }
+            theme: false,
+          });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  setIsRotate = (value) => {
+  setIsRotate = (value: boolean) => {
     this.setState({
-      isRotate: value
+      isRotate: value,
     });
   };
 
-  setIsLogin = (value) => {
+  setIsLogin = (value: boolean) => {
     this.setState({
-      isLogin: value
+      isLogin: value,
     });
   };
 
-  setAccessToken = (value) => {
+  setAccessToken = (value: string) => {
     this.setState({
-      accessToken: value
+      accessToken: value,
     });
   };
 
-  setIsFirstInstallation = (value) => {
+  setIsFirstInstallation = (value: boolean) => {
     this.setState({
-      isFirstInstallation: value
+      isFirstInstallation: value,
     });
   };
 
-  setUserEmail = (value) => {
+  setUserEmail = (value: string) => {
     this.setState({
-      userEmail: value
+      userEmail: value,
     });
   };
 
-  setUserCountry = (value) => {
+  setUserCountry = (value: string) => {
     this.setState({
-      userCountry: value
+      userCountry: value,
     });
   };
 
-  setUserName = (value) => {
+  setUserName = (value: string) => {
     this.setState({
-      userName: value
+      userName: value,
     });
   };
 
-  setUserImage = (value) => {
+  setUserImage = (value: string) => {
     this.setState({
-      userImage: value
+      userImage: value,
     });
   };
 
   setTheme = async () => {
     await storeData("theme", `${this.state.theme}`);
     this.setState({
-      theme: !this.state.theme
+      theme: !this.state.theme,
     });
   };
 
-  setIsAuthPage = (isAuthPage) => {
+  setIsAuthPage = (isAuthPage: boolean) => {
     this.setState({
-      isAuthPage
+      isAuthPage,
     });
   };
 
-  render () {
+  override render() {
     return (
-            <Context.Provider
-             value = {{
-               isRotate: this.state.isRotate,
-               setIsRotate: this.setIsRotate,
+      <Context.Provider
+        value={{
+          isRotate: this.state.isRotate,
+          setIsRotate: this.setIsRotate,
 
-               isLogin: this.state.isLogin,
-               setIsLogin: this.setIsLogin,
+          isLogin: this.state.isLogin,
+          setIsLogin: this.setIsLogin,
 
-               accessToken: this.state.accessToken,
-               setAccessToken: this.setAccessToken,
+          accessToken: this.state.accessToken,
+          setAccessToken: this.setAccessToken,
 
-               isFirstInstallation: this.state.isFirstInstallation,
-               setIsFirstInstallation: this.setIsFirstInstallation,
+          isFirstInstallation: this.state.isFirstInstallation,
+          setIsFirstInstallation: this.setIsFirstInstallation,
 
-               userName: this.state.userName,
-               setUserName: this.setUserName,
+          userName: this.state.userName,
+          setUserName: this.setUserName,
 
-               userEmail: this.state.userEmail,
-               setUserEmail: this.setUserEmail,
+          userEmail: this.state.userEmail,
+          setUserEmail: this.setUserEmail,
 
-               userCountry: this.state.userCountry,
-               setUserCountry: this.setUserCountry,
+          userCountry: this.state.userCountry,
+          setUserCountry: this.setUserCountry,
 
-               userImage: this.state.userImage,
-               setUserImage: this.setUserImage,
+          userImage: this.state.userImage,
+          setUserImage: this.setUserImage,
 
-               theme: this.state.theme,
-               setTheme: this.setTheme,
+          theme: this.state.theme,
+          setTheme: this.setTheme,
 
-               isAuthPage: this.state.isAuthPage,
-               setIsAuthPage: this.setIsAuthPage
-             }}
-            >
-                {this.props.children}
-            </Context.Provider>
+          isAuthPage: this.state.isAuthPage,
+          setIsAuthPage: this.setIsAuthPage,
+        }}
+      >
+        {this.props.children}
+      </Context.Provider>
     );
   }
 }

@@ -1,23 +1,43 @@
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
-import { ScrollView, TextInput, View } from "react-native";
-import { styles } from "./style";
-import { POST } from "API/index";
 import Toast from "react-native-toast-message";
-import { toastMessageDuration } from "assets/constants/Units";
-import SavingModal from "components/Modals/SavingBoxModal";
-import * as Colors from "assets/constants/Colors";
-import { changeBackgroundColor, changeColor } from "components/lightDarkTheme";
-import context from "context/context";
+import { NavigationScreenProp } from "react-navigation";
 
-export default class ResetPassword extends React.Component {
-  static contextType = context;
+import {
+  changeColor,
+  changeBackgroundColor,
+} from "~/components/lightDarkTheme";
+import { POST } from "~/API/index";
+import * as Colors from "~/assets/constants/Colors";
+import SavingModal from "~/components/Modals/SavingBoxModal";
+import { toastMessageDuration } from "~/assets/constants/Units";
 
-  constructor () {
-    super();
+import { styles } from "./style";
+import Header2 from "~/components/pagesHeader/Header2";
+export interface IResetPasswordProps extends NavigationScreenProp<any, any> {
+  navigation: NavigationScreenProp<any, any>;
+}
+export interface IResetPasswordState {
+  oldPass: string;
+  newPass: string;
+  saving: boolean;
+}
+export default class ResetPassword extends React.Component<
+  IResetPasswordProps,
+  IResetPasswordState
+> {
+  constructor(props: IResetPasswordProps) {
+    super(props);
     this.state = {
       oldPass: "",
       newPass: "",
-      saving: false
+      saving: false,
     };
   }
 
@@ -27,12 +47,12 @@ export default class ResetPassword extends React.Component {
 
   onSave = async () => {
     this.setState({
-      saving: true
+      saving: true,
     });
 
     const reqBody = {
       oldPass: this.state.oldPass,
-      newPass: this.state.newPass
+      newPass: this.state.newPass,
     };
 
     try {
@@ -47,10 +67,10 @@ export default class ResetPassword extends React.Component {
           text2: "Your new Password is available for login",
           visibilityTime: toastMessageDuration,
           topOffset: 30,
-          bottomOffset: 40
+          bottomOffset: 40,
         });
         this.setState({
-          saving: false
+          saving: false,
         });
         this.props.navigation.navigate("Profile");
       } else {
@@ -62,11 +82,11 @@ export default class ResetPassword extends React.Component {
           text2: "Please try again",
           visibilityTime: toastMessageDuration,
           topOffset: 30,
-          bottomOffset: 40
+          bottomOffset: 40,
         });
-      };
+      }
       this.setState({
-        saving: false
+        saving: false,
       });
     } catch (err) {
       console.log(err);
@@ -78,62 +98,57 @@ export default class ResetPassword extends React.Component {
         text2: "Please try again",
         visibilityTime: toastMessageDuration,
         topOffset: 30,
-        bottomOffset: 40
+        bottomOffset: 40,
       });
       this.setState({
-        saving: false
+        saving: false,
       });
     }
   };
 
-  handleOldPass = (oldPass) => {
+  handleOldPass = (oldPass: string) => {
     this.setState({
-      oldPass
+      oldPass,
     });
   };
 
-  handleNewPass = (newPass) => {
+  handleNewPass = (newPass: string) => {
     this.setState({
-      newPass
+      newPass,
     });
   };
 
-  render () {
+  override render() {
     return (
-            <ScrollView>
-                <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.container}>
+          <Header2
+            onSave={this.onSave}
+            onCancel={this.onCancel}
+            title="Reset Password"
+          />
 
-                    <View style={styles.header}>
-                        <View style={styles.row1}>
-                           <TouchableOpacity onPress={() => this.onSave()} style={styles.btn}>
-                               <Text style={styles.saveText}>Save</Text>
-                            </TouchableOpacity>
-                           <TouchableOpacity onPress={() => this.onCancel()} style={styles.btn}>
-                               <Text style={[styles.cancelText, changeColor(this.context.theme)]}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text style={styles.title}>Reset Password</Text>
-                        </View>
-                    </View>
-
-                    <TextInput
-                      placeholder="Old Password"
-                      placeholderTextColor={this.context.theme ? Colors.dark : Colors.white}
-                      style={[styles.input, changeBackgroundColor(this.context.theme)]}
-                      secureTextEntry={true}
-                      onChangeText={(input) => this.handleOldPass(input) }
-                    />
-                    <TextInput
-                      placeholder="New Password"
-                      placeholderTextColor={this.context.theme ? Colors.dark : Colors.white}
-                      style={[styles.input, changeBackgroundColor(this.context.theme)]}
-                      secureTextEntry={true}
-                      onChangeText={(input) => this.handleNewPass(input) }
-                    />
-                </View>
-                <SavingModal modalVisible={this.state.saving} />
-            </ScrollView>
+          <TextInput
+            placeholder="Old Password"
+            placeholderTextColor={
+              this.context.theme ? Colors.dark : Colors.white
+            }
+            style={[styles.input, changeBackgroundColor(this.context.theme)]}
+            secureTextEntry={true}
+            onChangeText={(input) => this.handleOldPass(input)}
+          />
+          <TextInput
+            placeholder="New Password"
+            placeholderTextColor={
+              this.context.theme ? Colors.dark : Colors.white
+            }
+            style={[styles.input, changeBackgroundColor(this.context.theme)]}
+            secureTextEntry={true}
+            onChangeText={(input) => this.handleNewPass(input)}
+          />
+        </View>
+        <SavingModal modalVisible={this.state.saving} />
+      </ScrollView>
     );
   }
 }

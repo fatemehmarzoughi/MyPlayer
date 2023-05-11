@@ -8,11 +8,11 @@ const passwordSchema = Joi.object().keys({
   password: Joi.string().min(5).max(20)
 });
 
-function validateEmail (input) {
+export const validateEmail = (input: string) => {
   console.log("validate");
   let validation;
 
-  Joi.validate({ email: input }, emailSchema, function (err, val) {
+  Joi.validate({ email: input }, emailSchema, (err: any, val: any) => {
     if (err) {
       console.log("err = " + err);
       validation = false;
@@ -25,10 +25,10 @@ function validateEmail (input) {
   return validation;
 }
 
-function validatePassword (input) {
+export const validatePassword = (input: string) => {
   let validation;
 
-  Joi.validate({ password: input }, passwordSchema, function (err, val) {
+  Joi.validate({ password: input }, passwordSchema, function (err: any, val: any) {
     if (err) {
       validation = false;
     } else {
@@ -37,6 +37,3 @@ function validatePassword (input) {
   });
   return validation;
 }
-
-module.exports.validateEmail = validateEmail;
-module.exports.validatePassword = validatePassword;

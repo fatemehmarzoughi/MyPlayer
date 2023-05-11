@@ -1,35 +1,49 @@
 import React from "react";
-import { Text, View, ScrollView, TextInput } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { styles } from "./style";
-import Header from "components/pagesHeader/Header";
-import Toast from "react-native-toast-message";
-import { toastMessageDuration } from "assets/constants/Units";
 import LottieView from "lottie-react-native";
-import { POST } from "API/index";
-import context from "context/context";
-import * as Colors from "assets/constants/Colors";
+import Toast from "react-native-toast-message";
+import { NavigationScreenProp } from "react-navigation";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Text, View, ScrollView, TextInput } from "react-native";
 
-export default class ReportABug extends React.Component {
-  static contextType = context;
+import { POST } from "~/API/index";
+import context from "~/context/context";
+import * as Colors from "~/assets/constants/Colors";
+import Header from "~/components/pagesHeader/Header";
+import { toastMessageDuration } from "~/assets/constants/Units";
 
-  constructor () {
-    super();
+import { styles } from "./style";
+
+export interface IReportABugProps extends NavigationScreenProp<any, any> {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+export interface IReportABugStates {
+  input: string;
+  loading: boolean;
+}
+export default class ReportABug extends React.Component<
+  IReportABugProps,
+  IReportABugStates
+> {
+  declare context: React.ContextType<typeof context>
+
+  constructor(props: IReportABugProps) {
+    super(props);
     this.state = {
       input: "",
-      loading: false
+      loading: false,
     };
   }
 
-  handleTextInput = (input) => {
+  handleTextInput = (input: string) => {
     this.setState({
-      input
+      input,
     });
   };
 
   handleReport = async () => {
     this.setState({
-      loading: true
+      loading: true,
     });
     if (this.state.input === "") {
       Toast.show({
@@ -39,16 +53,16 @@ export default class ReportABug extends React.Component {
         text2: "Please explain the bug.",
         visibilityTime: toastMessageDuration,
         topOffset: 30,
-        bottomOffset: 40
+        bottomOffset: 40,
       });
       this.setState({
-        loading: false
+        loading: false,
       });
       return;
     }
 
     const reqBody = {
-      bugExplenation: this.state.input
+      bugExplenation: this.state.input,
     };
 
     try {
@@ -63,10 +77,10 @@ export default class ReportABug extends React.Component {
           text2: "Thanks for the feedback",
           visibilityTime: toastMessageDuration,
           topOffset: 30,
-          bottomOffset: 40
+          bottomOffset: 40,
         });
         this.setState({
-          loading: false
+          loading: false,
         });
       } else {
         Toast.show({
@@ -77,10 +91,10 @@ export default class ReportABug extends React.Component {
           text2: "Please try again",
           visibilityTime: toastMessageDuration,
           topOffset: 30,
-          bottomOffset: 40
+          bottomOffset: 40,
         });
         this.setState({
-          loading: false
+          loading: false,
         });
       }
 
@@ -95,31 +109,44 @@ export default class ReportABug extends React.Component {
         text2: "Please check your network",
         visibilityTime: toastMessageDuration,
         topOffset: 30,
-        bottomOffset: 40
+        bottomOffset: 40,
       });
       this.setState({
-        loading: false
+        loading: false,
       });
     }
   };
 
-  render () {
+  override render() {
     return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <Header theme={this.context.theme} title="Report a Bug" customClick={() => this.props.navigation.navigate("Profile")}/>
-                    <TextInput
-                    placeholder = "Your explenation goes here ... "
-                    placeholderTextColor = {this.context.theme ? Colors.dark : Colors.white}
-                    style={styles.input}
-                    onChangeText={(input) => this.handleTextInput(input) }
-                    />
-                    <TouchableOpacity style={styles.btn} onPress={() => this.handleReport()}>
-                        <LottieView style={this.state.loading ? { opacity: 1 } : { opacity: 0 }} autoPlay={true} loop={true} source={require("../../../assets/Images/loading.json")} />
-                        <Text style={styles.btnText}>Report</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
+      <ScrollView>
+        <View style={styles.container}>
+          <Header
+            title="Report a Bug"
+            customClick={() => this.props.navigation.navigate("Profile")}
+          />
+          <TextInput
+            placeholder="Your explenation goes here ... "
+            placeholderTextColor={
+              this.context.theme ? Colors.dark : Colors.white
+            }
+            style={styles.input}
+            onChangeText={(input) => this.handleTextInput(input)}
+          />
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => this.handleReport()}
+          >
+            <LottieView
+              style={this.state.loading ? { opacity: 1 } : { opacity: 0 }}
+              autoPlay={true}
+              loop={true}
+              source={require("../../../assets/Images/loading.json")}
+            />
+            <Text style={styles.btnText}>Report</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
 }

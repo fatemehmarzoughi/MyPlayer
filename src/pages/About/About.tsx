@@ -1,28 +1,33 @@
 import React from "react";
-import MainHeader from "components/pagesHeader/MainHeader";
-import { View, TouchableOpacity, ScrollView } from "react-native";
-import context from "context/context";
-import {
-  changeBackgroundColor,
-  changeBackgroundColor2,
-  changeColor,
-} from "components/lightDarkTheme";
 import { VStack, Text, Button } from "native-base";
-import { styles } from "./style";
 import Collapsible from "react-native-collapsible";
 import Icon from "react-native-vector-icons/Ionicons";
+import { NavigationScreenProp } from "react-navigation";
+import { View, TouchableOpacity, ScrollView } from "react-native";
+
+import {
+  changeColor,
+  changeBackgroundColor,
+  changeBackgroundColor2,
+} from "~/components/lightDarkTheme";
+import context from "~/context/context";
+import MainHeader from "~/components/pagesHeader/MainHeader";
+
+import { styles } from "./style";
 
 export type IAboutState = {
   item1IsCollapse: boolean;
   item2IsCollapse: boolean;
 };
 
-export type IAboutProps = {};
+export interface IAboutProps extends NavigationScreenProp<any, any> {
+  navigation: { openDrawer: () => void } & NavigationScreenProp<any, any>;
+}
 
 export default class About extends React.Component<IAboutProps, IAboutState> {
-  static contextType = context;
+  declare context: React.ContextType<typeof context>
 
-  constructor(props) {
+  constructor(props: IAboutProps) {
     super(props);
     this.state = {
       item1IsCollapse: false,
@@ -30,7 +35,7 @@ export default class About extends React.Component<IAboutProps, IAboutState> {
     };
   }
 
-  collapse = (item) => {
+  collapse = (item: number) => {
     switch (item) {
       case 0:
         this.setState({ item1IsCollapse: !this.state.item1IsCollapse });
@@ -41,7 +46,7 @@ export default class About extends React.Component<IAboutProps, IAboutState> {
     }
   };
 
-  render() {
+  override render() {
     return (
       <View style={[changeBackgroundColor(this.context.theme), { flex: 1 }]}>
         <MainHeader

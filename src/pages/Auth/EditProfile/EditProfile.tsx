@@ -1,30 +1,63 @@
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
-import { ScrollView, Text, View, Image, TextInput, TouchableOpacity } from "react-native";
-import { styles } from "./style";
-import Context from "context/context";
-import ModalClass from "components/Modals/QuestionBoxModal";
-import SavingModal from "components/Modals/SavingBoxModal";
-import CountryPicker, { DARK_THEME } from "react-native-country-picker-modal";
-import Icon from "react-native-vector-icons/EvilIcons";
-import * as Colors from "assets/constants/Colors";
-import { DELETE, POST } from "API/index";
-import { storeData } from "LocalStorage/AsyncStorageData";
 import Toast from "react-native-toast-message";
-import { toastMessageDuration } from "assets/constants/Units";
-import { changeColor, changeBackgroundColor } from "components/lightDarkTheme";
+import Icon from "react-native-vector-icons/EvilIcons";
+import { NavigationScreenProp } from "react-navigation";
+import CountryPicker, {
+  DARK_THEME,
+  TranslationLanguageCodeList,
+  TranslationLanguageCodeMap,
+} from "react-native-country-picker-modal";
 
-export default class EditProfile extends React.Component {
-  static contextType = Context;
+import {
+  changeColor,
+  changeBackgroundColor,
+} from "~/components/lightDarkTheme";
+import Context from "~/context/context";
+import { DELETE, POST } from "~/API/index";
+import * as Colors from "~/assets/constants/Colors";
+import { storeData } from "~/LocalStorage/AsyncStorageData";
+import SavingModal from "~/components/Modals/SavingBoxModal";
+import ModalClass from "~/components/Modals/QuestionBoxModal";
+import { toastMessageDuration } from "~/assets/constants/Units";
 
-  constructor () {
-    super();
+import { styles } from "./style";
+
+export interface IEditProfileProps extends NavigationScreenProp<any, any> {
+  navigation: NavigationScreenProp<any, any>;
+}
+export interface IEditProfileState {
+  name: string;
+  email: string;
+  saving: boolean;
+  modalVisible: boolean;
+  countrySelectorVisibility: boolean;
+  choosedCountry: string | TranslationLanguageCodeMap;
+  countryCode?: string | TranslationLanguageCodeMap;
+  countryFlag?: string;
+}
+export default class EditProfile extends React.Component<
+  IEditProfileProps,
+  IEditProfileState
+> {
+  declare context: React.ContextType<typeof Context>
+
+  constructor(props: IEditProfileProps) {
+    super(props);
     this.state = {
       modalVisible: false,
       countrySelectorVisibility: false,
-      choosedCountry: "",
+      choosedCountry: TranslationLanguageCodeList["0"],
       name: "",
       email: "",
-      saving: false
+      saving: false,
     };
   }
 
@@ -40,16 +73,16 @@ export default class EditProfile extends React.Component {
   cancelModal = () => {
     console.log("cancel modal");
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
   };
 
   handleDeleteAccount = async () => {
     try {
       const result = await DELETE("/editProfile/deleteAccount");
-      const message = await result.text();
-      console.log(message);
-      if (result.status === 200) {
+      const message = await (result as any).text();
+
+      if ((result as { status: number }).status === 200) {
         await storeData("accessToken", "");
         this.context.setIsLogin(false);
         this.props.navigation.navigate("Auth");
@@ -61,7 +94,7 @@ export default class EditProfile extends React.Component {
           topOffset: 30,
           bottomOffset: 40,
           visibilityTime: toastMessageDuration,
-          autoHide: true
+          autoHide: true,
         });
       } else {
         Toast.show({
@@ -72,7 +105,7 @@ export default class EditProfile extends React.Component {
           topOffset: 30,
           bottomOffset: 40,
           visibilityTime: toastMessageDuration,
-          autoHide: true
+          autoHide: true,
         });
       }
     } catch (err) {
@@ -82,32 +115,32 @@ export default class EditProfile extends React.Component {
 
   showModal = () => {
     this.setState({
-      modalVisible: true
+      modalVisible: true,
     });
   };
 
-  handleName = (name) => {
+  handleName = (name: string) => {
     this.setState({
-      name
+      name,
     });
   };
 
-  handleEmail = (email) => {
+  handleEmail = (email: string) => {
     this.setState({
-      email
+      email,
     });
   };
 
   onSave = async () => {
     this.setState({
-      saving: true
+      saving: true,
     });
 
     const reqBodyUserInfo = {
       name: this.state.name,
       email: this.state.email,
       country: this.state.choosedCountry,
-      imageURL: this.context.userImage
+      imageURL: this.context.userImage,
     };
 
     try {
@@ -124,10 +157,10 @@ export default class EditProfile extends React.Component {
           autoHide: true,
           visibilityTime: toastMessageDuration,
           topOffset: 30,
-          bottomOffset: 40
+          bottomOffset: 40,
         });
         this.setState({
-          saving: false
+          saving: false,
         });
         this.props.navigation.navigate("Profile");
       } else {
@@ -139,10 +172,10 @@ export default class EditProfile extends React.Component {
           autoHide: true,
           visibilityTime: toastMessageDuration,
           topOffset: 30,
-          bottomOffset: 40
+          bottomOffset: 40,
         });
         this.setState({
-          saving: false
+          saving: false,
         });
       }
     } catch (err) {
@@ -155,15 +188,18 @@ export default class EditProfile extends React.Component {
         autoHide: true,
         visibilityTime: toastMessageDuration,
         topOffset: 30,
-        bottomOffset: 40
+        bottomOffset: 40,
       });
       this.setState({
-        saving: false
+        saving: false,
       });
     }
   };
 
-  shouldComponentUpdate (nextProps, nextState) {
+  override shouldComponentUpdate(
+    nextProps: IEditProfileProps,
+    nextState: IEditProfileState
+  ) {
     if (this.props !== nextProps) {
       return true;
     }
@@ -173,81 +209,114 @@ export default class EditProfile extends React.Component {
     return false;
   }
 
-  render () {
+  override render() {
     return (
-            <ScrollView>
-                <View style={[styles.container]}>
+      <ScrollView>
+        <View style={[styles.container]}>
+          <View style={styles.header}>
+            <View style={styles.row1}>
+              <TouchableOpacity
+                onPress={() => this.onSave()}
+                style={styles.btn}
+              >
+                <Text style={styles.saveText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.onCancel()}
+                style={styles.btn}
+              >
+                <Text
+                  style={[styles.cancelText, changeColor(this.context.theme)]}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text style={styles.title}>Edit Profile</Text>
+            </View>
+          </View>
 
-                    <View style={styles.header}>
-                        <View style={styles.row1}>
-                           <TouchableOpacity onPress={() => this.onSave()} style={styles.btn}>
-                               <Text style={styles.saveText}>Save</Text>
-                            </TouchableOpacity>
-                           <TouchableOpacity onPress={() => this.onCancel()} style={styles.btn}>
-                               <Text style={[styles.cancelText, changeColor(this.context.theme)]}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text style={styles.title}>Edit Profile</Text>
-                        </View>
-                    </View>
-
-                    <Image style={styles.image} source={{ uri: this.context.userImage }} />
-                    <Text onPress={() => this.changeProfilePhoto()} style={[styles.changePhoto, changeColor(this.context.theme)]}>Change Profile Photo</Text>
-                    <View style={styles.inputs}>
-                        <TextInput
-                          placeholder = {this.context.userName}
-                          placeholderTextColor = {this.context.theme ? Colors.dark : Colors.white}
-                          style={[styles.input, changeBackgroundColor(this.context.theme)]}
-                          onChangeText={(input) => this.handleName(input)}
-                        />
-                        <TextInput
-                          placeholder = {this.context.userEmail}
-                          placeholderTextColor = {this.context.theme ? Colors.dark : Colors.white}
-                          style={[styles.input, changeBackgroundColor(this.context.theme)]}
-                          onChangeText={(input) => this.handleEmail(input)}
-                        />
-                        <TouchableOpacity style={[styles.input, changeBackgroundColor(this.context.theme)]} onPress={() => this.setState({ countrySelectorVisibility: true })}>
-                            <CountryPicker
-                              theme={this.context.theme ? "" : DARK_THEME}
-                              preferredCountries={["US", "IR"]}
-                              withFilter={true}
-                              withCountryNameButton={true}
-                              withFlag={true}
-                              withEmoji={true}
-                              placeholder={(this.state.choosedCountry === "") ? this.context.userCountry : this.state.choosedCountry}
-                              onSelect={(val) => {
-                                this.setState({
-                                  countryCode: val.name,
-                                  choosedCountry: val.name
-                                });
-                                this.setState({ countryFlag: val.flag });
-                              }}
-                              onClose = {() => {
-                                this.setState({
-                                  countrySelectorVisibility: false
-                                });
-                              }}
-                              visible = {this.state.countrySelectorVisibility}
-                            />
-                            <Icon name="chevron-down" size={40} color={Colors.gray}/>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={() => this.showModal()} style={[styles.deleteBtn, changeBackgroundColor(this.context.theme)]}>
-                        <Text style={[styles.deleteBtnText]}>Delete Account</Text>
-                    </TouchableOpacity>
-                    <ModalClass
-                      question="Are you sure, you want to delete your account?"
-                      modalVisible={this.state.modalVisible}
-                      btnTitle="Delete Account"
-                      handleMainBtn = {() => this.handleDeleteAccount()}
-                      handleCancelBtn = {() => this.cancelModal()}
-                    />
-                    <SavingModal
-                     modalVisible = {this.state.saving}
-                    />
-                </View>
-            </ScrollView>
+          <Image
+            style={styles.image}
+            source={{ uri: this.context.userImage }}
+          />
+          <Text
+            onPress={() => this.changeProfilePhoto()}
+            style={[styles.changePhoto, changeColor(this.context.theme)]}
+          >
+            Change Profile Photo
+          </Text>
+          <View style={styles.inputs}>
+            <TextInput
+              placeholder={this.context.userName}
+              placeholderTextColor={
+                this.context.theme ? Colors.dark : Colors.white
+              }
+              style={[styles.input, changeBackgroundColor(this.context.theme)]}
+              onChangeText={(input) => this.handleName(input)}
+            />
+            <TextInput
+              placeholder={this.context.userEmail}
+              placeholderTextColor={
+                this.context.theme ? Colors.dark : Colors.white
+              }
+              style={[styles.input, changeBackgroundColor(this.context.theme)]}
+              onChangeText={(input) => this.handleEmail(input)}
+            />
+            <TouchableOpacity
+              style={[styles.input, changeBackgroundColor(this.context.theme)]}
+              onPress={() => this.setState({ countrySelectorVisibility: true })}
+            >
+              <CountryPicker
+                // theme={this.context.theme ? "" : DARK_THEME}
+                preferredCountries={["US", "IR"]}
+                withFilter={true}
+                withCountryNameButton={true}
+                withFlag={true}
+                withEmoji={true}
+                // placeholder={
+                //   this.state.choosedCountry === ""
+                //     ? this.context.userCountry
+                //     : this.state.choosedCountry
+                // }
+                onSelect={(val) => {
+                  this.setState({
+                    countryCode: val.name,
+                    choosedCountry: val.name,
+                  });
+                  this.setState({ countryFlag: val.flag });
+                }}
+                onClose={() => {
+                  this.setState({
+                    countrySelectorVisibility: false,
+                  });
+                }}
+                visible={this.state.countrySelectorVisibility}
+                countryCode={"AF"}
+              />
+              <Icon name="chevron-down" size={40} color={Colors.gray} />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            onPress={() => this.showModal()}
+            style={[
+              styles.deleteBtn,
+              changeBackgroundColor(this.context.theme),
+            ]}
+          >
+            <Text style={[styles.deleteBtnText]}>Delete Account</Text>
+          </TouchableOpacity>
+          <ModalClass
+            question="Are you sure, you want to delete your account?"
+            modalVisible={this.state.modalVisible}
+            btnTitle="Delete Account"
+            handleMainBtn={() => this.handleDeleteAccount()}
+            handleCancelBtn={() => this.cancelModal()}
+          />
+          <SavingModal modalVisible={this.state.saving} />
+        </View>
+      </ScrollView>
     );
   }
 }

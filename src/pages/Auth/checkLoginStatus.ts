@@ -1,7 +1,7 @@
 
-import { getData } from "LocalStorage/AsyncStorageData";
+import { getData } from "~/LocalStorage/AsyncStorageData";
 
-export const checkLoginStatus = async (setIsLogin) => {
+export const checkLoginStatus = async (setIsLogin: (value: boolean) => void) => {
   try {
     const accessToken = await getData("accessToken");
     if (accessToken !== null && accessToken !== "") {

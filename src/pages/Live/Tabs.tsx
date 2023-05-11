@@ -1,13 +1,14 @@
-import * as React from "react";
-import { useWindowDimensions, StyleSheet } from "react-native";
-import { TabView, TabBar } from "react-native-tab-view";
-import * as Colors from "assets/constants/Colors";
-import Radio from "./RadioTab/Radio";
-import TV from "./TVTab/TV";
-import Stared from "./StaredTab/Stared";
+import { useCallback, useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useWindowDimensions, StyleSheet } from "react-native";
+import { TabView, TabBar, Route } from "react-native-tab-view";
 
-const renderScene = ({ route }) => {
+import TV from "~/pages/Live/TVTab/TV";
+import Radio from "~/pages/Live/RadioTab/Radio";
+import Stared from "~/pages/Live/StaredTab/Stared";
+import * as Colors from "~/assets/constants/Colors";
+
+const renderScene = useCallback((route: { key: "TV" | "Radio" | "Stared" }) => {
   switch (route.key) {
     case "TV":
       return <TV />;
@@ -21,48 +22,51 @@ const renderScene = ({ route }) => {
     default:
       return null;
   }
-};
+}, []);
 
-const renderTabBar = props => (
-  <TabBar
-    {...props}
-    renderIcon={({ route, focused, color }) => (
-      (route.key === "Stared")
-        ? (
-       <Icon
-         name={focused ? "star" : "star-outline"}
-         color={color}
-         size={20}
-       />
-          )
-        : (null)
-    )}
-    // indicatorStyle={{ backgroundColor: Colors.white }}
-    style={{ backgroundColor: null }}
-    activeColor={Colors.mainColor}
-    inactiveColor={Colors.dark}
-    indicatorStyle={{
-      backgroundColor: Colors.mainColor
-    }}
-  />
-);
+const renderTabBar = useCallback((props: any) => {
+  return (
+    <TabBar
+      renderIcon={({ route, focused, color }) =>
+        route.key === "Stared" ? (
+          <Icon
+            name={focused ? "star" : "star-outline"}
+            color={color}
+            size={20}
+          />
+        ) : null
+      }
+      // indicatorStyle={{ backgroundColor: Colors.white }}
+      style={{ backgroundColor: "none" }}
+      activeColor={Colors.mainColor}
+      inactiveColor={Colors.dark}
+      indicatorStyle={{
+        backgroundColor: Colors.mainColor,
+      }}
+      {...props}
+    />
+  );
+}, []);
 
-export default function Tabs () {
+export default function Tabs() {
   const layout = useWindowDimensions();
 
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+  const [routes] = useState<Route[]>([
     { key: "TV", title: "TV" },
     { key: "Radio", title: "Radio" },
-    { key: "Stared", icon: <Icon name="return-down-back-outline" size={20} color="red" /> }
+    {
+      key: "Stared",
+      icon: "return-down-back-outline", // <Icon name="return-down-back-outline" size={20} color="red" />
+    },
   ]);
 
   return (
     <TabView
       style={styles.tab}
-      renderTabBar={renderTabBar}
+      renderTabBar={() => renderTabBar}
       navigationState={{ index, routes }}
-      renderScene={renderScene}
+      renderScene={() => renderScene}
       onIndexChange={setIndex}
       initialLayout={{ width: layout.width }}
     />
@@ -71,6 +75,6 @@ export default function Tabs () {
 
 const styles = StyleSheet.create({
   tab: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });

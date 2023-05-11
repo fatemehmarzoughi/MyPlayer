@@ -2,62 +2,71 @@ import PushNotification from "react-native-push-notification";
 
 const channelIds = {
   notificationOnMessage: "notificationOnMessage",
-  testId: "testId"
+  testId: "testId",
 };
 
 class Notification {
-  constructor () {
+  constructor() {
     PushNotification.configure({
-      onRegister: function (token) {
+      onRegister: (token: string) => {
         console.log(`onRegister notification, token = ${token}`);
       },
-      onNotification: function (notification) {
+      onNotification: (notification: any) => {
         switch (notification.channelId) {
-          case channelIds.notificationOnMessage :
-            console.log("pressed notification (channelId = notificationOnMessage)");
+          case channelIds.notificationOnMessage:
+            console.log(
+              "pressed notification (channelId = notificationOnMessage)"
+            );
             break;
 
-          case channelIds.testId :
+          case channelIds.testId:
             console.log("pressed notification (channelId = testId)");
             break;
         }
       },
       requestPermissions: false,
-      popInitialNotification: true
+      popInitialNotification: true,
     });
 
-    PushNotification.createChannel({
-      channelId: channelIds.notificationOnMessage,
-      channelName: "notificationOnMessage",
-      channelDescription: "Get this when the user turn on the notification in Profile page"
-    }, () => {});
+    PushNotification.createChannel(
+      {
+        channelId: channelIds.notificationOnMessage,
+        channelName: "notificationOnMessage",
+        channelDescription:
+          "Get this when the user turn on the notification in Profile page",
+      },
+      () => {}
+    );
 
-    PushNotification.createChannel({
-      channelId: channelIds.testId,
-      channelName: "test name",
-      channelDescription: "test description"
-    }, () => {});
+    PushNotification.createChannel(
+      {
+        channelId: channelIds.testId,
+        channelName: "test name",
+        channelDescription: "test description",
+      },
+      () => {}
+    );
 
-    PushNotification.getScheduledLocalNotifications((rn) => {
+    PushNotification.getScheduledLocalNotifications((rn: any) => {
       console.log(`SN --- ${rn}`);
     });
   }
 
-  notifyOnMessage (date) {
+  notifyOnMessage(date: Date) {
     PushNotification.localNotificationSchedule({
       channelId: channelIds.notificationOnMessage,
       title: "Your Notification turn on",
       message: "Get news on time.",
-      date
+      date,
     });
   }
 
-  scheduleNotification (date) {
+  scheduleNotification(date: Date) {
     PushNotification.localNotificationSchedule({
       channelId: channelIds.testId,
       title: "test title",
       message: "test message",
-      date
+      date,
     });
   }
 }

@@ -1,32 +1,69 @@
 import React from "react";
 
-export default React.createContext({
-  isRotate: false,
-  setIsRotate: () => {},
 
-  isLogin: false,
-  setIsLogin: () => {},
+export type ContextType = {
+  isRotate: boolean,
+  setIsRotate: (value: boolean) => void,
+
+  isLogin: boolean,
+  setIsLogin: (value: boolean) => void,
 
   // just a temporary state
-  accessToken: 0,
-  setAccessToken: () => {},
+  accessToken: string,
+  setAccessToken: (value: string) => void,
+
+  isFirstInstallation: boolean,
+  setIsFirstInstallation: (value: boolean) => void,
+
+  userName: string,
+  setUserName: (value: string) => void,
+
+  userCountry: string,
+  setUserCountry: (value: string) => void,
+
+  userEmail: string,
+  setUserEmail: (value: string) => void,
+
+  userImage: string,
+  setUserImage: (value: string) => void,
+
+  theme: boolean,
+  setTheme: (value: boolean) => void,
+
+  isAuthPage: boolean,
+  setIsAuthPage: (value: boolean) => void,
+}
+
+
+export default React.createContext({
+  isRotate: false,
+  setIsRotate: (value: boolean) => {},
+
+  isLogin: false,
+  setIsLogin: (value: boolean) => {},
+
+  // just a temporary state
+  accessToken: "",
+  setAccessToken: (value: string) => {},
 
   isFirstInstallation: false,
-  setIsFirstInstallation: () => {},
+  setIsFirstInstallation: (value: boolean) => {},
 
   userName: "",
-  setUserName: () => {},
+  setUserName: (value: string) => {},
+
   userCountry: "",
-  setUserCountry: () => {},
+  setUserCountry: (value: string) => {},
+
   userEmail: "",
-  setUserEmail: () => {},
+  setUserEmail: (value: string) => {},
+
   userImage: "",
-  setUserImage: () => {},
+  setUserImage: (value: string) => {},
 
   theme: false,
-  setTheme: () => {},
+  setTheme: (value: boolean) => {},
 
   isAuthPage: false,
-  setIsAuthPage: () => {}
-
+  setIsAuthPage: (value: boolean) => {},
 });

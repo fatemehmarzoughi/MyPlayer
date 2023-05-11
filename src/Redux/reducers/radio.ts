@@ -1,9 +1,9 @@
 import {
   GET_ALL_RADIO,
   GET_ALL_RADIO_FAILED
-} from "assets/constants/ActionsTypes";
+} from "~/assets/constants/ActionsTypes";
 
-const inisialState = {
+const initialState = {
   loadingRadio: true,
   recommendedRadio: [],
   mostWatchedRadio: [],
@@ -11,7 +11,17 @@ const inisialState = {
   newReleasesRadio: []
 };
 
-export const radio = (state = inisialState, action) => {
+export type IRadioAction = {
+  type: string,
+  error?: string,
+  loadingRadio?: true,
+  recommendedRadio?: [],
+  mostWatchedRadio?: [],
+  trendingNowRadio?: [],
+  newReleasesRadio?: []
+}
+
+export const radio = (state = initialState, action: IRadioAction) => {
   switch (action.type) {
     case GET_ALL_RADIO:
       return {

@@ -1,9 +1,9 @@
 import {
   GET_ALL_SPORTS,
   GET_ALL_SPORTS_FAILED
-} from "assets/constants/ActionsTypes";
+} from "~/assets/constants/ActionsTypes";
 
-const inisialState = {
+const initialState = {
   loadingSports: true,
   recommendedSports: [],
   trendingNowSports: [],
@@ -11,7 +11,16 @@ const inisialState = {
   mostWatchedSports: []
 };
 
-export const sports = (state = inisialState, action) => {
+export type ISportActions = {
+  type: string,
+  error?: string,
+  recommendedSports?: [],
+  trendingNowSports?: [],
+  newReleasesSports?: [],
+  mostWatchedSports?: []
+}
+
+export const sports = (state = initialState, action: ISportActions) => {
   switch (action.type) {
     case GET_ALL_SPORTS:
       return {

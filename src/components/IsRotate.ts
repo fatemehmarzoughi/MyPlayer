@@ -1,6 +1,6 @@
 import { useEffect, useContext } from "react";
 import { Dimensions } from "react-native";
-import Context from "context/context";
+import Context from "~/context/context";
 
 export default function IsRotate () {
   const context = useContext(Context);

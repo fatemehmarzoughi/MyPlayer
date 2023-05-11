@@ -1,5 +1,9 @@
 {
     "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "~/*": ["src/*"]
+      },
       "allowJs": true,
       "allowSyntheticDefaultImports": true,
       "esModuleInterop": true,
@@ -18,7 +22,8 @@
       "forceConsistentCasingInFileNames": true,
       "noFallthroughCasesInSwitch": true,
       "noImplicitOverride": true,
-      "allowUnreachableCode": false
+      "allowUnreachableCode": false,
+      "noUnusedLocals": true
     },
     "exclude": [
       "node_modules",

@@ -1,24 +1,38 @@
 import React from "react";
-import { Modal, StyleSheet, View, Text } from "react-native";
 import LottieView from "lottie-react-native";
-import { height, width } from "assets/constants/Units";
-import * as Colors from "assets/constants/Colors";
+import { Modal, StyleSheet, View, Text } from "react-native";
 
-export default class SavingModal extends React.Component {
-  render () {
+import { height, width } from "~/assets/constants/Units";
+import * as Colors from "~/assets/constants/Colors";
+
+export interface ISavingModalProps {
+  modalVisible: boolean;
+  cancelModal?: () => void;
+}
+
+export interface ISavingModalStates {}
+export default class SavingModal extends React.Component<
+  ISavingModalProps,
+  ISavingModalStates
+> {
+  override render() {
     return (
-                <Modal
-                visible={this.props.modalVisible}
-                transparent={true}
-                onRequestClose={this.props.cancelModal}
-                >
-                    <View style={styles.container}>
-                        <View style={styles.modalStyle}>
-                            <LottieView loop={true} autoPlay={true} source={require("../../assets/Images/loading.json")} />
-                            <Text style={styles.text}>Saving</Text>
-                        </View>
-                    </View>
-                </Modal>
+      <Modal
+        visible={this.props.modalVisible}
+        transparent={true}
+        onRequestClose={this.props.cancelModal}
+      >
+        <View style={styles.container}>
+          <View style={styles.modalStyle}>
+            <LottieView
+              loop={true}
+              autoPlay={true}
+              source={require("../../assets/Images/loading.json")}
+            />
+            <Text style={styles.text}>Saving</Text>
+          </View>
+        </View>
+      </Modal>
     );
   }
 }
@@ -39,14 +53,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: Colors.mainColor,
     borderStyle: "solid",
-    borderWidth: 5
+    borderWidth: 5,
   },
   text: {
-    color: Colors.white
+    color: Colors.white,
   },
   container: {
     backgroundColor: "rgba(0,0,0,0.6)",
     height,
-    width
-  }
+    width,
+  },
 });

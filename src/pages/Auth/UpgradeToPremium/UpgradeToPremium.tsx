@@ -1,25 +1,41 @@
 import React from "react";
+import { Icon } from "native-base";
 import Toast from "react-native-toast-message";
-import { toastMessageDuration } from "assets/constants/Units";
-import { POST } from "API/index";
-import context from "context/context";
+import { NavigationScreenProp } from "react-navigation";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+
+import { POST } from "~/API/index";
+import context from "~/context/context";
+import * as Colors from "~/assets/constants/Colors";
+import { changeColor } from "~/components/lightDarkTheme";
+import { toastMessageDuration } from "~/assets/constants/Units";
+
 import { styles } from "./style";
-import { changeColor } from "components/lightDarkTheme";
-import * as Colors from "assets/constants/Colors";
+import Header from "~/components/pagesHeader/Header";
 
-export default class UpgradeToPremium extends React.Component {
-  static contextType = context;
+export interface IUpgradeToPremiumProps extends NavigationScreenProp<any, any> {
+  navigation: NavigationScreenProp<any, any>;
+}
 
-  constructor () {
-    super();
+export interface IUpgradeToPremiumStates {
+  selectedPlan: number;
+}
+export default class UpgradeToPremium extends React.Component<
+  IUpgradeToPremiumProps,
+  IUpgradeToPremiumStates
+> {
+  declare context: React.ContextType<typeof context>
+
+  constructor(props: IUpgradeToPremiumProps) {
+    super(props);
     this.state = {
-      selectedPlan: 1
+      selectedPlan: 1,
     };
   }
 
-  selectPlan = (id) => {
+  selectPlan = (id: number) => {
     this.setState({
-      selectedPlan: id
+      selectedPlan: id,
     });
   };
 
@@ -45,7 +61,7 @@ export default class UpgradeToPremium extends React.Component {
     // await Linking.openURL(url);
 
     const reqBody = {
-      planId: this.state.selectedPlan
+      planId: this.state.selectedPlan,
     };
 
     try {
@@ -60,7 +76,7 @@ export default class UpgradeToPremium extends React.Component {
           visibilityTime: toastMessageDuration,
           bottomOffset: 40,
           topOffset: 30,
-          autoHide: true
+          autoHide: true,
         });
       } else {
         Toast.show({
@@ -71,9 +87,9 @@ export default class UpgradeToPremium extends React.Component {
           visibilityTime: toastMessageDuration,
           bottomOffset: 40,
           topOffset: 30,
-          autoHide: true
+          autoHide: true,
         });
-      };
+      }
     } catch (err) {
       console.log(err);
       Toast.show({
@@ -84,40 +100,134 @@ export default class UpgradeToPremium extends React.Component {
         visibilityTime: toastMessageDuration,
         bottomOffset: 40,
         topOffset: 30,
-        autoHide: true
+        autoHide: true,
       });
     }
   };
 
-  render () {
+  override render() {
     return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <Header theme={this.context.theme} title="Choose Your Plan" customClick={() => this.props.navigation.navigate("Profile")} />
-                    <Text style={styles.subTitle}>By choosing our premium account, you can watch with no ads.</Text>
-                    <View style={styles.plans}>
-                        <TouchableOpacity onPress={() => this.selectPlan(1)} style={[styles.plan, (this.state.selectedPlan === 1) ? { borderColor: Colors.mainColor, borderWidth: 3 } : { borderColor: Colors.gray, borderWidth: 1 }]}>
-                            <Icon name="checkmark-outline" size={45} color={(this.state.selectedPlan === 1) ? Colors.mainColor : Colors.gray} />
-                            <View style={styles.planTitle}>
-                                <Text style={[styles.planTitleText, changeColor(this.context.theme), (this.state.selectedPlan === 1) ? { fontWeight: "bold" } : { fontWeight: "normal" }]}>30Days</Text>
-                                <Text style={[styles.planTitleText, changeColor(this.context.theme), (this.state.selectedPlan === 1) ? { fontWeight: "bold" } : { fontWeight: "normal" }]}>12$</Text>
-                            </View>
-                            <Text style={[styles.planSubTitle, (this.state.selectedPlan === 1) ? { color: Colors.mainColor } : { color: Colors.gray }]}>Premium Account</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.selectPlan(2)} style={[styles.plan, (this.state.selectedPlan === 2) ? { borderColor: Colors.mainColor, borderWidth: 3 } : { borderColor: Colors.gray, borderWidth: 1 }]}>
-                            <Icon name="checkmark-outline" size={45} color={(this.state.selectedPlan === 2) ? Colors.mainColor : Colors.gray} />
-                            <View style={styles.planTitle}>
-                                <Text style={[styles.planTitleText, changeColor(this.context.theme), (this.state.selectedPlan === 2) ? { fontWeight: "bold" } : { fontWeight: "normal" }]}>30Days</Text>
-                                <Text style={[styles.planTitleText, changeColor(this.context.theme), (this.state.selectedPlan === 2) ? { fontWeight: "bold" } : { fontWeight: "normal" }]}>12$</Text>
-                            </View>
-                            <Text style={[styles.planSubTitle, (this.state.selectedPlan === 2) ? { color: Colors.mainColor } : { color: Colors.gray }]}>Premium Account</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={() => this.handleSelectPlan()} style={styles.btn}>
-                        <Text style={styles.btnText}>Select Plan</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
+      <ScrollView>
+        <View style={styles.container}>
+          <Header
+            title="Choose Your Plan"
+            customClick={() => this.props.navigation.navigate("Profile")}
+          />
+          <Text style={styles.subTitle}>
+            By choosing our premium account, you can watch with no ads.
+          </Text>
+          <View style={styles.plans}>
+            <TouchableOpacity
+              onPress={() => this.selectPlan(1)}
+              style={[
+                styles.plan,
+                this.state.selectedPlan === 1
+                  ? { borderColor: Colors.mainColor, borderWidth: 3 }
+                  : { borderColor: Colors.gray, borderWidth: 1 },
+              ]}
+            >
+              <Icon
+                name="checkmark-outline"
+                size={45}
+                color={
+                  this.state.selectedPlan === 1 ? Colors.mainColor : Colors.gray
+                }
+              />
+              <View style={styles.planTitle}>
+                <Text
+                  style={[
+                    styles.planTitleText,
+                    changeColor(this.context.theme),
+                    this.state.selectedPlan === 1
+                      ? { fontWeight: "bold" }
+                      : { fontWeight: "normal" },
+                  ]}
+                >
+                  30Days
+                </Text>
+                <Text
+                  style={[
+                    styles.planTitleText,
+                    changeColor(this.context.theme),
+                    this.state.selectedPlan === 1
+                      ? { fontWeight: "bold" }
+                      : { fontWeight: "normal" },
+                  ]}
+                >
+                  12$
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.planSubTitle,
+                  this.state.selectedPlan === 1
+                    ? { color: Colors.mainColor }
+                    : { color: Colors.gray },
+                ]}
+              >
+                Premium Account
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.selectPlan(2)}
+              style={[
+                styles.plan,
+                this.state.selectedPlan === 2
+                  ? { borderColor: Colors.mainColor, borderWidth: 3 }
+                  : { borderColor: Colors.gray, borderWidth: 1 },
+              ]}
+            >
+              <Icon
+                name="checkmark-outline"
+                size={45}
+                color={
+                  this.state.selectedPlan === 2 ? Colors.mainColor : Colors.gray
+                }
+              />
+              <View style={styles.planTitle}>
+                <Text
+                  style={[
+                    styles.planTitleText,
+                    changeColor(this.context.theme),
+                    this.state.selectedPlan === 2
+                      ? { fontWeight: "bold" }
+                      : { fontWeight: "normal" },
+                  ]}
+                >
+                  30Days
+                </Text>
+                <Text
+                  style={[
+                    styles.planTitleText,
+                    changeColor(this.context.theme),
+                    this.state.selectedPlan === 2
+                      ? { fontWeight: "bold" }
+                      : { fontWeight: "normal" },
+                  ]}
+                >
+                  12$
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.planSubTitle,
+                  this.state.selectedPlan === 2
+                    ? { color: Colors.mainColor }
+                    : { color: Colors.gray },
+                ]}
+              >
+                Premium Account
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            onPress={() => this.handleSelectPlan()}
+            style={styles.btn}
+          >
+            <Text style={styles.btnText}>Select Plan</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
 }

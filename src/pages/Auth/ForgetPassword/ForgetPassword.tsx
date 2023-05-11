@@ -1,24 +1,43 @@
+import {
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
-import { ScrollView, Text, View, TextInput, TouchableOpacity } from "react-native";
-import Header from "components/pagesHeader/Header";
-import { styles } from "./style";
-import Toast from "react-native-toast-message";
-import { toastMessageDuration } from "assets/constants/Units";
-import { POST } from "API/index";
 import LottieView from "lottie-react-native";
+import Toast from "react-native-toast-message";
+import { NavigationScreenProp } from "react-navigation";
 
-export default class ForgetPassword extends React.Component {
-  constructor () {
-    super();
+import { POST } from "~/API/index";
+import Header from "~/components/pagesHeader/Header";
+import { toastMessageDuration } from "~/assets/constants/Units";
+
+import { styles } from "./style";
+
+export interface IForgetPasswordProps extends NavigationScreenProp<any, any> {
+  navigation: NavigationScreenProp<any, any>;
+}
+export interface IForgetPasswordState {
+  email: string;
+  sending: boolean;
+}
+export default class ForgetPassword extends React.Component<
+  IForgetPasswordProps,
+  IForgetPasswordState
+> {
+  constructor(props: IForgetPasswordProps) {
+    super(props);
     this.state = {
       email: "",
-      sending: false
+      sending: false,
     };
   }
 
   handleSend = async () => {
     this.setState({
-      sending: true
+      sending: true,
     });
     if (this.state.email === "") {
       Toast.show({
@@ -28,16 +47,16 @@ export default class ForgetPassword extends React.Component {
         topOffset: 30,
         bottomOffset: 40,
         autoHide: true,
-        visibilityTime: toastMessageDuration
+        visibilityTime: toastMessageDuration,
       });
       this.setState({
-        sending: false
+        sending: false,
       });
       return;
     }
 
     const reqBody = {
-      email: this.state.email
+      email: this.state.email,
     };
     try {
       const res = await POST("/forgotPassword", reqBody);
@@ -51,10 +70,10 @@ export default class ForgetPassword extends React.Component {
           topOffset: 30,
           bottomOffset: 40,
           autoHide: true,
-          visibilityTime: toastMessageDuration
+          visibilityTime: toastMessageDuration,
         });
         this.setState({
-          sending: false
+          sending: false,
         });
         this.props.navigation.navigate("Login_CreateAccount");
         return;
@@ -67,10 +86,10 @@ export default class ForgetPassword extends React.Component {
           topOffset: 30,
           bottomOffset: 40,
           autoHide: true,
-          visibilityTime: toastMessageDuration
+          visibilityTime: toastMessageDuration,
         });
         this.setState({
-          sending: false
+          sending: false,
         });
         return;
       }
@@ -84,50 +103,62 @@ export default class ForgetPassword extends React.Component {
         topOffset: 30,
         bottomOffset: 40,
         autoHide: true,
-        visibilityTime: toastMessageDuration
+        visibilityTime: toastMessageDuration,
       });
       this.setState({
-        sending: false
+        sending: false,
       });
     }
   };
 
-  handleInput = (email) => {
+  handleInput = (email: string) => {
     this.setState({
-      email
+      email,
     });
   };
 
-  render () {
+  override render() {
     return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <Header
-                      title="Forgot Password"
-                      customClick = {() => this.props.navigation.navigate("Login_CreateAccount")}
-                    />
-                    <Text style={{ textAlign: "center" }}>You will receive an email for reseting the password</Text>
-                    <TextInput
-                      placeholder="Email"
-                      style={styles.input}
-                      onChangeText = {(input) => this.handleInput(input)}
-                    />
-                        <>
-                        {this.state.sending
-                          ? (
-                            <TouchableOpacity style={styles.btn} onPress={() => this.handleSend()}>
-                                <LottieView loop={true} autoPlay={true} source={require("../../../assets/Images/loading.json")} />
-                                <Text style={styles.btnText}>Sending</Text>
-                            </TouchableOpacity>
-                            )
-                          : (
-                            <TouchableOpacity style={styles.btn} onPress={() => this.handleSend()}>
-                                <Text style={styles.btnText}>Send</Text>
-                            </TouchableOpacity>
-                            )}
-                        </>
-                </View>
-            </ScrollView>
+      <ScrollView>
+        <View style={styles.container}>
+          <Header
+            title="Forgot Password"
+            customClick={() =>
+              this.props.navigation.navigate("Login_CreateAccount")
+            }
+          />
+          <Text style={{ textAlign: "center" }}>
+            You will receive an email for reseting the password
+          </Text>
+          <TextInput
+            placeholder="Email"
+            style={styles.input}
+            onChangeText={(input) => this.handleInput(input)}
+          />
+          <>
+            {this.state.sending ? (
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => this.handleSend()}
+              >
+                <LottieView
+                  loop={true}
+                  autoPlay={true}
+                  source={require("../../../assets/Images/loading.json")}
+                />
+                <Text style={styles.btnText}>Sending</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => this.handleSend()}
+              >
+                <Text style={styles.btnText}>Send</Text>
+              </TouchableOpacity>
+            )}
+          </>
+        </View>
+      </ScrollView>
     );
   }
 }

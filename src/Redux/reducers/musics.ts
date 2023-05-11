@@ -1,17 +1,27 @@
 import {
   GET_ALL_MUSICS,
   GET_ALL_MUSICS_FAILED
-} from "assets/constants/ActionsTypes";
+} from "~/assets/constants/ActionsTypes";
 
-const inisialState = {
+const initialState = {
   loadingMusics: true,
-  recommendedMusic: [],
+  recommendedMusics: [],
   mostWatchedMusics: [],
   trendingNowMusics: [],
   newReleasesMusics: []
 };
 
-export const musics = (state = inisialState, action) => {
+export type IMusicsAction = {
+  type: string,
+  error?: string,
+  loadingMusics?: boolean,
+  recommendedMusics?: [],
+  mostWatchedMusics?: [],
+  trendingNowMusics?: [],
+  newReleasesMusics?: []
+}
+
+export const musics = (state = initialState, action: IMusicsAction) => {
   switch (action.type) {
     case GET_ALL_MUSICS:
       return {

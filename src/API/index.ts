@@ -1,7 +1,7 @@
-import { SITE_URL } from "assets/constants/General";
-import { getData } from "LocalStorage/AsyncStorageData";
+import { SITE_URL } from "~/assets/constants/General";
+import { getData } from "~/LocalStorage/AsyncStorageData";
 
-async function DELETE (endpoint) {
+export async function DELETE (endpoint: string) {
   // if(accessToken != 'GoogleToken' && accessToken != null)
   const accessToken = await getData("accessToken");
   console.log(`accessToken in delete method = ${accessToken}`);
@@ -12,7 +12,7 @@ async function DELETE (endpoint) {
       headers: new Headers({
         "Content-Type": "application/json",
         authtoken: accessToken
-      })
+      } as HeadersInit_)
     });
     return res;
   } catch (err) {
@@ -20,10 +20,10 @@ async function DELETE (endpoint) {
   }
 }
 
-async function POST (endpoint, reqBody) {
+export async function POST (endpoint: string, reqBody: any) {
   const url = SITE_URL + endpoint;
   const accessToken = await getData("accessToken");
-  console.log("accessToken on post = " + accessToken);
+
   if (accessToken !== "GoogleToken" && accessToken != null) {
     try {
       const res = await fetch(url, {
@@ -32,13 +32,13 @@ async function POST (endpoint, reqBody) {
         headers: new Headers({
           "Content-Type": "application/json",
           authtoken: accessToken
-        }),
+        } as HeadersInit_),
         body: JSON.stringify(reqBody)
       });
       console.log("res in api func = " + JSON.stringify(res));
       return res;
     } catch
-    (err) { return err.text(); }
+    (err: any) { return err.text(); }
   } else {
     try {
       const res = await fetch(url, {
@@ -53,8 +53,7 @@ async function POST (endpoint, reqBody) {
     (err) { return err; }
   }
 }
-
-async function GetNoToken (endpoint) {
+export const GetNoToken = async (endpoint: string) => {
   const url = SITE_URL + endpoint;
   try {
     const res = await fetch(url, {
@@ -66,7 +65,7 @@ async function GetNoToken (endpoint) {
   (err) { return err; };
 }
 
-async function GET (endpoint, accessToken) {
+export async function GET (endpoint: string, accessToken: string) {
   const url = SITE_URL + endpoint;
   try {
     console.log("accessToken = " + accessToken);
@@ -84,8 +83,3 @@ async function GET (endpoint, accessToken) {
     return err;
   };
 }
-
-module.exports.POST = POST;
-module.exports.GET = GET;
-module.exports.GetNoToken = GetNoToken;
-module.exports.DELETE = DELETE;

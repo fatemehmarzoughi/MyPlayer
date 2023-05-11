@@ -1,27 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import ContextProvider from 'context/contextProvider';
-import AppRoute from 'pages/AppRoute';
-import Toast from 'react-native-toast-message';
-import { getData, storeData } from 'LocalStorage/AsyncStorageData';
-import SplashScreen from 'react-native-splash-screen'
-import LottieView from 'lottie-react-native';
-import { NativeBaseProvider } from 'native-base';
-
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-
-import {mainReducer} from './src/Redux/reducers/index.js';
+import { Provider } from 'react-redux';
+import { StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import LottieView from 'lottie-react-native';
+import Toast from 'react-native-toast-message';
+import { NativeBaseProvider } from 'native-base';
+import { createStore, applyMiddleware } from 'redux';
+import SplashScreen from 'react-native-splash-screen';
 import {composeWithDevTools} from 'redux-devtools-extension';
-const store = createStore(mainReducer, composeWithDevTools(applyMiddleware(thunk)))
 
+import {mainReducer} from '~/Redux/reducers/index.js';
+import { AppRoute } from '~/pages/AppRoute';
+import ContextProvider from '~/context/contextProvider';
+import { getData, storeData } from '~/LocalStorage/AsyncStorageData';
 
-export default class App extends React.Component {
+export interface IAppProps {};
+export interface IAppStates {
+  checkingFirstTimeUsers : boolean,
+  isFirstInstallation : boolean,
+};
 
-  constructor(){
-    super();
+export const store = createStore(mainReducer, composeWithDevTools(applyMiddleware(thunk)))
+
+export default class App extends React.Component<IAppProps, IAppStates> {
+  private _isMount: boolean;
+
+  constructor(props: IAppProps){
+    super(props);
     this.state={
       checkingFirstTimeUsers : true,
       isFirstInstallation : false,
@@ -30,7 +36,7 @@ export default class App extends React.Component {
     this._isMount = false;
   }
 
-  async componentDidMount (){
+  override async componentDidMount (){
     // routingInstrumentation.registerAppContainer(this.appContainer);
     this._isMount = true
     try{
@@ -53,15 +59,15 @@ export default class App extends React.Component {
         })
       }
     }
-    catch{(err) => console.log(err)}
+    catch{(err: any) => console.log(err)}
 
   }
 
-  componentWillUnmount(){
+  override componentWillUnmount(){
     this._isMount = false
   }
   
-  render (){
+  override render (){
 
     if(!this.state.checkingFirstTimeUsers) SplashScreen.hide();
     

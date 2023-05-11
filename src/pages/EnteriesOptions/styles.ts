@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { height, width } from "assets/constants/Units";
-import * as Colors from "assets/constants/Colors";
+import { height, width } from "~/assets/constants/Units";
+import * as Colors from "~/assets/constants/Colors";
 
 export const styles = StyleSheet.create({
   container: {
