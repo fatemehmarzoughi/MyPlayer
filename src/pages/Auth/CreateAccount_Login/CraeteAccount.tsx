@@ -493,7 +493,7 @@ export default class CreateAccount extends React.Component<
             >
               <Icon2 name="chevron-down" size={40} color={Colors.gray} />
               <View>
-                <Text style={styles.text}>{this.state.countryCode}</Text>
+                <Text style={styles.text}>this.state.countryCode</Text>
                 {/* <Icon2 name="chevron-down" size={40} color={gray}/> */}
               </View>
             </TouchableOpacity>

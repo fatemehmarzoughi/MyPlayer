@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
-
-import { registerRootComponent } from "expo";
+import { AppRegistry, Platform } from 'react-native';
 import App from "./App";
 
-registerRootComponent(App as any);
+AppRegistry.registerComponent('MyPlayer', () => App);

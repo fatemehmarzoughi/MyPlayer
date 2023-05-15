@@ -20,9 +20,7 @@ target 'MyPlayer' do
   # end
 
   pod 'react-native-pager-view', :path => '../node_modules/react-native-pager-view'
-
-
+  pod 'expo-modules-core', path: '../node_modules/expo-modules-core/ios'
+  pod 'expo-file-system', path: '../node_modules/expo-file-system/ios'
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
-
-
 end
