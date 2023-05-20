@@ -1,11 +1,3 @@
-import React from "react";
-import LottieView from "lottie-react-native";
-import Toast from "react-native-toast-message";
-import ToggleSwitch from "toggle-switch-react-native";
-import Icon from "react-native-vector-icons/EvilIcons";
-import Icon2 from "react-native-vector-icons/Ionicons";
-import { NavigationScreenProp } from "react-navigation";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
   View,
   Text,
@@ -14,6 +6,14 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
+import React from "react";
+import LottieView from "lottie-react-native";
+import Toast from "react-native-toast-message";
+import ToggleSwitch from "toggle-switch-react-native";
+import Icon from "react-native-vector-icons/EvilIcons";
+import Icon2 from "react-native-vector-icons/Ionicons";
+import { NavigationScreenProp } from "react-navigation";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import { GET } from "~/API/index";
 import Context from "~/context/context";
@@ -45,7 +45,7 @@ export default class Profile extends React.PureComponent<
   IProfileProps,
   IProfileState
 > {
-  declare context: React.ContextType<typeof Context>
+  declare context: React.ContextType<typeof Context>;
   focusListener: any;
 
   constructor(props: IProfileProps) {

@@ -17,6 +17,7 @@ module.exports = function (api) {
       [
         "babel-plugin-module-resolver",
         {
+          extensions: ['.js', '.ts', '.tsx', '.ios.js', '.ios.ts', '.android.js', '.android.ts', '.json'],
           root: ["."],
           alias: {
             "~": path.resolve(__dirname, "src"),

@@ -33,7 +33,7 @@ export default class ChangeProfilePhoto extends React.PureComponent<
   IChangeProfilePhotoProps,
   IChangeProfilePhotoState
 > {
-  declare context: React.ContextType<typeof Context>
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: IChangeProfilePhotoProps) {
     super(props);

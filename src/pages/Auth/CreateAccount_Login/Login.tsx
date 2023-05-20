@@ -3,8 +3,17 @@ import LottieView from "lottie-react-native";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationScreenProp } from "react-navigation";
-import { Text, View, ScrollView, TextInput, TouchableOpacity } from "react-native";
-import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
+import {
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import {
+  GoogleSignin,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
 
 import { POST } from "~/API/index";
 import Context from "~/context/context";
@@ -13,7 +22,10 @@ import { mainColor } from "~/assets/constants/Colors";
 import { changeColor } from "~/components/lightDarkTheme";
 import { storeData } from "~/LocalStorage/AsyncStorageData";
 import { toastMessageDuration } from "~/assets/constants/Units";
-import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from "~/assets/constants/General";
+import {
+  REACT_APP_IOS_CLIENT_ID,
+  REACT_APP_ANDROID_CLIENT_ID,
+} from "~/assets/constants/General";
 
 import { styles } from "./style";
 
@@ -22,24 +34,23 @@ export interface ILoginProps extends NavigationScreenProp<any, any> {
 }
 
 export type ILoginState = {
-  countryCode: string,
-  countrySelectorVisibility: boolean,
-  passwordIconNotVisible: number,
-  passwordIconVisible: number,
-  isVisible: boolean,
-  passwordIsSecure: boolean,
+  countryCode: string;
+  countrySelectorVisibility: boolean;
+  passwordIconNotVisible: number;
+  passwordIconVisible: number;
+  isVisible: boolean;
+  passwordIsSecure: boolean;
 
-  email: string,
-  password: string,
+  email: string;
+  password: string;
 
-  loggingIn: boolean
-}
+  loggingIn: boolean;
+};
 
 export default class Login extends React.Component<ILoginProps, ILoginState> {
-  
-  declare context: React.ContextType<typeof Context>
+  declare context: React.ContextType<typeof Context>;
 
-  constructor (props: ILoginProps) {
+  constructor(props: ILoginProps) {
     super(props);
     this.state = {
       countryCode: "Your Country (Optional)",
@@ -52,7 +63,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
       email: "",
       password: "",
 
-      loggingIn: false
+      loggingIn: false,
     };
   }
 
@@ -66,10 +77,10 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         visibilityTime: toastMessageDuration,
         autoHide: true,
         topOffset: 30,
-        bottomOffset: 40
+        bottomOffset: 40,
       });
       this.setState({
-        loggingIn: false
+        loggingIn: false,
       });
       return false;
     }
@@ -78,14 +89,14 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
 
   handleLogin = async () => {
     this.setState({
-      loggingIn: true
+      loggingIn: true,
     });
 
     if (!this.validation()) return;
 
     POST("/login/user", {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     })
       .then(async (res) => {
         const result = await res.text();
@@ -104,15 +115,15 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             visibilityTime: toastMessageDuration,
             autoHide: true,
             topOffset: 30,
-            bottomOffset: 40
+            bottomOffset: 40,
           });
           this.setState({
-            loggingIn: false
+            loggingIn: false,
           });
           this.props.navigation.navigate("Home");
         } else {
           this.setState({
-            loggingIn: false
+            loggingIn: false,
           });
           Toast.show({
             type: "error",
@@ -122,13 +133,13 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             visibilityTime: toastMessageDuration,
             autoHide: true,
             topOffset: 30,
-            bottomOffset: 40
+            bottomOffset: 40,
           });
         }
       })
       .catch((err) => {
         this.setState({
-          loggingIn: false
+          loggingIn: false,
         });
         Toast.show({
           type: "error",
@@ -138,7 +149,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
           visibilityTime: toastMessageDuration,
           autoHide: true,
           topOffset: 30,
-          bottomOffset: 40
+          bottomOffset: 40,
         });
         console.log("couldnt connect to server = " + err);
       });
@@ -152,7 +163,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     GoogleSignin.configure({
       webClientId,
-      iosClientId
+      iosClientId,
     });
 
     try {
@@ -169,13 +180,13 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         visibilityTime: toastMessageDuration,
         autoHide: true,
         topOffset: 30,
-        bottomOffset: 40
+        bottomOffset: 40,
       });
       this.context.setIsLogin(true);
       this.props.navigation.navigate("Home");
     } catch (err: any) {
       switch (err.code) {
-        case statusCodes.SIGN_IN_CANCELLED :
+        case statusCodes.SIGN_IN_CANCELLED:
           Toast.show({
             type: "error",
             position: "bottom",
@@ -184,10 +195,10 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             autoHide: true,
             visibilityTime: toastMessageDuration,
             topOffset: 30,
-            bottomOffset: 40
+            bottomOffset: 40,
           });
           break;
-        case statusCodes.IN_PROGRESS :
+        case statusCodes.IN_PROGRESS:
           Toast.show({
             type: "error",
             position: "bottom",
@@ -196,10 +207,10 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             autoHide: true,
             topOffset: 30,
             bottomOffset: 40,
-            visibilityTime: toastMessageDuration
+            visibilityTime: toastMessageDuration,
           });
           break;
-        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE :
+        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
           Toast.show({
             type: "error",
             position: "bottom",
@@ -208,7 +219,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             autoHide: true,
             topOffset: 30,
             bottomOffset: 40,
-            visibilityTime: toastMessageDuration
+            visibilityTime: toastMessageDuration,
           });
           break;
       }
@@ -222,14 +233,14 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         passwordIconNotVisible: 1,
         passwordIconVisible: 0,
         isVisible: false,
-        passwordIsSecure: false
+        passwordIsSecure: false,
       });
     } else {
       this.setState({
         passwordIconNotVisible: 0,
         passwordIconVisible: 1,
         isVisible: true,
-        passwordIsSecure: true
+        passwordIsSecure: true,
       });
     }
   };
@@ -238,55 +249,103 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     this.props.navigation.navigate("ForgetPassword");
   };
 
-  override render () {
+  override render() {
     return (
-            <ScrollView>
-               <View style={styles.container}>
-                   <Text style={[styles.mainTitle, changeColor(this.context.theme)]}>Login</Text>
-                   <View style={styles.input}>
-                      <TextInput
-                         style={styles.textInput}
-                         placeholderTextColor={(this.context.theme) ? Colors.gray : Colors.lightGray}
-                         placeholder="Email"
-                         onChangeText = {(input) => { this.setState({ email: input }); }}
-                         autoCapitalize="none"
-                       ></TextInput>
-                   </View>
-                   <View style={styles.input}>
-                      <TextInput
-                         style={styles.textInput}
-                         placeholderTextColor={(this.context.theme) ? Colors.gray : Colors.lightGray}
-                         placeholder="Password"
-                         secureTextEntry={this.state.passwordIsSecure}
-                         onChangeText = {(input) => { this.setState({ password: input }); }}
-                         autoCapitalize="none"
-                       >
-                       </TextInput>
-                       <View style={styles.eyeIconsStyle}>
-                          <Icon onPress={() => this.passwordVisibility()} style={[styles.eyeIconStyle, { opacity: this.state.passwordIconNotVisible }]} name="eye-outline" size={20} color={mainColor} />
-                          <Icon onPress={() => this.passwordVisibility()} style={[styles.eyeIconStyle, { opacity: this.state.passwordIconVisible }]} name="eye-off-outline" size={20} color={mainColor} />
-                       </View>
-                   </View>
-                   <TouchableOpacity onPress={() => this.handleResetPass()} style={styles.resetPassword}>
-                       <Text style={[styles.forgetPassText]}>Forgot Your Password?</Text>
-                       <Text style={[styles.resetText]}> Reset</Text>
-                   </TouchableOpacity>
-                   <TouchableOpacity onPress={() => this.handleLogin()} style={styles.btn}>
-                       <LottieView style={(this.state.loggingIn) ? { opacity: 1 } : { opacity: 0 }} loop={true} autoPlay={true} source={require("../../../assets/Images/loading.json")} />
-                       <Text style={styles.btnText}>Login</Text>
-                    </TouchableOpacity>
-                    <View style={styles.seperator}>
-                        <View style={styles.line}></View>
-                        <Text>OR</Text>
-                        <View style={styles.line}></View>
-                    </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={[styles.mainTitle, changeColor(this.context.theme)]}>
+            Login
+          </Text>
+          <View style={styles.input}>
+            <TextInput
+              style={styles.textInput}
+              placeholderTextColor={
+                this.context.theme ? Colors.gray : Colors.lightGray
+              }
+              placeholder="Email"
+              onChangeText={(input) => {
+                this.setState({ email: input });
+              }}
+              autoCapitalize="none"
+            ></TextInput>
+          </View>
+          <View style={styles.input}>
+            <TextInput
+              style={styles.textInput}
+              placeholderTextColor={
+                this.context.theme ? Colors.gray : Colors.lightGray
+              }
+              placeholder="Password"
+              secureTextEntry={this.state.passwordIsSecure}
+              onChangeText={(input) => {
+                this.setState({ password: input });
+              }}
+              autoCapitalize="none"
+            ></TextInput>
+            <View style={styles.eyeIconsStyle}>
+              <Icon
+                onPress={() => this.passwordVisibility()}
+                style={[
+                  styles.eyeIconStyle,
+                  { opacity: this.state.passwordIconNotVisible },
+                ]}
+                name="eye-outline"
+                size={20}
+                color={mainColor}
+              />
+              <Icon
+                onPress={() => this.passwordVisibility()}
+                style={[
+                  styles.eyeIconStyle,
+                  { opacity: this.state.passwordIconVisible },
+                ]}
+                name="eye-off-outline"
+                size={20}
+                color={mainColor}
+              />
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => this.handleResetPass()}
+            style={styles.resetPassword}
+          >
+            <Text style={[styles.forgetPassText]}>Forgot Your Password?</Text>
+            <Text style={[styles.resetText]}> Reset</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.handleLogin()}
+            style={styles.btn}
+          >
+            <LottieView
+              style={this.state.loggingIn ? { opacity: 1 } : { opacity: 0 }}
+              loop={true}
+              autoPlay={true}
+              source={require("../../../assets/Images/loading.json")}
+            />
+            <Text style={styles.btnText}>Login</Text>
+          </TouchableOpacity>
+          <View style={styles.seperator}>
+            <View style={styles.line}></View>
+            <Text>OR</Text>
+            <View style={styles.line}></View>
+          </View>
 
-                   <TouchableOpacity style={styles.googleBtn} onPress={() => this.handleLoginWithGoogle()}>
-                       <Icon name="logo-google" size={30} color={mainColor} style={styles.googleLogo} />
-                       <Text style={changeColor(this.context.theme)}>Login with Google</Text>
-                   </TouchableOpacity>
-               </View>
-            </ScrollView>
+          <TouchableOpacity
+            style={styles.googleBtn}
+            onPress={() => this.handleLoginWithGoogle()}
+          >
+            <Icon
+              name="logo-google"
+              size={30}
+              color={mainColor}
+              style={styles.googleLogo}
+            />
+            <Text style={changeColor(this.context.theme)}>
+              Login with Google
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { NativeBaseProvider } from "native-base";
 import { NavigationScreenProp } from "react-navigation";
 
 import Tabs from "./Tabs";
@@ -37,7 +36,7 @@ export default class Live extends React.Component<ILiveProps, ILiveStates> {
 
   override render() {
     return (
-      <NativeBaseProvider>
+      <>
         <MainHeader
           isLive={true}
           searchOnPress={() => this.props.navigation.navigate("Search")}
@@ -46,7 +45,7 @@ export default class Live extends React.Component<ILiveProps, ILiveStates> {
         {/* <Animated.Text entering={this.state.animation}>my text</Animated.Text> */}
         {/* <NativeText bold={true} textAlign="center" fontSize={20}>Live</NativeText> */}
         <Tabs />
-      </NativeBaseProvider>
+      </>
     );
   }
 }

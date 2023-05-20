@@ -11,7 +11,14 @@ import Icon2 from "react-native-vector-icons/EvilIcons";
 import CountryPicker, {
   TranslationLanguageCodeMap,
 } from "react-native-country-picker-modal";
-import { Text, View, ScrollView, TextInput, FlatList, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
 import {
   validateEmail,
@@ -78,7 +85,7 @@ export default class CreateAccount extends React.Component<
   ICreateAccountProps,
   ICreateAccountState
 > {
-  declare context: React.ContextType<typeof Context>
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: ICreateAccountProps) {
     super(props);
