@@ -1,6 +1,6 @@
 import PushNotification from "react-native-push-notification";
 
-const channelIds = {
+export const channelIds = {
   notificationOnMessage: "notificationOnMessage",
   testId: "testId",
 };

@@ -3,8 +3,8 @@ import { store } from "App";
 import {
   GET_ALL_MUSICS,
   GET_ALL_MUSICS_FAILED,
-} from "@/assets/constants/ActionsTypes";
-import { GetNoToken } from "@/API/index";
+} from "src/assets";
+import { GetNoToken } from "src/API";
 
 export const getAllMusics = () => {
   return async (dispatch: typeof store.dispatch) => {

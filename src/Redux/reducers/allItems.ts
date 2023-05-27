@@ -7,7 +7,7 @@ import {
   GET_ALL_ITEMS_MOSTWATCHED_FAILED,
   GET_ALL_ITEMS_NEWRELEASES,
   GET_ALL_ITEMS_NEWRELEASES_FAILED
-} from "~/assets/constants/ActionsTypes";
+} from "src/assets";
 
 const initialState = {
   loading: true,

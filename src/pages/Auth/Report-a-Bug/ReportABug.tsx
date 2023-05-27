@@ -1,35 +1,39 @@
-import React from "react";
-import LottieView from "lottie-react-native";
-import Toast from "react-native-toast-message";
-import { NavigationScreenProp } from "react-navigation";
-import { Text, View, ScrollView, TextInput, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import React from 'react';
+import LottieView from 'lottie-react-native';
+import Toast from 'react-native-toast-message';
+import {NavigationProp} from '@react-navigation/native';
+import Context from 'src/context/context';
+import * as Colors from 'src/assets/constants/Colors';
+import {styles} from './style';
+import {toastMessageDuration} from 'src/assets';
+import {POST} from 'src/API';
+import {Header} from 'src/components';
 
-import { POST } from "@/API/index";
-import context from "@/context/context";
-import * as Colors from "@/assets/constants/Colors";
-import Header from "@/components/pagesHeader/Header";
-import { toastMessageDuration } from "@/assets/constants/Units";
-
-import { styles } from "./style";
-
-export interface IReportABugProps extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+export interface IReportABugProps extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 
 export interface IReportABugStates {
   input: string;
   loading: boolean;
 }
-export default class ReportABug extends React.Component<
+export class ReportABug extends React.Component<
   IReportABugProps,
   IReportABugStates
 > {
-  declare context: React.ContextType<typeof context>
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: IReportABugProps) {
     super(props);
     this.state = {
-      input: "",
+      input: '',
       loading: false,
     };
   }
@@ -44,12 +48,12 @@ export default class ReportABug extends React.Component<
     this.setState({
       loading: true,
     });
-    if (this.state.input === "") {
+    if (this.state.input === '') {
       Toast.show({
-        type: "error",
-        position: "bottom",
-        text1: "Text input is empty",
-        text2: "Please explain the bug.",
+        type: 'error',
+        position: 'bottom',
+        text1: 'Text input is empty',
+        text2: 'Please explain the bug.',
         visibilityTime: toastMessageDuration,
         topOffset: 30,
         bottomOffset: 40,
@@ -65,15 +69,15 @@ export default class ReportABug extends React.Component<
     };
 
     try {
-      const result = await POST("/editProfile/reportBug", reqBody);
+      const result = await POST('/editProfile/reportBug', reqBody);
       const message = await result.text();
       if (result.status === 200) {
         Toast.show({
-          type: "success",
-          position: "top",
+          type: 'success',
+          position: 'top',
           autoHide: true,
           text1: message,
-          text2: "Thanks for the feedback",
+          text2: 'Thanks for the feedback',
           visibilityTime: toastMessageDuration,
           topOffset: 30,
           bottomOffset: 40,
@@ -83,11 +87,11 @@ export default class ReportABug extends React.Component<
         });
       } else {
         Toast.show({
-          type: "error",
-          position: "bottom",
+          type: 'error',
+          position: 'bottom',
           autoHide: true,
           text1: message,
-          text2: "Please try again",
+          text2: 'Please try again',
           visibilityTime: toastMessageDuration,
           topOffset: 30,
           bottomOffset: 40,
@@ -101,11 +105,11 @@ export default class ReportABug extends React.Component<
     } catch (err) {
       console.log(err);
       Toast.show({
-        type: "error",
-        position: "bottom",
+        type: 'error',
+        position: 'bottom',
         autoHide: true,
-        text1: "Something went wrong",
-        text2: "Please check your network",
+        text1: 'Something went wrong',
+        text2: 'Please check your network',
         visibilityTime: toastMessageDuration,
         topOffset: 30,
         bottomOffset: 40,
@@ -122,7 +126,7 @@ export default class ReportABug extends React.Component<
         <View style={styles.container}>
           <Header
             title="Report a Bug"
-            customClick={() => this.props.navigation.navigate("Profile")}
+            customClick={() => this.props.navigation.navigate('Profile')}
           />
           <TextInput
             placeholder="Your explenation goes here ... "
@@ -130,17 +134,16 @@ export default class ReportABug extends React.Component<
               this.context.theme ? Colors.dark : Colors.white
             }
             style={styles.input}
-            onChangeText={(input) => this.handleTextInput(input)}
+            onChangeText={input => this.handleTextInput(input)}
           />
           <TouchableOpacity
             style={styles.btn}
-            onPress={() => this.handleReport()}
-          >
+            onPress={() => this.handleReport()}>
             <LottieView
-              style={this.state.loading ? { opacity: 1 } : { opacity: 0 }}
+              style={this.state.loading ? {opacity: 1} : {opacity: 0}}
               autoPlay={true}
               loop={true}
-              source={require("../../../assets/Images/loading.json")}
+              source={require('../../../assets/Images/loading.json')}
             />
             <Text style={styles.btnText}>Report</Text>
           </TouchableOpacity>

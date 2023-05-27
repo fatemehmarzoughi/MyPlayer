@@ -4,7 +4,7 @@ import { Text as NativeText } from "native-base";
 import Icon from "react-native-vector-icons/Ionicons";
 import { FlatList, View, StyleSheet, TouchableOpacity } from "react-native";
 
-import * as Colors from "@/assets/constants/Colors";
+import * as Colors from "src/assets/constants/Colors";
 
 export type ITVDataType = {
   id: number;
@@ -21,7 +21,7 @@ export interface IFlatListsStates {
   unstar: "flex";
   star: "none";
 }
-export default class FlatLists extends React.Component<
+export class FlatLists extends React.Component<
   IFlatListsProps,
   IFlatListsStates
 > {

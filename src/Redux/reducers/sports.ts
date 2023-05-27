@@ -1,7 +1,7 @@
 import {
   GET_ALL_SPORTS,
   GET_ALL_SPORTS_FAILED
-} from "@/assets/constants/ActionsTypes";
+} from "src/assets";
 
 const initialState = {
   loadingSports: true,

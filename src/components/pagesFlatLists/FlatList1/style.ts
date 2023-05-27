@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import * as Colors from "@/assets/constants/Colors";
-import { statusBarIOS, width } from "@/assets/constants/Units";
+import { lightGray, statusBarIOS, width } from "src/assets";
 
 const usedWidth = width - 20;
 export const styles = StyleSheet.create({
@@ -25,7 +24,7 @@ export const styles = StyleSheet.create({
     height: 200,
     borderRadius: 10,
     margin: 10,
-    backgroundColor: Colors.lightGray
+    backgroundColor: lightGray
   },
   title: {
     fontSize: 16,

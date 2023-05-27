@@ -1,14 +1,13 @@
-import { StyleSheet } from "react-native";
-import { lightGray } from "@/assets/constants/Colors";
-import { statusBarIOS, width } from "@/assets/constants/Units";
+import {StyleSheet} from 'react-native';
+import {lightGray, statusBarIOS, width} from 'src/assets';
 
 const usedWidth = width - 20;
 export const styles = StyleSheet.create({
   container: {
     marginTop: statusBarIOS,
     width: usedWidth,
-    marginRight: "auto",
-    marginLeft: "auto"
+    marginRight: 'auto',
+    marginLeft: 'auto',
   },
   input: {
     width: usedWidth,
@@ -18,6 +17,6 @@ export const styles = StyleSheet.create({
     backgroundColor: lightGray,
     // marginBottom : 5,
     marginTop: 20,
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 });

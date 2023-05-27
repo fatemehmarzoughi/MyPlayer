@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import LottieView from "lottie-react-native";
-
-import FlatLists from "@/components/pagesFlatLists/HomeFlatLists/FlatList";
+import { HomeFlatLists } from "src/components";
 
 export interface ICategoriesProps {
   refreshing: boolean,
@@ -61,35 +60,35 @@ export default class Categories extends React.Component<
           />
         ) : (
           <View>
-            {/* <FlatLists
+            {/* <HomeFlatLists
                  title="My Playlist"
                  data = {this.state.falstListData}
                  type = "small"
                  onPress={(id) => console.log(id)}
                 /> */}
 
-            <FlatLists
+            <HomeFlatLists
               title="Recommended"
               data={this.props.recommended}
               type="medium"
               //  onPress={(id) => console.log(id)}
             />
 
-            <FlatLists
+            <HomeFlatLists
               title="Most Watched"
               data={this.props.mostWatched}
               type="medium"
               //  onPress={(id) => console.log(id)}
             />
 
-            <FlatLists
+            <HomeFlatLists
               title="Trending Now"
               data={this.props.trendingNow}
               type="large"
               //  onPress={(id) => console.log(id)}
             />
 
-            <FlatLists
+            <HomeFlatLists
               title="New Releases"
               data={this.props.newReleases}
               type="medium"

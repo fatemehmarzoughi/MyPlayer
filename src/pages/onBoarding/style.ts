@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import * as Colors from "@/assets/constants/Colors";
-import { width, height } from "@/assets/constants/Units";
+import { height, mainColor, white, width } from "src/assets";
 
 export const styles = StyleSheet.create({
   container: {
@@ -51,7 +50,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center"
   },
   contentText: {
-    color: Colors.white,
+    color: white,
     margin: 20,
     textAlign: "center",
     fontWeight: "bold",
@@ -82,16 +81,16 @@ export const styles = StyleSheet.create({
     zIndex: 30
   },
   nextBtn: {
-    backgroundColor: Colors.mainColor,
+    backgroundColor: mainColor,
     paddingRight: 25,
     paddingLeft: 25,
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 10,
-    color: Colors.white
+    color: white
   },
   skipBtn: {
-    borderColor: Colors.mainColor,
+    borderColor: mainColor,
     borderWidth: 1,
     borderStyle: "solid",
     paddingRight: 25,
@@ -99,7 +98,7 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 10,
-    color: Colors.mainColor
+    color: mainColor
   },
   dots: {
     display: "flex",
@@ -115,6 +114,6 @@ export const styles = StyleSheet.create({
     margin: 3,
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: Colors.mainColor
+    borderColor: mainColor
   }
 });

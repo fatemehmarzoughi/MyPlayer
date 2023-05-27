@@ -1,25 +1,25 @@
-import React from "react";
+import React from 'react';
 import {
   Text,
   View,
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-} from "react-native";
-import Icon from "react-native-vector-icons/EvilIcons";
-import { NavigationScreenProp } from "react-navigation";
+} from 'react-native';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import {NavigationProp} from '@react-navigation/native';
 
-import Context from "@/context/context";
-import { GetNoToken } from "@/API/index";
-import * as Colors from "@/assets/constants/Colors";
-import { changeColor } from "@/components/lightDarkTheme";
-import FlatList1 from "@/components/pagesFlatLists/FlatList1/FlatList1";
+import context from 'src/context/context';
+import * as Colors from 'src/assets/constants/Colors';
 
-import { styles } from "./style";
+import {changeColor, FlatList1} from 'src/components';
+
+import {styles} from './style';
+import {GetNoToken} from 'src/API';
 
 export interface IChangeProfilePhotoProps
-  extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+  extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 
 export type IChangeProfilePhotoState = {
@@ -29,11 +29,11 @@ export type IChangeProfilePhotoState = {
   refreshing: boolean;
 };
 
-export default class ChangeProfilePhoto extends React.PureComponent<
+export class ChangeProfilePhoto extends React.PureComponent<
   IChangeProfilePhotoProps,
   IChangeProfilePhotoState
 > {
-  declare context: React.ContextType<typeof Context>;
+  declare context: React.ContextType<typeof context>;
 
   constructor(props: IChangeProfilePhotoProps) {
     super(props);
@@ -47,13 +47,13 @@ export default class ChangeProfilePhoto extends React.PureComponent<
 
   getImages = async () => {
     try {
-      const resultAnimation = await GetNoToken("/images/imageLists/Animation");
+      const resultAnimation = await GetNoToken('/images/imageLists/Animation');
       const Animation = await (resultAnimation as any).json();
 
-      const resultArtists = await GetNoToken("/images/imageLists/Artists");
+      const resultArtists = await GetNoToken('/images/imageLists/Artists');
       const Artists = await (resultArtists as any).json();
 
-      const resultActors = await GetNoToken("/images/imageLists/Actors");
+      const resultActors = await GetNoToken('/images/imageLists/Actors');
       const Actors = await (resultActors as any).json();
 
       this.setState({
@@ -72,9 +72,9 @@ export default class ChangeProfilePhoto extends React.PureComponent<
   }
 
   onPress = (imageURL: string) => {
-    console.log("imageURL  == " + imageURL);
+    console.log('imageURL  == ' + imageURL);
     this.context.setUserImage(imageURL);
-    this.props.navigation.navigate("EditProfile");
+    this.props.navigation.navigate('EditProfile');
   };
 
   override render() {
@@ -85,14 +85,12 @@ export default class ChangeProfilePhoto extends React.PureComponent<
             onRefresh={() => this.getImages()}
             refreshing={this.state.refreshing}
           />
-        }
-      >
+        }>
         <View style={styles.container}>
           <View style={[styles.header]}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("EditProfile")}
-              style={styles.iconBack}
-            >
+              onPress={() => this.props.navigation.navigate('EditProfile')}
+              style={styles.iconBack}>
               <Icon name="chevron-left" size={40} color={Colors.white} />
             </TouchableOpacity>
             <Text style={[styles.titleHeader, changeColor(this.context.theme)]}>
@@ -138,21 +136,21 @@ export default class ChangeProfilePhoto extends React.PureComponent<
                 <FlatList1
                   data={this.state.Animation}
                   title="Animation"
-                  func={(imageURL) => this.onPress(imageURL)}
+                  func={imageURL => this.onPress(imageURL)}
                   theme={this.context.theme}
                 />
 
                 <FlatList1
                   data={this.state.Artists}
                   title="Artists"
-                  func={(imageURL) => this.onPress(imageURL)}
+                  func={imageURL => this.onPress(imageURL)}
                   theme={this.context.theme}
                 />
 
                 <FlatList1
                   data={this.state.Actors}
                   title="Actors"
-                  func={(imageURL) => this.onPress(imageURL)}
+                  func={imageURL => this.onPress(imageURL)}
                   theme={this.context.theme}
                 />
               </View>

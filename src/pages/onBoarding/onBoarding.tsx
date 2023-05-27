@@ -1,24 +1,22 @@
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import LottieView from "lottie-react-native";
-import { NavigationScreenProp } from "react-navigation";
-import GestureRecognizer from "react-native-swipe-gestures";
-import { Text, View, Animated, Dimensions, TouchableOpacity } from "react-native";
+import React from 'react';
+import {StatusBar} from 'expo-status-bar';
+import LottieView from 'lottie-react-native';
+import {NavigationProp} from '@react-navigation/native';
+import GestureRecognizer from 'react-native-swipe-gestures';
+import {Text, View, Animated, Dimensions, TouchableOpacity} from 'react-native';
+import Context from 'src/context/context';
+import {height, mainColor, white, width} from 'src/assets';
 
-import context from "@/context/context";
-import * as Colors from "@/assets/constants/Colors";
-import { height, width } from "@/assets/constants/Units";
+import {styles} from './style';
 
-import { styles } from "./style";
+const unset = '#70757a00';
+const animation1Source = '../../assets/Images/offline2.json';
+const animation2Source = '../../assets/Images/bookmark.json';
+const animation3Source = '../../assets/Images/premium.json';
+const animation4Source = '../../assets/Images/live2.json';
 
-const unset = "#70757a00";
-const animation1Source = "../../assets/Images/offline2.json";
-const animation2Source = "../../assets/Images/bookmark.json";
-const animation3Source = "../../assets/Images/premium.json";
-const animation4Source = "../../assets/Images/live2.json";
-
-interface Props extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+interface Props extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 
 interface States {
@@ -36,8 +34,8 @@ interface States {
   isRotate: boolean;
 }
 
-class OnBoarding extends React.Component<Props, States> {
-  declare context: React.ContextType<typeof context>
+export class OnBoarding extends React.PureComponent<Props, States> {
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: Props) {
     super(props);
@@ -45,11 +43,11 @@ class OnBoarding extends React.Component<Props, States> {
       currentStatus: 1,
       translateXValue: new Animated.Value((3 * width) / 2),
       translateXValueIsRotate: new Animated.Value((3 * height) / 2),
-      case1: Colors.mainColor,
+      case1: mainColor,
       case2: unset,
       case3: unset,
       case4: unset,
-      nextText: "Next",
+      nextText: 'Next',
       lastPage: false,
       visibleCase1: false,
       progress: new Animated.Value(0),
@@ -74,9 +72,9 @@ class OnBoarding extends React.Component<Props, States> {
 
         this.setState({
           case1: unset,
-          case2: Colors.mainColor,
+          case2: mainColor,
           currentStatus: 2,
-          nextText: "Next",
+          nextText: 'Next',
         });
 
         break;
@@ -95,9 +93,9 @@ class OnBoarding extends React.Component<Props, States> {
 
         this.setState({
           case2: unset,
-          case3: Colors.mainColor,
+          case3: mainColor,
           currentStatus: 3,
-          nextText: "Next",
+          nextText: 'Next',
         });
         console.log(this.state.case2);
 
@@ -116,9 +114,9 @@ class OnBoarding extends React.Component<Props, States> {
         }).start();
         this.setState({
           case3: unset,
-          case4: Colors.mainColor,
+          case4: mainColor,
           currentStatus: 4,
-          nextText: "Get Started",
+          nextText: 'Get Started',
           lastPage: true,
         });
 
@@ -130,7 +128,7 @@ class OnBoarding extends React.Component<Props, States> {
     switch (this.state.currentStatus) {
       case 1:
         this.setState({
-          nextText: "Next",
+          nextText: 'Next',
         });
 
         break;
@@ -148,10 +146,10 @@ class OnBoarding extends React.Component<Props, States> {
         }).start();
 
         this.setState({
-          case1: Colors.mainColor,
+          case1: mainColor,
           case2: unset,
           currentStatus: 1,
-          nextText: "Next",
+          nextText: 'Next',
           visibleCase1: true,
         });
         Animated.timing(this.state.progress, {
@@ -175,10 +173,10 @@ class OnBoarding extends React.Component<Props, States> {
         }).start();
 
         this.setState({
-          case2: Colors.mainColor,
+          case2: mainColor,
           case3: unset,
           currentStatus: 2,
-          nextText: "Next",
+          nextText: 'Next',
         });
 
         break;
@@ -196,10 +194,10 @@ class OnBoarding extends React.Component<Props, States> {
         }).start();
 
         this.setState({
-          case3: Colors.mainColor,
+          case3: mainColor,
           case4: unset,
           currentStatus: 3,
-          nextText: "Next",
+          nextText: 'Next',
           lastPage: false,
         });
 
@@ -208,21 +206,21 @@ class OnBoarding extends React.Component<Props, States> {
   };
 
   gotoNextComponent = async () => {
-    this.props.navigation.navigate("EnteriesOptions");
+    this.props.navigation.navigate('EnteriesOptions');
   };
 
   override async componentDidMount() {
-    console.log("progress" + this.state.progress);
+    console.log('progress' + this.state.progress);
     Animated.timing(this.state.progress, {
       toValue: 1,
       duration: 6000,
       useNativeDriver: true,
     }).start();
 
-    Dimensions.addEventListener("change", ({ window: { width, height } }) => {
+    Dimensions.addEventListener('change', ({window: {width, height}}) => {
       if (width > height) {
         this.context.setIsRotate(true);
-        console.log("is rotate true");
+        console.log('is rotate true');
       } else {
         this.context.setIsRotate(false);
       }
@@ -234,14 +232,12 @@ class OnBoarding extends React.Component<Props, States> {
       <View
         style={[
           this.context.isRotate ? styles.containerIsRotate : styles.container,
-        ]}
-      >
+        ]}>
         <StatusBar backgroundColor="#333" translucent={false} hidden />
         <GestureRecognizer
           style={styles.GestureRecognizerStyle}
           onSwipeRight={() => this.swipeRight()}
-          onSwipeLeft={() => this.swipeLeft()}
-        >
+          onSwipeLeft={() => this.swipeLeft()}>
           <Animated.View
             style={[
               this.context.isRotate ? styles.AllpagesIsRotate : styles.Allpages,
@@ -249,19 +245,17 @@ class OnBoarding extends React.Component<Props, States> {
               this.context.isRotate
                 ? {
                     transform: [
-                      { translateX: this.state.translateXValueIsRotate },
+                      {translateX: this.state.translateXValueIsRotate},
                     ],
                   }
-                : { transform: [{ translateX: this.state.translateXValue }] },
-            ]}
-          >
+                : {transform: [{translateX: this.state.translateXValue}]},
+            ]}>
             <View
               style={[
                 this.context.isRotate
                   ? styles.pageStyleIsRotate
                   : styles.pageStyle,
-              ]}
-            >
+              ]}>
               <View style={styles.content}>
                 <LottieView
                   loop={true}
@@ -282,8 +276,7 @@ class OnBoarding extends React.Component<Props, States> {
                 this.context.isRotate
                   ? styles.pageStyleIsRotate
                   : styles.pageStyle,
-              ]}
-            >
+              ]}>
               <View style={styles.content}>
                 <LottieView
                   loop={true}
@@ -301,8 +294,7 @@ class OnBoarding extends React.Component<Props, States> {
                 this.context.isRotate
                   ? styles.pageStyleIsRotate
                   : styles.pageStyle,
-              ]}
-            >
+              ]}>
               <View style={styles.content}>
                 <LottieView
                   loop={true}
@@ -320,8 +312,7 @@ class OnBoarding extends React.Component<Props, States> {
                 this.context.isRotate
                   ? styles.pageStyleIsRotate
                   : styles.pageStyle,
-              ]}
-            >
+              ]}>
               <View style={styles.content}>
                 <LottieView
                   loop={true}
@@ -338,28 +329,23 @@ class OnBoarding extends React.Component<Props, States> {
         </GestureRecognizer>
         <View style={[styles.dots]}>
           <View
-            style={[styles.dot, { backgroundColor: this.state.case1 }]}
-          ></View>
+            style={[styles.dot, {backgroundColor: this.state.case1}]}></View>
           <View
-            style={[styles.dot, { backgroundColor: this.state.case2 }]}
-          ></View>
+            style={[styles.dot, {backgroundColor: this.state.case2}]}></View>
           <View
-            style={[styles.dot, { backgroundColor: this.state.case3 }]}
-          ></View>
+            style={[styles.dot, {backgroundColor: this.state.case3}]}></View>
           <View
-            style={[styles.dot, { backgroundColor: this.state.case4 }]}
-          ></View>
+            style={[styles.dot, {backgroundColor: this.state.case4}]}></View>
         </View>
         <View style={[styles.bottomBarStyle]}>
           <TouchableOpacity
             style={[styles.nextBtn]}
             onPress={
-              this.state.nextText === "Get Started"
+              this.state.nextText === 'Get Started'
                 ? () => this.gotoNextComponent()
                 : () => this.swipeLeft()
-            }
-          >
-            <Text style={{ color: Colors.white }}>{this.state.nextText}</Text>
+            }>
+            <Text style={{color: white}}>{this.state.nextText}</Text>
           </TouchableOpacity>
 
           <>
@@ -376,14 +362,3 @@ class OnBoarding extends React.Component<Props, States> {
     );
   }
 }
-
-// const mapDispatchToProps = { login };
-
-// const mapStateToProps = state => {
-//     return {
-//         states : state
-//     }
-// }
-
-// export default connect(mapStateToProps , mapDispatchToProps)(OnBoarding);
-export default OnBoarding;

@@ -10,10 +10,10 @@ import { createStore, applyMiddleware } from "redux";
 import SplashScreen from "react-native-splash-screen";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { mainReducer } from "@/Redux/reducers";
-import { AppRoute } from "@/pages/AppRoute";
-import ContextProvider from "@/context/contextProvider";
-import { getData, storeData } from "@/LocalStorage/AsyncStorageData";
+import { mainReducer } from "src/Redux";
+import { AppRoute } from "src/pages";
+import ContextProvider from "src/context/contextProvider";
+import { getData, storeData } from "src/LocalStorage";
 
 export interface IAppProps {}
 export interface IAppStates {

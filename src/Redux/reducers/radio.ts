@@ -1,7 +1,7 @@
 import {
   GET_ALL_RADIO,
   GET_ALL_RADIO_FAILED
-} from "@/assets/constants/ActionsTypes";
+} from "src/assets";
 
 const initialState = {
   loadingRadio: true,

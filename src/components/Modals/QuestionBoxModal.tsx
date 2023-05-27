@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-import * as Colors from "@/assets/constants/Colors";
-import { width, height } from "@/assets/constants/Units";
+import * as Colors from "src/assets/constants/Colors";
+import { width, height } from "src/assets";
 
 export interface IModalClassProps {
   btnTitle: string;
@@ -15,7 +15,7 @@ export interface IModalClassProps {
 }
 export interface IModalClassStates {}
 
-export default class ModalClass extends React.Component<
+export class ModalClass extends React.Component<
   IModalClassProps,
   IModalClassStates
 > {

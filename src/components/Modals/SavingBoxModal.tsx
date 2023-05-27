@@ -2,8 +2,8 @@ import React from "react";
 import LottieView from "lottie-react-native";
 import { Modal, StyleSheet, View, Text } from "react-native";
 
-import { height, width } from "@/assets/constants/Units";
-import * as Colors from "@/assets/constants/Colors";
+import { height, width } from "src/assets/constants";
+import * as Colors from "src/assets/constants/Colors";
 
 export interface ISavingModalProps {
   modalVisible: boolean;
@@ -11,7 +11,7 @@ export interface ISavingModalProps {
 }
 
 export interface ISavingModalStates {}
-export default class SavingModal extends React.Component<
+export class SavingModal extends React.Component<
   ISavingModalProps,
   ISavingModalStates
 > {

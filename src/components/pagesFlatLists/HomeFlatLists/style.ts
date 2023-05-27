@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import * as Colors from "@/assets/constants/Colors";
+import { gray } from "src/assets";
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     height: 200,
     borderRadius: 20,
     marginLeft: 20,
-    backgroundColor: Colors.gray
+    backgroundColor: gray
   },
   itemLarge: {
     width: 250,

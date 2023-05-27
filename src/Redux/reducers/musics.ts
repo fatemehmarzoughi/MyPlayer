@@ -1,7 +1,7 @@
 import {
   GET_ALL_MUSICS,
   GET_ALL_MUSICS_FAILED
-} from "@/assets/constants/ActionsTypes";
+} from "src/assets";
 
 const initialState = {
   loadingMusics: true,

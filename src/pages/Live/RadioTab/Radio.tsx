@@ -1,16 +1,14 @@
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-
-import * as Colors from "@/assets/constants/Colors";
-import FlatLists from "@/components/pagesFlatLists/LiveFlatlists/FlatLists";
-import { ITVDataType } from "@/components/pagesFlatLists/LiveFlatlists/FlatLists";
+import { dark } from "src/assets";
+import { FlatLists, ITVDataType } from "src/components";
 
 export interface IRadioProps {}
 
 export interface IRadioStates {
   data: ITVDataType[];
 }
-export default class Radio extends React.Component<IRadioProps, IRadioStates> {
+export class Radio extends React.Component<IRadioProps, IRadioStates> {
   constructor(props: IRadioProps) {
     super(props);
 
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   icon: {
-    backgroundColor: Colors.dark,
+    backgroundColor: dark,
     position: "absolute",
     bottom: 20,
     right: 20,

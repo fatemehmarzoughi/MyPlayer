@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import * as Colors from "@/assets/constants/Colors";
-import { statusBarIOS, width } from "@/assets/constants/Units";
+import { dark, gray, lightGray, mainColor, statusBarIOS, white, width } from "src/assets";
 
 const usedWidth = width - 30;
 export const styles = StyleSheet.create({
@@ -54,7 +53,7 @@ export const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 10,
-    backgroundColor: Colors.lightGray
+    backgroundColor: lightGray
   },
   row2: {
     display: "flex",
@@ -74,7 +73,7 @@ export const styles = StyleSheet.create({
     fontSize: 12
   },
   editProfile: {
-    backgroundColor: Colors.mainColor,
+    backgroundColor: mainColor,
     padding: 10,
     borderRadius: 25,
     display: "flex",
@@ -83,7 +82,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row"
   },
   editProfileText: {
-    color: Colors.white,
+    color: white,
     fontSize: 12
   },
 
@@ -98,7 +97,7 @@ export const styles = StyleSheet.create({
   seperator: {
     width: width / 2.5,
     height: 0.2,
-    backgroundColor: Colors.gray
+    backgroundColor: gray
 
   },
 
@@ -110,14 +109,14 @@ export const styles = StyleSheet.create({
   subTitle: {
     marginBottom: 20,
     fontSize: 18,
-    color: Colors.dark
+    color: dark
   },
   option: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    borderBottomColor: Colors.dark,
+    borderBottomColor: dark,
     borderBottomWidth: 1,
     borderStyle: "solid",
     padding: 15
@@ -130,14 +129,14 @@ export const styles = StyleSheet.create({
   },
   premiumOption: {
     padding: 15,
-    borderBottomColor: Colors.dark,
+    borderBottomColor: dark,
     borderBottomWidth: 1,
     borderStyle: "solid"
 
   },
   premiumOptionText: {
     fontSize: 10,
-    color: Colors.gray
+    color: gray
   },
   optionTitleIcon: {
     display: "flex",
@@ -147,11 +146,11 @@ export const styles = StyleSheet.create({
   },
   optionTitle: {
     marginLeft: 7,
-    color: Colors.dark
+    color: dark
   },
   premiumOptionTitle: {
     marginLeft: 7,
-    color: Colors.gray
+    color: gray
   },
   loadingIcon: {
     width: 100,

@@ -2,11 +2,10 @@ import { useCallback, useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useWindowDimensions, StyleSheet } from "react-native";
 import { TabView, TabBar, Route } from "react-native-tab-view";
-
-import TV from "@/pages/Live/TVTab/TV";
-import Radio from "@/pages/Live/RadioTab/Radio";
-import Stared from "@/pages/Live/StaredTab/Stared";
-import * as Colors from "@/assets/constants/Colors";
+import { TV } from "./TVTab";
+import { Radio } from "./RadioTab";
+import { Stared } from "./StaredTab";
+import { dark, mainColor } from "src/assets";
 
 const renderScene = useCallback((key: Route['key']) => {
   switch (key) {
@@ -36,12 +35,12 @@ const renderTabBar = useCallback((props: any) => {
           />
         ) : null
       }
-      // indicatorStyle={{ backgroundColor: Colors.white }}
+      // indicatorStyle={{ backgroundColor: white }}
       style={{ backgroundColor: "none" }}
-      activeColor={Colors.mainColor}
-      inactiveColor={Colors.dark}
+      activeColor={mainColor}
+      inactiveColor={dark}
       indicatorStyle={{
-        backgroundColor: Colors.mainColor,
+        backgroundColor: mainColor,
       }}
       {...props}
     />

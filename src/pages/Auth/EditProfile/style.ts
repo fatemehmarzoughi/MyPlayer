@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import * as Colors from "@/assets/constants/Colors";
-import { statusBarIOS, width, titleFontSize } from "@/assets/constants/Units";
+import { lightGray, mainColor, statusBarIOS, titleFontSize, width } from "src/assets";
 
 const usedWidth = width - 20;
 export const styles = StyleSheet.create({
@@ -18,7 +17,7 @@ export const styles = StyleSheet.create({
     height: 130,
     borderRadius: 10,
     marginTop: 40,
-    backgroundColor: Colors.lightGray
+    backgroundColor: lightGray
   },
   changePhoto: {
     margin: 15,
@@ -26,7 +25,7 @@ export const styles = StyleSheet.create({
     textDecorationLine: "underline"
   },
   input: {
-    backgroundColor: Colors.lightGray,
+    backgroundColor: lightGray,
     padding: 20,
     width: usedWidth - 20,
     borderRadius: 10,
@@ -41,7 +40,7 @@ export const styles = StyleSheet.create({
   },
   deleteBtn: {
     padding: 20,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: lightGray,
     margin: 80,
     width: usedWidth - 20,
     display: "flex",
@@ -50,7 +49,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10
   },
   deleteBtnText: {
-    color: Colors.mainColor,
+    color: mainColor,
     fontWeight: "bold"
   },
 
@@ -68,7 +67,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row-reverse"
   },
   saveText: {
-    color: Colors.mainColor,
+    color: mainColor,
     fontWeight: "bold",
     fontSize: 18
   },

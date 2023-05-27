@@ -1,7 +1,7 @@
 import { store } from "App";
 
-import { GetNoToken } from "@/API/index";
-import { GET_BANNER, GET_BANNER_FAILED } from "@/assets/constants/ActionsTypes";
+import { GetNoToken } from "src/API";
+import { GET_BANNER, GET_BANNER_FAILED } from "src/assets";
 
 export const getBanner = () => {
   return async (dispatch: typeof store.dispatch) => {

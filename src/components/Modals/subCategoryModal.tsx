@@ -9,8 +9,8 @@ import {
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import * as Colors from "@/assets/constants/Colors";
-import { statusBarIOS, width } from "@/assets/constants/Units";
+import * as Colors from "src/assets/constants/Colors";
+import { statusBarIOS, width } from "src/assets/constants";
 
 const AnimatedValues = {
   fontSize1: 40,

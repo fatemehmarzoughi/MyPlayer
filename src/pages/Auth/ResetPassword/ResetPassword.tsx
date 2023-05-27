@@ -1,51 +1,43 @@
 import {
   View,
-  Text,
   TextInput,
   ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import React from "react";
-import Toast from "react-native-toast-message";
-import { NavigationScreenProp } from "react-navigation";
-import context from "@/context/context";
-import {
-  changeColor,
-  changeBackgroundColor,
-} from "@/components/lightDarkTheme";
-import { POST } from "@/API/index";
-import * as Colors from "@/assets/constants/Colors";
-import SavingModal from "@/components/Modals/SavingBoxModal";
-import { toastMessageDuration } from "@/assets/constants/Units";
-import Header2 from "@/components/pagesHeader/Header2";
+} from 'react-native';
+import React from 'react';
+import {POST} from 'src/API';
+import Context from 'src/context/context';
+import Toast from 'react-native-toast-message';
+import {NavigationProp} from '@react-navigation/native';
+import {dark, toastMessageDuration, white} from 'src/assets';
+import {Header2, SavingModal, changeBackgroundColor} from 'src/components';
 
-import { styles } from "./style";
+import {styles} from './style';
 
-export interface IResetPasswordProps extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+export interface IResetPasswordProps extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 export interface IResetPasswordState {
   oldPass: string;
   newPass: string;
   saving: boolean;
 }
-export default class ResetPassword extends React.Component<
+export class ResetPassword extends React.Component<
   IResetPasswordProps,
   IResetPasswordState
 > {
   constructor(props: IResetPasswordProps) {
     super(props);
     this.state = {
-      oldPass: "",
-      newPass: "",
+      oldPass: '',
+      newPass: '',
       saving: false,
     };
   }
 
-  declare context: React.ContextType<typeof context>
+  declare context: React.ContextType<typeof Context>;
 
   onCancel = () => {
-    this.props.navigation.navigate("Profile");
+    this.props.navigation.navigate('Profile');
   };
 
   onSave = async () => {
@@ -59,15 +51,15 @@ export default class ResetPassword extends React.Component<
     };
 
     try {
-      const result = await POST("/editProfile/resetPass", reqBody);
+      const result = await POST('/editProfile/resetPass', reqBody);
       const message = await result.text();
       if (result.status === 200) {
         Toast.show({
-          type: "success",
-          position: "top",
+          type: 'success',
+          position: 'top',
           autoHide: true,
           text1: message,
-          text2: "Your new Password is available for login",
+          text2: 'Your new Password is available for login',
           visibilityTime: toastMessageDuration,
           topOffset: 30,
           bottomOffset: 40,
@@ -75,14 +67,14 @@ export default class ResetPassword extends React.Component<
         this.setState({
           saving: false,
         });
-        this.props.navigation.navigate("Profile");
+        this.props.navigation.navigate('Profile');
       } else {
         Toast.show({
-          type: "error",
-          position: "bottom",
+          type: 'error',
+          position: 'bottom',
           autoHide: true,
           text1: message,
-          text2: "Please try again",
+          text2: 'Please try again',
           visibilityTime: toastMessageDuration,
           topOffset: 30,
           bottomOffset: 40,
@@ -94,11 +86,11 @@ export default class ResetPassword extends React.Component<
     } catch (err) {
       console.log(err);
       Toast.show({
-        type: "error",
-        position: "bottom",
+        type: 'error',
+        position: 'bottom',
         autoHide: true,
-        text1: "Something went wrong",
-        text2: "Please try again",
+        text1: 'Something went wrong',
+        text2: 'Please try again',
         visibilityTime: toastMessageDuration,
         topOffset: 30,
         bottomOffset: 40,
@@ -133,21 +125,17 @@ export default class ResetPassword extends React.Component<
 
           <TextInput
             placeholder="Old Password"
-            placeholderTextColor={
-              this.context.theme ? Colors.dark : Colors.white
-            }
+            placeholderTextColor={this.context.theme ? dark : white}
             style={[styles.input, changeBackgroundColor(this.context.theme)]}
             secureTextEntry={true}
-            onChangeText={(input) => this.handleOldPass(input)}
+            onChangeText={input => this.handleOldPass(input)}
           />
           <TextInput
             placeholder="New Password"
-            placeholderTextColor={
-              this.context.theme ? Colors.dark : Colors.white
-            }
+            placeholderTextColor={this.context.theme ? dark : white}
             style={[styles.input, changeBackgroundColor(this.context.theme)]}
             secureTextEntry={true}
-            onChangeText={(input) => this.handleNewPass(input)}
+            onChangeText={input => this.handleNewPass(input)}
           />
         </View>
         <SavingModal modalVisible={this.state.saving} />

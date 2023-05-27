@@ -2,9 +2,9 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import context from "@/context/context";
-import { changeColor } from "@/components/lightDarkTheme";
-import { statusBarIOS, width } from "@/assets/constants/Units";
+import context from "src/context/context";
+import { changeColor } from "src/components";
+import { statusBarIOS, width } from "src/assets/constants";
 
 export interface IMainHeaderProps {
   menuOnPress: () => void;
@@ -15,7 +15,7 @@ export interface IMainHeaderProps {
 
 export interface IMainHeaderStates {}
 
-export default class MainHeader extends React.Component<
+export class MainHeader extends React.Component<
   IMainHeaderProps,
   IMainHeaderStates
 > {
@@ -44,7 +44,7 @@ export default class MainHeader extends React.Component<
   }
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width,
     flexDirection: "row",

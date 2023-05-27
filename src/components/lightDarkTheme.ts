@@ -1,11 +1,11 @@
-import * as Colors from "@/assets/constants/Colors";
+import * as Colors from "src/assets";
 
-export function changeColor (theme: boolean) {
+export const changeColor = (theme: boolean) => {
   return (theme) ? { color: Colors.dark } : { color: Colors.white };
 }
-export function changeBackgroundColor (theme: boolean) {
+export const changeBackgroundColor = (theme: boolean) => {
   return (theme) ? { backgroundColor: Colors.white } : { backgroundColor: Colors.black };
 }
-export function changeBackgroundColor2 (theme: boolean) {
+export const changeBackgroundColor2 = (theme: boolean) => {
   return (theme) ? { backgroundColor: Colors.lightGray } : { backgroundColor: Colors.dark };
 }

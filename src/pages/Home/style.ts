@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import { width } from "@/assets/constants/Units";
-import * as Colors from "@/assets/constants/Colors";
+import { darkOpacity, lightGray, white, width } from "src/assets";
 
 export const styles = StyleSheet.create({
 
@@ -15,13 +14,13 @@ export const styles = StyleSheet.create({
     padding: 13,
     width,
     height: 2 * width / 3,
-    backgroundColor: Colors.darkOpacity
+    backgroundColor: darkOpacity
   },
   texts: {
-    color: Colors.white
+    color: white
   },
   icon: {
-    color: Colors.white,
+    color: white,
     transform: [
       { rotateY: "180deg" }
     ],
@@ -49,7 +48,7 @@ export const styles = StyleSheet.create({
   selectSubCategory: {
     paddingRight: 15,
     paddingLeft: 15,
-    backgroundColor: Colors.lightGray,
+    backgroundColor: lightGray,
     borderRadius: 10
   }
 

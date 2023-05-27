@@ -4,7 +4,7 @@ import FastImage from "react-native-fast-image";
 import Animated, { BounceIn } from "react-native-reanimated";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 
-import { changeBackgroundColor } from "@/components/lightDarkTheme";
+import { changeBackgroundColor } from "src/components/lightDarkTheme";
 
 import { styles } from "./style";
 
@@ -22,7 +22,7 @@ export type IFlatList1State = {
   }[];
 };
 
-export default class FlatList1 extends React.Component<
+export class FlatList1 extends React.Component<
   IFlatList1Props,
   IFlatList1State
 > {

@@ -1,7 +1,7 @@
 import {
   GET_BANNER,
   GET_BANNER_FAILED
-} from "@/assets/constants/ActionsTypes";
+} from "src/assets";
 
 const initialState = {
   banner: [{ largImageUrl: "https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/41300/jpeg" }],

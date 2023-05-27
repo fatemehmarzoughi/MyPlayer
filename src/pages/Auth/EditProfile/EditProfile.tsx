@@ -5,33 +5,30 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import React from "react";
-import Toast from "react-native-toast-message";
-import Icon from "react-native-vector-icons/EvilIcons";
-import { NavigationScreenProp } from "react-navigation";
+} from 'react-native';
 import CountryPicker, {
-  DARK_THEME,
   TranslationLanguageCodeList,
   TranslationLanguageCodeMap,
-} from "react-native-country-picker-modal";
-
+} from 'react-native-country-picker-modal';
 import {
-  changeColor,
+  ModalClass,
+  SavingModal,
   changeBackgroundColor,
-} from "@/components/lightDarkTheme";
-import Context from "@/context/context";
-import { DELETE, POST } from "@/API/index";
-import * as Colors from "@/assets/constants/Colors";
-import { storeData } from "@/LocalStorage/AsyncStorageData";
-import SavingModal from "@/components/Modals/SavingBoxModal";
-import ModalClass from "@/components/Modals/QuestionBoxModal";
-import { toastMessageDuration } from "@/assets/constants/Units";
+  changeColor,
+} from 'src/components';
+import React from 'react';
+import Toast from 'react-native-toast-message';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import {NavigationProp} from '@react-navigation/native';
+import Context from 'src/context/context';
+import {DELETE, POST} from 'src/API';
+import {storeData} from 'src/LocalStorage';
+import {dark, gray, toastMessageDuration, white} from 'src/assets';
 
-import { styles } from "./style";
+import {styles} from './style';
 
-export interface IEditProfileProps extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+export interface IEditProfileProps extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 export interface IEditProfileState {
   name: string;
@@ -43,35 +40,35 @@ export interface IEditProfileState {
   countryCode?: string | TranslationLanguageCodeMap;
   countryFlag?: string;
 }
-export default class EditProfile extends React.Component<
+export class EditProfile extends React.Component<
   IEditProfileProps,
   IEditProfileState
 > {
-  declare context: React.ContextType<typeof Context>
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: IEditProfileProps) {
     super(props);
     this.state = {
       modalVisible: false,
       countrySelectorVisibility: false,
-      choosedCountry: TranslationLanguageCodeList["0"],
-      name: "",
-      email: "",
+      choosedCountry: TranslationLanguageCodeList['0'],
+      name: '',
+      email: '',
       saving: false,
     };
   }
 
   changeProfilePhoto = () => {
-    this.props.navigation.navigate("ChangeProfilePhoto");
+    this.props.navigation.navigate('ChangeProfilePhoto');
   };
 
   onCancel = () => {
-    console.log("cancel pressed");
-    this.props.navigation.navigate("Profile");
+    console.log('cancel pressed');
+    this.props.navigation.navigate('Profile');
   };
 
   cancelModal = () => {
-    console.log("cancel modal");
+    console.log('cancel modal');
     this.setState({
       modalVisible: false,
     });
@@ -79,18 +76,18 @@ export default class EditProfile extends React.Component<
 
   handleDeleteAccount = async () => {
     try {
-      const result = await DELETE("/editProfile/deleteAccount");
+      const result = await DELETE('/editProfile/deleteAccount');
       const message = await (result as any).text();
 
-      if ((result as { status: number }).status === 200) {
-        await storeData("accessToken", "");
+      if ((result as {status: number}).status === 200) {
+        await storeData('accessToken', '');
         this.context.setIsLogin(false);
-        this.props.navigation.navigate("Auth");
+        this.props.navigation.navigate('Auth');
         Toast.show({
-          type: "success",
-          position: "top",
+          type: 'success',
+          position: 'top',
           text1: message,
-          text2: "",
+          text2: '',
           topOffset: 30,
           bottomOffset: 40,
           visibilityTime: toastMessageDuration,
@@ -98,10 +95,10 @@ export default class EditProfile extends React.Component<
         });
       } else {
         Toast.show({
-          type: "error",
-          position: "bottom",
+          type: 'error',
+          position: 'bottom',
           text1: message,
-          text2: "Please try again",
+          text2: 'Please try again',
           topOffset: 30,
           bottomOffset: 40,
           visibilityTime: toastMessageDuration,
@@ -145,15 +142,15 @@ export default class EditProfile extends React.Component<
 
     try {
       // saving the users info (name, email, country)
-      const result = await POST("/editProfile/setInfo", reqBodyUserInfo);
+      const result = await POST('/editProfile/setInfo', reqBodyUserInfo);
       const message = await result.text();
 
       if (result.status === 200) {
         Toast.show({
-          type: "success",
-          position: "top",
+          type: 'success',
+          position: 'top',
           text1: message,
-          text2: "Saved changes",
+          text2: 'Saved changes',
           autoHide: true,
           visibilityTime: toastMessageDuration,
           topOffset: 30,
@@ -162,13 +159,13 @@ export default class EditProfile extends React.Component<
         this.setState({
           saving: false,
         });
-        this.props.navigation.navigate("Profile");
+        this.props.navigation.navigate('Profile');
       } else {
         Toast.show({
-          type: "error",
-          position: "bottom",
+          type: 'error',
+          position: 'bottom',
           text1: message,
-          text2: "Please try again",
+          text2: 'Please try again',
           autoHide: true,
           visibilityTime: toastMessageDuration,
           topOffset: 30,
@@ -181,10 +178,10 @@ export default class EditProfile extends React.Component<
     } catch (err) {
       console.log(err);
       Toast.show({
-        type: "error",
-        position: "bottom",
-        text1: "Something went wrong",
-        text2: "Please check your internet connection",
+        type: 'error',
+        position: 'bottom',
+        text1: 'Something went wrong',
+        text2: 'Please check your internet connection',
         autoHide: true,
         visibilityTime: toastMessageDuration,
         topOffset: 30,
@@ -198,7 +195,7 @@ export default class EditProfile extends React.Component<
 
   override shouldComponentUpdate(
     nextProps: IEditProfileProps,
-    nextState: IEditProfileState
+    nextState: IEditProfileState,
   ) {
     if (this.props !== nextProps) {
       return true;
@@ -217,17 +214,14 @@ export default class EditProfile extends React.Component<
             <View style={styles.row1}>
               <TouchableOpacity
                 onPress={() => this.onSave()}
-                style={styles.btn}
-              >
+                style={styles.btn}>
                 <Text style={styles.saveText}>Save</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.onCancel()}
-                style={styles.btn}
-              >
+                style={styles.btn}>
                 <Text
-                  style={[styles.cancelText, changeColor(this.context.theme)]}
-                >
+                  style={[styles.cancelText, changeColor(this.context.theme)]}>
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -237,40 +231,31 @@ export default class EditProfile extends React.Component<
             </View>
           </View>
 
-          <Image
-            style={styles.image}
-            source={{ uri: this.context.userImage }}
-          />
+          <Image style={styles.image} source={{uri: this.context.userImage}} />
           <Text
             onPress={() => this.changeProfilePhoto()}
-            style={[styles.changePhoto, changeColor(this.context.theme)]}
-          >
+            style={[styles.changePhoto, changeColor(this.context.theme)]}>
             Change Profile Photo
           </Text>
           <View style={styles.inputs}>
             <TextInput
               placeholder={this.context.userName}
-              placeholderTextColor={
-                this.context.theme ? Colors.dark : Colors.white
-              }
+              placeholderTextColor={this.context.theme ? dark : white}
               style={[styles.input, changeBackgroundColor(this.context.theme)]}
-              onChangeText={(input) => this.handleName(input)}
+              onChangeText={input => this.handleName(input)}
             />
             <TextInput
               placeholder={this.context.userEmail}
-              placeholderTextColor={
-                this.context.theme ? Colors.dark : Colors.white
-              }
+              placeholderTextColor={this.context.theme ? dark : white}
               style={[styles.input, changeBackgroundColor(this.context.theme)]}
-              onChangeText={(input) => this.handleEmail(input)}
+              onChangeText={input => this.handleEmail(input)}
             />
             <TouchableOpacity
               style={[styles.input, changeBackgroundColor(this.context.theme)]}
-              onPress={() => this.setState({ countrySelectorVisibility: true })}
-            >
+              onPress={() => this.setState({countrySelectorVisibility: true})}>
               <CountryPicker
                 // theme={this.context.theme ? "" : DARK_THEME}
-                preferredCountries={["US", "IR"]}
+                preferredCountries={['US', 'IR']}
                 withFilter={true}
                 withCountryNameButton={true}
                 withFlag={true}
@@ -280,12 +265,12 @@ export default class EditProfile extends React.Component<
                 //     ? this.context.userCountry
                 //     : this.state.choosedCountry
                 // }
-                onSelect={(val) => {
+                onSelect={val => {
                   this.setState({
                     countryCode: val.name,
                     choosedCountry: val.name,
                   });
-                  this.setState({ countryFlag: val.flag });
+                  this.setState({countryFlag: val.flag});
                 }}
                 onClose={() => {
                   this.setState({
@@ -293,9 +278,9 @@ export default class EditProfile extends React.Component<
                   });
                 }}
                 visible={this.state.countrySelectorVisibility}
-                countryCode={"AF"}
+                countryCode={'AF'}
               />
-              <Icon name="chevron-down" size={40} color={Colors.gray} />
+              <Icon name="chevron-down" size={40} color={gray} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
@@ -303,8 +288,7 @@ export default class EditProfile extends React.Component<
             style={[
               styles.deleteBtn,
               changeBackgroundColor(this.context.theme),
-            ]}
-          >
+            ]}>
             <Text style={[styles.deleteBtnText]}>Delete Account</Text>
           </TouchableOpacity>
           <ModalClass

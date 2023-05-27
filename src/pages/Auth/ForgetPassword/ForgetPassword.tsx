@@ -4,33 +4,32 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import React from "react";
-import LottieView from "lottie-react-native";
-import Toast from "react-native-toast-message";
-import { NavigationScreenProp } from "react-navigation";
+} from 'react-native';
+import React from 'react';
+import LottieView from 'lottie-react-native';
+import Toast from 'react-native-toast-message';
+import {NavigationProp} from '@react-navigation/native';
+import {POST} from 'src/API';
+import {Header} from 'src/components';
+import {toastMessageDuration} from 'src/assets';
 
-import { POST } from "@/API/index";
-import Header from "@/components/pagesHeader/Header";
-import { toastMessageDuration } from "@/assets/constants/Units";
+import {styles} from './style';
 
-import { styles } from "./style";
-
-export interface IForgetPasswordProps extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+export interface IForgetPasswordProps extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 export interface IForgetPasswordState {
   email: string;
   sending: boolean;
 }
-export default class ForgetPassword extends React.Component<
+export class ForgetPassword extends React.Component<
   IForgetPasswordProps,
   IForgetPasswordState
 > {
   constructor(props: IForgetPasswordProps) {
     super(props);
     this.state = {
-      email: "",
+      email: '',
       sending: false,
     };
   }
@@ -39,11 +38,11 @@ export default class ForgetPassword extends React.Component<
     this.setState({
       sending: true,
     });
-    if (this.state.email === "") {
+    if (this.state.email === '') {
       Toast.show({
-        type: "error",
-        position: "bottom",
-        text1: "Please enter your email",
+        type: 'error',
+        position: 'bottom',
+        text1: 'Please enter your email',
         topOffset: 30,
         bottomOffset: 40,
         autoHide: true,
@@ -59,14 +58,14 @@ export default class ForgetPassword extends React.Component<
       email: this.state.email,
     };
     try {
-      const res = await POST("/forgotPassword", reqBody);
+      const res = await POST('/forgotPassword', reqBody);
       const message = await res.text();
       if (res.status === 200) {
         Toast.show({
-          type: "success",
-          position: "top",
-          text1: "Email sent",
-          text2: "Please check your inbox",
+          type: 'success',
+          position: 'top',
+          text1: 'Email sent',
+          text2: 'Please check your inbox',
           topOffset: 30,
           bottomOffset: 40,
           autoHide: true,
@@ -75,14 +74,14 @@ export default class ForgetPassword extends React.Component<
         this.setState({
           sending: false,
         });
-        this.props.navigation.navigate("Login_CreateAccount");
+        this.props.navigation.navigate('Login_CreateAccount');
         return;
       } else {
         Toast.show({
-          type: "error",
-          position: "bottom",
+          type: 'error',
+          position: 'bottom',
           text1: message,
-          text2: "Please try again",
+          text2: 'Please try again',
           topOffset: 30,
           bottomOffset: 40,
           autoHide: true,
@@ -96,10 +95,10 @@ export default class ForgetPassword extends React.Component<
     } catch (err) {
       console.log(err);
       Toast.show({
-        type: "error",
-        position: "bottom",
-        text1: "Something went wrong",
-        text2: "Please try again",
+        type: 'error',
+        position: 'bottom',
+        text1: 'Something went wrong',
+        text2: 'Please try again',
         topOffset: 30,
         bottomOffset: 40,
         autoHide: true,
@@ -124,35 +123,33 @@ export default class ForgetPassword extends React.Component<
           <Header
             title="Forgot Password"
             customClick={() =>
-              this.props.navigation.navigate("Login_CreateAccount")
+              this.props.navigation.navigate('Login_CreateAccount')
             }
           />
-          <Text style={{ textAlign: "center" }}>
+          <Text style={{textAlign: 'center'}}>
             You will receive an email for reseting the password
           </Text>
           <TextInput
             placeholder="Email"
             style={styles.input}
-            onChangeText={(input) => this.handleInput(input)}
+            onChangeText={input => this.handleInput(input)}
           />
           <>
             {this.state.sending ? (
               <TouchableOpacity
                 style={styles.btn}
-                onPress={() => this.handleSend()}
-              >
+                onPress={() => this.handleSend()}>
                 <LottieView
                   loop={true}
                   autoPlay={true}
-                  source={require("../../../assets/Images/loading.json")}
+                  source={require('../../../assets/Images/loading.json')}
                 />
                 <Text style={styles.btnText}>Sending</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={styles.btn}
-                onPress={() => this.handleSend()}
-              >
+                onPress={() => this.handleSend()}>
                 <Text style={styles.btnText}>Send</Text>
               </TouchableOpacity>
             )}

@@ -1,10 +1,9 @@
-import React from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-
-import context from "@/context/context";
-import * as Colors from "@/assets/constants/Colors";
-import { changeColor } from "@/components/lightDarkTheme";
-import { titleFontSize, width } from "@/assets/constants/Units";
+import React from 'react';
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import context from 'src/context/context';
+import {titleFontSize, width} from 'src/assets';
+import * as Colors from 'src/assets/constants/Colors';
+import {changeColor} from 'src/components/lightDarkTheme';
 
 export interface IHeader2Props {
   onSave: () => void;
@@ -13,11 +12,11 @@ export interface IHeader2Props {
 }
 
 export interface IHeader2State {}
-export default class Header2 extends React.Component<
+export class Header2 extends React.Component<
   IHeader2Props,
   IHeader2State
 > {
-  declare context: React.ContextType<typeof context>
+  declare context: React.ContextType<typeof context>;
 
   override render() {
     return (
@@ -42,23 +41,23 @@ export default class Header2 extends React.Component<
 
 const usedWidth = width - 20;
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   header: {
     width: usedWidth,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   row1: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     width: usedWidth,
-    flexDirection: "row-reverse",
+    flexDirection: 'row-reverse',
   },
   saveText: {
     color: Colors.mainColor,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 18,
   },
   cancelText: {

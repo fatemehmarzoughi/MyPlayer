@@ -1,7 +1,7 @@
 import {
   GET_ALL_MOVIES,
   GET_ALL_MOVIES_FAILED
-} from "@/assets/constants/ActionsTypes";
+} from "src/assets";
 
 const initialState = {
   loadingMovies: true,

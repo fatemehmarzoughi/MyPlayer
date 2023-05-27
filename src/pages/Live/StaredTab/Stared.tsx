@@ -2,9 +2,8 @@ import React from "react";
 import FastImage from "react-native-fast-image";
 import Icon from "react-native-vector-icons/Ionicons";
 import { FlatList, View, StyleSheet, TouchableOpacity } from "react-native";
-
-import * as Colors from "@/assets/constants/Colors";
-import { ITVDataType } from "@/components/pagesFlatLists/LiveFlatlists/FlatLists";
+import { dark, white } from "src/assets";
+import { ITVDataType } from "src/components";
 
 export interface IStaredProps {}
 
@@ -12,7 +11,7 @@ export interface IStaredStates {
   data: ITVDataType[];
 }
 
-export default class Stared extends React.Component<
+export class Stared extends React.Component<
   IStaredProps,
   IStaredStates
 > {
@@ -35,7 +34,7 @@ export default class Stared extends React.Component<
   }
 
   stared = () => {
-    // change the stared properti in data to true or false
+    // change the stared properties in data to true or false
   };
 
   override render() {
@@ -60,9 +59,9 @@ export default class Stared extends React.Component<
             >
               <>
                 {item.stared ? (
-                  <Icon name="star" size={25} color={Colors.white} />
+                  <Icon name="star" size={25} color={white} />
                 ) : (
-                  <Icon name="star-outline" size={25} color={Colors.white} />
+                  <Icon name="star-outline" size={25} color={white} />
                 )}
               </>
             </TouchableOpacity>
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   icons: {
-    backgroundColor: Colors.dark,
+    backgroundColor: dark,
     position: "absolute",
     bottom: 20,
     right: 20,

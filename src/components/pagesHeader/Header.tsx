@@ -2,10 +2,10 @@ import React from "react";
 import Icon from "react-native-vector-icons/EvilIcons";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 
-import context from "@/context/context";
-import { width } from "@/assets/constants/Units";
-import * as Colors from "@/assets/constants/Colors";
-import { changeColor } from "@/components/lightDarkTheme";
+import { width } from "src/assets";
+import * as Colors from "src/assets/constants/Colors";
+import Context from "react-redux/es/components/Context";
+import { changeColor } from "src/components/lightDarkTheme";
 
 const usedWidth = width - 20;
 
@@ -16,11 +16,11 @@ export interface IHeaderProps {
 
 export interface IHeaderState {}
 
-export default class Header extends React.Component<
+export class Header extends React.Component<
   IHeaderProps,
   IHeaderState
 > {
-  declare context: React.ContextType<typeof context>
+  declare context: React.ContextType<typeof Context>
 
   override render() {
     return (

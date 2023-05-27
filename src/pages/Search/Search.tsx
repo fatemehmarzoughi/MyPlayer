@@ -1,17 +1,13 @@
 import React from "react";
 import { View, TextInput } from "react-native";
-
-import {
-  changeBackgroundColor,
-  changeBackgroundColor2,
-} from "@/components/lightDarkTheme";
-import context from "@/context/context";
-import * as Colors from "@/assets/constants/Colors";
+import Context from "src/context/context";
 
 import { styles } from "./style";
+import { dark, white } from "src/assets";
+import { changeBackgroundColor2, changeBackgroundColor } from "src/components";
 
-export default class Search extends React.Component {
-  declare context: React.ContextType<typeof context>
+export class Search extends React.Component {
+  declare context: React.ContextType<typeof Context>
 
   override render() {
     return (
@@ -19,7 +15,7 @@ export default class Search extends React.Component {
         <TextInput
           placeholder="Search"
           style={[changeBackgroundColor2(this.context.theme), styles.input]}
-          placeholderTextColor={this.context.theme ? Colors.dark : Colors.white}
+          placeholderTextColor={this.context.theme ? dark : white}
         />
       </View>
     );

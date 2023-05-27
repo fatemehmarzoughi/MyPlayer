@@ -12,23 +12,20 @@ import Toast from "react-native-toast-message";
 import ToggleSwitch from "toggle-switch-react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
-import { NavigationScreenProp } from "react-navigation";
+import { NavigationProp } from "@react-navigation/native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
-import { GET } from "@/API/index";
-import Context from "@/context/context";
-import * as Colors from "@/assets/constants/Colors";
-import { changeColor } from "@/components/lightDarkTheme";
-import Notification from "@/Notification/NotificationSetup";
-import ModalClass from "@/components/Modals/QuestionBoxModal";
-import { toastMessageDuration } from "@/assets/constants/Units";
-import { checkLoginStatus } from "@/pages/Auth/checkLoginStatus";
-import { getData, storeData } from "@/LocalStorage/AsyncStorageData";
-
+import Notification from "src/Notification/NotificationSetup";
+import Context from "src/context/context";
 import { styles } from "./style";
+import { getData, storeData } from "src/LocalStorage";
+import { checkLoginStatus } from "src/pages";
+import { GET } from "src/API";
+import { dark, gray, mainColor, toastMessageDuration, white } from "src/assets";
+import { ModalClass, changeColor } from "src/components";
 
-export interface IProfileProps extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+export interface IProfileProps extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 export interface IProfileState {
   email: string;
@@ -41,7 +38,7 @@ export interface IProfileState {
   isGoogleAccount: boolean;
   appNotification: boolean;
 }
-export default class Profile extends React.PureComponent<
+export class Profile extends React.PureComponent<
   IProfileProps,
   IProfileState
 > {
@@ -224,7 +221,7 @@ export default class Profile extends React.PureComponent<
                           name="person"
                           size={25}
                           color={
-                            this.context.theme ? Colors.dark : Colors.white
+                            this.context.theme ? dark : white
                           }
                         />
                         <Text
@@ -267,7 +264,7 @@ export default class Profile extends React.PureComponent<
                 onPress={() => this.EditProfile()}
                 style={styles.editProfile}
               >
-                <Icon name="pencil" size={20} color={Colors.white} />
+                <Icon name="pencil" size={20} color={white} />
                 <Text style={styles.editProfileText}>Edit Profile</Text>
               </TouchableOpacity>
             </View>
@@ -284,13 +281,13 @@ export default class Profile extends React.PureComponent<
             </Text>
             <TouchableOpacity
               onPress={() => this.handleUpgradeToPremium()}
-              style={[styles.option, { borderColor: Colors.white }]}
+              style={[styles.option, { borderColor: white }]}
             >
               <View style={styles.optionTitleIcon}>
                 <Icon2
                   name="logo-usd"
                   size={20}
-                  color={this.context.theme ? Colors.dark : Colors.white}
+                  color={this.context.theme ? dark : white}
                 />
                 <Text
                   style={[styles.optionTitle, changeColor(this.context.theme)]}
@@ -301,7 +298,7 @@ export default class Profile extends React.PureComponent<
               <Icon
                 name="chevron-right"
                 size={35}
-                color={this.context.theme ? Colors.dark : Colors.white}
+                color={this.context.theme ? dark : white}
               />
             </TouchableOpacity>
 
@@ -310,12 +307,12 @@ export default class Profile extends React.PureComponent<
                 <TouchableOpacity style={styles.premiumOption}>
                   <View style={styles.premium}>
                     <View style={styles.optionTitleIcon}>
-                      <Icon2 name="basket" size={20} color={Colors.gray} />
+                      <Icon2 name="basket" size={20} color={gray} />
                       <Text style={styles.premiumOptionTitle}>
                         Reset Password
                       </Text>
                     </View>
-                    <Icon name="chevron-right" size={35} color={Colors.gray} />
+                    <Icon name="chevron-right" size={35} color={gray} />
                   </View>
                   <Text style={styles.premiumOptionText}>
                     Only available for MyPlayer accounts
@@ -330,7 +327,7 @@ export default class Profile extends React.PureComponent<
                     <Icon2
                       name="basket"
                       size={20}
-                      color={this.context.theme ? Colors.dark : Colors.white}
+                      color={this.context.theme ? dark : white}
                     />
                     <Text
                       style={[
@@ -344,7 +341,7 @@ export default class Profile extends React.PureComponent<
                   <Icon
                     name="chevron-right"
                     size={35}
-                    color={this.context.theme ? Colors.dark : Colors.white}
+                    color={this.context.theme ? dark : white}
                   />
                 </TouchableOpacity>
               )}
@@ -358,7 +355,7 @@ export default class Profile extends React.PureComponent<
                 <Icon2
                   name="bug"
                   size={20}
-                  color={this.context.theme ? Colors.dark : Colors.white}
+                  color={this.context.theme ? dark : white}
                 />
                 <Text
                   style={[styles.optionTitle, changeColor(this.context.theme)]}
@@ -369,18 +366,18 @@ export default class Profile extends React.PureComponent<
               <Icon
                 name="chevron-right"
                 size={35}
-                color={this.context.theme ? Colors.dark : Colors.white}
+                color={this.context.theme ? dark : white}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.premiumOption}>
               <View style={styles.premium}>
                 <View style={styles.optionTitleIcon}>
-                  <Icon2 name="bookmark" size={20} color={Colors.gray} />
+                  <Icon2 name="bookmark" size={20} color={gray} />
                   <Text style={styles.premiumOptionTitle}>
                     Restore my Saved
                   </Text>
                 </View>
-                <Icon name="chevron-right" size={35} color={Colors.gray} />
+                <Icon name="chevron-right" size={35} color={gray} />
               </View>
               <Text style={styles.premiumOptionText}>
                 Only available in premium accounts
@@ -395,16 +392,16 @@ export default class Profile extends React.PureComponent<
             <TouchableOpacity style={styles.premiumOption}>
               <View style={styles.premium}>
                 <View style={styles.optionTitleIcon}>
-                  <Icon2 name="mail" size={20} color={Colors.gray} />
+                  <Icon2 name="mail" size={20} color={gray} />
                   <Text style={styles.premiumOptionTitle}>
                     Email Notification
                   </Text>
                 </View>
-                {/* <Icon2 name="toggle" size={35} color={Colors.gray}/> */}
+                {/* <Icon2 name="toggle" size={35} color={gray}/> */}
                 <ToggleSwitch
                   isOn={true}
-                  onColor={Colors.gray}
-                  offColor={Colors.gray}
+                  onColor={gray}
+                  offColor={gray}
                   size="small"
                   onToggle={() => {}}
                 />
@@ -421,7 +418,7 @@ export default class Profile extends React.PureComponent<
                 <Icon2
                   name="alarm"
                   size={20}
-                  color={this.context.theme ? Colors.dark : Colors.white}
+                  color={this.context.theme ? dark : white}
                 />
                 <Text
                   style={[styles.optionTitle, changeColor(this.context.theme)]}
@@ -431,8 +428,8 @@ export default class Profile extends React.PureComponent<
               </View>
               <ToggleSwitch
                 isOn={this.state.appNotification}
-                onColor={Colors.mainColor}
-                offColor={Colors.dark}
+                onColor={mainColor}
+                offColor={dark}
                 size="small"
                 onToggle={() => this.setAppNotification()}
               />
@@ -447,7 +444,7 @@ export default class Profile extends React.PureComponent<
               style={styles.option}
             >
               <View style={styles.optionTitleIcon}>
-                <Icon2 name="power" size={20} color={Colors.mainColor} />
+                <Icon2 name="power" size={20} color={mainColor} />
                 <Text
                   style={[styles.optionTitle, changeColor(this.context.theme)]}
                 >

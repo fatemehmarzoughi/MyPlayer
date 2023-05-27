@@ -4,16 +4,16 @@ import { View, Text, FlatList, TouchableOpacity } from "react-native";
 
 import { styles } from "./style";
 
-export interface IFlatListsStates {}
-export interface IFlatListsProps {
+export interface IHomeFlatListsStates {}
+export interface IHomeFlatListsProps {
   title: string;
   type: "large" | "medium" | "small";
   data: { url: string }[];
 }
 
-export default class FlatLists extends React.Component<
-  IFlatListsProps,
-  IFlatListsStates
+export class HomeFlatLists extends React.Component<
+  IHomeFlatListsProps,
+  IHomeFlatListsStates
 > {
   override render() {
     return (

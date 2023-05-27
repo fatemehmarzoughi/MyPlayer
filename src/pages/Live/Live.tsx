@@ -1,11 +1,10 @@
 import React from "react";
-import { NavigationScreenProp } from "react-navigation";
-
+import { NavigationProp } from "@react-navigation/native";
+import { MainHeader } from "src/components";
 import Tabs from "./Tabs";
-import MainHeader from "@/components/pagesHeader/MainHeader";
 
-export interface ILiveProps extends NavigationScreenProp<any, any> {
-  navigation: { openDrawer: () => void } & NavigationScreenProp<any, any>;
+export interface ILiveProps extends NavigationProp<any, any> {
+  navigation: { openDrawer: () => void } & NavigationProp<any, any>;
 }
 
 export interface ILiveStates {
@@ -15,7 +14,7 @@ export interface ILiveStates {
     { key: "second"; title: "Second" }
   ];
 }
-export default class Live extends React.Component<ILiveProps, ILiveStates> {
+export class Live extends React.Component<ILiveProps, ILiveStates> {
   constructor(props: ILiveProps) {
     super(props);
     this.state = {

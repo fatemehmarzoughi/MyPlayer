@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import { height, width } from "@/assets/constants/Units";
-import * as Colors from "@/assets/constants/Colors";
+import { dark, height, mainColor, white, width } from "src/assets";
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,7 +8,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: "auto",
     flex: 1,
-    backgroundColor: Colors.dark,
+    backgroundColor: dark,
     position: "relative"
   },
   btnContainer: {
@@ -18,27 +17,27 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     // flex : 1,
     marginTop: "auto",
-    backgroundColor: Colors.dark
+    backgroundColor: dark
   },
   mainBtn: {
     paddingRight: width / 4,
     paddingLeft: width / 4,
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor: Colors.mainColor,
+    backgroundColor: mainColor,
     borderRadius: 5,
     margin: 15
   },
   BtnText: {
     fontWeight: "bold",
-    color: Colors.white
+    color: white
   },
   minorBtn: {
     paddingRight: width / 4,
     paddingLeft: width / 4,
     paddingTop: 20,
     paddingBottom: 20,
-    borderColor: Colors.mainColor,
+    borderColor: mainColor,
     borderStyle: "solid",
     borderWidth: 1,
     borderRadius: 5,

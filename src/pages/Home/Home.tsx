@@ -3,7 +3,8 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-} from "react-native";
+  Modal,
+} from 'react-native';
 import Animated, {
   withTiming,
   withRepeat,
@@ -11,40 +12,35 @@ import Animated, {
   FadeOutLeft,
   useSharedValue,
   useAnimatedStyle,
-} from "react-native-reanimated";
-import React from "react";
-import { ConnectedProps, connect } from "react-redux";
-import LottieView from "lottie-react-native";
-import FastImage from "react-native-fast-image";
-import Icon from "react-native-vector-icons/Ionicons";
-import { NavigationScreenProp } from "react-navigation";
-import { Heading, Text, VStack, FlatList } from "native-base";
+} from 'react-native-reanimated';
+import React from 'react';
+import {ConnectedProps, connect} from 'react-redux';
+import LottieView from 'lottie-react-native';
+import FastImage from 'react-native-fast-image';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {NavigationProp} from '@react-navigation/native';
+import {Heading, Text, VStack, FlatList} from 'native-base';
 
+import Context from 'src/context/context';
+import Notification from 'src/Notification/NotificationSetup';
+
+import {styles} from './style';
+import {HomeFlatLists, MainHeader, changeColor} from 'src/components';
 import {
-  getAllRecommended,
   getAllMostWatched,
-  getAllTrendingNow,
-  getAllNewReleases,
-} from "@/Redux/actions/getAllItems";
-import {
-  getBanner,
-  getAllRadio,
   getAllMovies,
   getAllMusics,
+  getAllNewReleases,
+  getAllRadio,
+  getAllRecommended,
   getAllSports,
-} from "@/Redux/actions";
-import context from "@/context/context";
-import Modal from "@/components/Modals/subCategoryModal";
-import { changeColor } from "@/components/lightDarkTheme";
-import Notification from "@/Notification/NotificationSetup";
-import MainHeader from "@/components/pagesHeader/MainHeader";
-import FlatLists from "@/components/pagesFlatLists/HomeFlatLists/FlatList";
-
-import { styles } from "./style";
+  getAllTrendingNow,
+  getBanner,
+} from 'src/Redux';
 
 export type ISubjectCategory = {
   id: number;
-  name: "Musics" | "All" | "Movies" | "Sports" | "Radio";
+  name: 'Musics' | 'All' | 'Movies' | 'Sports' | 'Radio';
   size: number;
   subCategory: {
     name: string;
@@ -52,12 +48,12 @@ export type ISubjectCategory = {
 };
 
 export interface IHomeProps
-  extends NavigationScreenProp<any, any>,
+  extends NavigationProp<any, any>,
     IHomeDispatchProps {
-  navigation: { openDrawer: () => void } & NavigationScreenProp<any, any>;
+  navigation: {openDrawer: () => void} & NavigationProp<any, any>;
 
   animatedStyles: any;
-  offset: { value: number };
+  offset: {value: number};
 }
 
 export interface IHomeMapState {
@@ -88,7 +84,7 @@ function useHook(Component: React.ComponentClass<IHomeProps, IHomeStates>) {
 
     const animatedStyles = useAnimatedStyle(() => {
       return {
-        transform: [{ translateX: offset.value }],
+        transform: [{translateX: offset.value}],
       };
     });
 
@@ -99,7 +95,7 @@ function useHook(Component: React.ComponentClass<IHomeProps, IHomeStates>) {
 }
 
 class Home extends React.Component<IHomeProps, IHomeStates> {
-  declare context: React.ContextType<typeof context>
+  declare context: React.ContextType<typeof Context>;
   private _isMounted: boolean;
 
   constructor(props: IHomeProps) {
@@ -108,57 +104,57 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
       data: [
         {
           id: 0,
-          name: "All",
+          name: 'All',
           size: 8,
           subCategory: [],
         },
         {
           id: 1,
-          name: "Musics",
+          name: 'Musics',
           size: 1,
           subCategory: [
             {
-              name: "All",
+              name: 'All',
             },
             {
-              name: "Happy",
+              name: 'Happy',
             },
             {
-              name: "Sad",
+              name: 'Sad',
             },
             {
-              name: "jazz",
+              name: 'jazz',
             },
           ],
         },
         {
           id: 2,
-          name: "Movies",
+          name: 'Movies',
           size: 1,
           subCategory: [
             {
-              name: "All",
+              name: 'All',
             },
             {
-              name: "horror",
+              name: 'horror',
             },
             {
-              name: "comedy",
+              name: 'comedy',
             },
             {
-              name: "action",
+              name: 'action',
             },
           ],
         },
         {
           id: 3,
-          name: "Sports",
+          name: 'Sports',
           size: 1,
           subCategory: [],
         },
         {
           id: 4,
-          name: "Radio",
+          name: 'Radio',
           size: 1,
           subCategory: [],
         },
@@ -166,9 +162,9 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
 
       dotPosition: 25,
       showSubCategory: false,
-      subCategoryTitle: "",
+      subCategoryTitle: '',
       subCategoryVisibility: false,
-      selectedSubCategory: "All", // selected subCategory
+      selectedSubCategory: 'All', // selected subCategory
       selectedCategory: 0, // selected category
 
       loading: false,
@@ -184,15 +180,15 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
   };
 
   categoryPressed = (id: number) => {
-    this.setState(({ data }) => ({
-      data: data.filter((i) => {
-        if (i.id === id) return data.map((i) => (i.size = 8));
+    this.setState(({data}) => ({
+      data: data.filter(i => {
+        if (i.id === id) return data.map(i => (i.size = 8));
         else return data;
       }),
-      showSubCategory: data.find((i) => i.id === id)?.subCategory.length !== 0,
-      subCategoryTitle: data.find((i) => i.id === id)?.name ?? "",
+      showSubCategory: data.find(i => i.id === id)?.subCategory.length !== 0,
+      subCategoryTitle: data.find(i => i.id === id)?.name ?? '',
       selectedCategory: id,
-      selectedSubCategory: "All",
+      selectedSubCategory: 'All',
       showAllCategory: id,
 
       refreshingCategories: true,
@@ -200,7 +196,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
   };
 
   subCategoryOpenModal = () => {
-    console.log("modal");
+    console.log('modal');
     this.setState({
       subCategoryVisibility: true,
     });
@@ -209,12 +205,6 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
   selectedSbCategory = (selectedSubCategory: string) => {
     this.setState({
       selectedSubCategory,
-      subCategoryVisibility: false,
-    });
-  };
-
-  closeModal = () => {
-    this.setState({
       subCategoryVisibility: false,
     });
   };
@@ -264,8 +254,8 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
   }
 
   override render() {
-    const { loadingBanner, banner } = this.props.banner;
-    const { loading, trendingNow, recommended, newReleases, mostWatched } =
+    const {loadingBanner, banner} = this.props.banner;
+    const {loading, trendingNow, recommended, newReleases, mostWatched} =
       this.props.AllItems;
     const {
       loadingMusics,
@@ -300,7 +290,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     if (this.state.selectedCategory === 0) {
       if (!loading) {
         setTimeout(() => {
-          this.setState({ refreshingCategories: false });
+          this.setState({refreshingCategories: false});
         }, 1000);
       }
       myRecommended = [];
@@ -315,7 +305,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     } else if (this.state.selectedCategory === 1) {
       if (!loadingMusics) {
         setTimeout(() => {
-          this.setState({ refreshingCategories: false });
+          this.setState({refreshingCategories: false});
         }, 1000);
       }
       myRecommended = [];
@@ -330,7 +320,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     } else if (this.state.selectedCategory === 2) {
       if (!loadingMovies) {
         setTimeout(() => {
-          this.setState({ refreshingCategories: false });
+          this.setState({refreshingCategories: false});
         }, 1000);
       }
 
@@ -346,7 +336,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     } else if (this.state.selectedCategory === 3) {
       if (!loadingSports) {
         setTimeout(() => {
-          this.setState({ refreshingCategories: false });
+          this.setState({refreshingCategories: false});
         }, 1000);
       }
 
@@ -362,7 +352,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     } else if (this.state.selectedCategory === 4) {
       if (!loadingRadio) {
         setTimeout(() => {
-          this.setState({ refreshingCategories: false });
+          this.setState({refreshingCategories: false});
         }, 1000);
       }
 
@@ -384,10 +374,9 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
             refreshing={this.state.loading}
             onRefresh={() => this.onRefresh()}
           />
-        }
-      >
+        }>
         <MainHeader
-          searchOnPress={() => this.props.navigation.navigate("Search")}
+          searchOnPress={() => this.props.navigation.navigate('Search')}
           menuOnPress={() => this.props.navigation.openDrawer()}
         />
         {/* Top Banner */}
@@ -430,13 +419,12 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
           showsHorizontalScrollIndicator={false}
           horizontal
           data={this.state.data}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => (
             <VStack alignItems="center">
               <Text
                 onPress={() => this.categoryPressed(item.id)}
-                style={[styles.categoryName, changeColor(this.context.theme)]}
-              >
+                style={[styles.categoryName, changeColor(this.context.theme)]}>
                 {item.name}
               </Text>
               <Icon
@@ -454,12 +442,11 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
             <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
               <VStack flexDirection="row" style={styles.subCategory}>
                 <Text style={changeColor(this.context.theme)}>
-                  {this.state.subCategoryTitle} &gt;{" "}
+                  {this.state.subCategoryTitle} &gt;{' '}
                 </Text>
                 <TouchableOpacity
                   onPress={() => this.subCategoryOpenModal()}
-                  style={[styles.selectSubCategory]}
-                >
+                  style={[styles.selectSubCategory]}>
                   <VStack flexDirection="row" alignItems="center">
                     <Text>{this.state.selectedSubCategory} </Text>
                     <Icon name="chevron-down-outline" />
@@ -477,12 +464,12 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
             <LottieView
               loop={true}
               autoPlay={true}
-              source={require("../../assets/Images/loading.json")}
+              source={require('../../assets/Images/loading.json')}
               style={{
                 width: 50,
                 height: 50,
-                marginLeft: "auto",
-                marginRight: "auto",
+                marginLeft: 'auto',
+                marginRight: 'auto',
               }}
             />
           ) : (
@@ -494,28 +481,28 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
                  onPress={(id) => console.log(id)}
                 /> */}
 
-              <FlatLists
+              <HomeFlatLists
                 title="Recommended"
                 data={myRecommended}
                 type="medium"
                 //  onPress={(id) => console.log(id)}
               />
 
-              <FlatLists
+              <HomeFlatLists
                 title="Most Watched"
                 data={myMostWatched}
                 type="medium"
                 //  onPress={(id) => console.log(id)}
               />
 
-              <FlatLists
+              <HomeFlatLists
                 title="Trending Now"
                 data={myTrendingNow}
                 type="large"
                 //  onPress={(id) => console.log(id)}
               />
 
-              <FlatLists
+              <HomeFlatLists
                 title="New Releases"
                 data={myNewReleases}
                 type="medium"
@@ -526,11 +513,15 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
         </>
 
         <Modal
-          closeModal={this.closeModal}
+          closeModal={(props) => {
+            this.setState({
+              subCategoryVisibility: false,
+            });
+          }}
           selectedSbCategory={this.selectedSbCategory}
           subCategoryVisibility={this.state.subCategoryVisibility}
           data={
-            this.state.data.find((i) => i.id === this.state.selectedCategory)
+            this.state.data.find(i => i.id === this.state.selectedCategory)
               ?.subCategory
           }
         />

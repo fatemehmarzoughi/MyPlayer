@@ -1,8 +1,8 @@
 import React from "react";
 
 import Context from "./context";
-import { SITE_URL } from "@/assets/constants/General";
-import { getData, storeData } from "@/LocalStorage/AsyncStorageData";
+import { SITE_URL } from "src/assets";
+import { getData, storeData } from "src/LocalStorage";
 
 export type IContextProviderProps = {
   children: any

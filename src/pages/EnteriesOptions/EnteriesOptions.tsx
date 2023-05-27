@@ -1,20 +1,19 @@
 import React from "react";
 import LottieView from "lottie-react-native";
-import { NavigationScreenProp } from "react-navigation";
+import { NavigationProp } from "@react-navigation/native";
 import { Text, TouchableOpacity, View } from "react-native";
-
-import Context from "@/context/context";
-import { checkLoginStatus } from "@/pages/Auth/checkLoginStatus";
+import Context from "src/context/context";
+import { checkLoginStatus } from "src";
 
 import { styles } from "./styles";
 
-export interface IEnteriesOptionsProps extends NavigationScreenProp<any, any> {
-  navigation: NavigationScreenProp<any, any>;
+export interface IEnteriesOptionsProps extends NavigationProp<any, any> {
+  navigation: NavigationProp<any, any>;
 }
 
 export interface IEnteriesOptionsStates {}
 
-export default class EnteriesOptions extends React.Component<
+export class EnteriesOptions extends React.Component<
   IEnteriesOptionsProps,
   IEnteriesOptionsStates
 > {

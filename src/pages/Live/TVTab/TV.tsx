@@ -1,16 +1,14 @@
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-
-import * as Colors from "@/assets/constants/Colors";
-import FlatLists, { ITVDataType } from "@/components/pagesFlatLists/LiveFlatlists/FlatLists";
-
+import { dark } from "src/assets";
+import { FlatLists, ITVDataType } from "src/components";
 
 export interface ITVProps {}
 
 export interface ITVStates {
   data: ITVDataType[];
 }
-export default class TV extends React.Component<ITVProps, ITVStates> {
+export class TV extends React.Component<ITVProps, ITVStates> {
   constructor(props: ITVProps) {
     super(props);
     this.state = {
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   icon: {
-    backgroundColor: Colors.dark,
+    backgroundColor: dark,
     position: "absolute",
     bottom: 20,
     right: 20,
