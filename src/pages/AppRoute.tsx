@@ -22,7 +22,7 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import Home from './Home/Home';
-import React, {ComponentClass, useContext} from 'react';
+import React, { useContext } from 'react';
 import Context from 'src/context/context';
 import {gray, mainColor} from 'src/assets';
 import {changeBackgroundColor} from 'src/components';
@@ -43,7 +43,7 @@ const Drawer = createDrawerNavigator();
 const Tab = createMaterialTopTabNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 
-const loginCreateAccount: React.FC = React.memo(() => {
+const LoginCreateAccount: React.FC = React.memo(() => {
   return (
     <Tab.Navigator
       style={[styles.topTabBar]}
@@ -59,9 +59,9 @@ const loginCreateAccount: React.FC = React.memo(() => {
         //     title : 'Create Account'
         //  }}‍‍
         name="CreateAccount"
-        component={CreateAccount as unknown as ComponentClass}
+        component={(props) => <CreateAccount {...props} /> }
       />
-      <Tab.Screen name="Login" component={Login as unknown as ComponentClass} />
+      <Tab.Screen name="Login" component={(props) => <Login {...props} /> } />
     </Tab.Navigator>
   );
 });
@@ -76,12 +76,12 @@ const Auth: React.FC = React.memo(() => {
           <>
             <Stack.Screen
               name="Profile"
-              component={Profile as unknown as ComponentClass}
+              component={(props) => <Profile {...props} /> }
               options={{headerShown: false /** tabBarVisible: false, */}}
             />
             <Stack.Screen
               name="ReportABug"
-              component={ReportABug as unknown as ComponentClass}
+              component={(props) => <ReportABug {...props} /> }
               options={{
                 /** tabBarVisible: false, */
                 headerShown: false,
@@ -89,7 +89,7 @@ const Auth: React.FC = React.memo(() => {
             />
             <Stack.Screen
               name="UpgradeToPremium"
-              component={UpgradeToPremium as unknown as ComponentClass}
+              component={(props) => <UpgradeToPremium {...props} /> }
               options={{
                 headerShown: false,
                 /** tabBarVisible: false, */
@@ -97,7 +97,7 @@ const Auth: React.FC = React.memo(() => {
             />
             <Stack.Screen
               name="ResetPassword"
-              component={ResetPassword as unknown as ComponentClass}
+              component={(props) => <ResetPassword {...props} /> }
               options={{
                 headerShown: false,
                 /** tabBarVisible: false, */
@@ -105,7 +105,7 @@ const Auth: React.FC = React.memo(() => {
             />
             <Stack.Screen
               name="EditProfile"
-              component={EditProfile as unknown as ComponentClass}
+              component={(props) => <EditProfile {...props} /> }
               options={{
                 headerShown: false,
                 /** tabBarVisible: false, */
@@ -113,7 +113,7 @@ const Auth: React.FC = React.memo(() => {
             />
             <Stack.Screen
               name="ChangeProfilePhoto"
-              component={ChangeProfilePhoto as unknown as ComponentClass}
+              component={(props) => <ChangeProfilePhoto {...props} /> }
               options={{
                 headerShown: false,
                 /** tabBarVisible: false, */
@@ -124,7 +124,7 @@ const Auth: React.FC = React.memo(() => {
           <>
             <Stack.Screen
               name="Login_CreateAccount"
-              component={loginCreateAccount}
+              component={(props) => <LoginCreateAccount {...props} />}
               options={{
                 /** tabBarVisible: false, */
                 headerShown: false,
@@ -133,7 +133,7 @@ const Auth: React.FC = React.memo(() => {
 
             <Stack.Screen
               name="ForgetPassword"
-              component={ForgetPassword as unknown as ComponentClass}
+              component={(props) => <ForgetPassword {...props} /> }
               options={{
                 /** tabBarVisible: false, */
                 headerShown: false,
@@ -159,7 +159,7 @@ const BottomTabs: React.FC = React.memo(() => {
       barStyle={changeBackgroundColor(contexts.theme)}>
       <BottomTab.Screen
         name="Home"
-        component={Home as unknown as ComponentClass}
+        component={(props) => <Home {...props} /> }
         options={{
           tabBarIcon: ({color}) => (
             <Icon name="home-sharp" size={22} color={color} />
@@ -169,7 +169,7 @@ const BottomTabs: React.FC = React.memo(() => {
       />
       <BottomTab.Screen
         name="Live"
-        component={Live as unknown as ComponentClass}
+        component={(props) => <Live {...props} /> }
         options={{
           tabBarIcon: ({color}) => <Icon name="wifi" size={22} color={color} />,
         }}
@@ -196,16 +196,16 @@ const DrawerPages: React.FC = React.memo(() => {
       }}
       // drawerContent={(props) => <MenuContent {...props} />}
     >
-      <Drawer.Screen name="MyPlayer" component={BottomTabs} />
+      <Drawer.Screen name="MyPlayer" component={(props) => <BottomTabs {...props} />} />
 
       <Drawer.Screen
         name="About"
-        component={About as unknown as ComponentClass}
+        component={(props) => <About {...props} /> }
       />
 
       <Drawer.Screen
         name="TermsAndPolicy"
-        component={TermsAndPolicy as unknown as ComponentClass}
+        component={(props) => <TermsAndPolicy {...props} /> }
       />
 
       {/* <Drawer.Screen name="Search" component={Search} /> */}
@@ -218,12 +218,12 @@ export const AppRoute: React.FC<IAppRouteProps> = React.memo(
     const contexts = useContext(Context);
 
     return (
-      <NavigationContainer theme={contexts.theme ? DefaultTheme : DarkTheme}>
+      <NavigationContainer >
         <Stack.Navigator
           initialRouteName={isFirstInstallation ? 'OnBoarding' : 'Home'}>
           <Stack.Screen
             name="OnBoarding"
-            component={OnBoarding as unknown as ComponentClass}
+            component={(props) => <OnBoarding {...props} /> }
             options={{
               /** tabBarVisible: false, */
               headerShown: false,
@@ -232,7 +232,7 @@ export const AppRoute: React.FC<IAppRouteProps> = React.memo(
 
           <Stack.Screen
             name="EnteriesOptions"
-            component={EnteriesOptions as unknown as ComponentClass}
+            component={(props) => <EnteriesOptions {...props} /> }
             options={{
               /** tabBarVisible: false, */
               headerShown: false,
@@ -241,7 +241,7 @@ export const AppRoute: React.FC<IAppRouteProps> = React.memo(
 
           <Stack.Screen
             name="Search"
-            component={Search}
+            component={(props) => <Search {...props} />}
             options={{
               /** tabBarVisible: true, */
               headerShown: true,
@@ -250,7 +250,7 @@ export const AppRoute: React.FC<IAppRouteProps> = React.memo(
 
           <Stack.Screen
             name="Home"
-            component={DrawerPages}
+            component={(props) => <DrawerPages {...props} />}
             //    component={Home}
             options={{
               /** tabBarVisible: false, */
@@ -260,7 +260,7 @@ export const AppRoute: React.FC<IAppRouteProps> = React.memo(
 
           <Stack.Screen
             name="Auth"
-            component={loginCreateAccount}
+            component={(props) => <LoginCreateAccount {...props} />}
             options={{
               // tabBarVisible: false,
               headerShown: false,

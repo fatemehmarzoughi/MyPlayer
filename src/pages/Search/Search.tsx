@@ -1,10 +1,10 @@
 import React from "react";
-import { View, TextInput } from "react-native";
+import { dark, white } from "src/assets";
 import Context from "src/context/context";
+import { View, TextInput } from "react-native";
+import { changeBackgroundColor2, changeBackgroundColor } from "src/components";
 
 import { styles } from "./style";
-import { dark, white } from "src/assets";
-import { changeBackgroundColor2, changeBackgroundColor } from "src/components";
 
 export class Search extends React.Component {
   declare context: React.ContextType<typeof Context>

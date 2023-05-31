@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationProp } from "@react-navigation/native";
 import { MainHeader } from "src/components";
-import Tabs from "./Tabs";
+import { Tabs } from "./Tabs";
 
 export interface ILiveProps extends NavigationProp<any, any> {
   navigation: { openDrawer: () => void } & NavigationProp<any, any>;
