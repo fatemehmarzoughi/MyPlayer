@@ -18,7 +18,7 @@ import {
   REACT_APP_ANDROID_CLIENT_ID,
 } from 'src/assets';
 import React from 'react';
-import {POST} from 'src/API';
+import {POST, login} from 'src/API';
 import Context from 'src/context/context';
 import {storeData} from 'src/LocalStorage';
 import {changeColor} from 'src/components';
@@ -34,12 +34,7 @@ export interface ILoginProps extends NavigationProp<any, any> {
 }
 
 export type ILoginState = {
-  countryCode: string;
-  countrySelectorVisibility: boolean;
-  passwordIconNotVisible: number;
-  passwordIconVisible: number;
-  isVisible: boolean;
-  passwordIsSecure: boolean;
+  passwordIconVisibility: boolean;
 
   email: string;
   password: string;
@@ -53,12 +48,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   constructor(props: ILoginProps) {
     super(props);
     this.state = {
-      countryCode: 'Your Country (Optional)',
-      countrySelectorVisibility: false,
-      passwordIconNotVisible: 0,
-      passwordIconVisible: 1,
-      isVisible: true,
-      passwordIsSecure: true,
+      passwordIconVisibility: true,
 
       email: '',
       password: '',
@@ -94,65 +84,45 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
 
     if (!this.validation()) return;
 
-    POST('/login/user', {
-      email: this.state.email,
-      password: this.state.password,
-    })
-      .then(async res => {
-        const result = await res.text();
-        console.log(result);
-        if (res.status === 200) {
-          console.log('logged in');
-          // const token = res.headers.map.accesstoken
-          const token = result;
-          this.context.setIsLogin(true);
-          await storeData('accessToken', token);
-          Toast.show({
-            type: 'success',
-            position: 'top',
-            text1: 'Logged in Successfully',
-            text2: 'Welcome to MyPlayer',
-            visibilityTime: toastMessageDuration,
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-          });
-          this.setState({
-            loggingIn: false,
-          });
-          this.props.navigation.navigate('Home');
-        } else {
-          this.setState({
-            loggingIn: false,
-          });
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: result,
-            text2: 'Please try again',
-            visibilityTime: toastMessageDuration,
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-          });
-        }
-      })
-      .catch(err => {
+    login({
+      reqBody: {
+        identifier: this.state.email,
+        password: this.state.password
+      },
+      onSuccess: async (data) => {
+        this.context.setIsLogin(true);
+        await storeData('accessToken', data.jwt);
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Logged in Successfully',
+          text2: 'Welcome to MyPlayer',
+          visibilityTime: toastMessageDuration,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        this.props.navigation.navigate('Home');
+      },
+
+      onError: (err) => {
+        console.log(String(err));
+        
         this.setState({
           loggingIn: false,
         });
         Toast.show({
           type: 'error',
           position: 'bottom',
-          text1: 'couldnt connect to server',
+          text1: String(err),
           text2: 'Please try again',
           visibilityTime: toastMessageDuration,
           autoHide: true,
           topOffset: 30,
           bottomOffset: 40,
         });
-        console.log('couldnt connect to server = ' + err);
-      });
+      },
+    })
   };
 
   handleLoginWithGoogle = async () => {
@@ -228,21 +198,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
 
   passwordVisibility = () => {
     console.log('tufjhbk');
-    if (this.state.isVisible) {
-      this.setState({
-        passwordIconNotVisible: 1,
-        passwordIconVisible: 0,
-        isVisible: false,
-        passwordIsSecure: false,
-      });
-    } else {
-      this.setState({
-        passwordIconNotVisible: 0,
-        passwordIconVisible: 1,
-        isVisible: true,
-        passwordIsSecure: true,
-      });
-    }
+    this.setState({
+      passwordIconVisibility: !this.state.passwordIconVisibility,
+    });
   };
 
   handleResetPass = () => {
@@ -271,7 +229,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
               style={styles.textInput}
               placeholderTextColor={this.context.theme ? gray : lightGray}
               placeholder="Password"
-              secureTextEntry={this.state.passwordIsSecure}
+              secureTextEntry={this.state.passwordIconVisibility}
               onChangeText={input => {
                 this.setState({password: input});
               }}
@@ -281,7 +239,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                 onPress={() => this.passwordVisibility()}
                 style={[
                   styles.eyeIconStyle,
-                  {opacity: this.state.passwordIconNotVisible},
+                  {opacity: this.state.passwordIconVisibility ? 0 : 1 },
                 ]}
                 name="eye-outline"
                 size={20}
@@ -291,7 +249,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                 onPress={() => this.passwordVisibility()}
                 style={[
                   styles.eyeIconStyle,
-                  {opacity: this.state.passwordIconVisible},
+                  {opacity: this.state.passwordIconVisibility ? 1 : 0},
                 ]}
                 name="eye-off-outline"
                 size={20}

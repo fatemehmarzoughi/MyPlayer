@@ -4,20 +4,20 @@ import {
   GET_ALL_MOVIES,
   GET_ALL_MOVIES_FAILED,
 } from "src/assets";
-import { GetNoToken } from "src/API";
+import { GET } from "src/API";
 
 export const getAllMovies = () => {
   return async (dispatch: typeof store.dispatch) => {
-    const recommendedRES = await GetNoToken(
+    const recommendedRES = await GET(
       "/items/status/0/category/2/subCategory/1"
     );
-    const trendingNowRES = await GetNoToken(
+    const trendingNowRES = await GET(
       "/items/status/1/category/2/subCategory/1"
     );
-    const mostWatchedRES = await GetNoToken(
+    const mostWatchedRES = await GET(
       "/items/status/2/category/2/subCategory/1"
     );
-    const newReleasesRES = await GetNoToken(
+    const newReleasesRES = await GET(
       "/items/status/3/category/2/subCategory/1"
     );
 

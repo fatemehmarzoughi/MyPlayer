@@ -19,10 +19,10 @@ import Notification from "src/Notification/NotificationSetup";
 import Context from "src/context/context";
 import { styles } from "./style";
 import { getData, storeData } from "src/LocalStorage";
-import { checkLoginStatus } from "src/pages";
 import { GET } from "src/API";
 import { dark, gray, mainColor, toastMessageDuration, white } from "src/assets";
 import { ModalClass, changeColor } from "src/components";
+import { checkLoginStatus } from "src/utils";
 
 export interface IProfileProps extends NavigationProp<any, any> {
   navigation: NavigationProp<any, any>;

@@ -1,15 +1,15 @@
 import {getData} from 'src/LocalStorage';
 
 export const checkLoginStatus = async (
-  setIsLogin: (value: boolean) => void,
+  setIsLogin?: (value: boolean) => void,
 ): Promise<boolean> => {
   try {
     const accessToken = await getData('accessToken');
     if (accessToken !== null && accessToken !== '') {
-      setIsLogin(true);
+      setIsLogin?.(true);
       return true;
     } else {
-      setIsLogin(false);
+      setIsLogin?.(false);
       return false;
     }
   } catch (err) {

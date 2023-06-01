@@ -1,5 +1,5 @@
 import {store} from 'App';
-import {GetNoToken} from 'src/API';
+import {GET} from 'src/API';
 import {
   GET_ALL_ITEMS_MOSTWATCHED,
   GET_ALL_ITEMS_MOSTWATCHED_FAILED,
@@ -14,7 +14,7 @@ import {
 export const getAllRecommended = () => {
   return async (dispatch: typeof store.dispatch) => {
     try {
-      const res = await GetNoToken('/items/status/0/category/0/subCategory/0');
+      const res = await GET('/items/status/0/category/0/subCategory/0');
       if ((res as {status: number}).status === 200) {
         const result = await (res as any).json();
         dispatch({type: GET_ALL_ITEMS_RECOMMENDED, recommended: result});
@@ -31,7 +31,7 @@ export const getAllRecommended = () => {
 
 export const getAllMostWatched = () => {
   return async (dispatch: typeof store.dispatch) => {
-    const res = await GetNoToken('/items/status/2/category/0/subCategory/0');
+    const res = await GET('/items/status/2/category/0/subCategory/0');
     if ((res as {status: number}).status === 200) {
       const result = await (res as any).json();
       dispatch({type: GET_ALL_ITEMS_MOSTWATCHED, mostWatched: result});
@@ -45,7 +45,7 @@ export const getAllMostWatched = () => {
 
 export const getAllTrendingNow = () => {
   return async (dispatch: typeof store.dispatch) => {
-    const res = await GetNoToken('/items/status/1/category/0/subCategory/0');
+    const res = await GET('/items/status/1/category/0/subCategory/0');
     if ((res as {status: number}).status === 200) {
       const result = await (res as any).json();
       dispatch({type: GET_ALL_ITEMS_TRENDINGNOW, trendingNow: result});
@@ -59,7 +59,7 @@ export const getAllTrendingNow = () => {
 
 export const getAllNewReleases = () => {
   return async (dispatch: typeof store.dispatch) => {
-    const res = await GetNoToken('/items/status/3/category/0/subCategory/0');
+    const res = await GET('/items/status/3/category/0/subCategory/0');
     if ((res as {status: number}).status === 200) {
       const result = await (res as any).json();
       dispatch({type: GET_ALL_ITEMS_NEWRELEASES, newReleases: result});

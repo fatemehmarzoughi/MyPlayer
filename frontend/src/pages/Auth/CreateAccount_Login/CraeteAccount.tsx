@@ -2,35 +2,32 @@ import {
   statusCodes,
   GoogleSignin,
 } from '@react-native-google-signin/google-signin';
-import React from 'react';
-import LottieView from 'lottie-react-native';
-import Toast from 'react-native-toast-message';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {NavigationProp} from '@react-navigation/native';
-import Icon2 from 'react-native-vector-icons/EvilIcons';
-import CountryPicker, {
-  TranslationLanguageCodeMap,
-} from 'react-native-country-picker-modal';
 import {
   Text,
   View,
-  ScrollView,
-  TextInput,
   FlatList,
+  TextInput,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
-
-import Context from 'src/context/context';
-import * as Colors from 'src/assets/constants/Colors';
 import {
-  REACT_APP_ANDROID_CLIENT_ID,
-  REACT_APP_IOS_CLIENT_ID,
   toastMessageDuration,
+  REACT_APP_IOS_CLIENT_ID,
+  REACT_APP_ANDROID_CLIENT_ID,
 } from 'src/assets';
+import React from 'react';
+import Context from 'src/context/context';
 import {storeData} from 'src/LocalStorage';
 import {changeColor} from 'src/components';
+import LottieView from 'lottie-react-native';
+import Toast from 'react-native-toast-message';
+import Icon from 'react-native-vector-icons/Ionicons';
+import * as Colors from 'src/assets/constants/Colors';
+import {NavigationProp} from '@react-navigation/native';
+import Icon2 from 'react-native-vector-icons/EvilIcons';
+import {CountryCode, Plan, createAccount} from 'src/API';
 import {validateEmail, validatePassword} from 'src/pages';
-import {POST} from 'src/API';
+import CountryPicker from 'react-native-country-picker-modal';
 
 import {styles} from './style';
 
@@ -39,41 +36,17 @@ export interface ICreateAccountProps extends NavigationProp<any, any> {
 }
 
 export type ICreateAccountState = {
-  countryCode: string | TranslationLanguageCodeMap;
-  countrySelectorVisibility: boolean;
-  passwordIconNotVisible: 0 | 1;
-  passwordIconVisible: 0 | 1;
-  isVisible: boolean;
-  passwordIsSecure: boolean;
-
-  activeColor: string;
-  notActiveColor: string;
-
-  activeWeight: 'bold';
-  notActiveWeight: 'normal';
-
-  selectedId: number;
-
-  plans: {
-    id: number;
-    name: string;
-    price: string;
-    description: string;
-  }[];
-
+  passwordIconVisibility: 0 | 1;
+  
   name: string;
   email: string;
   password: string;
-  choosedCountry: string | TranslationLanguageCodeMap;
-  choosedPlan: number;
+  choosedPlan: Plan;
+  countryCode: CountryCode;
 
   nameErrorMessage: string;
-  nameErrorDisplay: 'none' | 'flex';
-
   emailErrorMessage: string;
   passwordErrorMessage: string;
-  emailErrorDisplay: 'none' | 'flex';
-  passwordErrorDisplay: 'none' | 'flex';
 
   createingAccount: boolean;
 };
@@ -87,83 +60,59 @@ export class CreateAccount extends React.Component<
   constructor(props: ICreateAccountProps) {
     super(props);
     this.state = {
-      countryCode: 'Your Country (Optional)',
-      countrySelectorVisibility: false,
-      passwordIconNotVisible: 0,
-      passwordIconVisible: 1,
-      isVisible: true,
-      passwordIsSecure: true,
-
-      activeColor: Colors.mainColor,
-      notActiveColor: Colors.gray,
-
-      activeWeight: 'bold',
-      notActiveWeight: 'normal',
-
-      selectedId: 0,
-
-      plans: [
-        {
-          id: 0,
-          name: 'Free',
-          price: '0.0$',
-          description: 'Free Account',
-        },
-        {
-          id: 1,
-          name: '30 Days',
-          price: '30.0$',
-          description: 'Premium Account',
-        },
-        {
-          id: 2,
-          name: '365 Days',
-          price: '9.0$',
-          description: 'Premium Account',
-        },
-      ],
+      countryCode: CountryCode.US,
+      passwordIconVisibility: 0,
 
       name: '',
       email: '',
       password: '',
-      choosedCountry: '',
-      choosedPlan: 0,
+      choosedPlan: Plan.free,
 
       nameErrorMessage: '',
-      nameErrorDisplay: 'none',
 
       emailErrorMessage: '',
       passwordErrorMessage: '',
-      emailErrorDisplay: 'none',
-      passwordErrorDisplay: 'none',
 
       createingAccount: false,
     };
   }
 
+  plans: {
+    planType: Plan;
+    name: string;
+    price: string;
+    description: string;
+  }[] = [
+    {
+      planType: Plan.free,
+      name: 'Free',
+      price: '0.0$',
+      description: 'Free Account',
+    },
+    {
+      planType: Plan.monthly,
+      name: '30 Days',
+      price: '30.0$',
+      description: 'Premium Account',
+    },
+    {
+      planType: Plan.annual,
+      name: '365 Days',
+      price: '9.0$',
+      description: 'Premium Account',
+    },
+  ];
+
   passwordVisibility = () => {
-    if (this.state.isVisible) {
+    if (!this.state.passwordIconVisibility) {
       this.setState({
-        passwordIconNotVisible: 1,
-        passwordIconVisible: 0,
-        isVisible: false,
-        passwordIsSecure: false,
+        passwordIconVisibility: 1,
       });
     } else {
       this.setState({
-        passwordIconNotVisible: 0,
-        passwordIconVisible: 1,
-        isVisible: true,
-        passwordIsSecure: true,
+        passwordIconVisibility: 0,
       });
     }
-  };
-
-  selectPlan = (id: number) => {
-    this.setState({
-      selectedId: id,
-      choosedPlan: id,
-    });
   };
 
   handleNameInput = (input: string) => {
@@ -192,21 +141,18 @@ export class CreateAccount extends React.Component<
     // name validation
     if (this.state.name === '') {
       this.setState({
-        nameErrorDisplay: 'flex',
         nameErrorMessage: 'Name is required',
         createingAccount: false,
       });
       nameIsValid = false;
     } else if (this.state.name.length < 2) {
       this.setState({
-        nameErrorDisplay: 'flex',
         nameErrorMessage: 'Name must be more than 2 characters',
         createingAccount: false,
       });
       nameIsValid = false;
     } else {
       this.setState({
-        nameErrorDisplay: 'none',
         createingAccount: false,
       });
       nameIsValid = true;
@@ -215,21 +161,18 @@ export class CreateAccount extends React.Component<
     // email validation
     if (this.state.email === '') {
       this.setState({
-        emailErrorDisplay: 'flex',
         emailErrorMessage: 'Email is required',
         createingAccount: false,
       });
       emailIsValid = false;
     } else if (!validateEmail(this.state.email)) {
       this.setState({
-        emailErrorDisplay: 'flex',
         emailErrorMessage: 'Please Enter a Valid Email',
         createingAccount: false,
       });
       emailIsValid = false;
     } else {
       this.setState({
-        emailErrorDisplay: 'none',
         createingAccount: false,
       });
       emailIsValid = true;
@@ -239,7 +182,6 @@ export class CreateAccount extends React.Component<
     if (this.state.password === '') {
       this.setState({
         passwordErrorMessage: 'Password is required',
-        passwordErrorDisplay: 'flex',
         createingAccount: false,
       });
       passwordIsValid = false;
@@ -247,13 +189,11 @@ export class CreateAccount extends React.Component<
       this.setState({
         passwordErrorMessage:
           'Password must be at least 5, at most 20 characters',
-        passwordErrorDisplay: 'flex',
         createingAccount: false,
       });
       passwordIsValid = false;
     } else {
       this.setState({
-        passwordErrorDisplay: 'none',
         createingAccount: false,
       });
       passwordIsValid = true;
@@ -264,6 +204,8 @@ export class CreateAccount extends React.Component<
   };
 
   handleCreateAccount = () => {
+    console.log(this.state.choosedPlan);
+    
     this.setState({
       createingAccount: true,
     });
@@ -272,63 +214,46 @@ export class CreateAccount extends React.Component<
 
     if (!this.inputValidation()) return;
 
-    POST('/signin/addUser', {
-      firstName: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      plan: this.state.choosedPlan,
-      country: this.state.choosedCountry,
-    })
-      .then(async res => {
-        console.log(res.status);
-        if (res.status === 200) {
-          this.setState({
-            createingAccount: false,
-          });
-          Toast.show({
-            type: 'success',
-            position: 'top',
-            text1: 'Registered Successfully',
-            text2: 'Please Login',
-            visibilityTime: toastMessageDuration,
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-          });
-        } else {
-          this.setState({
-            createingAccount: false,
-          });
-          const message = await res.json();
-          console.log(message);
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: message.message,
-            text2: 'Please try again',
-            visibilityTime: toastMessageDuration,
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-          });
-        }
-      })
-      .catch(err => {
+    createAccount({
+      reqBody: {
+        email: this.state.email,
+        username: this.state.name,
+        password: this.state.password,
+
+        plan: this.state.choosedPlan,
+        // country: this.state.countryCode, TODO: solve country code problem on registration
+      },
+      onSuccess: data => {
         this.setState({
           createingAccount: false,
         });
-        console.log(err);
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Registered Successfully',
+          text2: 'Please Login',
+          visibilityTime: toastMessageDuration,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      },
+      onError: err => {
+        this.setState({
+          createingAccount: false,
+        });
         Toast.show({
           type: 'error',
           position: 'bottom',
-          text1: 'Something went wrong',
+          text1: err.message,
           text2: 'Please try again',
           visibilityTime: toastMessageDuration,
           autoHide: true,
           topOffset: 30,
           bottomOffset: 40,
         });
-      });
+      },
+    });
   };
 
   handleCreateAccountWithGoogle = async () => {
@@ -403,13 +328,20 @@ export class CreateAccount extends React.Component<
     }
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   Return                                   */
+  /* -------------------------------------------------------------------------- */
+
   override render() {
     return (
       <ScrollView>
         <View style={styles.container}>
+          {/* /* --------------------------------- Header --------------------------------- */}
           <Text style={[styles.mainTitle, changeColor(this.context.theme)]}>
             Create Account
           </Text>
+
+          {/* /* --------------------------------- Inputs --------------------------------- */}
           <View style={styles.input}>
             <TextInput
               style={[styles.textInput]}
@@ -421,7 +353,7 @@ export class CreateAccount extends React.Component<
             <Text
               style={[
                 styles.errorMessage,
-                {display: this.state.nameErrorDisplay},
+                {display: this.state.nameErrorMessage ? 'flex' : 'none'},
               ]}>
               {this.state.nameErrorMessage}
             </Text>
@@ -438,7 +370,7 @@ export class CreateAccount extends React.Component<
             <Text
               style={[
                 styles.errorMessage,
-                {display: this.state.emailErrorDisplay},
+                {display: this.state.emailErrorMessage ? 'flex' : 'none'},
               ]}>
               {this.state.emailErrorMessage}
             </Text>
@@ -450,7 +382,7 @@ export class CreateAccount extends React.Component<
               placeholderTextColor={
                 this.context.theme ? Colors.gray : Colors.lightGray
               }
-              secureTextEntry={this.state.passwordIsSecure}
+              secureTextEntry={!!!this.state.passwordIconVisibility}
               onChangeText={input =>
                 this.handlePasswordInput(input)
               }></TextInput>
@@ -459,7 +391,7 @@ export class CreateAccount extends React.Component<
                 onPress={() => this.passwordVisibility()}
                 style={[
                   styles.eyeIconStyle,
-                  {opacity: this.state.passwordIconNotVisible},
+                  {opacity: this.state.passwordIconVisibility},
                 ]}
                 name="eye-outline"
                 size={20}
@@ -469,7 +401,7 @@ export class CreateAccount extends React.Component<
                 onPress={() => this.passwordVisibility()}
                 style={[
                   styles.eyeIconStyle,
-                  {opacity: this.state.passwordIconVisible},
+                  {opacity: this.state.passwordIconVisibility ? 0 : 1},
                 ]}
                 name="eye-off-outline"
                 size={20}
@@ -479,44 +411,28 @@ export class CreateAccount extends React.Component<
             <Text
               style={[
                 styles.errorMessage,
-                {display: this.state.passwordErrorDisplay},
+                {display: this.state.passwordErrorMessage ? 'flex' : 'none'},
               ]}>
               {this.state.passwordErrorMessage}
             </Text>
           </View>
           <View style={styles.input}>
-            <TouchableOpacity
-              style={styles.picker}
-              onPress={() => {
-                this.setState({countrySelectorVisibility: true});
-              }}>
+            <TouchableOpacity style={styles.picker}>
               <Icon2 name="chevron-down" size={40} color={Colors.gray} />
-              <View>
-                <Text style={styles.text}>this.state.countryCode</Text>
-                {/* <Icon2 name="chevron-down" size={40} color={gray}/> */}
-              </View>
+              <CountryPicker
+                preferredCountries={['US', 'GB']}
+                withFilter={true}
+                withCountryNameButton={true}
+                withFlag={true}
+                withEmoji={true}
+                onSelect={val => {
+                  this.setState({
+                    countryCode: val.cca2 as unknown as CountryCode,
+                  });
+                }}
+                countryCode={this.state.countryCode}
+              />
             </TouchableOpacity>
-            <CountryPicker
-              preferredCountries={['US', 'GB']}
-              withFilter={true}
-              withCountryNameButton={true}
-              withFlag={true}
-              withEmoji={true}
-              onSelect={val => {
-                this.setState({
-                  countryCode: val.name,
-                  choosedCountry: val.name,
-                });
-                // this.setState({ countryFlag: val.flag });
-              }}
-              onClose={() => {
-                this.setState({
-                  countrySelectorVisibility: false,
-                });
-              }}
-              visible={this.state.countrySelectorVisibility}
-              countryCode={'AF'}
-            />
           </View>
           <View style={styles.planSection}>
             <Text style={[styles.planTitle, changeColor(this.context.theme)]}>
@@ -529,25 +445,29 @@ export class CreateAccount extends React.Component<
               style={styles.plansFlatlist}
               horizontal
               keyExtractor={(item, index) => index.toString()}
-              data={this.state.plans}
+              data={this.plans}
               renderItem={({item}) => (
                 <TouchableOpacity
-                  onPress={() => this.selectPlan(item.id)}
+                  onPress={() => {
+                    this.setState({
+                      choosedPlan: item.planType,
+                    });
+                  }}
                   style={[
                     styles.planContainer,
-                    this.state.selectedId === item.id
+                    this.state.choosedPlan === item.planType
                       ? {
-                          borderColor: this.state.activeColor,
+                          borderColor: Colors.mainColor,
                           borderWidth: 3.5,
                         }
-                      : {borderColor: this.state.notActiveColor},
+                      : {borderColor: Colors.gray},
                   ]}>
                   <Icon
                     style={[
                       styles.planIcon,
-                      this.state.selectedId === item.id
-                        ? {color: this.state.activeColor}
-                        : {color: this.state.notActiveColor},
+                      this.state.choosedPlan === item.planType
+                        ? {color: Colors.mainColor}
+                        : {color: Colors.gray},
                     ]}
                     name="checkmark-outline"
                     size={60}
@@ -556,9 +476,9 @@ export class CreateAccount extends React.Component<
                     <Text
                       style={[
                         styles.planText,
-                        this.state.selectedId === item.id
-                          ? {fontWeight: this.state.activeWeight}
-                          : {fontWeight: this.state.notActiveWeight},
+                        this.state.choosedPlan === item.planType
+                          ? {fontWeight: 'bold'}
+                          : {fontWeight: 'normal'},
                         changeColor(this.context.theme),
                       ]}>
                       {item.name}
@@ -566,9 +486,9 @@ export class CreateAccount extends React.Component<
                     <Text
                       style={[
                         styles.planText,
-                        this.state.selectedId === item.id
-                          ? {fontWeight: this.state.activeWeight}
-                          : {fontWeight: this.state.notActiveWeight},
+                        this.state.choosedPlan === item.planType
+                          ? {fontWeight: 'bold'}
+                          : {fontWeight: 'normal'},
                         changeColor(this.context.theme),
                       ]}>
                       {item.price}
@@ -577,9 +497,9 @@ export class CreateAccount extends React.Component<
                   <Text
                     style={[
                       styles.description,
-                      this.state.selectedId === item.id
-                        ? {color: this.state.activeColor}
-                        : {color: this.state.notActiveColor},
+                      this.state.choosedPlan === item.planType
+                        ? {color: Colors.mainColor}
+                        : {color: Colors.gray},
                       changeColor(this.context.theme),
                     ]}>
                     {item.description}
@@ -588,6 +508,8 @@ export class CreateAccount extends React.Component<
               )}
             />
           </View>
+
+          {/* /* ---------------------------------- Plans --------------------------------- */}
           <TouchableOpacity
             style={styles.btn}
             onPress={() => this.handleCreateAccount()}>
@@ -600,12 +522,14 @@ export class CreateAccount extends React.Component<
             <Text style={styles.btnText}>Create Account</Text>
           </TouchableOpacity>
 
+          {/* /* -------------------------------- Separator ------------------------------- */}
           <View style={styles.seperator}>
             <View style={styles.line}></View>
             <Text style={changeColor(this.context.theme)}>OR</Text>
             <View style={styles.line}></View>
           </View>
 
+          {/* /* --------------------------------- Buttons -------------------------------- */}
           <TouchableOpacity
             onPress={() => this.handleCreateAccountWithGoogle()}
             style={styles.googleBtn}>

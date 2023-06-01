@@ -13,9 +13,9 @@ import context from 'src/context/context';
 import * as Colors from 'src/assets/constants/Colors';
 
 import {changeColor, FlatList1} from 'src/components';
+import { GET } from 'src/API';
 
 import {styles} from './style';
-import {GetNoToken} from 'src/API';
 
 export interface IChangeProfilePhotoProps
   extends NavigationProp<any, any> {
@@ -47,13 +47,13 @@ export class ChangeProfilePhoto extends React.PureComponent<
 
   getImages = async () => {
     try {
-      const resultAnimation = await GetNoToken('/images/imageLists/Animation');
+      const resultAnimation = await GET('/images/imageLists/Animation');
       const Animation = await (resultAnimation as any).json();
 
-      const resultArtists = await GetNoToken('/images/imageLists/Artists');
+      const resultArtists = await GET('/images/imageLists/Artists');
       const Artists = await (resultArtists as any).json();
 
-      const resultActors = await GetNoToken('/images/imageLists/Actors');
+      const resultActors = await GET('/images/imageLists/Actors');
       const Actors = await (resultActors as any).json();
 
       this.setState({

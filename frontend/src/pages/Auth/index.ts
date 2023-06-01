@@ -6,4 +6,4 @@ export * from './Profile';
 export * from './Report-a-Bug';
 export * from './ResetPassword';
 export * from './UpgradeToPremium';
-export * from './checkLoginStatus';
+export * from './AuthRoute';
