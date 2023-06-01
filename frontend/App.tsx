@@ -1,7 +1,7 @@
 import React from "react";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import LottieView from "lottie-react-native";
 import Toast from "react-native-toast-message";
@@ -45,7 +45,7 @@ export default class App extends React.Component<IAppProps, IAppStates> {
     try {
       const isFirstInstallation = await getData("isFirstInstallation");
       if (isFirstInstallation === null) {
-        // if(isFirstInstallation !== null)
+        if(isFirstInstallation !== null)
         await storeData("isFirstInstallation", "false");
         this._isMount &&
           this.setState({
