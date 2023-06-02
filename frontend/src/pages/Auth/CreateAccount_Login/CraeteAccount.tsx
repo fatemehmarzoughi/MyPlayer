@@ -204,13 +204,9 @@ export class CreateAccount extends React.Component<
   };
 
   handleCreateAccount = () => {
-    console.log(this.state.choosedPlan);
-    
     this.setState({
       createingAccount: true,
     });
-
-    console.log(this.state.email);
 
     if (!this.inputValidation()) return;
 
@@ -237,6 +233,7 @@ export class CreateAccount extends React.Component<
           topOffset: 30,
           bottomOffset: 40,
         });
+        this.props.navigation.navigate('Home');
       },
       onError: err => {
         this.setState({

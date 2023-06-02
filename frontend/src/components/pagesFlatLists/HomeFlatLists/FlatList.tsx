@@ -1,14 +1,15 @@
-import React from "react";
-import FastImage from "react-native-fast-image";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import React from 'react';
+import FastImage from 'react-native-fast-image';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {Item, Attributes} from 'src/API';
 
-import { styles } from "./style";
+import {styles} from './style';
 
 export interface IHomeFlatListsStates {}
 export interface IHomeFlatListsProps {
   title: string;
-  type: "large" | "medium" | "small";
-  data: { url: string }[];
+  type: 'large' | 'medium' | 'small';
+  data: Attributes<Item>[];
 }
 
 export class HomeFlatLists extends React.Component<
@@ -23,20 +24,20 @@ export class HomeFlatLists extends React.Component<
           horizontal
           data={this.props.data}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             // <TouchableOpacity onPress={() => this.props.onPress(item.id)}>
             <TouchableOpacity>
               <FastImage
                 style={[
                   styles.item,
-                  this.props.type === "large"
+                  this.props.type === 'large'
                     ? styles.itemLarge
-                    : this.props.type === "medium"
+                    : this.props.type === 'medium'
                     ? styles.itemMid
                     : styles.itemSmall,
                 ]}
                 source={{
-                  uri: item.url,
+                  uri: item.attributes.cover,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}

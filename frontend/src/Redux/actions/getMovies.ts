@@ -1,44 +1,28 @@
-import { store } from "App";
+import {store} from 'App';
 
-import {
-  GET_ALL_MOVIES,
-  GET_ALL_MOVIES_FAILED,
-} from "src/assets";
-import { GET } from "src/API";
+import {GET_ALL_MOVIES, GET_ALL_MOVIES_FAILED} from 'src/assets';
+import {GET, GetItemsResponseBody, ItemCategory, useFilter} from 'src/API';
 
 export const getAllMovies = () => {
-  return async (dispatch: typeof store.dispatch) => {
-    const recommendedRES = await GET(
-      "/items/status/0/category/2/subCategory/1"
-    );
-    const trendingNowRES = await GET(
-      "/items/status/1/category/2/subCategory/1"
-    );
-    const mostWatchedRES = await GET(
-      "/items/status/2/category/2/subCategory/1"
-    );
-    const newReleasesRES = await GET(
-      "/items/status/3/category/2/subCategory/1"
-    );
+  const {filter} = useFilter({category: ItemCategory.Movie});
 
-    if (
-      (recommendedRES as { status: number }).status === 200 &&
-      (trendingNowRES as { status: number }).status === 200 &&
-      (mostWatchedRES as { status: number }).status === 200 &&
-      (newReleasesRES as { status: number }).status === 200
-    ) {
-      const recommended = await (recommendedRES as any).json();
-      const trendingNow = await (trendingNowRES as any).json();
-      const mostWatched = await (mostWatchedRES as any).json();
-      const newReleases = await (newReleasesRES as any).json();
+  return async (dispatch: typeof store.dispatch) => {
+    const allMoviesRes = await GET({endpoint: `/api/items${filter}`});
+
+    try {
+      if (allMoviesRes.status === 200) {
+        dispatch({
+          type: GET_ALL_MOVIES,
+          movies: allMoviesRes.data as GetItemsResponseBody,
+          loadingMovies: false,
+        });
+      } else throw Error;
+    } catch (error) {
       dispatch({
-        type: GET_ALL_MOVIES,
-        recommendedMovies: recommended,
-        trendingNowMovies: trendingNow,
-        mostWatchedMovies: mostWatched,
-        newReleasesMovies: newReleases,
+        type: GET_ALL_MOVIES_FAILED,
+        error: 'Something went wrong',
+        loadingMovies: false,
       });
-    } else
-      dispatch({ type: GET_ALL_MOVIES_FAILED, error: "Something went wrong" });
+    }
   };
 };

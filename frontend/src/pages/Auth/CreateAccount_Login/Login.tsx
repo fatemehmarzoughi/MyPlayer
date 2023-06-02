@@ -18,7 +18,7 @@ import {
   REACT_APP_ANDROID_CLIENT_ID,
 } from 'src/assets';
 import React from 'react';
-import {POST, login} from 'src/API';
+import {login} from 'src/API';
 import Context from 'src/context/context';
 import {storeData} from 'src/LocalStorage';
 import {changeColor} from 'src/components';

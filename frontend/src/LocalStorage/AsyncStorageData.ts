@@ -23,6 +23,6 @@ export const getData = async (item: keyof InternalStorageData) => {
     return await AsyncStorage.getItem('@' + item);
   } catch (err) {
     console.log(err);
-    return 0;
+    return null;
   }
 };

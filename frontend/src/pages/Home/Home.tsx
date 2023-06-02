@@ -1,10 +1,4 @@
-import {
-  View,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-  Modal,
-} from 'react-native';
+import {View, ScrollView, RefreshControl, TouchableOpacity} from 'react-native';
 import Animated, {
   withTiming,
   withRepeat,
@@ -24,23 +18,28 @@ import {Heading, Text, VStack, FlatList} from 'native-base';
 import Context from 'src/context/context';
 import Notification from 'src/Notification/NotificationSetup';
 
-import {styles} from './style';
 import {HomeFlatLists, MainHeader, changeColor} from 'src/components';
 import {
-  getAllMostWatched,
+  getAllItems,
   getAllMovies,
   getAllMusics,
-  getAllNewReleases,
   getAllRadio,
-  getAllRecommended,
   getAllSports,
-  getAllTrendingNow,
   getBanner,
+  IAllItemsAction,
+  IBannerAction,
+  IMoviesAction,
+  IMusicsAction,
+  ISportActions,
+  IRadioActions,
 } from 'src/Redux';
+import {GetItemsResponseBody, ItemCategory, ItemLabel} from 'src/API';
+
+import {styles} from './style';
 
 export type ISubjectCategory = {
   id: number;
-  name: 'Musics' | 'All' | 'Movies' | 'Sports' | 'Radio';
+  name: ItemCategory | 'All';
   size: number;
   subCategory: {
     name: string;
@@ -51,18 +50,15 @@ export interface IHomeProps
   extends NavigationProp<any, any>,
     IHomeDispatchProps {
   navigation: {openDrawer: () => void} & NavigationProp<any, any>;
-
-  animatedStyles: any;
-  offset: {value: number};
 }
 
 export interface IHomeMapState {
-  radio: any;
-  banner: any;
-  musics: any;
-  movies: any;
-  sports: any;
-  allItems: any;
+  radio: IRadioActions;
+  banner: IBannerAction;
+  musics: IMusicsAction;
+  movies: IMoviesAction;
+  sports: ISportActions;
+  allItems: IAllItemsAction;
 }
 
 export interface IHomeStates {
@@ -72,27 +68,27 @@ export interface IHomeStates {
   data: ISubjectCategory[];
   showSubCategory: boolean;
   subCategoryTitle: string;
-  selectedCategory: number; // selected category
+  selectedCategory: ItemCategory | 'All'; // selected category
   selectedSubCategory: string; // selected subCategory
   refreshingCategories: boolean;
   subCategoryVisibility: boolean;
 }
 
-function useHook(Component: React.ComponentClass<IHomeProps, IHomeStates>) {
-  return (props: IHomeProps) => {
-    const offset = useSharedValue(5);
+// function useHook(Component: React.ComponentClass<IHomeProps, IHomeStates>) {
+//   return (props: IHomeProps) => {
+//     const offset = useSharedValue(5);
 
-    const animatedStyles = useAnimatedStyle(() => {
-      return {
-        transform: [{translateX: offset.value}],
-      };
-    });
+//     const animatedStyles = useAnimatedStyle(() => {
+//       return {
+//         transform: [{translateX: offset.value}],
+//       };
+//     });
 
-    return (
-      <Component {...props} animatedStyles={animatedStyles} offset={offset} />
-    );
-  };
-}
+//     return (
+//       <Component {...props} animatedStyles={animatedStyles} offset={offset} />
+//     );
+//   };
+// }
 
 class Home extends React.Component<IHomeProps, IHomeStates> {
   declare context: React.ContextType<typeof Context>;
@@ -110,7 +106,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
         },
         {
           id: 1,
-          name: 'Musics',
+          name: ItemCategory.Music,
           size: 1,
           subCategory: [
             {
@@ -129,7 +125,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
         },
         {
           id: 2,
-          name: 'Movies',
+          name: ItemCategory.Movie,
           size: 1,
           subCategory: [
             {
@@ -148,13 +144,13 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
         },
         {
           id: 3,
-          name: 'Sports',
+          name: ItemCategory.Sport,
           size: 1,
           subCategory: [],
         },
         {
           id: 4,
-          name: 'Radio',
+          name: ItemCategory.Radio,
           size: 1,
           subCategory: [],
         },
@@ -165,12 +161,12 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
       subCategoryTitle: '',
       subCategoryVisibility: false,
       selectedSubCategory: 'All', // selected subCategory
-      selectedCategory: 0, // selected category
+      selectedCategory: 'All', // selected category
 
       loading: false,
 
-      showAllCategory: 0,
-      refreshingCategories: true,
+      showAllCategory: 1,
+      refreshingCategories: false,
     };
     this._isMounted = false;
   }
@@ -179,24 +175,13 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     Notification.scheduleNotification(new Date(Date.now() + 5 * 1000));
   };
 
-  categoryPressed = (id: number) => {
-    this.setState(({data}) => ({
-      data: data.filter(i => {
-        if (i.id === id) return data.map(i => (i.size = 8));
-        else return data;
-      }),
-      showSubCategory: data.find(i => i.id === id)?.subCategory.length !== 0,
-      subCategoryTitle: data.find(i => i.id === id)?.name ?? '',
-      selectedCategory: id,
-      selectedSubCategory: 'All',
-      showAllCategory: id,
-
-      refreshingCategories: true,
-    }));
+  categoryPressed = (item: ISubjectCategory) => {
+    this.setState({
+      selectedCategory: item.name,
+    });
   };
 
   subCategoryOpenModal = () => {
-    console.log('modal');
     this.setState({
       subCategoryVisibility: true,
     });
@@ -215,11 +200,8 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     });
     try {
       this._isMounted && (await this.props.getBanner());
-      this._isMounted && (await this.props.getAllRecommended());
-      this._isMounted && (await this.props.getAllMostWatched());
-      this._isMounted && (await this.props.getAllTrendingNow());
-      this._isMounted && (await this.props.getAllNewReleases());
 
+      this._isMounted && (await this.props.getAllItems());
       this._isMounted && (await this.props.getAllMusics());
       this._isMounted && (await this.props.getAllMovies());
       this._isMounted && (await this.props.getAllSports());
@@ -236,136 +218,47 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
   override async componentDidMount() {
     this._isMounted = true;
     this._isMounted && (await this.props.getBanner());
-    this._isMounted && (await this.props.getAllRecommended());
-    this._isMounted && (await this.props.getAllMostWatched());
-    this._isMounted && (await this.props.getAllTrendingNow());
-    this._isMounted && (await this.props.getAllNewReleases());
 
+    this._isMounted && (await this.props.getAllItems());
     this._isMounted && (await this.props.getAllMusics());
     this._isMounted && (await this.props.getAllMovies());
     this._isMounted && (await this.props.getAllSports());
     this._isMounted && (await this.props.getAllRadio());
 
-    this.props.offset.value = withRepeat(withTiming(0), 10000, true);
+    // this.props.offset.value = withRepeat(withTiming(0), 10000, true);
   }
 
   override componentWillUnmount() {
     this._isMounted = false;
   }
 
-  override render() {
-    const {loadingBanner, banner} = this.props.banner;
-    const {loading, trendingNow, recommended, newReleases, mostWatched} =
-      this.props.AllItems;
-    const {
-      loadingMusics,
-      trendingNowMusics,
-      recommendedMusics,
-      newReleasesMusics,
-      mostWatchedMusics,
-    } = this.props.musics;
-    const {
-      loadingMovies,
-      trendingNowMovies,
-      recommendedMovies,
-      newReleasesMovies,
-      mostWatchedMovies,
-    } = this.props.movies;
-    const {
-      loadingSports,
-      trendingNowSports,
-      recommendedSports,
-      newReleasesSports,
-      mostWatchedSports,
-    } = this.props.sports;
-    const {
-      loadingRadio,
-      trendingNowRadio,
-      recommendedRadio,
-      newReleasesRadio,
-      mostWatchedRadio,
-    } = this.props.radio;
+  tabRendering = (
+    selectedTab: ItemCategory | 'All',
+  ): GetItemsResponseBody | undefined => {
+    const {allItems} = this.props.allItems;
+    const {musics} = this.props.musics;
+    const {movies} = this.props.movies;
+    const {sports} = this.props.sports;
+    const {radio} = this.props.radio;
 
-    let myRecommended, myTrendingNow, myNewReleases, myMostWatched;
-    if (this.state.selectedCategory === 0) {
-      if (!loading) {
-        setTimeout(() => {
-          this.setState({refreshingCategories: false});
-        }, 1000);
-      }
-      myRecommended = [];
-      myTrendingNow = [];
-      myNewReleases = [];
-      myMostWatched = [];
-
-      myRecommended = recommended;
-      myTrendingNow = trendingNow;
-      myNewReleases = newReleases;
-      myMostWatched = mostWatched;
-    } else if (this.state.selectedCategory === 1) {
-      if (!loadingMusics) {
-        setTimeout(() => {
-          this.setState({refreshingCategories: false});
-        }, 1000);
-      }
-      myRecommended = [];
-      myTrendingNow = [];
-      myNewReleases = [];
-      myMostWatched = [];
-
-      myRecommended = recommendedMusics;
-      myMostWatched = mostWatchedMusics;
-      myNewReleases = newReleasesMusics;
-      myTrendingNow = trendingNowMusics;
-    } else if (this.state.selectedCategory === 2) {
-      if (!loadingMovies) {
-        setTimeout(() => {
-          this.setState({refreshingCategories: false});
-        }, 1000);
-      }
-
-      myRecommended = [];
-      myTrendingNow = [];
-      myNewReleases = [];
-      myMostWatched = [];
-
-      myRecommended = recommendedMovies;
-      myMostWatched = mostWatchedMovies;
-      myNewReleases = newReleasesMovies;
-      myTrendingNow = trendingNowMovies;
-    } else if (this.state.selectedCategory === 3) {
-      if (!loadingSports) {
-        setTimeout(() => {
-          this.setState({refreshingCategories: false});
-        }, 1000);
-      }
-
-      myRecommended = [];
-      myTrendingNow = [];
-      myNewReleases = [];
-      myMostWatched = [];
-
-      myRecommended = recommendedSports;
-      myMostWatched = mostWatchedSports;
-      myNewReleases = newReleasesSports;
-      myTrendingNow = trendingNowSports;
-    } else if (this.state.selectedCategory === 4) {
-      if (!loadingRadio) {
-        setTimeout(() => {
-          this.setState({refreshingCategories: false});
-        }, 1000);
-      }
-
-      myRecommended = [];
-      myTrendingNow = [];
-      myNewReleases = [];
-      myMostWatched = [];
-
-      myRecommended = recommendedRadio;
-      myMostWatched = mostWatchedRadio;
-      myNewReleases = newReleasesRadio;
-      myTrendingNow = trendingNowRadio;
+    switch (selectedTab) {
+      case 'All':
+        return allItems;
+      case ItemCategory.Movie:
+        return movies;
+      case ItemCategory.Music:
+        return musics;
+      case ItemCategory.Radio:
+        return radio;
+      case ItemCategory.Sport:
+        return sports;
+      default:
+        return allItems;
     }
+  };
+
+  override render() {
+    const {banner} = this.props.banner;
 
     return (
       <ScrollView
@@ -384,7 +277,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
           <FastImage
             style={styles.bannerImage}
             source={{
-              uri: banner[0].largImageUrl,
+              uri: banner?.data.attributes.items.data.attributes.cover,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -402,7 +295,9 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
                   <Text style={styles.texts} fontSize="sm" italic>
                     Watch Now
                   </Text>
-                  <Animated.View style={[this.props.animatedStyles]}>
+                  <Animated.View
+                  // style={[this.props.animatedStyles]}
+                  >
                     <Icon
                       name="return-down-back-outline"
                       style={[styles.icon]}
@@ -423,7 +318,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
           renderItem={({item}) => (
             <VStack alignItems="center">
               <Text
-                onPress={() => this.categoryPressed(item.id)}
+                onPress={() => this.categoryPressed(item)}
                 style={[styles.categoryName, changeColor(this.context.theme)]}>
                 {item.name}
               </Text>
@@ -483,28 +378,44 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
 
               <HomeFlatLists
                 title="Recommended"
-                data={myRecommended}
+                data={
+                  this.tabRendering('All')?.data.filter(
+                    i => i.attributes.label === ItemLabel.Recommended,
+                  ) ?? []
+                }
                 type="medium"
                 //  onPress={(id) => console.log(id)}
               />
 
               <HomeFlatLists
                 title="Most Watched"
-                data={myMostWatched}
+                data={
+                  this.tabRendering(ItemCategory.Music)?.data.filter(
+                    i => i.attributes.label === ItemLabel.MostWatched,
+                  ) ?? []
+                }
                 type="medium"
                 //  onPress={(id) => console.log(id)}
               />
 
               <HomeFlatLists
                 title="Trending Now"
-                data={myTrendingNow}
+                data={
+                  this.tabRendering(ItemCategory.Music)?.data.filter(
+                    i => i.attributes.label === ItemLabel.TrendingNow,
+                  ) ?? []
+                }
                 type="large"
                 //  onPress={(id) => console.log(id)}
               />
 
               <HomeFlatLists
                 title="New Releases"
-                data={myNewReleases}
+                data={
+                  this.tabRendering(ItemCategory.Music)?.data.filter(
+                    i => i.attributes.label === ItemLabel.NewReleases,
+                  ) ?? []
+                }
                 type="medium"
                 //  onPress={(id) => console.log(id)}
               />
@@ -512,19 +423,19 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
           )}
         </>
 
-        <Modal
-          closeModal={(props) => {
-            this.setState({
-              subCategoryVisibility: false,
-            });
-          }}
+        {/* <ModalClass
+          // closeModal={(props) => {
+          //   this.setState({
+          //     subCategoryVisibility: false,
+          //   });
+          // }}
           selectedSbCategory={this.selectedSbCategory}
           subCategoryVisibility={this.state.subCategoryVisibility}
           data={
             this.state.data.find(i => i.id === this.state.selectedCategory)
               ?.subCategory
           }
-        />
+        /> */}
       </ScrollView>
     );
   }
@@ -532,7 +443,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
 
 const mapStateToProps = (state: IHomeMapState) => {
   return {
-    AllItems: state.allItems,
+    allItems: state.allItems,
     banner: state.banner,
     musics: state.musics,
     movies: state.movies,
@@ -542,12 +453,8 @@ const mapStateToProps = (state: IHomeMapState) => {
 };
 
 const mapDispatchToProps = {
+  getAllItems,
   getBanner,
-  getAllRecommended,
-  getAllMostWatched,
-  getAllTrendingNow,
-  getAllNewReleases,
-
   getAllMusics,
   getAllMovies,
   getAllSports,
@@ -558,4 +465,4 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export type IHomeDispatchProps = ConnectedProps<typeof connector>;
 
-export default connector(useHook(Home));
+export default connector(Home);

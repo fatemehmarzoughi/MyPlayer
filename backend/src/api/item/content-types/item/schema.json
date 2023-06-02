@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "items",
+  "info": {
+    "singularName": "item",
+    "pluralName": "items",
+    "displayName": "Items",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "cover": {
+      "type": "richtext",
+      "required": true
+    },
+    "filePath": {
+      "type": "richtext"
+    },
+    "relatedItems": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::item.item"
+    },
+    "likes": {
+      "type": "biginteger"
+    },
+    "likeListUser": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Music",
+        "Movie",
+        "Sport",
+        "Radio"
+      ]
+    },
+    "label": {
+      "type": "enumeration",
+      "enum": [
+        "Recommended",
+        "MostWatched",
+        "TrendingNow",
+        "NewReleases"
+      ]
+    },
+    "mood": {
+      "type": "enumeration",
+      "enum": [
+        "Happy",
+        "Sad",
+        "Horror",
+        "Comedy"
+      ]
+    }
+  }
+}
