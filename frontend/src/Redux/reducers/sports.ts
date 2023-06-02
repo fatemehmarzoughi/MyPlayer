@@ -1,45 +1,36 @@
-import {
-  GET_ALL_SPORTS,
-  GET_ALL_SPORTS_FAILED
-} from "src/assets";
+import {GetItemsResponseBody} from 'src/API';
+import {GET_ALL_SPORTS, GET_ALL_SPORTS_FAILED} from 'src/assets';
 
 const initialState = {
   loadingSports: true,
-  recommendedSports: [],
-  trendingNowSports: [],
-  newReleasesSports: [],
-  mostWatchedSports: []
+  type: GET_ALL_SPORTS,
 };
 
 export type ISportActions = {
-  type: string,
-  error?: string,
-  recommendedSports?: [],
-  trendingNowSports?: [],
-  newReleasesSports?: [],
-  mostWatchedSports?: []
-}
+  type: string;
+  loadingSports: boolean;
 
-export const sports = (state = initialState, action: ISportActions) => {
+  error?: string;
+  sports?: GetItemsResponseBody;
+};
+
+export const sports = (
+  state: ISportActions = initialState,
+  action: ISportActions,
+) => {
   switch (action.type) {
     case GET_ALL_SPORTS:
       return {
         ...state,
         loadingSports: false,
-        recommendedSports: action.recommendedSports,
-        mostWatchedSports: action.mostWatchedSports,
-        trendingNowSports: action.trendingNowSports,
-        newReleasesSports: action.newReleasesSports
+        sports: action.sports,
       };
 
-    case GET_ALL_SPORTS_FAILED :
+    case GET_ALL_SPORTS_FAILED:
       return {
         ...state,
         loadingSports: false,
-        recommendedSports: action.error,
-        mostWatchedSports: action.error,
-        trendingNowSports: action.error,
-        newReleasesSports: action.error
+        error: action.error,
       };
 
     default:

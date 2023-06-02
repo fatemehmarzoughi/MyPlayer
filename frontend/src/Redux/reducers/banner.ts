@@ -1,37 +1,39 @@
-import {
-  GET_BANNER,
-  GET_BANNER_FAILED
-} from "src/assets";
+import {BannerResponseBody} from 'src/API';
+import {GET_BANNER, GET_BANNER_FAILED} from 'src/assets';
 
 const initialState = {
-  banner: [{ largImageUrl: "https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/41300/jpeg" }],
-  loadingBanner: true
+  type: GET_BANNER,
+  loadingBanner: true,
 };
 
 export type IBannerAction = {
-  type: string,
-  error?: string,
-  banner?: [{ largImageUrl: string }],
-  loadingBanner?: boolean,
-}
+  type: string;
+  loadingBanner: boolean;
 
-export const banner = (state = initialState, action: IBannerAction) => {
+  error?: string;
+  banner?: BannerResponseBody;
+};
+
+export const banner = (
+  state: IBannerAction = initialState,
+  action: IBannerAction,
+) => {
   switch (action.type) {
     case GET_BANNER:
       return {
         ...state,
         loadingBanner: false,
-        banner: action.banner
+        banner: action.banner,
       };
 
-    case GET_BANNER_FAILED :
+    case GET_BANNER_FAILED:
       return {
         ...state,
         loadingBanner: false,
-        banner: action.error
+        banner: action.error,
       };
 
     default:
-      return { ...state };
+      return {...state};
   }
 };

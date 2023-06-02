@@ -1,46 +1,36 @@
-import {
-  GET_ALL_MOVIES,
-  GET_ALL_MOVIES_FAILED
-} from "src/assets";
+import {GetItemsResponseBody} from 'src/API';
+import {GET_ALL_MOVIES, GET_ALL_MOVIES_FAILED} from 'src/assets';
 
 const initialState = {
+  type: GET_ALL_MOVIES,
   loadingMovies: true,
-  recommendedMovies: [],
-  trendingNowMovies: [],
-  newReleasesMovies: [],
-  mostWatchedMovies: []
 };
 
 export type IMoviesAction = {
-  type: string,
-  error?: string,
-  loadingMovies?: boolean,
-  recommendedMovies?: [],
-  trendingNowMovies?: [],
-  newReleasesMovies?: [],
-  mostWatchedMovies?: []
-}
+  type: string;
+  loadingMovies: boolean;
 
-export const movies = (state = initialState, action: IMoviesAction) => {
+  error?: string;
+  movies?: GetItemsResponseBody;
+};
+
+export const movies = (
+  state: IMoviesAction = initialState,
+  action: IMoviesAction,
+) => {
   switch (action.type) {
     case GET_ALL_MOVIES:
       return {
         ...state,
         loadingMovies: false,
-        recommendedMovies: action.recommendedMovies,
-        trendingNowMovies: action.trendingNowMovies,
-        mostWatchedMovies: action.mostWatchedMovies,
-        newReleasesMovies: action.newReleasesMovies
+        movies: action.movies,
       };
 
-    case GET_ALL_MOVIES_FAILED :
+    case GET_ALL_MOVIES_FAILED:
       return {
         ...state,
         loadingMovies: false,
-        recommendedMovies: action.error,
-        trendingNowMovies: action.error,
-        mostWatchedMovies: action.error,
-        newReleasesMovies: action.error
+        error: action.error,
       };
 
     default:

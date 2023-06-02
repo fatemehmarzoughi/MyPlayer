@@ -61,7 +61,7 @@ export default React.createContext({
   userImage: "",
   setUserImage: (value: string) => {},
 
-  theme: false,
+  theme: true,
   setTheme: (value: boolean) => {},
 
   isAuthPage: false,

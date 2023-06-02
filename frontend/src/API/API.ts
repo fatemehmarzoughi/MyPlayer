@@ -54,7 +54,9 @@ export async function POST<T extends Object>({
   }
 }
 
-export async function GET(endpoint: string, accessToken?: string) {
+export const GET = async ({endpoint}: {endpoint: string}) => {
+  const accessToken = await getData('accessToken');
+
   try {
     console.log('accessToken = ' + accessToken);
     if (accessToken) {
@@ -74,4 +76,4 @@ export async function GET(endpoint: string, accessToken?: string) {
     console.log('error in get func = ' + err);
     throw new Error(String(err));
   }
-}
+};

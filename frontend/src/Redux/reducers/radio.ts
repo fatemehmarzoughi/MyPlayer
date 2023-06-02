@@ -1,44 +1,34 @@
-import {
-  GET_ALL_RADIO,
-  GET_ALL_RADIO_FAILED
-} from "src/assets";
+import {GetItemsResponseBody} from 'src/API';
+import {GET_ALL_RADIO_FAILED, GET_ALL_RADIO} from 'src/assets';
 
 const initialState = {
   loadingRadio: true,
-  recommendedRadio: [],
-  mostWatchedRadio: [],
-  trendingNowRadio: [],
-  newReleasesRadio: []
+  type: GET_ALL_RADIO,
 };
 
-export type IRadioAction = {
-  type: string,
-  error?: string,
-  loadingRadio?: true,
-  recommendedRadio?: [],
-  mostWatchedRadio?: [],
-  trendingNowRadio?: [],
-  newReleasesRadio?: []
-}
+export type IRadioActions = {
+  type: string;
+  loadingRadio: boolean;
 
-export const radio = (state = initialState, action: IRadioAction) => {
+  error?: string;
+  radio?: GetItemsResponseBody;
+};
+
+export const radio = (
+  state: IRadioActions = initialState,
+  action: IRadioActions,
+) => {
   switch (action.type) {
     case GET_ALL_RADIO:
       return {
         loadingRadio: false,
-        recommendedRadio: action.recommendedRadio,
-        newReleasesRadio: action.newReleasesRadio,
-        mostWatchedRadio: action.mostWatchedRadio,
-        trendingNowRadio: action.trendingNowRadio
+        radios: action.radio,
       };
 
-    case GET_ALL_RADIO_FAILED :
+    case GET_ALL_RADIO_FAILED:
       return {
         loadingRadio: false,
-        recommendedRadio: action.error,
-        newReleasesRadio: action.error,
-        mostWatchedRadio: action.error,
-        trendingNowRadio: action.error
+        error: action.error,
       };
 
     default:

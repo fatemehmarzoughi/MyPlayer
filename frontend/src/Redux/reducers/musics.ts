@@ -1,46 +1,36 @@
-import {
-  GET_ALL_MUSICS,
-  GET_ALL_MUSICS_FAILED
-} from "src/assets";
+import {GetItemsResponseBody} from 'src/API';
+import {GET_ALL_MUSICS, GET_ALL_MUSICS_FAILED} from 'src/assets';
 
 const initialState = {
   loadingMusics: true,
-  recommendedMusics: [],
-  mostWatchedMusics: [],
-  trendingNowMusics: [],
-  newReleasesMusics: []
+  type: GET_ALL_MUSICS,
 };
 
 export type IMusicsAction = {
-  type: string,
-  error?: string,
-  loadingMusics?: boolean,
-  recommendedMusics?: [],
-  mostWatchedMusics?: [],
-  trendingNowMusics?: [],
-  newReleasesMusics?: []
-}
+  type: string;
+  loadingMusics: boolean;
 
-export const musics = (state = initialState, action: IMusicsAction) => {
+  error?: string;
+  musics?: GetItemsResponseBody;
+};
+
+export const musics = (
+  state: IMusicsAction = initialState,
+  action: IMusicsAction,
+) => {
   switch (action.type) {
     case GET_ALL_MUSICS:
       return {
         ...state,
-        recommendedMusics: action.recommendedMusics,
-        mostWatchedMusics: action.mostWatchedMusics,
-        trendingNowMusics: action.trendingNowMusics,
-        newReleasesMusics: action.newReleasesMusics,
-        loadingMusics: false
+        loadingMusics: false,
+        musics: action.musics,
       };
 
-    case GET_ALL_MUSICS_FAILED :
+    case GET_ALL_MUSICS_FAILED:
       return {
         ...state,
-        recommendedMusic: action.error,
-        mostWatchedMusics: action.error,
-        trendingNowMusics: action.error,
-        newReleasesMusics: action.error,
-        loadingMusics: false
+        loadingMusics: false,
+        error: action.error,
       };
 
     default:

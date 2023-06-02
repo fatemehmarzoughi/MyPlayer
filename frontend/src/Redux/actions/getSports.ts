@@ -1,45 +1,26 @@
-import { store } from "App";
+import {store} from 'App';
 
-import {
-  GET_ALL_SPORTS,
-  GET_ALL_SPORTS_FAILED,
-} from "src/assets";
-import { GET } from "src/API";
+import {GET_ALL_SPORTS, GET_ALL_SPORTS_FAILED} from 'src/assets';
+import {GET, GetItemsResponseBody, ItemCategory, useFilter} from 'src/API';
 
 export const getAllSports = () => {
+  const {filter} = useFilter({category: ItemCategory.Sport});
   return async (dispatch: typeof store.dispatch) => {
-    const recommendedRES = await GET(
-      "/items/status/0/category/3/subCategory/0"
-    );
-    const trendingNowRES = await GET(
-      "/items/status/1/category/3/subCategory/0"
-    );
-    const mostWatchedRES = await GET(
-      "/items/status/2/category/3/subCategory/0"
-    );
-    const newReleasesRES = await GET(
-      "/items/status/3/category/3/subCategory/0"
-    );
-
-    if (
-      (recommendedRES as { status: number }).status === 200 &&
-      (trendingNowRES as { status: number }).status === 200 &&
-      (mostWatchedRES as { status: number }).status === 200 &&
-      (newReleasesRES as { status: number }).status === 200
-    ) {
-      const recommended = await (recommendedRES as any).json();
-      const trendingNow = await (trendingNowRES as any).json();
-      const newReleases = await (newReleasesRES as any).json();
-      const mostWatched = await (mostWatchedRES as any).json();
-
+    try {
+      const res = await GET({endpoint: `/api/items${filter}`});
+      if (res.status === 200) {
+        dispatch({
+          type: GET_ALL_SPORTS,
+          radio: res.data as GetItemsResponseBody,
+          loadingSports: false,
+        });
+      } else throw Error;
+    } catch (error) {
       dispatch({
-        type: GET_ALL_SPORTS,
-        recommendedSports: recommended,
-        mostWatchedSports: mostWatched,
-        trendingNowSports: trendingNow,
-        newReleasesSports: newReleases,
+        type: GET_ALL_SPORTS_FAILED,
+        error: 'Something went wrong',
+        loadingSports: false,
       });
-    } else
-      dispatch({ type: GET_ALL_SPORTS_FAILED, error: "Something went wrong" });
+    }
   };
 };
