@@ -24,7 +24,7 @@ export interface IReportABugStates {
   input: string;
   loading: boolean;
 }
-export class ReportABug extends React.Component<
+export class ReportABug extends React.PureComponent<
   IReportABugProps,
   IReportABugStates
 > {

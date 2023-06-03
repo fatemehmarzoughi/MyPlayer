@@ -21,7 +21,7 @@ export interface IFlatListsStates {
   unstar: "flex";
   star: "none";
 }
-export class FlatLists extends React.Component<
+export class FlatLists extends React.PureComponent<
   IFlatListsProps,
   IFlatListsStates
 > {

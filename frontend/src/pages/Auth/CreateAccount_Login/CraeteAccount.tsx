@@ -18,7 +18,7 @@ import {
 import React from 'react';
 import Context from 'src/context/context';
 import {storeData} from 'src/LocalStorage';
-import {changeColor} from 'src/components';
+import {contentColor} from 'src/components';
 import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,13 +31,13 @@ import CountryPicker from 'react-native-country-picker-modal';
 
 import {styles} from './style';
 
-export interface ICreateAccountProps extends NavigationProp<any, any> {
+export interface ICreateAccountProps {
   navigation: NavigationProp<any, any>;
 }
 
 export type ICreateAccountState = {
   passwordIconVisibility: 0 | 1;
-  
+
   name: string;
   email: string;
   password: string;
@@ -51,7 +51,7 @@ export type ICreateAccountState = {
   createingAccount: boolean;
 };
 
-export class CreateAccount extends React.Component<
+export class CreateAccount extends React.PureComponent<
   ICreateAccountProps,
   ICreateAccountState
 > {
@@ -334,7 +334,7 @@ export class CreateAccount extends React.Component<
       <ScrollView>
         <View style={styles.container}>
           {/* /* --------------------------------- Header --------------------------------- */}
-          <Text style={[styles.mainTitle, changeColor(this.context.theme)]}>
+          <Text style={[styles.mainTitle, contentColor(this.context.theme)]}>
             Create Account
           </Text>
 
@@ -432,7 +432,7 @@ export class CreateAccount extends React.Component<
             </TouchableOpacity>
           </View>
           <View style={styles.planSection}>
-            <Text style={[styles.planTitle, changeColor(this.context.theme)]}>
+            <Text style={[styles.planTitle, contentColor(this.context.theme)]}>
               Choose Your Plan
             </Text>
             <Text style={styles.planSubTitle}>
@@ -476,7 +476,7 @@ export class CreateAccount extends React.Component<
                         this.state.choosedPlan === item.planType
                           ? {fontWeight: 'bold'}
                           : {fontWeight: 'normal'},
-                        changeColor(this.context.theme),
+                        contentColor(this.context.theme),
                       ]}>
                       {item.name}
                     </Text>
@@ -486,7 +486,7 @@ export class CreateAccount extends React.Component<
                         this.state.choosedPlan === item.planType
                           ? {fontWeight: 'bold'}
                           : {fontWeight: 'normal'},
-                        changeColor(this.context.theme),
+                        contentColor(this.context.theme),
                       ]}>
                       {item.price}
                     </Text>
@@ -497,7 +497,7 @@ export class CreateAccount extends React.Component<
                       this.state.choosedPlan === item.planType
                         ? {color: Colors.mainColor}
                         : {color: Colors.gray},
-                      changeColor(this.context.theme),
+                      contentColor(this.context.theme),
                     ]}>
                     {item.description}
                   </Text>
@@ -522,7 +522,7 @@ export class CreateAccount extends React.Component<
           {/* /* -------------------------------- Separator ------------------------------- */}
           <View style={styles.seperator}>
             <View style={styles.line}></View>
-            <Text style={changeColor(this.context.theme)}>OR</Text>
+            <Text style={contentColor(this.context.theme)}>OR</Text>
             <View style={styles.line}></View>
           </View>
 
@@ -536,8 +536,23 @@ export class CreateAccount extends React.Component<
               color={Colors.mainColor}
               style={styles.googleLogo}
             />
-            <Text style={changeColor(this.context.theme)}>
+            <Text style={contentColor(this.context.theme)}>
               Join with google for free
+            </Text>
+          </TouchableOpacity>
+
+          {/* /* ------------------------------ Join as guest ----------------------------- */}
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Home')}
+            style={styles.googleBtn}>
+            {/* <Icon
+              name="logo-google"
+              size={30}
+              color={Colors.mainColor}
+              style={styles.googleLogo}
+            /> */}
+            <Text style={contentColor(this.context.theme)}>
+              Join as a guest
             </Text>
           </TouchableOpacity>
         </View>

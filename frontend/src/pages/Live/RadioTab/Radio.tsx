@@ -8,7 +8,7 @@ export interface IRadioProps {}
 export interface IRadioStates {
   data: ITVDataType[];
 }
-export class Radio extends React.Component<IRadioProps, IRadioStates> {
+export class Radio extends React.PureComponent<IRadioProps, IRadioStates> {
   constructor(props: IRadioProps) {
     super(props);
 

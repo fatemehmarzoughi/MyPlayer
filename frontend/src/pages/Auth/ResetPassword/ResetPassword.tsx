@@ -9,7 +9,7 @@ import Context from 'src/context/context';
 import Toast from 'react-native-toast-message';
 import {NavigationProp} from '@react-navigation/native';
 import {dark, toastMessageDuration, white} from 'src/assets';
-import {Header2, SavingModal, changeBackgroundColor} from 'src/components';
+import {Header2, SavingModal, backgroundColor} from 'src/components';
 
 import {styles} from './style';
 
@@ -21,7 +21,7 @@ export interface IResetPasswordState {
   newPass: string;
   saving: boolean;
 }
-export class ResetPassword extends React.Component<
+export class ResetPassword extends React.PureComponent<
   IResetPasswordProps,
   IResetPasswordState
 > {
@@ -126,14 +126,14 @@ export class ResetPassword extends React.Component<
           <TextInput
             placeholder="Old Password"
             placeholderTextColor={this.context.theme ? dark : white}
-            style={[styles.input, changeBackgroundColor(this.context.theme)]}
+            style={[styles.input, backgroundColor(this.context.theme)]}
             secureTextEntry={true}
             onChangeText={input => this.handleOldPass(input)}
           />
           <TextInput
             placeholder="New Password"
             placeholderTextColor={this.context.theme ? dark : white}
-            style={[styles.input, changeBackgroundColor(this.context.theme)]}
+            style={[styles.input, backgroundColor(this.context.theme)]}
             secureTextEntry={true}
             onChangeText={input => this.handleNewPass(input)}
           />

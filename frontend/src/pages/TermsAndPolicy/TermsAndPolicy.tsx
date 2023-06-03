@@ -1,16 +1,16 @@
 import {
   MainHeader,
-  changeColor,
-  changeBackgroundColor,
-  changeBackgroundColor2,
+  contentColor,
+  backgroundColor
 } from 'src/components';
 import React from 'react';
 import {Text} from 'native-base';
+import Context from 'src/context/context';
+import {surfaceColor} from 'src/components';
 import Collapsible from 'react-native-collapsible';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {NavigationProp} from '@react-navigation/native';
 import {View, TouchableOpacity, ScrollView} from 'react-native';
-import Context from 'src/context/context';
 
 import {styles} from './style';
 
@@ -22,7 +22,7 @@ export interface ITermsAndPolicyState {
   item1IsCollapse: boolean;
   item2IsCollapse: boolean;
 }
-export class TermsAndPolicy extends React.Component<ITermsAndPolicyProps, ITermsAndPolicyState> {
+export class TermsAndPolicy extends React.PureComponent<ITermsAndPolicyProps, ITermsAndPolicyState> {
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: ITermsAndPolicyProps) {
@@ -49,14 +49,14 @@ export class TermsAndPolicy extends React.Component<ITermsAndPolicyProps, ITerms
 
   override render() {
     return (
-      <View style={[changeBackgroundColor(this.context.theme), {flex: 1}]}>
+      <View style={[backgroundColor(this.context.theme), {flex: 1}]}>
         <MainHeader
           menuOnPress={() => this.props.navigation.openDrawer()}
           searchOnPress={() => this.props.navigation.navigate('Search')}
         />
         <ScrollView style={{paddingBottom: 100}}>
           <Text
-            style={changeColor(this.context.theme)}
+            style={contentColor(this.context.theme)}
             bold={true}
             textAlign="center"
             fontSize="xl"
@@ -64,7 +64,7 @@ export class TermsAndPolicy extends React.Component<ITermsAndPolicyProps, ITerms
             Terms and Policy
           </Text>
           <Text
-            style={changeColor(this.context.theme)}
+            style={contentColor(this.context.theme)}
             textAlign="center"
             marginRight={10}
             marginLeft={10}
@@ -74,14 +74,14 @@ export class TermsAndPolicy extends React.Component<ITermsAndPolicyProps, ITerms
           </Text>
           <TouchableOpacity
             onPress={() => this.collapse(0)}
-            style={[changeBackgroundColor2(this.context.theme), styles.box]}>
+            style={[surfaceColor(this.context.theme), styles.box]}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={changeColor(this.context.theme)} bold={true}>
+              <Text style={contentColor(this.context.theme)} bold={true}>
                 Terms of Service
               </Text>
               <Icon
-                style={changeColor(this.context.theme)}
+                style={contentColor(this.context.theme)}
                 size={20}
                 name="chevron-up"
               />
@@ -91,7 +91,7 @@ export class TermsAndPolicy extends React.Component<ITermsAndPolicyProps, ITerms
               collapsed={this.state.item1IsCollapse}
               enablePointerEvents={true}>
               <Text
-                style={changeColor(this.context.theme)}
+                style={contentColor(this.context.theme)}
                 textAlign="justify"
                 marginTop={5}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -108,17 +108,17 @@ export class TermsAndPolicy extends React.Component<ITermsAndPolicyProps, ITerms
           <TouchableOpacity
             onPress={() => this.collapse(1)}
             style={[
-              changeBackgroundColor2(this.context.theme),
+              surfaceColor(this.context.theme),
               styles.box,
               {marginBottom: 100},
             ]}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={changeColor(this.context.theme)} bold={true}>
+              <Text style={contentColor(this.context.theme)} bold={true}>
                 Acceptance of terms
               </Text>
               <Icon
-                style={changeColor(this.context.theme)}
+                style={contentColor(this.context.theme)}
                 size={20}
                 name="chevron-up"
               />
@@ -128,7 +128,7 @@ export class TermsAndPolicy extends React.Component<ITermsAndPolicyProps, ITerms
               collapsed={this.state.item2IsCollapse}
               enablePointerEvents={true}>
               <Text
-                style={changeColor(this.context.theme)}
+                style={contentColor(this.context.theme)}
                 textAlign="justify"
                 marginTop={5}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

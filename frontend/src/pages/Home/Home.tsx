@@ -1,12 +1,5 @@
 import {View, ScrollView, RefreshControl, TouchableOpacity} from 'react-native';
-import Animated, {
-  withTiming,
-  withRepeat,
-  FadeInLeft,
-  FadeOutLeft,
-  useSharedValue,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+import Animated, {FadeInLeft, FadeOutLeft} from 'react-native-reanimated';
 import React from 'react';
 import {ConnectedProps, connect} from 'react-redux';
 import LottieView from 'lottie-react-native';
@@ -18,7 +11,7 @@ import {Heading, Text, VStack, FlatList} from 'native-base';
 import Context from 'src/context/context';
 import Notification from 'src/Notification/NotificationSetup';
 
-import {HomeFlatLists, MainHeader, changeColor} from 'src/components';
+import {HomeFlatLists, MainHeader, contentColor} from 'src/components';
 import {
   getAllItems,
   getAllMovies,
@@ -46,9 +39,7 @@ export type ISubjectCategory = {
   }[];
 };
 
-export interface IHomeProps
-  extends NavigationProp<any, any>,
-    IHomeDispatchProps {
+export interface IHomeProps extends IHomeDispatchProps {
   navigation: {openDrawer: () => void} & NavigationProp<any, any>;
 }
 
@@ -90,7 +81,7 @@ export interface IHomeStates {
 //   };
 // }
 
-class Home extends React.Component<IHomeProps, IHomeStates> {
+class Home extends React.PureComponent<IHomeProps, IHomeStates> {
   declare context: React.ContextType<typeof Context>;
   private _isMounted: boolean;
 
@@ -175,12 +166,6 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     Notification.scheduleNotification(new Date(Date.now() + 5 * 1000));
   };
 
-  categoryPressed = (item: ISubjectCategory) => {
-    this.setState({
-      selectedCategory: item.name,
-    });
-  };
-
   subCategoryOpenModal = () => {
     this.setState({
       subCategoryVisibility: true,
@@ -232,16 +217,14 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
     this._isMounted = false;
   }
 
-  tabRendering = (
-    selectedTab: ItemCategory | 'All',
-  ): GetItemsResponseBody | undefined => {
+  tabRendering = (): GetItemsResponseBody | undefined => {
     const {allItems} = this.props.allItems;
     const {musics} = this.props.musics;
     const {movies} = this.props.movies;
     const {sports} = this.props.sports;
     const {radio} = this.props.radio;
 
-    switch (selectedTab) {
+    switch (this.state.selectedCategory) {
       case 'All':
         return allItems;
       case ItemCategory.Movie:
@@ -318,13 +301,20 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
           renderItem={({item}) => (
             <VStack alignItems="center">
               <Text
-                onPress={() => this.categoryPressed(item)}
-                style={[styles.categoryName, changeColor(this.context.theme)]}>
+                onPress={() => {
+                  this.setState({
+                    selectedCategory: item.name,
+                  });
+                }}
+                style={[styles.categoryName, contentColor(this.context.theme)]}>
                 {item.name}
               </Text>
               <Icon
-                style={[changeColor(this.context.theme)]}
-                size={item.size}
+                style={[
+                  contentColor(this.context.theme),
+                  {opacity: item.name === this.state.selectedCategory ? 1 : 0},
+                ]}
+                size={8}
                 name="ellipse"
               />
             </VStack>
@@ -336,7 +326,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
           {this.state.showSubCategory ? (
             <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
               <VStack flexDirection="row" style={styles.subCategory}>
-                <Text style={changeColor(this.context.theme)}>
+                <Text style={contentColor(this.context.theme)}>
                   {this.state.subCategoryTitle} &gt;{' '}
                 </Text>
                 <TouchableOpacity
@@ -379,7 +369,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
               <HomeFlatLists
                 title="Recommended"
                 data={
-                  this.tabRendering('All')?.data.filter(
+                  this.tabRendering()?.data.filter(
                     i => i.attributes.label === ItemLabel.Recommended,
                   ) ?? []
                 }
@@ -390,7 +380,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
               <HomeFlatLists
                 title="Most Watched"
                 data={
-                  this.tabRendering(ItemCategory.Music)?.data.filter(
+                  this.tabRendering()?.data.filter(
                     i => i.attributes.label === ItemLabel.MostWatched,
                   ) ?? []
                 }
@@ -401,7 +391,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
               <HomeFlatLists
                 title="Trending Now"
                 data={
-                  this.tabRendering(ItemCategory.Music)?.data.filter(
+                  this.tabRendering()?.data.filter(
                     i => i.attributes.label === ItemLabel.TrendingNow,
                   ) ?? []
                 }
@@ -412,7 +402,7 @@ class Home extends React.Component<IHomeProps, IHomeStates> {
               <HomeFlatLists
                 title="New Releases"
                 data={
-                  this.tabRendering(ItemCategory.Music)?.data.filter(
+                  this.tabRendering()?.data.filter(
                     i => i.attributes.label === ItemLabel.NewReleases,
                   ) ?? []
                 }

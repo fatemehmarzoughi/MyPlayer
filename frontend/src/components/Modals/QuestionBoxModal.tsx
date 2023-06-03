@@ -15,7 +15,7 @@ export interface IModalClassProps {
 }
 export interface IModalClassStates {}
 
-export class ModalClass extends React.Component<
+export class ModalClass extends React.PureComponent<
   IModalClassProps,
   IModalClassStates
 > {

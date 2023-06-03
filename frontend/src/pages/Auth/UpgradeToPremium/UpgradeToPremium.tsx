@@ -3,7 +3,7 @@ import {POST} from 'src/API';
 import {Icon} from 'native-base';
 import Context from 'src/context/context';
 import Toast from 'react-native-toast-message';
-import {Header, changeColor} from 'src/components';
+import {Header, contentColor} from 'src/components';
 import {NavigationProp} from '@react-navigation/native';
 import {gray, mainColor, toastMessageDuration} from 'src/assets';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
@@ -17,7 +17,7 @@ export interface IUpgradeToPremiumProps extends NavigationProp<any, any> {
 export interface IUpgradeToPremiumStates {
   selectedPlan: number;
 }
-export class UpgradeToPremium extends React.Component<
+export class UpgradeToPremium extends React.PureComponent<
   IUpgradeToPremiumProps,
   IUpgradeToPremiumStates
 > {
@@ -131,7 +131,7 @@ export class UpgradeToPremium extends React.Component<
                 <Text
                   style={[
                     styles.planTitleText,
-                    changeColor(this.context.theme),
+                    contentColor(this.context.theme),
                     this.state.selectedPlan === 1
                       ? {fontWeight: 'bold'}
                       : {fontWeight: 'normal'},
@@ -141,7 +141,7 @@ export class UpgradeToPremium extends React.Component<
                 <Text
                   style={[
                     styles.planTitleText,
-                    changeColor(this.context.theme),
+                    contentColor(this.context.theme),
                     this.state.selectedPlan === 1
                       ? {fontWeight: 'bold'}
                       : {fontWeight: 'normal'},
@@ -176,7 +176,7 @@ export class UpgradeToPremium extends React.Component<
                 <Text
                   style={[
                     styles.planTitleText,
-                    changeColor(this.context.theme),
+                    contentColor(this.context.theme),
                     this.state.selectedPlan === 2
                       ? {fontWeight: 'bold'}
                       : {fontWeight: 'normal'},
@@ -186,7 +186,7 @@ export class UpgradeToPremium extends React.Component<
                 <Text
                   style={[
                     styles.planTitleText,
-                    changeColor(this.context.theme),
+                    contentColor(this.context.theme),
                     this.state.selectedPlan === 2
                       ? {fontWeight: 'bold'}
                       : {fontWeight: 'normal'},

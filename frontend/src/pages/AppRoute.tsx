@@ -1,152 +1,106 @@
 import {
-  Live,
-  Auth,
-  About,
+  Login,
   Search,
   OnBoarding,
-  TermsAndPolicy,
-  EnteriesOptions,
-  LoginCreateAccount,
+  EntriesOptions,
+  ForgetPassword,
+  CreateAccount,
 } from 'src/pages';
+import React from 'react';
 import Home from './Home/Home';
-import {mainColor} from 'src/assets';
-import React, {useContext} from 'react';
-import Context from 'src/context/context';
-import {changeBackgroundColor} from 'src/components';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {gray, mainColor} from 'src/assets';
+import {DarkTheme, NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+
+import {styles} from './style';
 
 export type IAppRouteProps = {
   isFirstInstallation: boolean;
 };
 
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
-const BottomTab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+const Tab = createMaterialTopTabNavigator();
 
-const BottomTabs: React.FC = React.memo(() => {
-  const contexts = useContext(Context);
-  return (
-    <BottomTab.Navigator
-      initialRouteName="Home"
-      shifting={true}
-      activeColor={mainColor}
-      // inactiveColor={(contexts.theme) ? dark : white}
-      // barStyle={changeBackgroundColor(contexts.theme)}
-      inactiveColor={contexts.theme ? 'black' : 'white'}
-      barStyle={changeBackgroundColor(contexts.theme)}>
-      <BottomTab.Screen
-        name="Home"
-        component={props => <Home {...props} />}
-        options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="home-sharp" size={22} color={color} />
-          ),
-          tabBarLabel: 'Home',
-        }}
-      />
-      <BottomTab.Screen
-        name="Live"
-        component={props => <Live {...props} />}
-        options={{
-          tabBarIcon: ({color}) => <Icon name="wifi" size={22} color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Profile"
-        component={props => <Auth Stack {...props} />}
-        options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="person" size={22} color={color} />
-          ),
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-});
+const LoginCreateAccount = React.memo(() => (
+  <Tab.Navigator
+    style={[styles.topTabBar]}
+    screenOptions={{
+      tabBarPressColor: gray,
+      tabBarInactiveTintColor: gray,
+      tabBarActiveTintColor: mainColor,
+      tabBarStyle: {padding: 5, shadowColor: mainColor, elevation: 0},
+      tabBarIndicatorStyle: {backgroundColor: mainColor, elevation: 0},
+    }}>
+    <Tab.Screen name="CreateAccount">
+      {props => <CreateAccount {...props} />}
+    </Tab.Screen>
+    <Tab.Screen name="Login">{props => <Login {...props} />}</Tab.Screen>
+  </Tab.Navigator>
+));
 
-const DrawerPages: React.FC = React.memo(() => {
-  return (
-    <Drawer.Navigator
-      initialRouteName="MyPlayer"
-      screenOptions={{
+const Auth = React.memo(() => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Login_CreateAccount"
+      component={LoginCreateAccount}
+      options={{
         headerShown: false,
       }}
-      // drawerContent={(props) => <MenuContent {...props} />}
-    >
-      <Drawer.Screen
-        name="MyPlayer"
-        component={props => <BottomTabs {...props} />}
-      />
+    />
 
-      <Drawer.Screen name="About" component={props => <About {...props} />} />
-
-      <Drawer.Screen
-        name="TermsAndPolicy"
-        component={props => <TermsAndPolicy {...props} />}
-      />
-
-      {/* <Drawer.Screen name="Search" component={Search} /> */}
-    </Drawer.Navigator>
-  );
-});
+    <Stack.Screen
+      name="ForgetPassword"
+      options={{
+        headerShown: false,
+      }}>
+      {props => <ForgetPassword {...props} />}
+    </Stack.Screen>
+  </Stack.Navigator>
+));
 
 export const AppRoute: React.FC<IAppRouteProps> = React.memo(
   ({isFirstInstallation}) => {
     return (
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={isFirstInstallation ? 'OnBoarding' : 'Home'}>
-          <Stack.Screen
-            name="OnBoarding"
-            component={props => <OnBoarding {...props} />}
-            options={{
-              /** tabBarVisible: false, */
-              headerShown: false,
-            }}
-          />
-
-          <Stack.Screen
-            name="EnteriesOptions"
-            component={props => <EnteriesOptions {...props} />}
-            options={{
-              /** tabBarVisible: false, */
-              headerShown: false,
-            }}
-          />
-
-          <Stack.Screen
-            name="Search"
-            component={props => <Search {...props} />}
-            options={{
-              /** tabBarVisible: true, */
-              headerShown: true,
-            }}
-          />
-
-          <Stack.Screen
-            name="Home"
-            component={props => <DrawerPages {...props} />}
-            //    component={Home}
-            options={{
-              /** tabBarVisible: false, */
-              headerShown: false,
-            }}
-          />
-
-          <Stack.Screen
-            name="Auth"
-            component={props => <LoginCreateAccount {...props} />}
-            options={{
-              // tabBarVisible: false,
-              headerShown: false,
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PaperProvider theme={MD3DarkTheme}>
+        <NavigationContainer theme={DarkTheme}>
+          <Stack.Navigator
+            initialRouteName={isFirstInstallation ? 'onBoarding' : 'Home'}>
+            <Stack.Screen
+              name="Home"
+              options={{
+                headerShown: false,
+              }}>
+              {props => <Home {...props} />}
+            </Stack.Screen>
+            <Stack.Screen name="Search">
+              {props => <Search {...props} />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="onBoarding"
+              options={{
+                headerShown: false,
+              }}>
+              {props => <OnBoarding {...props} />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="EntriesOptions"
+              options={{
+                headerShown: false,
+              }}>
+              {props => <EntriesOptions {...props} />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Auth"
+              component={Auth}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
     );
   },
 );

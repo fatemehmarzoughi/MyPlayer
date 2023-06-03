@@ -5,7 +5,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { width } from "src/assets";
 import * as Colors from "src/assets/constants/Colors";
 import Context from "react-redux/es/components/Context";
-import { changeColor } from "src/components/lightDarkTheme";
+import { contentColor } from "src/components/lightDarkTheme";
 
 const usedWidth = width - 20;
 
@@ -16,7 +16,7 @@ export interface IHeaderProps {
 
 export interface IHeaderState {}
 
-export class Header extends React.Component<
+export class Header extends React.PureComponent<
   IHeaderProps,
   IHeaderState
 > {
@@ -31,7 +31,7 @@ export class Header extends React.Component<
         >
           <Icon name="chevron-left" size={40} color={Colors.white} />
         </TouchableOpacity>
-        <Text style={[styles.title, changeColor(this.context.theme)]}>
+        <Text style={[styles.title, contentColor(this.context.theme)]}>
           {this.props.title}
         </Text>
       </View>

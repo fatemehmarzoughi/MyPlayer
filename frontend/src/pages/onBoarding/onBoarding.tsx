@@ -15,7 +15,7 @@ const animation2Source = '../../assets/Images/bookmark.json';
 const animation3Source = '../../assets/Images/premium.json';
 const animation4Source = '../../assets/Images/live2.json';
 
-interface Props extends NavigationProp<any, any> {
+interface Props {
   navigation: NavigationProp<any, any>;
 }
 
@@ -206,7 +206,7 @@ export class OnBoarding extends React.PureComponent<Props, States> {
   };
 
   gotoNextComponent = async () => {
-    this.props.navigation.navigate('EnteriesOptions');
+    this.props.navigation.navigate('EntriesOptions');
   };
 
   override async componentDidMount() {

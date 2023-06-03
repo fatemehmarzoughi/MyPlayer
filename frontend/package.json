@@ -19,6 +19,7 @@
     "@react-navigation/material-bottom-tabs": "^6.2.15",
     "@react-navigation/material-top-tabs": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
     "axios": "^1.4.0",
     "babel-plugin-module-resolver": "^5.0.0",

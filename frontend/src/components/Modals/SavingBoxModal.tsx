@@ -11,7 +11,7 @@ export interface ISavingModalProps {
 }
 
 export interface ISavingModalStates {}
-export class SavingModal extends React.Component<
+export class SavingModal extends React.PureComponent<
   ISavingModalProps,
   ISavingModalStates
 > {
