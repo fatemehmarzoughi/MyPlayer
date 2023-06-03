@@ -1,10 +1,10 @@
 import {
+  Login,
   Search,
   OnBoarding,
   EntriesOptions,
   ForgetPassword,
   CreateAccount,
-  Login,
 } from 'src/pages';
 import React from 'react';
 import Home from './Home/Home';

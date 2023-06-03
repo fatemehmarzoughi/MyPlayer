@@ -5,11 +5,12 @@ import {
 } from 'src/components';
 import React from 'react';
 import {Text} from 'native-base';
+import Context from 'src/context/context';
+import {surfaceColor} from 'src/components';
 import Collapsible from 'react-native-collapsible';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {NavigationProp} from '@react-navigation/native';
 import {View, TouchableOpacity, ScrollView} from 'react-native';
-import Context from 'src/context/context';
 
 import {styles} from './style';
 
