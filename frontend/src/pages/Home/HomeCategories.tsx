@@ -13,7 +13,7 @@ export interface ICategoriesProps {
 export interface ICategoriesStates {
   data: { url: string }[];
 }
-export default class Categories extends React.Component<
+export default class Categories extends React.PureComponent<
   ICategoriesProps,
   ICategoriesStates
 > {

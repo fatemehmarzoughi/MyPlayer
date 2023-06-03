@@ -19,7 +19,7 @@ export type IContextProviderState = {
   theme: boolean; // light = true , dark = false
   isAuthPage: boolean;
 };
-export default class ContextProvider extends React.Component<
+export default class ContextProvider extends React.PureComponent<
   IContextProviderProps,
   IContextProviderState
 > {

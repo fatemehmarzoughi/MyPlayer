@@ -13,8 +13,8 @@ import CountryPicker, {
 import {
   ModalClass,
   SavingModal,
-  changeBackgroundColor,
-  changeColor,
+  contentColor,
+  backgroundColor
 } from 'src/components';
 import React from 'react';
 import Toast from 'react-native-toast-message';
@@ -40,7 +40,7 @@ export interface IEditProfileState {
   countryCode?: string | TranslationLanguageCodeMap;
   countryFlag?: string;
 }
-export class EditProfile extends React.Component<
+export class EditProfile extends React.PureComponent<
   IEditProfileProps,
   IEditProfileState
 > {
@@ -128,70 +128,70 @@ export class EditProfile extends React.Component<
     });
   };
 
-  onSave = async () => {
-    this.setState({
-      saving: true,
-    });
+  // onSave = async () => {
+  //   this.setState({
+  //     saving: true,
+  //   });
 
-    const reqBodyUserInfo = {
-      name: this.state.name,
-      email: this.state.email,
-      country: this.state.choosedCountry,
-      imageURL: this.context.userImage,
-    };
+  //   const reqBodyUserInfo = {
+  //     name: this.state.name,
+  //     email: this.state.email,
+  //     country: this.state.choosedCountry,
+  //     imageURL: this.context.userImage,
+  //   };
 
-    try {
-      // saving the users info (name, email, country)
-      const result = await POST('/editProfile/setInfo', reqBodyUserInfo);
-      const message = await result.text();
+  //   try {
+  //     // saving the users info (name, email, country)
+  //     const result = await POST('/editProfile/setInfo', reqBodyUserInfo);
+  //     const message = await result.text();
 
-      if (result.status === 200) {
-        Toast.show({
-          type: 'success',
-          position: 'top',
-          text1: message,
-          text2: 'Saved changes',
-          autoHide: true,
-          visibilityTime: toastMessageDuration,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
-        this.setState({
-          saving: false,
-        });
-        this.props.navigation.navigate('Profile');
-      } else {
-        Toast.show({
-          type: 'error',
-          position: 'bottom',
-          text1: message,
-          text2: 'Please try again',
-          autoHide: true,
-          visibilityTime: toastMessageDuration,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
-        this.setState({
-          saving: false,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      Toast.show({
-        type: 'error',
-        position: 'bottom',
-        text1: 'Something went wrong',
-        text2: 'Please check your internet connection',
-        autoHide: true,
-        visibilityTime: toastMessageDuration,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
-      this.setState({
-        saving: false,
-      });
-    }
-  };
+  //     if (result.status === 200) {
+  //       Toast.show({
+  //         type: 'success',
+  //         position: 'top',
+  //         text1: message,
+  //         text2: 'Saved changes',
+  //         autoHide: true,
+  //         visibilityTime: toastMessageDuration,
+  //         topOffset: 30,
+  //         bottomOffset: 40,
+  //       });
+  //       this.setState({
+  //         saving: false,
+  //       });
+  //       this.props.navigation.navigate('Profile');
+  //     } else {
+  //       Toast.show({
+  //         type: 'error',
+  //         position: 'bottom',
+  //         text1: message,
+  //         text2: 'Please try again',
+  //         autoHide: true,
+  //         visibilityTime: toastMessageDuration,
+  //         topOffset: 30,
+  //         bottomOffset: 40,
+  //       });
+  //       this.setState({
+  //         saving: false,
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     Toast.show({
+  //       type: 'error',
+  //       position: 'bottom',
+  //       text1: 'Something went wrong',
+  //       text2: 'Please check your internet connection',
+  //       autoHide: true,
+  //       visibilityTime: toastMessageDuration,
+  //       topOffset: 30,
+  //       bottomOffset: 40,
+  //     });
+  //     this.setState({
+  //       saving: false,
+  //     });
+  //   }
+  // };
 
   override shouldComponentUpdate(
     nextProps: IEditProfileProps,
@@ -213,7 +213,7 @@ export class EditProfile extends React.Component<
           <View style={styles.header}>
             <View style={styles.row1}>
               <TouchableOpacity
-                onPress={() => this.onSave()}
+                // onPress={() => this.onSave()}
                 style={styles.btn}>
                 <Text style={styles.saveText}>Save</Text>
               </TouchableOpacity>
@@ -221,7 +221,7 @@ export class EditProfile extends React.Component<
                 onPress={() => this.onCancel()}
                 style={styles.btn}>
                 <Text
-                  style={[styles.cancelText, changeColor(this.context.theme)]}>
+                  style={[styles.cancelText, contentColor(this.context.theme)]}>
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -234,24 +234,24 @@ export class EditProfile extends React.Component<
           <Image style={styles.image} source={{uri: this.context.userImage}} />
           <Text
             onPress={() => this.changeProfilePhoto()}
-            style={[styles.changePhoto, changeColor(this.context.theme)]}>
+            style={[styles.changePhoto, contentColor(this.context.theme)]}>
             Change Profile Photo
           </Text>
           <View style={styles.inputs}>
             <TextInput
               placeholder={this.context.userName}
               placeholderTextColor={this.context.theme ? dark : white}
-              style={[styles.input, changeBackgroundColor(this.context.theme)]}
+              style={[styles.input, backgroundColor(this.context.theme)]}
               onChangeText={input => this.handleName(input)}
             />
             <TextInput
               placeholder={this.context.userEmail}
               placeholderTextColor={this.context.theme ? dark : white}
-              style={[styles.input, changeBackgroundColor(this.context.theme)]}
+              style={[styles.input, backgroundColor(this.context.theme)]}
               onChangeText={input => this.handleEmail(input)}
             />
             <TouchableOpacity
-              style={[styles.input, changeBackgroundColor(this.context.theme)]}
+              style={[styles.input, backgroundColor(this.context.theme)]}
               onPress={() => this.setState({countrySelectorVisibility: true})}>
               <CountryPicker
                 // theme={this.context.theme ? "" : DARK_THEME}
@@ -287,18 +287,18 @@ export class EditProfile extends React.Component<
             onPress={() => this.showModal()}
             style={[
               styles.deleteBtn,
-              changeBackgroundColor(this.context.theme),
+              backgroundColor(this.context.theme),
             ]}>
             <Text style={[styles.deleteBtnText]}>Delete Account</Text>
           </TouchableOpacity>
-          <ModalClass
+          {/* <ModalClass
             question="Are you sure, you want to delete your account?"
             modalVisible={this.state.modalVisible}
             btnTitle="Delete Account"
             handleMainBtn={() => this.handleDeleteAccount()}
             handleCancelBtn={() => this.cancelModal()}
           />
-          <SavingModal modalVisible={this.state.saving} />
+          <SavingModal modalVisible={this.state.saving} /> */}
         </View>
       </ScrollView>
     );

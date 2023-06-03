@@ -11,7 +11,7 @@ export interface IStaredStates {
   data: ITVDataType[];
 }
 
-export class Stared extends React.Component<
+export class Stared extends React.PureComponent<
   IStaredProps,
   IStaredStates
 > {

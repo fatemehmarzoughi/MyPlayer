@@ -7,4 +7,4 @@ export * from './Search';
 export * from './AppRoute';
 export * from './onBoarding';
 export * from './TermsAndPolicy';
-export * from './EnteriesOptions';
+export * from './EntriesOptions';

@@ -6,7 +6,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 
 import context from "src/context/context";
-import { changeColor, changeBackgroundColor2, changeBackgroundColor } from "src/components";
+import { contentColor, surfaceColor, backgroundColor } from "src/components";
 import { MainHeader } from "src/components";
 
 import { styles } from "./style";
@@ -20,7 +20,7 @@ export interface IAboutProps extends NavigationProp<any, any> {
   navigation: { openDrawer: () => void } & NavigationProp<any, any>;
 }
 
-export class About extends React.Component<IAboutProps, IAboutState> {
+export class About extends React.PureComponent<IAboutProps, IAboutState> {
   declare context: React.ContextType<typeof context>
 
   constructor(props: IAboutProps) {
@@ -44,7 +44,7 @@ export class About extends React.Component<IAboutProps, IAboutState> {
 
   override render() {
     return (
-      <View style={[changeBackgroundColor(this.context.theme), { flex: 1 }]}>
+      <View style={[backgroundColor(this.context.theme), { flex: 1 }]}>
         <MainHeader
           menuOnPress={() => this.props.navigation.openDrawer()}
           searchOnPress={() => this.props.navigation.navigate("Search")}
@@ -53,32 +53,32 @@ export class About extends React.Component<IAboutProps, IAboutState> {
           <VStack
             flexDirection="row"
             justifyContent="space-between"
-            style={[changeBackgroundColor2(this.context.theme), styles.box]}
+            style={[surfaceColor(this.context.theme), styles.box]}
           >
-            <Text style={changeColor(this.context.theme)} bold={true}>
+            <Text style={contentColor(this.context.theme)} bold={true}>
               Company name :{" "}
             </Text>
-            <Text style={changeColor(this.context.theme)}>My Player</Text>
+            <Text style={contentColor(this.context.theme)}>My Player</Text>
           </VStack>
           <VStack
             flexDirection="row"
             justifyContent="space-between"
-            style={[changeBackgroundColor2(this.context.theme), styles.box]}
+            style={[surfaceColor(this.context.theme), styles.box]}
           >
-            <Text style={changeColor(this.context.theme)} bold={true}>
+            <Text style={contentColor(this.context.theme)} bold={true}>
               Version :{" "}
             </Text>
-            <Text style={changeColor(this.context.theme)}>1.0</Text>
+            <Text style={contentColor(this.context.theme)}>1.0</Text>
           </VStack>
           <VStack
             justifyContent="space-between"
-            style={[changeBackgroundColor2(this.context.theme), styles.box]}
+            style={[surfaceColor(this.context.theme), styles.box]}
           >
-            <Text style={changeColor(this.context.theme)} bold={true}>
+            <Text style={contentColor(this.context.theme)} bold={true}>
               Sponsors
             </Text>
             <Text
-              style={changeColor(this.context.theme)}
+              style={contentColor(this.context.theme)}
               marginTop={5}
               textAlign="center"
             >
@@ -96,16 +96,16 @@ export class About extends React.Component<IAboutProps, IAboutState> {
 
           <TouchableOpacity
             onPress={() => this.collapse(0)}
-            style={[changeBackgroundColor2(this.context.theme), styles.box]}
+            style={[surfaceColor(this.context.theme), styles.box]}
           >
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={changeColor(this.context.theme)} bold={true}>
+              <Text style={contentColor(this.context.theme)} bold={true}>
                 Why we?
               </Text>
               <Icon
-                style={changeColor(this.context.theme)}
+                style={contentColor(this.context.theme)}
                 size={20}
                 name="chevron-up"
               />
@@ -116,7 +116,7 @@ export class About extends React.Component<IAboutProps, IAboutState> {
               enablePointerEvents={true}
             >
               <Text
-                style={changeColor(this.context.theme)}
+                style={contentColor(this.context.theme)}
                 textAlign="justify"
                 marginTop={5}
               >
@@ -134,7 +134,7 @@ export class About extends React.Component<IAboutProps, IAboutState> {
           <TouchableOpacity
             onPress={() => this.collapse(1)}
             style={[
-              changeBackgroundColor2(this.context.theme),
+              surfaceColor(this.context.theme),
               styles.box,
               { marginBottom: 100 },
             ]}
@@ -142,11 +142,11 @@ export class About extends React.Component<IAboutProps, IAboutState> {
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={changeColor(this.context.theme)} bold={true}>
+              <Text style={contentColor(this.context.theme)} bold={true}>
                 Contact US
               </Text>
               <Icon
-                style={changeColor(this.context.theme)}
+                style={contentColor(this.context.theme)}
                 size={20}
                 name="chevron-up"
               />
@@ -157,39 +157,39 @@ export class About extends React.Component<IAboutProps, IAboutState> {
               enablePointerEvents={true}
             >
               <VStack flexDirection="row" marginTop={5}>
-                <Text style={changeColor(this.context.theme)} bold={true}>
+                <Text style={contentColor(this.context.theme)} bold={true}>
                   Phone Number :{" "}
                 </Text>
-                <Text style={changeColor(this.context.theme)}>
+                <Text style={contentColor(this.context.theme)}>
                   001-11111111
                 </Text>
               </VStack>
               <VStack flexDirection="row">
-                <Text style={changeColor(this.context.theme)} bold={true}>
+                <Text style={contentColor(this.context.theme)} bold={true}>
                   Email :{" "}
                 </Text>
-                <Text style={changeColor(this.context.theme)}>
+                <Text style={contentColor(this.context.theme)}>
                   myplayer@gmail.com
                 </Text>
               </VStack>
               <VStack flexDirection="row">
-                <Text style={changeColor(this.context.theme)} bold={true}>
+                <Text style={contentColor(this.context.theme)} bold={true}>
                   Website :{" "}
                 </Text>
-                <Text style={changeColor(this.context.theme)}>
+                <Text style={contentColor(this.context.theme)}>
                   www.myplayer.com
                 </Text>
               </VStack>
               {/* <VStack flexDirection="row" marginTop={5}>
                           <VStack>
-                            <Text style={changeColor(this.context.theme)} bold={true}>Phone Number : </Text>
-                            <Text style={changeColor(this.context.theme)} bold={true}>Email : </Text>
-                            <Text style={changeColor(this.context.theme)} bold={true}>Website : </Text>
+                            <Text style={contentColor(this.context.theme)} bold={true}>Phone Number : </Text>
+                            <Text style={contentColor(this.context.theme)} bold={true}>Email : </Text>
+                            <Text style={contentColor(this.context.theme)} bold={true}>Website : </Text>
                           </VStack>
                           <VStack marginLeft={10}>
-                            <Text style={changeColor(this.context.theme)}>001-11111111</Text>
-                            <Text style={changeColor(this.context.theme)}>myplayer@gmail.com</Text>
-                            <Text style={changeColor(this.context.theme)}>www.myplayer.com</Text>
+                            <Text style={contentColor(this.context.theme)}>001-11111111</Text>
+                            <Text style={contentColor(this.context.theme)}>myplayer@gmail.com</Text>
+                            <Text style={contentColor(this.context.theme)}>www.myplayer.com</Text>
                           </VStack>
                         </VStack> */}
             </Collapsible>

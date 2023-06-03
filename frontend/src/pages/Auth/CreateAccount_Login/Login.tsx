@@ -21,7 +21,7 @@ import React from 'react';
 import {login} from 'src/API';
 import Context from 'src/context/context';
 import {storeData} from 'src/LocalStorage';
-import {changeColor} from 'src/components';
+import {contentColor} from 'src/components';
 import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,7 +29,7 @@ import {NavigationProp} from '@react-navigation/native';
 
 import {styles} from './style';
 
-export interface ILoginProps extends NavigationProp<any, any> {
+export interface ILoginProps {
   navigation: NavigationProp<any, any>;
 }
 
@@ -42,7 +42,7 @@ export type ILoginState = {
   loggingIn: boolean;
 };
 
-export class Login extends React.Component<ILoginProps, ILoginState> {
+export class Login extends React.PureComponent<ILoginProps, ILoginState> {
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: ILoginProps) {
@@ -87,9 +87,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     login({
       reqBody: {
         identifier: this.state.email,
-        password: this.state.password
+        password: this.state.password,
       },
-      onSuccess: async (data) => {
+      onSuccess: async data => {
         this.context.setIsLogin(true);
         await storeData('accessToken', data.jwt);
         Toast.show({
@@ -105,9 +105,9 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
         this.props.navigation.navigate('Home');
       },
 
-      onError: (err) => {
+      onError: err => {
         console.log(String(err));
-        
+
         this.setState({
           loggingIn: false,
         });
@@ -122,7 +122,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
           bottomOffset: 40,
         });
       },
-    })
+    });
   };
 
   handleLoginWithGoogle = async () => {
@@ -211,7 +211,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Text style={[styles.mainTitle, changeColor(this.context.theme)]}>
+          <Text style={[styles.mainTitle, contentColor(this.context.theme)]}>
             Login
           </Text>
           <View style={styles.input}>
@@ -239,7 +239,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                 onPress={() => this.passwordVisibility()}
                 style={[
                   styles.eyeIconStyle,
-                  {opacity: this.state.passwordIconVisibility ? 0 : 1 },
+                  {opacity: this.state.passwordIconVisibility ? 0 : 1},
                 ]}
                 name="eye-outline"
                 size={20}
@@ -289,8 +289,23 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
               color={mainColor}
               style={styles.googleLogo}
             />
-            <Text style={changeColor(this.context.theme)}>
+            <Text style={contentColor(this.context.theme)}>
               Login with Google
+            </Text>
+          </TouchableOpacity>
+
+          {/* /* ------------------------------ Join as guest ----------------------------- */}
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Home')}
+            style={styles.googleBtn}>
+            {/* <Icon
+              name=""
+              size={30}
+              color={mainColor}
+              style={styles.googleLogo}
+            /> */}
+            <Text style={contentColor(this.context.theme)}>
+              Join as a guest
             </Text>
           </TouchableOpacity>
         </View>

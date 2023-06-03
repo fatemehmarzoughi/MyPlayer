@@ -30,7 +30,7 @@ export interface ISubCategoryModalStates {
   itemClose2: number;
 }
 
-export default class SubCategoryModal extends React.Component<ISubCategoryModalProps, ISubCategoryModalStates> {
+export default class SubCategoryModal extends React.PureComponent<ISubCategoryModalProps, ISubCategoryModalStates> {
   
   viewabilityConfig: { waitForInteraction: boolean; viewAreaCoveragePercentThreshold: number; };
 

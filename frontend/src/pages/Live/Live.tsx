@@ -14,7 +14,7 @@ export interface ILiveStates {
     { key: "second"; title: "Second" }
   ];
 }
-export class Live extends React.Component<ILiveProps, ILiveStates> {
+export class Live extends React.PureComponent<ILiveProps, ILiveStates> {
   constructor(props: ILiveProps) {
     super(props);
     this.state = {
@@ -43,7 +43,7 @@ export class Live extends React.Component<ILiveProps, ILiveStates> {
         />
         {/* <Animated.Text entering={this.state.animation}>my text</Animated.Text> */}
         {/* <NativeText bold={true} textAlign="center" fontSize={20}>Live</NativeText> */}
-        <Tabs />
+        {/* <Tabs /> */}
       </>
     );
   }

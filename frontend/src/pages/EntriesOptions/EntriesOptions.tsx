@@ -7,15 +7,15 @@ import { checkLoginStatus } from "src";
 
 import { styles } from "./styles";
 
-export interface IEnteriesOptionsProps extends NavigationProp<any, any> {
+export interface IEntriesOptionsProps {
   navigation: NavigationProp<any, any>;
 }
 
-export interface IEnteriesOptionsStates {}
+export interface IEntriesOptionsStates {}
 
-export class EnteriesOptions extends React.Component<
-  IEnteriesOptionsProps,
-  IEnteriesOptionsStates
+export class EntriesOptions extends React.PureComponent<
+  IEntriesOptionsProps,
+  IEntriesOptionsStates
 > {
   declare context: React.ContextType<typeof Context>
 

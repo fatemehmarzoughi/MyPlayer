@@ -12,7 +12,7 @@ import {NavigationProp} from '@react-navigation/native';
 import context from 'src/context/context';
 import * as Colors from 'src/assets/constants/Colors';
 
-import {changeColor, FlatList1} from 'src/components';
+import {contentColor, FlatList1} from 'src/components';
 import { GET } from 'src/API';
 
 import {styles} from './style';
@@ -93,7 +93,7 @@ export class ChangeProfilePhoto extends React.PureComponent<
               style={styles.iconBack}>
               <Icon name="chevron-left" size={40} color={Colors.white} />
             </TouchableOpacity>
-            <Text style={[styles.titleHeader, changeColor(this.context.theme)]}>
+            <Text style={[styles.titleHeader, contentColor(this.context.theme)]}>
               Choose a Photo
             </Text>
           </View>

@@ -1,17 +1,17 @@
 import React from "react";
+import { Theme } from "src/context";
 import LottieView from "lottie-react-native";
 import FastImage from "react-native-fast-image";
 import Animated, { BounceIn } from "react-native-reanimated";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
-
-import { changeBackgroundColor } from "src/components/lightDarkTheme";
-
+import { backgroundColor } from "src/components/lightDarkTheme";
+import context from 'src/context/context';
 import { styles } from "./style";
 
 export type IFlatList1Props = {
   loading?: boolean;
   title: string;
-  theme: boolean;
+  theme: Theme;
   data: { imageURL: string }[];
   func: (imgUrl: string) => void;
 };
@@ -22,10 +22,12 @@ export type IFlatList1State = {
   }[];
 };
 
-export class FlatList1 extends React.Component<
+export class FlatList1 extends React.PureComponent<
   IFlatList1Props,
   IFlatList1State
 > {
+  declare context: React.ContextType<typeof context>;
+
   constructor(props: IFlatList1Props) {
     super(props);
     this.state = {
@@ -58,7 +60,7 @@ export class FlatList1 extends React.Component<
                 <TouchableOpacity
                   style={[
                     styles.Image,
-                    changeBackgroundColor(this.props.theme),
+                    backgroundColor(this.context.theme),
                   ]}
                 >
                   <LottieView
@@ -83,11 +85,11 @@ export class FlatList1 extends React.Component<
                   onPress={() => this.props.func(item.imageURL)}
                 >
                   <Animated.View entering={BounceIn.duration(500).delay(300)}>
-                    {/* <Image style={[styles.Image , changeBackgroundColor(this.props.theme)]} source={{uri : item.imageURL}} /> */}
+                    {/* <Image style={[styles.Image , backgroundColor()]} source={{uri : item.imageURL}} /> */}
                     <FastImage
                       style={[
                         styles.Image,
-                        changeBackgroundColor(this.props.theme),
+                        backgroundColor(this.context.theme),
                       ]}
                       source={{
                         uri: item.imageURL,

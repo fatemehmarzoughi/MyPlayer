@@ -8,7 +8,7 @@ export interface ITVProps {}
 export interface ITVStates {
   data: ITVDataType[];
 }
-export class TV extends React.Component<ITVProps, ITVStates> {
+export class TV extends React.PureComponent<ITVProps, ITVStates> {
   constructor(props: ITVProps) {
     super(props);
     this.state = {

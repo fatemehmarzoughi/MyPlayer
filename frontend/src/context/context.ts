@@ -1,5 +1,6 @@
 import React from "react";
 
+export type Theme = 'dark' | 'light'
 
 export type ContextType = {
   isRotate: boolean,
@@ -27,15 +28,15 @@ export type ContextType = {
   userImage: string,
   setUserImage: (value: string) => void,
 
-  theme: boolean,
-  setTheme: (value: boolean) => void,
+  theme: Theme,
+  setTheme: (value: Theme) => void,
 
   isAuthPage: boolean,
   setIsAuthPage: (value: boolean) => void,
 }
 
 
-export default React.createContext({
+export default React.createContext<ContextType>({
   isRotate: false,
   setIsRotate: (value: boolean) => {},
 
@@ -61,8 +62,8 @@ export default React.createContext({
   userImage: "",
   setUserImage: (value: string) => {},
 
-  theme: true,
-  setTheme: (value: boolean) => {},
+  theme: 'dark',
+  setTheme: (value: 'dark' | 'light') => {},
 
   isAuthPage: false,
   setIsAuthPage: (value: boolean) => {},

@@ -3,7 +3,7 @@ import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import context from 'src/context/context';
 import {titleFontSize, width} from 'src/assets';
 import * as Colors from 'src/assets/constants/Colors';
-import {changeColor} from 'src/components/lightDarkTheme';
+import {contentColor} from 'src/components/lightDarkTheme';
 
 export interface IHeader2Props {
   onSave: () => void;
@@ -12,10 +12,7 @@ export interface IHeader2Props {
 }
 
 export interface IHeader2State {}
-export class Header2 extends React.Component<
-  IHeader2Props,
-  IHeader2State
-> {
+export class Header2 extends React.PureComponent<IHeader2Props, IHeader2State> {
   declare context: React.ContextType<typeof context>;
 
   override render() {
@@ -26,7 +23,7 @@ export class Header2 extends React.Component<
             <Text style={styles.saveText}>Save</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.onCancel} style={styles.btn}>
-            <Text style={[styles.cancelText, changeColor(this.context.theme)]}>
+            <Text style={[styles.cancelText, contentColor(this.context.theme)]}>
               Cancel
             </Text>
           </TouchableOpacity>

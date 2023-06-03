@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {NavigationProp} from '@react-navigation/native';
 import {Text, View, ScrollView, Image} from 'react-native';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
-import Context from 'src/context/context';
-import {changeBackgroundColor, changeColor} from 'src/components';
+import Context, {Theme} from 'src/context/context';
+import {backgroundColor, contentColor} from 'src/components';
 
 import {dark, gray} from 'src/assets';
 
@@ -16,25 +16,23 @@ export interface IMenuContentProps extends NavigationProp<any, any> {
   navigation: {closeDrawer: () => void} & NavigationProp<any, any>;
 }
 
-export function MenuContent(props: IMenuContentProps) {
+export const MenuContent = React.memo((props: IMenuContentProps) => {
   const context = useContext(Context);
-  const [toggleIsOn, setToggleIsOn] = useState(false);
+  const [toggleIsOn, setToggleIsOn] = useState<boolean>(false);
 
   const themeSwitcher = async () => {
-    context.setTheme(!context.theme);
-    setToggleIsOn(context.theme);
+    context.setTheme(context.theme === 'dark' ? 'light' : 'dark');
+    setToggleIsOn(context.theme === 'light' ? false : true);
   };
 
   return (
-    <DrawerContentScrollView
-      {...props}
-      style={changeBackgroundColor(context.theme)}>
+    <DrawerContentScrollView {...props} style={backgroundColor(context.theme)}>
       {/* <DrawerItemList {...props} /> */}
 
       <ScrollView /** style={[styles.menuContent]}*/>
         <Icon
           onPress={() => props.navigation.closeDrawer()}
-          style={[styles.backBtn, changeColor(context.theme)]}
+          style={[styles.backBtn, contentColor(context.theme)]}
           name="return-down-back-outline"
         />
         <View style={styles.logoSection}>
@@ -42,7 +40,7 @@ export function MenuContent(props: IMenuContentProps) {
             style={styles.logo}
             source={require('../../assets/Images/Windows-11.jpeg')}
           />
-          <Text style={[styles.title, changeColor(context.theme)]}>
+          <Text style={[styles.title, contentColor(context.theme)]}>
             MyPlayer
           </Text>
           <NativeText style={styles.subTitle} textAlign="center">
@@ -50,7 +48,7 @@ export function MenuContent(props: IMenuContentProps) {
           </NativeText>
           <View style={styles.switcherContent}>
             <Icon
-              style={[styles.switcherText, changeColor(context.theme)]}
+              style={[styles.switcherText, contentColor(context.theme)]}
               name="sunny-outline"
               size={25}
             />
@@ -63,7 +61,7 @@ export function MenuContent(props: IMenuContentProps) {
               onToggle={() => themeSwitcher()}
             />
             <Icon
-              style={[styles.switcherText, changeColor(context.theme)]}
+              style={[styles.switcherText, contentColor(context.theme)]}
               name="moon-outline"
               size={20}
             />
@@ -75,14 +73,14 @@ export function MenuContent(props: IMenuContentProps) {
         </View>
         <View style={styles.section}>
           <Text
-            style={[styles.menuItem, changeColor(context.theme)]}
+            style={[styles.menuItem, contentColor(context.theme)]}
             onPress={() => props.navigation.navigate('MyPlayer')}>
             Home
           </Text>
-          <Text style={[styles.menuItem, changeColor(context.theme)]}>
+          <Text style={[styles.menuItem, contentColor(context.theme)]}>
             My Playlist
           </Text>
-          <Text style={[styles.menuItem, changeColor(context.theme)]}>
+          <Text style={[styles.menuItem, contentColor(context.theme)]}>
             My Saves
           </Text>
         </View>
@@ -93,12 +91,12 @@ export function MenuContent(props: IMenuContentProps) {
         <View style={styles.section}>
           <Text
             onPress={() => props.navigation.navigate('About')}
-            style={[styles.menuItem, changeColor(context.theme)]}>
+            style={[styles.menuItem, contentColor(context.theme)]}>
             About US
           </Text>
           <Text
             onPress={() => props.navigation.navigate('TermsAndPolicy')}
-            style={[styles.menuItem, changeColor(context.theme)]}>
+            style={[styles.menuItem, contentColor(context.theme)]}>
             Terms and Policy
           </Text>
         </View>
@@ -107,11 +105,11 @@ export function MenuContent(props: IMenuContentProps) {
           <Text style={styles.line}></Text>
         </View>
         <View style={styles.section}>
-          <Text style={[styles.menuItem, changeColor(context.theme)]}>
+          <Text style={[styles.menuItem, contentColor(context.theme)]}>
             Help?
           </Text>
         </View>
       </ScrollView>
     </DrawerContentScrollView>
   );
-}
+})

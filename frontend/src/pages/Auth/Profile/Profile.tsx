@@ -12,7 +12,7 @@ import Toast from "react-native-toast-message";
 import ToggleSwitch from "toggle-switch-react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
-import { NavigationProp } from "@react-navigation/native";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import Notification from "src/Notification/NotificationSetup";
@@ -21,12 +21,10 @@ import { styles } from "./style";
 import { getData, storeData } from "src/LocalStorage";
 import { GET } from "src/API";
 import { dark, gray, mainColor, toastMessageDuration, white } from "src/assets";
-import { ModalClass, changeColor } from "src/components";
+import { ModalClass, contentColor } from "src/components";
 import { checkLoginStatus } from "src/utils";
 
-export interface IProfileProps extends NavigationProp<any, any> {
-  navigation: NavigationProp<any, any>;
-}
+export interface IProfileProps extends ParamListBase {}
 export interface IProfileState {
   email: string;
   plan: string;
@@ -59,13 +57,13 @@ export class Profile extends React.PureComponent<
     };
   }
 
-  EditProfile = () => {
-    this.props.navigation.navigate("EditProfile");
-  };
+  // EditProfile = () => {
+  //   this.props.navigation.navigate("EditProfile");
+  // };
 
-  handleResetPassword = () => {
-    this.props.navigation.navigate("ResetPassword");
-  };
+  // handleResetPassword = () => {
+  //   this.props.navigation.navigate("ResetPassword");
+  // };
 
   showLogoutMessage = () => {
     this.setState({
@@ -92,19 +90,19 @@ export class Profile extends React.PureComponent<
         modalVisible: false,
       });
       await checkLoginStatus(this.context.setIsLogin);
-      this.props.navigation.navigate("Home");
+      // this.props.navigation.navigate("Home");
     } catch (err) {
       console.log(err);
     }
   };
 
-  handleReportABug = () => {
-    this.props.navigation.navigate("ReportABug");
-  };
+  // handleReportABug = () => {
+  //   this.props.navigation.navigate("ReportABug");
+  // };
 
-  handleUpgradeToPremium = () => {
-    this.props.navigation.navigate("UpgradeToPremium");
-  };
+  // handleUpgradeToPremium = () => {
+  //   this.props.navigation.navigate("UpgradeToPremium");
+  // };
 
   setAppNotification = async () => {
     const newState = "" + !this.state.appNotification + "";
@@ -117,69 +115,69 @@ export class Profile extends React.PureComponent<
     }
   };
 
-  getUserInfo = async () => {
-    const token = await getData("accessToken");
-    if (token === "GoogleToken") {
-      this.setState({
-        email: this.context.userEmail,
-        name: this.context.userName,
-        refreshing: false,
-        isGoogleAccount: true,
-      });
-      return;
-    }
+  // getUserInfo = async () => {
+  //   const token = await getData("accessToken");
+  //   if (token === "GoogleToken") {
+  //     this.setState({
+  //       email: this.context.userEmail,
+  //       name: this.context.userName,
+  //       refreshing: false,
+  //       isGoogleAccount: true,
+  //     });
+  //     return;
+  //   }
 
-    try {
-      const token = await getData("accessToken");
-      const res = await GET("/dashboard", token as string);
-      const user = await (res as any).json();
-      this.setState({
-        // email : res.headers.map.email,
-        // name : res.headers.map.firstname,
-        // plan : res.headers.map.plan,
-        // country : res.headers.map.country,
-        email: user.email,
-        name: user.firstName,
-        plan: user.plan,
-        country: user.country === "" ? "Select Your Country" : user.country,
-        refreshing: false,
-      });
-      this.context.setUserName(this.state.name);
-      this.context.setUserEmail(this.state.email);
-      this.context.setUserCountry(this.state.country);
-      this.context.setUserImage(user.imageURL);
-      console.log(`user = ${JSON.stringify(user)}`);
-    } catch (err) {
-      console.log(err);
-      Toast.show({
-        type: "error",
-        position: "bottom",
-        text1: "Couldn't refresh!",
-        text2: "Please Check your Network",
-        visibilityTime: toastMessageDuration,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
-      this.setState({ refreshing: false });
-    }
-  };
+  //   try {
+  //     const token = await getData("accessToken");
+  //     const res = await GET("/dashboard", token as string);
+  //     const user = await (res as any).json();
+  //     this.setState({
+  //       // email : res.headers.map.email,
+  //       // name : res.headers.map.firstname,
+  //       // plan : res.headers.map.plan,
+  //       // country : res.headers.map.country,
+  //       email: user.email,
+  //       name: user.firstName,
+  //       plan: user.plan,
+  //       country: user.country === "" ? "Select Your Country" : user.country,
+  //       refreshing: false,
+  //     });
+  //     this.context.setUserName(this.state.name);
+  //     this.context.setUserEmail(this.state.email);
+  //     this.context.setUserCountry(this.state.country);
+  //     this.context.setUserImage(user.imageURL);
+  //     console.log(`user = ${JSON.stringify(user)}`);
+  //   } catch (err) {
+  //     console.log(err);
+  //     Toast.show({
+  //       type: "error",
+  //       position: "bottom",
+  //       text1: "Couldn't refresh!",
+  //       text2: "Please Check your Network",
+  //       visibilityTime: toastMessageDuration,
+  //       autoHide: true,
+  //       topOffset: 30,
+  //       bottomOffset: 40,
+  //     });
+  //     this.setState({ refreshing: false });
+  //   }
+  // };
 
-  override async componentDidMount() {
-    // await this.getUserInfo();
+  // override async componentDidMount() {
+  //   // await this.getUserInfo();
 
-    const { navigation } = this.props;
-    this.focusListener = navigation.addListener("focus", async () => {
-      await this.getUserInfo();
-    });
+  //   const { navigation } = this.props;
+  //   this.focusListener = navigation.addListener("focus", async () => {
+  //     await this.getUserInfo();
+  //   });
 
-    const appNotification = await getData("appNotification");
-    appNotification === "false"
-      ? this.setState({ appNotification: false })
-      : this.setState({ appNotification: true });
-    console.log(this.state.name);
-    console.log(this.state.email);
-  }
+  //   const appNotification = await getData("appNotification");
+  //   appNotification === "false"
+  //     ? this.setState({ appNotification: false })
+  //     : this.setState({ appNotification: true });
+  //   console.log(this.state.name);
+  //   console.log(this.state.email);
+  // }
 
   override render() {
     return (
@@ -187,13 +185,14 @@ export class Profile extends React.PureComponent<
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={() => this.getUserInfo()}
+            onRefresh={() => {}}
+            // onRefresh={() => this.getUserInfo()}
           />
         }
       >
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={[styles.title, changeColor(this.context.theme)]}>
+            <Text style={[styles.title, contentColor(this.context.theme)]}>
               Profile
             </Text>
             <View style={styles.row1}>
@@ -227,14 +226,14 @@ export class Profile extends React.PureComponent<
                         <Text
                           style={[
                             styles.nameText,
-                            changeColor(this.context.theme),
+                            contentColor(this.context.theme),
                           ]}
                         >
                           {this.state.name}
                         </Text>
                       </View>
                       <Text
-                        style={[styles.email, changeColor(this.context.theme)]}
+                        style={[styles.email, contentColor(this.context.theme)]}
                       >
                         {this.state.email}
                       </Text>
@@ -245,23 +244,23 @@ export class Profile extends React.PureComponent<
             </View>
             <View style={styles.row2}>
               <View style={styles.My}>
-                <Text style={[styles.MyText, changeColor(this.context.theme)]}>
+                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
                   12
                 </Text>
-                <Text style={[styles.MyText, changeColor(this.context.theme)]}>
+                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
                   My Saved
                 </Text>
               </View>
               <View style={styles.My}>
-                <Text style={[styles.MyText, changeColor(this.context.theme)]}>
+                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
                   2
                 </Text>
-                <Text style={[styles.MyText, changeColor(this.context.theme)]}>
+                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
                   My playlist
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() => this.EditProfile()}
+                // onPress={() => this.EditProfile()}
                 style={styles.editProfile}
               >
                 <Icon name="pencil" size={20} color={white} />
@@ -276,11 +275,11 @@ export class Profile extends React.PureComponent<
           </View>
 
           <View style={styles.part}>
-            <Text style={[styles.subTitle, changeColor(this.context.theme)]}>
+            <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
               Account Settings
             </Text>
             <TouchableOpacity
-              onPress={() => this.handleUpgradeToPremium()}
+              // onPress={() => this.handleUpgradeToPremium()}
               style={[styles.option, { borderColor: white }]}
             >
               <View style={styles.optionTitleIcon}>
@@ -290,7 +289,7 @@ export class Profile extends React.PureComponent<
                   color={this.context.theme ? dark : white}
                 />
                 <Text
-                  style={[styles.optionTitle, changeColor(this.context.theme)]}
+                  style={[styles.optionTitle, contentColor(this.context.theme)]}
                 >
                   Upgrade to premium
                 </Text>
@@ -320,7 +319,7 @@ export class Profile extends React.PureComponent<
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  onPress={() => this.handleResetPassword()}
+                  // onPress={() => this.handleResetPassword()}
                   style={styles.option}
                 >
                   <View style={styles.optionTitleIcon}>
@@ -332,7 +331,7 @@ export class Profile extends React.PureComponent<
                     <Text
                       style={[
                         styles.optionTitle,
-                        changeColor(this.context.theme),
+                        contentColor(this.context.theme),
                       ]}
                     >
                       Reset Password
@@ -348,7 +347,7 @@ export class Profile extends React.PureComponent<
             </>
 
             <TouchableOpacity
-              onPress={() => this.handleReportABug()}
+              // onPress={() => this.handleReportABug()}
               style={styles.option}
             >
               <View style={styles.optionTitleIcon}>
@@ -358,7 +357,7 @@ export class Profile extends React.PureComponent<
                   color={this.context.theme ? dark : white}
                 />
                 <Text
-                  style={[styles.optionTitle, changeColor(this.context.theme)]}
+                  style={[styles.optionTitle, contentColor(this.context.theme)]}
                 >
                   Report a Bug
                 </Text>
@@ -385,7 +384,7 @@ export class Profile extends React.PureComponent<
             </TouchableOpacity>
           </View>
           <View style={styles.part}>
-            <Text style={[styles.subTitle, changeColor(this.context.theme)]}>
+            <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
               Notifications
             </Text>
 
@@ -421,7 +420,7 @@ export class Profile extends React.PureComponent<
                   color={this.context.theme ? dark : white}
                 />
                 <Text
-                  style={[styles.optionTitle, changeColor(this.context.theme)]}
+                  style={[styles.optionTitle, contentColor(this.context.theme)]}
                 >
                   App notification
                 </Text>
@@ -436,7 +435,7 @@ export class Profile extends React.PureComponent<
             </TouchableOpacity>
           </View>
           <View style={styles.part}>
-            <Text style={[styles.subTitle, changeColor(this.context.theme)]}>
+            <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
               Setup
             </Text>
             <TouchableOpacity
@@ -446,7 +445,7 @@ export class Profile extends React.PureComponent<
               <View style={styles.optionTitleIcon}>
                 <Icon2 name="power" size={20} color={mainColor} />
                 <Text
-                  style={[styles.optionTitle, changeColor(this.context.theme)]}
+                  style={[styles.optionTitle, contentColor(this.context.theme)]}
                 >
                   Logout
                 </Text>
