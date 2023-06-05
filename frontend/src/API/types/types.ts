@@ -12,13 +12,13 @@ export type Meta = {
 
 export type Attributes<T> = {
   id: number;
-  attributes: T
-}
+  attributes: T;
+};
 
 export type Data<T, D extends Attributes<T> | Attributes<T>[]> = {
-  data: D,
-  meta: Meta
-}
+  data: D;
+  meta: Meta;
+};
 
 export enum CountryCode {
   AF = 'AF',
@@ -328,8 +328,8 @@ export type Item = {
   category?: ItemCategory;
   label?: ItemLabel;
   mood?: ItemMood;
-  relatedItems?: Omit<Data<Item, Attributes<Item>>, 'meta'>,
-  likeListUser?: Omit<Data<User, Attributes<User>>, 'meta'>,
+  relatedItems?: Omit<Data<Item, Attributes<Item>>, 'meta'>;
+  likeListUser?: Omit<Data<User, Attributes<User>>, 'meta'>;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -374,21 +374,26 @@ export type CreateAccountResponseBody = {
 };
 
 /* -------------------------------------------------------------------------- */
+/*                                GET User Info                               */
+/* -------------------------------------------------------------------------- */
+
+export type GetUserInfoResponseBody = User;
+
+/* -------------------------------------------------------------------------- */
 /*                                    Items                                   */
 /* -------------------------------------------------------------------------- */
 
 export type GetItemsResponseBody = Data<Item, Attributes<Item>[]>;
-
 
 /* -------------------------------------------------------------------------- */
 /*                                   Banner                                   */
 /* -------------------------------------------------------------------------- */
 
 export type BannerDates = {
-  createdAt : Date,
-  updatedAt : Date,
-  publishedAt : Date,
-  items: Omit<Data<Item, Attributes<Item>>, 'meta'>
-}
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date;
+  items: Omit<Data<Item, Attributes<Item>>, 'meta'>;
+};
 
-export type BannerResponseBody = Data<BannerDates, Attributes<BannerDates>>
+export type BannerResponseBody = Data<BannerDates, Attributes<BannerDates>>;

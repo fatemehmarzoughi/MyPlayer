@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Theme } from 'src/context';
 
 export type InternalStorageData = {
   accessToken: string | 'GoogleToken';
   isFirstInstallation: boolean;
   appNotification: string;
-  theme: boolean;
+  theme: Theme;
 };
 
 export const storeData = async (

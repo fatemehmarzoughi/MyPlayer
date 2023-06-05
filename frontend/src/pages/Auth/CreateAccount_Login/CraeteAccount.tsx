@@ -1,8 +1,4 @@
 import {
-  statusCodes,
-  GoogleSignin,
-} from '@react-native-google-signin/google-signin';
-import {
   Text,
   View,
   FlatList,
@@ -12,12 +8,9 @@ import {
 } from 'react-native';
 import {
   toastMessageDuration,
-  REACT_APP_IOS_CLIENT_ID,
-  REACT_APP_ANDROID_CLIENT_ID,
 } from 'src/assets';
 import React from 'react';
 import Context from 'src/context/context';
-import {storeData} from 'src/LocalStorage';
 import {contentColor} from 'src/components';
 import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
@@ -253,77 +246,77 @@ export class CreateAccount extends React.PureComponent<
     });
   };
 
-  handleCreateAccountWithGoogle = async () => {
-    console.log('create account with google');
+  // handleCreateAccountWithGoogle = async () => {
+  //   console.log('create account with google');
 
-    const iosClientId = REACT_APP_IOS_CLIENT_ID;
-    const webClientId = REACT_APP_ANDROID_CLIENT_ID;
+  //   const iosClientId = REACT_APP_IOS_CLIENT_ID;
+  //   const webClientId = REACT_APP_ANDROID_CLIENT_ID;
 
-    GoogleSignin.configure({
-      webClientId,
-      iosClientId,
-    });
+  //   GoogleSignin.configure({
+  //     webClientId,
+  //     iosClientId,
+  //   });
 
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      await storeData('accessToken', 'GoogleToken');
-      this.context.setUserName(userInfo.user.givenName!);
-      this.context.setUserEmail(userInfo.user.email);
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: 'Logged in Successfully',
-        text2: 'Welcome to MyPlayer',
-        visibilityTime: toastMessageDuration,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
-      this.context.setIsLogin(true);
-      this.props.navigation.navigate('Profile');
-    } catch (err: any) {
-      switch (err.code) {
-        case statusCodes.SIGN_IN_CANCELLED:
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Create Account canceled',
-            text2: 'Please try again',
-            autoHide: true,
-            visibilityTime: toastMessageDuration,
-            topOffset: 30,
-            bottomOffset: 40,
-          });
-          break;
-        case statusCodes.IN_PROGRESS:
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Create Account is in Progress',
-            text2: 'Please wait',
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-            visibilityTime: toastMessageDuration,
-          });
-          break;
-        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Play services not available',
-            text2: 'Please try again.',
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-            visibilityTime: toastMessageDuration,
-          });
-          break;
-      }
-    }
-  };
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     console.log(userInfo);
+  //     await storeData('accessToken', 'GoogleToken');
+  //     this.context.setUserName(userInfo.user.givenName!);
+  //     this.context.setUserEmail(userInfo.user.email);
+  //     Toast.show({
+  //       type: 'success',
+  //       position: 'top',
+  //       text1: 'Logged in Successfully',
+  //       text2: 'Welcome to MyPlayer',
+  //       visibilityTime: toastMessageDuration,
+  //       autoHide: true,
+  //       topOffset: 30,
+  //       bottomOffset: 40,
+  //     });
+  //     this.context.setIsLogin(true);
+  //     this.props.navigation.navigate('Profile');
+  //   } catch (err: any) {
+  //     switch (err.code) {
+  //       case statusCodes.SIGN_IN_CANCELLED:
+  //         Toast.show({
+  //           type: 'error',
+  //           position: 'bottom',
+  //           text1: 'Create Account canceled',
+  //           text2: 'Please try again',
+  //           autoHide: true,
+  //           visibilityTime: toastMessageDuration,
+  //           topOffset: 30,
+  //           bottomOffset: 40,
+  //         });
+  //         break;
+  //       case statusCodes.IN_PROGRESS:
+  //         Toast.show({
+  //           type: 'error',
+  //           position: 'bottom',
+  //           text1: 'Create Account is in Progress',
+  //           text2: 'Please wait',
+  //           autoHide: true,
+  //           topOffset: 30,
+  //           bottomOffset: 40,
+  //           visibilityTime: toastMessageDuration,
+  //         });
+  //         break;
+  //       case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+  //         Toast.show({
+  //           type: 'error',
+  //           position: 'bottom',
+  //           text1: 'Play services not available',
+  //           text2: 'Please try again.',
+  //           autoHide: true,
+  //           topOffset: 30,
+  //           bottomOffset: 40,
+  //           visibilityTime: toastMessageDuration,
+  //         });
+  //         break;
+  //     }
+  //   }
+  // };
 
   /* -------------------------------------------------------------------------- */
   /*                                   Return                                   */
@@ -528,7 +521,7 @@ export class CreateAccount extends React.PureComponent<
 
           {/* /* --------------------------------- Buttons -------------------------------- */}
           <TouchableOpacity
-            onPress={() => this.handleCreateAccountWithGoogle()}
+            // onPress={() => this.handleCreateAccountWithGoogle()}
             style={styles.googleBtn}>
             <Icon
               name="logo-google"
