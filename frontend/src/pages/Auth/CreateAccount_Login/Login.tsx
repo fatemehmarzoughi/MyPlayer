@@ -6,16 +6,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import {
   gray,
   lightGray,
   mainColor,
   toastMessageDuration,
-  REACT_APP_IOS_CLIENT_ID,
-  REACT_APP_ANDROID_CLIENT_ID,
 } from 'src/assets';
 import React from 'react';
 import {login} from 'src/API';
@@ -43,6 +37,7 @@ export type ILoginState = {
 };
 
 export class Login extends React.PureComponent<ILoginProps, ILoginState> {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: ILoginProps) {
@@ -77,7 +72,7 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
     return true;
   };
 
-  handleLogin = async () => {
+  handleLogin = () => {
     this.setState({
       loggingIn: true,
     });
@@ -102,12 +97,10 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
           topOffset: 30,
           bottomOffset: 40,
         });
-        this.props.navigation.navigate('Home');
+        this.props.navigation.navigate('Profile');
       },
 
       onError: err => {
-        console.log(String(err));
-
         this.setState({
           loggingIn: false,
         });
@@ -125,76 +118,76 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
     });
   };
 
-  handleLoginWithGoogle = async () => {
-    console.log('login with google');
+  // handleLoginWithGoogle = async () => {
+  //   console.log('login with google');
 
-    const iosClientId = REACT_APP_IOS_CLIENT_ID;
-    const webClientId = REACT_APP_ANDROID_CLIENT_ID;
+  //   const iosClientId = REACT_APP_IOS_CLIENT_ID;
+  //   const webClientId = REACT_APP_ANDROID_CLIENT_ID;
 
-    GoogleSignin.configure({
-      webClientId,
-      iosClientId,
-    });
+  //   GoogleSignin.configure({
+  //     webClientId,
+  //     iosClientId,
+  //   });
 
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      this.context.setUserName(userInfo.user.givenName!);
-      this.context.setUserEmail(userInfo.user.email);
-      await storeData('accessToken', 'GoogleToken');
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: 'Logged in Successfully',
-        text2: 'Welcome to MyPlayer',
-        visibilityTime: toastMessageDuration,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
-      this.context.setIsLogin(true);
-      this.props.navigation.navigate('Home');
-    } catch (err: any) {
-      switch (err.code) {
-        case statusCodes.SIGN_IN_CANCELLED:
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Create Account canceled',
-            text2: 'Please try again',
-            autoHide: true,
-            visibilityTime: toastMessageDuration,
-            topOffset: 30,
-            bottomOffset: 40,
-          });
-          break;
-        case statusCodes.IN_PROGRESS:
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Create Account is in Progress',
-            text2: 'Please wait',
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-            visibilityTime: toastMessageDuration,
-          });
-          break;
-        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'Play services not available',
-            text2: 'Please try again.',
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-            visibilityTime: toastMessageDuration,
-          });
-          break;
-      }
-    }
-  };
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     this.context.setUserName(userInfo.user.givenName!);
+  //     this.context.setUserEmail(userInfo.user.email);
+  //     await storeData('accessToken', 'GoogleToken');
+  //     Toast.show({
+  //       type: 'success',
+  //       position: 'top',
+  //       text1: 'Logged in Successfully',
+  //       text2: 'Welcome to MyPlayer',
+  //       visibilityTime: toastMessageDuration,
+  //       autoHide: true,
+  //       topOffset: 30,
+  //       bottomOffset: 40,
+  //     });
+  //     this.context.setIsLogin(true);
+  //     this.props.navigation.navigate('Home');
+  //   } catch (err: any) {
+  //     switch (err.code) {
+  //       case statusCodes.SIGN_IN_CANCELLED:
+  //         Toast.show({
+  //           type: 'error',
+  //           position: 'bottom',
+  //           text1: 'Create Account canceled',
+  //           text2: 'Please try again',
+  //           autoHide: true,
+  //           visibilityTime: toastMessageDuration,
+  //           topOffset: 30,
+  //           bottomOffset: 40,
+  //         });
+  //         break;
+  //       case statusCodes.IN_PROGRESS:
+  //         Toast.show({
+  //           type: 'error',
+  //           position: 'bottom',
+  //           text1: 'Create Account is in Progress',
+  //           text2: 'Please wait',
+  //           autoHide: true,
+  //           topOffset: 30,
+  //           bottomOffset: 40,
+  //           visibilityTime: toastMessageDuration,
+  //         });
+  //         break;
+  //       case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+  //         Toast.show({
+  //           type: 'error',
+  //           position: 'bottom',
+  //           text1: 'Play services not available',
+  //           text2: 'Please try again.',
+  //           autoHide: true,
+  //           topOffset: 30,
+  //           bottomOffset: 40,
+  //           visibilityTime: toastMessageDuration,
+  //         });
+  //         break;
+  //     }
+  //   }
+  // };
 
   passwordVisibility = () => {
     console.log('tufjhbk');
@@ -282,7 +275,8 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
 
           <TouchableOpacity
             style={styles.googleBtn}
-            onPress={() => this.handleLoginWithGoogle()}>
+            // onPress={() => this.handleLoginWithGoogle()}
+          >
             <Icon
               name="logo-google"
               size={30}

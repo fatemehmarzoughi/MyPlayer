@@ -9,11 +9,13 @@ import {NativeBaseProvider} from 'native-base';
 import {createStore, applyMiddleware} from 'redux';
 import SplashScreen from 'react-native-splash-screen';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import Context from 'src/context/context';
 
 import {mainReducer} from 'src/Redux';
 import {AppRoute} from 'src/pages';
 import ContextProvider from 'src/context/contextProvider';
 import {getData, storeData} from 'src/LocalStorage';
+import {checkLoginStatus} from 'src';
 
 export interface IAppProps {}
 export interface IAppStates {
@@ -27,6 +29,9 @@ export const store = createStore(
 );
 
 export default class App extends React.PureComponent<IAppProps, IAppStates> {
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
+
   private _isMount: boolean;
 
   constructor(props: IAppProps) {
@@ -43,6 +48,13 @@ export default class App extends React.PureComponent<IAppProps, IAppStates> {
     // routingInstrumentation.registerAppContainer(this.appContainer);
     this._isMount = true;
     try {
+      checkLoginStatus().then(d => {
+        console.log(`isLogin = ${d}`);
+
+        this.context.setIsLogin(d);
+        console.log(`isLogin = ${this.context.isLogin}`);
+      });
+
       const isFirstInstallation = await getData('isFirstInstallation');
       if (isFirstInstallation === null) {
         if (isFirstInstallation !== null)

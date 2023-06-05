@@ -1,18 +1,20 @@
 import {
   Login,
   Search,
+  Profile,
   OnBoarding,
+  CreateAccount,
   EntriesOptions,
   ForgetPassword,
-  CreateAccount,
 } from 'src/pages';
-import React from 'react';
+import React, {useContext} from 'react';
 import Home from './Home/Home';
 import {gray, mainColor} from 'src/assets';
 import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import Context from 'src/context/context';
 
 import {styles} from './style';
 
@@ -33,32 +35,51 @@ const LoginCreateAccount = React.memo(() => (
       tabBarStyle: {padding: 5, shadowColor: mainColor, elevation: 0},
       tabBarIndicatorStyle: {backgroundColor: mainColor, elevation: 0},
     }}>
+    <Tab.Screen name="Login">{props => <Login {...props} />}</Tab.Screen>
     <Tab.Screen name="CreateAccount">
       {props => <CreateAccount {...props} />}
     </Tab.Screen>
-    <Tab.Screen name="Login">{props => <Login {...props} />}</Tab.Screen>
   </Tab.Navigator>
 ));
 
-const Auth = React.memo(() => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="Login_CreateAccount"
-      component={LoginCreateAccount}
-      options={{
-        headerShown: false,
-      }}
-    />
+const Auth = React.memo(() => {
+  const {isLogin} = useContext(Context);
 
-    <Stack.Screen
-      name="ForgetPassword"
-      options={{
-        headerShown: false,
-      }}>
-      {props => <ForgetPassword {...props} />}
-    </Stack.Screen>
-  </Stack.Navigator>
-));
+  return (
+    <Stack.Navigator
+      initialRouteName={isLogin ? 'Login_CreateAccount' : 'Profile'}>
+      {isLogin ? (
+        <>
+          <Stack.Screen
+            name="Profile"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <Profile {...props} />}
+          </Stack.Screen>
+        </>
+      ) : (
+        <>
+          <Stack.Screen
+            name="Login_CreateAccount"
+            component={LoginCreateAccount}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="ForgetPassword"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <ForgetPassword {...props} />}
+          </Stack.Screen>
+        </>
+      )}
+    </Stack.Navigator>
+  );
+});
 
 export const AppRoute: React.FC<IAppRouteProps> = React.memo(
   ({isFirstInstallation}) => {

@@ -5,108 +5,72 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-} from "react-native";
-import React from "react";
-import LottieView from "lottie-react-native";
-import Toast from "react-native-toast-message";
-import ToggleSwitch from "toggle-switch-react-native";
-import Icon from "react-native-vector-icons/EvilIcons";
-import Icon2 from "react-native-vector-icons/Ionicons";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+} from 'react-native';
+import React from 'react';
+import LottieView from 'lottie-react-native';
+import Toast from 'react-native-toast-message';
+import ToggleSwitch from 'toggle-switch-react-native';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon2 from 'react-native-vector-icons/Ionicons';
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
-import Notification from "src/Notification/NotificationSetup";
-import Context from "src/context/context";
-import { styles } from "./style";
-import { getData, storeData } from "src/LocalStorage";
-import { GET } from "src/API";
-import { dark, gray, mainColor, toastMessageDuration, white } from "src/assets";
-import { ModalClass, contentColor } from "src/components";
-import { checkLoginStatus } from "src/utils";
+import {getUserInfo} from 'src/API';
+import Context from 'src/context/context';
+import {checkLoginStatus} from 'src/utils';
+import {getData, storeData} from 'src/LocalStorage';
+import {ModalClass, contentColor} from 'src/components';
+import Notification from 'src/Notification/NotificationSetup';
+import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
 
-export interface IProfileProps extends ParamListBase {}
+import {styles} from './style';
+
+export interface IProfileProps extends ParamListBase {
+  navigation: NavigationProp<any, any>;
+}
 export interface IProfileState {
-  email: string;
-  plan: string;
-  name: string;
-  country: string;
-
   refreshing: boolean;
   modalVisible: boolean;
   isGoogleAccount: boolean;
   appNotification: boolean;
+  setIsLogin: () => void;
 }
-export class Profile extends React.PureComponent<
-  IProfileProps,
-  IProfileState
-> {
+export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
   focusListener: any;
 
   constructor(props: IProfileProps) {
     super(props);
     this.state = {
-      email: "",
-      plan: "",
-      name: "",
-      country: "",
       appNotification: true,
       refreshing: false,
       modalVisible: false,
       isGoogleAccount: false,
+      setIsLogin: () => {},
     };
   }
 
-  // EditProfile = () => {
-  //   this.props.navigation.navigate("EditProfile");
-  // };
-
-  // handleResetPassword = () => {
-  //   this.props.navigation.navigate("ResetPassword");
-  // };
-
-  showLogoutMessage = () => {
-    this.setState({
-      modalVisible: true,
-    });
-  };
-
-  cancelModal = () => {
-    console.log("cancel modal");
-    this.setState({
-      modalVisible: false,
-    });
-  };
-
   handleLogOut = async () => {
     try {
-      const accessToken = await getData("accessToken");
-      if (accessToken === "GoogleToken") {
+      const accessToken = await getData('accessToken');
+      if (accessToken === 'GoogleToken') {
         await GoogleSignin.signOut();
       }
-      this.context.setIsLogin(false);
-      await storeData("accessToken", "");
+      await storeData('accessToken', '');
       this.setState({
         modalVisible: false,
       });
-      await checkLoginStatus(this.context.setIsLogin);
-      // this.props.navigation.navigate("Home");
+      await checkLoginStatus(this.state.setIsLogin);
+      this.props.navigation.navigate('Home');
     } catch (err) {
       console.log(err);
     }
   };
 
-  // handleReportABug = () => {
-  //   this.props.navigation.navigate("ReportABug");
-  // };
-
-  // handleUpgradeToPremium = () => {
-  //   this.props.navigation.navigate("UpgradeToPremium");
-  // };
-
   setAppNotification = async () => {
-    const newState = "" + !this.state.appNotification + "";
-    await storeData("appNotification", newState);
+    const newState = '' + !this.state.appNotification + '';
+    await storeData('appNotification', newState);
     this.setState({
       appNotification: !this.state.appNotification,
     });
@@ -115,69 +79,44 @@ export class Profile extends React.PureComponent<
     }
   };
 
-  // getUserInfo = async () => {
-  //   const token = await getData("accessToken");
-  //   if (token === "GoogleToken") {
-  //     this.setState({
-  //       email: this.context.userEmail,
-  //       name: this.context.userName,
-  //       refreshing: false,
-  //       isGoogleAccount: true,
-  //     });
-  //     return;
-  //   }
+  getUser = async () => {
+    this.setState({refreshing: true});
 
-  //   try {
-  //     const token = await getData("accessToken");
-  //     const res = await GET("/dashboard", token as string);
-  //     const user = await (res as any).json();
-  //     this.setState({
-  //       // email : res.headers.map.email,
-  //       // name : res.headers.map.firstname,
-  //       // plan : res.headers.map.plan,
-  //       // country : res.headers.map.country,
-  //       email: user.email,
-  //       name: user.firstName,
-  //       plan: user.plan,
-  //       country: user.country === "" ? "Select Your Country" : user.country,
-  //       refreshing: false,
-  //     });
-  //     this.context.setUserName(this.state.name);
-  //     this.context.setUserEmail(this.state.email);
-  //     this.context.setUserCountry(this.state.country);
-  //     this.context.setUserImage(user.imageURL);
-  //     console.log(`user = ${JSON.stringify(user)}`);
-  //   } catch (err) {
-  //     console.log(err);
-  //     Toast.show({
-  //       type: "error",
-  //       position: "bottom",
-  //       text1: "Couldn't refresh!",
-  //       text2: "Please Check your Network",
-  //       visibilityTime: toastMessageDuration,
-  //       autoHide: true,
-  //       topOffset: 30,
-  //       bottomOffset: 40,
-  //     });
-  //     this.setState({ refreshing: false });
-  //   }
-  // };
+    await getUserInfo({
+      onSuccess: data => {
+        this.context.setUserInfo(data);
+        this.setState({refreshing: false});
+      },
+      onError: err => {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: "Couldn't refresh!",
+          text2: 'Please Check your Network',
+          visibilityTime: toastMessageDuration,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        this.setState({refreshing: false});
+      },
+    });
+  };
 
-  // override async componentDidMount() {
-  //   // await this.getUserInfo();
+  override async componentDidMount() {
+    await this.getUser();
 
-  //   const { navigation } = this.props;
-  //   this.focusListener = navigation.addListener("focus", async () => {
-  //     await this.getUserInfo();
-  //   });
+    // this.focusListener = this.props.navigation?.addListener("focus", async () => {
+    //   await this.getUser();
+    // });
 
-  //   const appNotification = await getData("appNotification");
-  //   appNotification === "false"
-  //     ? this.setState({ appNotification: false })
-  //     : this.setState({ appNotification: true });
-  //   console.log(this.state.name);
-  //   console.log(this.state.email);
-  // }
+    const appNotification = await getData('appNotification');
+    appNotification === 'false'
+      ? this.setState({appNotification: false})
+      : this.setState({appNotification: true});
+    console.log(this.context.userInfo?.username);
+    console.log(this.context.userInfo?.email);
+  }
 
   override render() {
     return (
@@ -185,11 +124,9 @@ export class Profile extends React.PureComponent<
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={() => {}}
-            // onRefresh={() => this.getUserInfo()}
+            onRefresh={() => this.getUser()}
           />
-        }
-      >
+        }>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={[styles.title, contentColor(this.context.theme)]}>
@@ -198,19 +135,20 @@ export class Profile extends React.PureComponent<
             <View style={styles.row1}>
               <Image
                 style={styles.profileImg}
-                source={{ uri: this.context.userImage }}
+                source={{uri: this.context.userInfo?.avatar}}
               />
               <View style={styles.nameEmail}>
                 <>
-                  {(this.state.email === "" && this.state.name === "") ||
-                  (this.state.email === undefined &&
-                    this.state.name === undefined) ? (
+                  {(this.context.userInfo?.email === '' &&
+                    this.context.userInfo?.username === '') ||
+                  (this.context.userInfo?.email === undefined &&
+                    this.context.userInfo?.username === undefined) ? (
                     <>
                       <LottieView
                         style={styles.loadingIcon}
                         loop={true}
                         autoPlay={true}
-                        source={require("../../../assets/Images/loading2.json")}
+                        source={require('../../../assets/Images/loading2.json')}
                       />
                     </>
                   ) : (
@@ -219,23 +157,22 @@ export class Profile extends React.PureComponent<
                         <Icon2
                           name="person"
                           size={25}
-                          color={
-                            this.context.theme ? dark : white
-                          }
+                          color={this.context.theme ? dark : white}
                         />
                         <Text
                           style={[
                             styles.nameText,
                             contentColor(this.context.theme),
-                          ]}
-                        >
-                          {this.state.name}
+                          ]}>
+                          {this.context.userInfo?.username}
                         </Text>
                       </View>
                       <Text
-                        style={[styles.email, contentColor(this.context.theme)]}
-                      >
-                        {this.state.email}
+                        style={[
+                          styles.email,
+                          contentColor(this.context.theme),
+                        ]}>
+                        {this.context.userInfo?.email}
                       </Text>
                     </>
                   )}
@@ -260,9 +197,8 @@ export class Profile extends React.PureComponent<
                 </Text>
               </View>
               <TouchableOpacity
-                // onPress={() => this.EditProfile()}
-                style={styles.editProfile}
-              >
+                onPress={() => this.props.navigation.navigate('EditProfile')}
+                style={styles.editProfile}>
                 <Icon name="pencil" size={20} color={white} />
                 <Text style={styles.editProfileText}>Edit Profile</Text>
               </TouchableOpacity>
@@ -279,9 +215,8 @@ export class Profile extends React.PureComponent<
               Account Settings
             </Text>
             <TouchableOpacity
-              // onPress={() => this.handleUpgradeToPremium()}
-              style={[styles.option, { borderColor: white }]}
-            >
+              onPress={() => this.props.navigation.navigate('UpgradeToPremium')}
+              style={[styles.option, {borderColor: white}]}>
               <View style={styles.optionTitleIcon}>
                 <Icon2
                   name="logo-usd"
@@ -289,8 +224,10 @@ export class Profile extends React.PureComponent<
                   color={this.context.theme ? dark : white}
                 />
                 <Text
-                  style={[styles.optionTitle, contentColor(this.context.theme)]}
-                >
+                  style={[
+                    styles.optionTitle,
+                    contentColor(this.context.theme),
+                  ]}>
                   Upgrade to premium
                 </Text>
               </View>
@@ -319,9 +256,10 @@ export class Profile extends React.PureComponent<
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  // onPress={() => this.handleResetPassword()}
-                  style={styles.option}
-                >
+                  onPress={() =>
+                    this.props.navigation.navigate('ResetPassword')
+                  }
+                  style={styles.option}>
                   <View style={styles.optionTitleIcon}>
                     <Icon2
                       name="basket"
@@ -332,8 +270,7 @@ export class Profile extends React.PureComponent<
                       style={[
                         styles.optionTitle,
                         contentColor(this.context.theme),
-                      ]}
-                    >
+                      ]}>
                       Reset Password
                     </Text>
                   </View>
@@ -347,9 +284,8 @@ export class Profile extends React.PureComponent<
             </>
 
             <TouchableOpacity
-              // onPress={() => this.handleReportABug()}
-              style={styles.option}
-            >
+              onPress={() => this.props.navigation.navigate('ReportABug')}
+              style={styles.option}>
               <View style={styles.optionTitleIcon}>
                 <Icon2
                   name="bug"
@@ -357,8 +293,10 @@ export class Profile extends React.PureComponent<
                   color={this.context.theme ? dark : white}
                 />
                 <Text
-                  style={[styles.optionTitle, contentColor(this.context.theme)]}
-                >
+                  style={[
+                    styles.optionTitle,
+                    contentColor(this.context.theme),
+                  ]}>
                   Report a Bug
                 </Text>
               </View>
@@ -411,8 +349,7 @@ export class Profile extends React.PureComponent<
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => this.setAppNotification()}
-              style={styles.option}
-            >
+              style={styles.option}>
               <View style={styles.optionTitleIcon}>
                 <Icon2
                   name="alarm"
@@ -420,8 +357,10 @@ export class Profile extends React.PureComponent<
                   color={this.context.theme ? dark : white}
                 />
                 <Text
-                  style={[styles.optionTitle, contentColor(this.context.theme)]}
-                >
+                  style={[
+                    styles.optionTitle,
+                    contentColor(this.context.theme),
+                  ]}>
                   App notification
                 </Text>
               </View>
@@ -439,14 +378,19 @@ export class Profile extends React.PureComponent<
               Setup
             </Text>
             <TouchableOpacity
-              onPress={() => this.showLogoutMessage()}
-              style={styles.option}
-            >
+              onPress={() => {
+                this.setState({
+                  modalVisible: true,
+                });
+              }}
+              style={styles.option}>
               <View style={styles.optionTitleIcon}>
                 <Icon2 name="power" size={20} color={mainColor} />
                 <Text
-                  style={[styles.optionTitle, contentColor(this.context.theme)]}
-                >
+                  style={[
+                    styles.optionTitle,
+                    contentColor(this.context.theme),
+                  ]}>
                   Logout
                 </Text>
               </View>
@@ -457,7 +401,11 @@ export class Profile extends React.PureComponent<
             modalVisible={this.state.modalVisible}
             btnTitle="Logout"
             handleMainBtn={() => this.handleLogOut()}
-            handleCancelBtn={() => this.cancelModal()}
+            handleCancelBtn={() => {
+              this.setState({
+                modalVisible: false,
+              });
+            }}
           />
         </View>
       </ScrollView>
