@@ -24,8 +24,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {styles} from './style';
-import {backgroundColor, contentColor} from 'src/components';
-import {getData} from 'src/LocalStorage';
+import {backgroundColor} from 'src/components';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -50,7 +49,6 @@ const LoginCreateAccount = React.memo(() => (
 
 const Auth = React.memo(() => {
   const {isLogin} = useContext(Context);
-  // const {isLogin} = useContext(Context);
 
   return (
     <Stack.Navigator
@@ -162,49 +160,42 @@ const BottomTabs = React.memo(function BottomTabs() {
   );
 });
 
-export const AppRoute: React.FC<{isFirstInstallation: false | null}> =
-  React.memo(({isFirstInstallation}) => {
-    return (
-      <PaperProvider theme={MD3DarkTheme}>
-        <NavigationContainer theme={DarkTheme}>
-          <Stack.Navigator
-            initialRouteName={
-              isFirstInstallation === null ? 'onBoarding' : 'Home'
-            }>
-            <Stack.Screen
-              name="appRoute"
-              component={BottomTabs}
-              options={{
-                title: 'Home',
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen name="Search">
-              {props => <Search {...props} />}
-            </Stack.Screen>
-            <Stack.Screen
-              name="onBoarding"
-              options={{
-                headerShown: false,
-              }}>
-              {props => <OnBoarding {...props} />}
-            </Stack.Screen>
-            <Stack.Screen
-              name="EntriesOptions"
-              options={{
-                headerShown: false,
-              }}>
-              {props => <EntriesOptions {...props} />}
-            </Stack.Screen>
-            {/* <Stack.Screen
-            name="BottomTabs"
+export const AppRoute: React.FC = React.memo(() => {
+  const {isFirstInstallation} = useContext(Context);
+  return (
+    <PaperProvider theme={MD3DarkTheme}>
+      <NavigationContainer theme={DarkTheme}>
+        <Stack.Navigator
+          initialRouteName={
+            isFirstInstallation === null ? 'onBoarding' : 'Home'
+          }>
+          <Stack.Screen
+            name="appRoute"
             component={BottomTabs}
             options={{
+              title: 'Home',
               headerShown: false,
             }}
-          /> */}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    );
-  });
+          />
+          <Stack.Screen name="Search">
+            {props => <Search {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="onBoarding"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <OnBoarding {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="EntriesOptions"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <EntriesOptions {...props} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  );
+});
