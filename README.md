@@ -1,7 +1,7 @@
 # MyPlayer
 React-Native
 
-# Installation<br>
+# App Installation<br>
 <b> For Android run : </b><br>
 1- cd frontend
 2- yarn install<br>
@@ -13,6 +13,12 @@ React-Native
 4- pod install <br>
 5- cd ../ <br>
 6- yarn ios<br>
+
+# Running Backend<br>
+1- cd backend<br>
+2- yarn<br>
+3- yarn develop <br><br>
+<b>This will run the APIs on localhost:1337, so you can add your own data to the items</b><br>
 
 # Technologies<br>
 <b>Frontend</b><br>
