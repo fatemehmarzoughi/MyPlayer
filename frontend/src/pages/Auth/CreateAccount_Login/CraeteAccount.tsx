@@ -23,6 +23,7 @@ import {validateEmail, validatePassword} from 'src/pages';
 import CountryPicker from 'react-native-country-picker-modal';
 
 import {styles} from './style';
+import { storeData } from 'src/LocalStorage';
 
 export interface ICreateAccountProps {
   navigation: NavigationProp<any, any>;
@@ -212,10 +213,12 @@ export class CreateAccount extends React.PureComponent<
         plan: this.state.choosedPlan,
         // country: this.state.countryCode, TODO: solve country code problem on registration
       },
-      onSuccess: data => {
+      onSuccess: async data => {
         this.setState({
           createingAccount: false,
         });
+        await storeData('userId', data.user.id);
+        await storeData('accessToken', data.jwt);
         Toast.show({
           type: 'success',
           position: 'top',
@@ -531,21 +534,6 @@ export class CreateAccount extends React.PureComponent<
             />
             <Text style={contentColor(this.context.theme)}>
               Join with google for free
-            </Text>
-          </TouchableOpacity>
-
-          {/* /* ------------------------------ Join as guest ----------------------------- */}
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Home')}
-            style={styles.googleBtn}>
-            {/* <Icon
-              name="logo-google"
-              size={30}
-              color={Colors.mainColor}
-              style={styles.googleLogo}
-            /> */}
-            <Text style={contentColor(this.context.theme)}>
-              Join as a guest
             </Text>
           </TouchableOpacity>
         </View>

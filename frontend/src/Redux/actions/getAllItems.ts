@@ -1,4 +1,4 @@
-import {store} from 'App';
+import {store} from 'AppProvider';
 import {GET, GetItemsResponseBody} from 'src/API';
 import { GET_ALL_ITEMS, GET_ALL_ITEMS_FAILED } from 'src/assets';
 

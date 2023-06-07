@@ -14,20 +14,20 @@ import {
   ModalClass,
   SavingModal,
   contentColor,
-  backgroundColor
+  backgroundColor,
 } from 'src/components';
 import React from 'react';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {NavigationProp} from '@react-navigation/native';
 import Context from 'src/context/context';
-import {DELETE, POST} from 'src/API';
+import {DELETE, POST, updateUser} from 'src/API';
 import {storeData} from 'src/LocalStorage';
 import {dark, gray, toastMessageDuration, white} from 'src/assets';
 
 import {styles} from './style';
 
-export interface IEditProfileProps extends NavigationProp<any, any> {
+export interface IEditProfileProps {
   navigation: NavigationProp<any, any>;
 }
 export interface IEditProfileState {
@@ -44,6 +44,7 @@ export class EditProfile extends React.PureComponent<
   IEditProfileProps,
   IEditProfileState
 > {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: IEditProfileProps) {
@@ -58,22 +59,6 @@ export class EditProfile extends React.PureComponent<
     };
   }
 
-  changeProfilePhoto = () => {
-    this.props.navigation.navigate('ChangeProfilePhoto');
-  };
-
-  onCancel = () => {
-    console.log('cancel pressed');
-    this.props.navigation.navigate('Profile');
-  };
-
-  cancelModal = () => {
-    console.log('cancel modal');
-    this.setState({
-      modalVisible: false,
-    });
-  };
-
   handleDeleteAccount = async () => {
     try {
       const result = await DELETE('/editProfile/deleteAccount');
@@ -81,6 +66,7 @@ export class EditProfile extends React.PureComponent<
 
       if ((result as {status: number}).status === 200) {
         await storeData('accessToken', '');
+        await storeData('userId', null);
         this.context.setIsLogin(false);
         this.props.navigation.navigate('Auth');
         Toast.show({
@@ -110,102 +96,49 @@ export class EditProfile extends React.PureComponent<
     }
   };
 
-  showModal = () => {
+  onSave = async () => {
     this.setState({
-      modalVisible: true,
+      saving: true,
+    });
+
+    updateUser({
+      reqBody: {
+        email: this.state.email,
+        username: this.state.name,
+      },
+      onSuccess: data => {
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Saved changes',
+          autoHide: true,
+          visibilityTime: toastMessageDuration,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        this.setState({
+          saving: false,
+        });
+        this.props.navigation.navigate('Profile');
+      },
+      onError: err => {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: String(err),
+          text2: 'Please try again later',
+          autoHide: true,
+          visibilityTime: toastMessageDuration,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        this.setState({
+          saving: false,
+        });
+      },
     });
   };
-
-  handleName = (name: string) => {
-    this.setState({
-      name,
-    });
-  };
-
-  handleEmail = (email: string) => {
-    this.setState({
-      email,
-    });
-  };
-
-  // onSave = async () => {
-  //   this.setState({
-  //     saving: true,
-  //   });
-
-  //   const reqBodyUserInfo = {
-  //     name: this.state.name,
-  //     email: this.state.email,
-  //     country: this.state.choosedCountry,
-  //     imageURL: this.context.userImage,
-  //   };
-
-  //   try {
-  //     // saving the users info (name, email, country)
-  //     const result = await POST('/editProfile/setInfo', reqBodyUserInfo);
-  //     const message = await result.text();
-
-  //     if (result.status === 200) {
-  //       Toast.show({
-  //         type: 'success',
-  //         position: 'top',
-  //         text1: message,
-  //         text2: 'Saved changes',
-  //         autoHide: true,
-  //         visibilityTime: toastMessageDuration,
-  //         topOffset: 30,
-  //         bottomOffset: 40,
-  //       });
-  //       this.setState({
-  //         saving: false,
-  //       });
-  //       this.props.navigation.navigate('Profile');
-  //     } else {
-  //       Toast.show({
-  //         type: 'error',
-  //         position: 'bottom',
-  //         text1: message,
-  //         text2: 'Please try again',
-  //         autoHide: true,
-  //         visibilityTime: toastMessageDuration,
-  //         topOffset: 30,
-  //         bottomOffset: 40,
-  //       });
-  //       this.setState({
-  //         saving: false,
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     Toast.show({
-  //       type: 'error',
-  //       position: 'bottom',
-  //       text1: 'Something went wrong',
-  //       text2: 'Please check your internet connection',
-  //       autoHide: true,
-  //       visibilityTime: toastMessageDuration,
-  //       topOffset: 30,
-  //       bottomOffset: 40,
-  //     });
-  //     this.setState({
-  //       saving: false,
-  //     });
-  //   }
-  // };
-
-  override shouldComponentUpdate(
-    nextProps: IEditProfileProps,
-    nextState: IEditProfileState,
-  ) {
-    if (this.props !== nextProps) {
-      return true;
-    }
-    if (this.state !== nextState) {
-      return true;
-    }
-    return false;
-  }
-
+  
   override render() {
     return (
       <ScrollView>
@@ -213,12 +146,12 @@ export class EditProfile extends React.PureComponent<
           <View style={styles.header}>
             <View style={styles.row1}>
               <TouchableOpacity
-                // onPress={() => this.onSave()}
+                onPress={this.onSave}
                 style={styles.btn}>
                 <Text style={styles.saveText}>Save</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.onCancel()}
+                onPress={() => this.props.navigation.navigate('Profile')}
                 style={styles.btn}>
                 <Text
                   style={[styles.cancelText, contentColor(this.context.theme)]}>
@@ -231,24 +164,35 @@ export class EditProfile extends React.PureComponent<
             </View>
           </View>
 
-          <Image style={styles.image} source={{uri: this.context.userImage}} />
+          <Image
+            style={styles.image}
+            source={{uri: this.context.userInfo?.avatar}}
+          />
           <Text
-            onPress={() => this.changeProfilePhoto()}
+            onPress={() => this.props.navigation.navigate('ChangeProfilePhoto')}
             style={[styles.changePhoto, contentColor(this.context.theme)]}>
             Change Profile Photo
           </Text>
           <View style={styles.inputs}>
             <TextInput
-              placeholder={this.context.userName}
+              placeholder={this.context.userInfo?.username}
               placeholderTextColor={this.context.theme ? dark : white}
               style={[styles.input, backgroundColor(this.context.theme)]}
-              onChangeText={input => this.handleName(input)}
+              onChangeText={name =>
+                this.setState({
+                  name,
+                })
+              }
             />
             <TextInput
-              placeholder={this.context.userEmail}
+              placeholder={this.context.userInfo?.email}
               placeholderTextColor={this.context.theme ? dark : white}
               style={[styles.input, backgroundColor(this.context.theme)]}
-              onChangeText={input => this.handleEmail(input)}
+              onChangeText={email =>
+                this.setState({
+                  email,
+                })
+              }
             />
             <TouchableOpacity
               style={[styles.input, backgroundColor(this.context.theme)]}
@@ -284,11 +228,12 @@ export class EditProfile extends React.PureComponent<
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={() => this.showModal()}
-            style={[
-              styles.deleteBtn,
-              backgroundColor(this.context.theme),
-            ]}>
+            onPress={() =>
+              this.setState({
+                modalVisible: true,
+              })
+            }
+            style={[styles.deleteBtn, backgroundColor(this.context.theme)]}>
             <Text style={[styles.deleteBtnText]}>Delete Account</Text>
           </TouchableOpacity>
           {/* <ModalClass
@@ -296,7 +241,9 @@ export class EditProfile extends React.PureComponent<
             modalVisible={this.state.modalVisible}
             btnTitle="Delete Account"
             handleMainBtn={() => this.handleDeleteAccount()}
-            handleCancelBtn={() => this.cancelModal()}
+            handleCancelBtn={() =>     this.setState({
+      modalVisible: false,
+    })}
           />
           <SavingModal modalVisible={this.state.saving} /> */}
         </View>

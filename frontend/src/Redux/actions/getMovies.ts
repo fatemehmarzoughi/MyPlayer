@@ -1,4 +1,4 @@
-import {store} from 'App';
+import {store} from 'AppProvider';
 
 import {GET_ALL_MOVIES, GET_ALL_MOVIES_FAILED} from 'src/assets';
 import {GET, GetItemsResponseBody, ItemCategory, useFilter} from 'src/API';

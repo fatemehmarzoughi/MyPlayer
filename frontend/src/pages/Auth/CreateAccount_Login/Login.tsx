@@ -86,6 +86,7 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
       },
       onSuccess: async data => {
         this.context.setIsLogin(true);
+        await storeData('userId', data.user.id);
         await storeData('accessToken', data.jwt);
         Toast.show({
           type: 'success',
@@ -285,21 +286,6 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
             />
             <Text style={contentColor(this.context.theme)}>
               Login with Google
-            </Text>
-          </TouchableOpacity>
-
-          {/* /* ------------------------------ Join as guest ----------------------------- */}
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Home')}
-            style={styles.googleBtn}>
-            {/* <Icon
-              name=""
-              size={30}
-              color={mainColor}
-              style={styles.googleLogo}
-            /> */}
-            <Text style={contentColor(this.context.theme)}>
-              Join as a guest
             </Text>
           </TouchableOpacity>
         </View>

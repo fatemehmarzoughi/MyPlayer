@@ -21,16 +21,6 @@ export class EntriesOptions extends React.PureComponent<
 
   override componentDidMount() {}
 
-  createAcount = async () => {
-    try {
-      console.log("checking..");
-      await checkLoginStatus(this.context.setIsLogin);
-      this.props.navigation.navigate("Auth");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   override render() {
     return (
       <View style={styles.container}>
@@ -43,15 +33,15 @@ export class EntriesOptions extends React.PureComponent<
         <View style={styles.btnContainer}>
           <TouchableOpacity
             style={styles.mainBtn}
-            onPress={() => this.createAcount()}
+            onPress={() => this.props.navigation.navigate("appRoute")}
           >
             <Text style={styles.BtnText}>Create Account</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.minorBtn}
-            onPress={() => this.props.navigation.navigate("Home")}
+            onPress={() => this.props.navigation.navigate("appRoute")}
           >
-            <Text style={styles.BtnText}>Join as a guest</Text>
+            <Text style={styles.BtnText}>Join the App</Text>
           </TouchableOpacity>
         </View>
       </View>

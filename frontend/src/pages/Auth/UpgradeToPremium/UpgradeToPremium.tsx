@@ -10,7 +10,7 @@ import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 
 import {styles} from './style';
 
-export interface IUpgradeToPremiumProps extends NavigationProp<any, any> {
+export interface IUpgradeToPremiumProps {
   navigation: NavigationProp<any, any>;
 }
 
