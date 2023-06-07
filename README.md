@@ -1,23 +1,30 @@
 # MyPlayer
 React-Native
 
-# Installation<br>
+# App Installation<br>
 <b> For Android run : </b><br>
-1- yarn install<br>
-2- yarn android<br><br>
+1- cd frontend
+2- yarn install<br>
+3- yarn android<br><br>
 <b> For IOS </b><br>
-1- yarn install<br>
-2- cd ios <br>
-3- pod install <br>
-4- cd ../ <br>
-5- yarn ios<br>
+1- cd frontend
+2- yarn install<br>
+3- cd ios <br>
+4- pod install <br>
+5- cd ../ <br>
+6- yarn ios<br>
+
+# Running Backend<br>
+1- cd backend<br>
+2- yarn<br>
+3- yarn develop => which will run the app on `localhost:1337`<br>
 
 # Technologies<br>
 <b>Frontend</b><br>
 Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google signin, Gesture Recognizer, Notification, ... .<br>
 
 <b>Backend</b><br>
-NodeJS(express), mongoose, heroku<br>
+Strapi(CMS), render<br>
 
 # Application 
 <!-- https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-8251-ecb529e9f593.mp4 -->
