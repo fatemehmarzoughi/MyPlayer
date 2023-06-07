@@ -10,7 +10,7 @@ export type IContextProviderProps = {
 export type IContextProviderState = {
   isRotate: boolean;
   isLogin: boolean;
-  isFirstInstallation: boolean;
+  isFirstInstallation: false | null;
   theme: Theme;
   userInfo: User | undefined;
 };
@@ -25,7 +25,7 @@ export default class ContextProvider extends React.PureComponent<
       isLogin: false,
       theme: 'light',
       isRotate: false,
-      isFirstInstallation: false,
+      isFirstInstallation: null,
       userInfo: undefined,
     };
   }
@@ -53,15 +53,6 @@ export default class ContextProvider extends React.PureComponent<
     });
   };
 
-  setIsLogin = value => {
-    console.log('inside context');
-    console.log(value);
-    
-    this.setState({
-      isLogin: value,
-    });
-  }
-
   override render() {
     return (
       <Context.Provider
@@ -75,7 +66,10 @@ export default class ContextProvider extends React.PureComponent<
 
           /* ---------------------------------- Auth ---------------------------------- */
           isLogin: this.state.isLogin,
-          setIsLogin: this.setIsLogin,
+          setIsLogin: value =>
+            this.setState({
+              isLogin: value,
+            }),
 
           userInfo: this.state.userInfo,
           setUserInfo: value =>

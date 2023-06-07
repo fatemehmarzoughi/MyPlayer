@@ -11,7 +11,6 @@ import SplashScreen from 'react-native-splash-screen';
 export interface IAppProps {}
 export interface IAppStates {
   checkingFirstTimeUsers: boolean;
-  isFirstInstallation: false | null;
 }
 
 export class App extends React.PureComponent<IAppProps, IAppStates> {
@@ -24,7 +23,6 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
     super(props);
     this.state = {
       checkingFirstTimeUsers: true,
-      isFirstInstallation: null,
     };
 
     this._isMount = false;
@@ -39,17 +37,24 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
       });
 
       const isFirstInstallation = await getData('isFirstInstallation');
-      console.log(`isFirstInstallation = ${isFirstInstallation}`);
-      console.log(`isFirstInstallation === null = ${isFirstInstallation === null}`);
-      
-      if (isFirstInstallation === null) {
-        await storeData('isFirstInstallation', false);
-        this.setState({
-          isFirstInstallation: false,
+      // if(isFirstInstallation === null)
+      if(isFirstInstallation !== null) // for test
+      {
+        await storeData('isFirstInstallation' , 'false')
+        this._isMount && this.context.setIsFirstInstallation(null);
+        this._isMount && this.setState({
+          checkingFirstTimeUsers : false
         })
-        console.log(`isFirstInstallation = ${isFirstInstallation}`);
+        console.log(`isFirstInstallation in App.js = ${this.context.isFirstInstallation}`)
       }
-      this.setState({checkingFirstTimeUsers: false});
+      else
+      {
+        this._isMount && this.context.setIsFirstInstallation(false);
+
+        this._isMount && this.setState({
+          checkingFirstTimeUsers : false
+        })
+      }
     } catch {
       (err: any) => console.log(err);
     }
@@ -59,10 +64,10 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
     this._isMount = false;
   }
 
-  override render(){
-    const { checkingFirstTimeUsers, isFirstInstallation } = this.state;
+  override render() {
+    const {checkingFirstTimeUsers} = this.state;
     if (!checkingFirstTimeUsers) SplashScreen.hide();
-    
+
     return (
       <>
         <StatusBar style="auto" hidden />
@@ -74,7 +79,7 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
               source={require('./assets/Images/loading2.json')}
             />
           ) : (
-            <AppRoute isFirstInstallation={isFirstInstallation} />
+            <AppRoute />
           )}
         </>
         <Toast />

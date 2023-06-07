@@ -10,6 +10,9 @@ export type ContextType = {
   isLogin: boolean;
   setIsLogin: (value: boolean) => void;
 
+  isFirstInstallation: false | null;
+  setIsFirstInstallation: (value: false | null) => void;
+
   theme: Theme;
   setTheme: (value: Theme) => void;
 
@@ -19,14 +22,17 @@ export type ContextType = {
 
 export default React.createContext<ContextType>({
   isRotate: false,
-  setIsRotate: (value: boolean) => {},
+  setIsRotate: (value) => {},
 
   isLogin: false,
-  setIsLogin: (value: boolean) => {},
+  setIsLogin: (value) => {},
+
+  isFirstInstallation: false,
+  setIsFirstInstallation: (value) => {},
 
   theme: 'dark',
-  setTheme: (value: 'dark' | 'light') => {},
+  setTheme: (value) => {},
 
   userInfo: undefined,
-  setUserInfo: (value: User) => {},
+  setUserInfo: (value) => {},
 });
