@@ -34,23 +34,15 @@ export default class ContextProvider extends React.PureComponent<
     try {
       const theme = await getData('theme');
 
-      theme === 'light'
-        ? this.setState({
-            theme: 'light',
-          })
-        : this.setState({
-            theme: 'dark',
-          });
+      theme === 'light' ? this.setTheme('light') : this.setTheme('dark');
     } catch (err) {
       console.log(err);
     }
   }
 
-  setTheme = async () => {
-    await storeData('theme', this.state.theme);
-    this.setState({
-      theme: this.state.theme === 'dark' ? 'light' : 'dark',
-    });
+  setTheme = async (theme: 'light' | 'dark') => {
+    await storeData('theme', theme);
+    this.setState({theme});
   };
 
   override render() {

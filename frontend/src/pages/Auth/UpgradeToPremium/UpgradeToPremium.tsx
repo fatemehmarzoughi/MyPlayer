@@ -1,6 +1,6 @@
 import React from 'react';
 import {POST} from 'src/API';
-import {Icon} from 'native-base';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Context from 'src/context/context';
 import Toast from 'react-native-toast-message';
 import {Header, contentColor} from 'src/components';
@@ -21,6 +21,7 @@ export class UpgradeToPremium extends React.PureComponent<
   IUpgradeToPremiumProps,
   IUpgradeToPremiumStates
 > {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: IUpgradeToPremiumProps) {
@@ -36,71 +37,71 @@ export class UpgradeToPremium extends React.PureComponent<
     });
   };
 
-  handleSelectPlan = async () => {
-    // const url = 'http://www.google.com';
+  // handleSelectPlan = async () => {
+  //   // const url = 'http://www.google.com';
 
-    // const canOpen = await Linking.canOpenURL(url);
-    // console.log(canOpen)
-    // if(!canOpen) {
-    //     Toast.show({
-    //         type: 'error',
-    //         position: 'bottom',
-    //         text1: "Something went wrong",
-    //         text2: 'Please Report this as a bug',
-    //         visibilityTime: toastMessageDuration,
-    //         autoHide: true,
-    //         topOffset: 30,
-    //         bottomOffset: 40,
-    //     })
-    //     return;
-    // }
+  //   // const canOpen = await Linking.canOpenURL(url);
+  //   // console.log(canOpen)
+  //   // if(!canOpen) {
+  //   //     Toast.show({
+  //   //         type: 'error',
+  //   //         position: 'bottom',
+  //   //         text1: "Something went wrong",
+  //   //         text2: 'Please Report this as a bug',
+  //   //         visibilityTime: toastMessageDuration,
+  //   //         autoHide: true,
+  //   //         topOffset: 30,
+  //   //         bottomOffset: 40,
+  //   //     })
+  //   //     return;
+  //   // }
 
-    // await Linking.openURL(url);
+  //   // await Linking.openURL(url);
 
-    const reqBody = {
-      planId: this.state.selectedPlan,
-    };
+  //   const reqBody = {
+  //     planId: this.state.selectedPlan,
+  //   };
 
-    try {
-      const result = await POST('/editProfile/changePlan', reqBody);
-      const messageText = await result.text();
-      if (result.status === 200) {
-        Toast.show({
-          type: 'success',
-          position: 'top',
-          text1: messageText,
-          text2: 'Your Account upgraded successfully',
-          visibilityTime: toastMessageDuration,
-          bottomOffset: 40,
-          topOffset: 30,
-          autoHide: true,
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          position: 'bottom',
-          text1: messageText,
-          text2: 'Please try again.',
-          visibilityTime: toastMessageDuration,
-          bottomOffset: 40,
-          topOffset: 30,
-          autoHide: true,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-      Toast.show({
-        type: 'error',
-        position: 'bottom',
-        text1: 'Something went wrong',
-        text2: 'Please try again',
-        visibilityTime: toastMessageDuration,
-        bottomOffset: 40,
-        topOffset: 30,
-        autoHide: true,
-      });
-    }
-  };
+  //   try {
+  //     const result = await POST('/editProfile/changePlan', reqBody);
+  //     const messageText = await result.text();
+  //     if (result.status === 200) {
+  //       Toast.show({
+  //         type: 'success',
+  //         position: 'top',
+  //         text1: messageText,
+  //         text2: 'Your Account upgraded successfully',
+  //         visibilityTime: toastMessageDuration,
+  //         bottomOffset: 40,
+  //         topOffset: 30,
+  //         autoHide: true,
+  //       });
+  //     } else {
+  //       Toast.show({
+  //         type: 'error',
+  //         position: 'bottom',
+  //         text1: messageText,
+  //         text2: 'Please try again.',
+  //         visibilityTime: toastMessageDuration,
+  //         bottomOffset: 40,
+  //         topOffset: 30,
+  //         autoHide: true,
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     Toast.show({
+  //       type: 'error',
+  //       position: 'bottom',
+  //       text1: 'Something went wrong',
+  //       text2: 'Please try again',
+  //       visibilityTime: toastMessageDuration,
+  //       bottomOffset: 40,
+  //       topOffset: 30,
+  //       autoHide: true,
+  //     });
+  //   }
+  // };
 
   override render() {
     return (
@@ -206,7 +207,7 @@ export class UpgradeToPremium extends React.PureComponent<
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={() => this.handleSelectPlan()}
+            // onPress={() => this.handleSelectPlan()}
             style={styles.btn}>
             <Text style={styles.btnText}>Select Plan</Text>
           </TouchableOpacity>

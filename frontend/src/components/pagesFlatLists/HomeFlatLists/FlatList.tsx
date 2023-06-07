@@ -18,7 +18,8 @@ export class HomeFlatLists extends React.PureComponent<
   IHomeFlatListsProps,
   IHomeFlatListsStates
 > {
-  declare context: React.ContextType<typeof Context>
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   override render() {
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import context from 'src/context/context';
+import Context from 'src/context/context';
 import {titleFontSize, width} from 'src/assets';
 import * as Colors from 'src/assets/constants/Colors';
 import {contentColor} from 'src/components/lightDarkTheme';
@@ -13,7 +13,8 @@ export interface IHeader2Props {
 
 export interface IHeader2State {}
 export class Header2 extends React.PureComponent<IHeader2Props, IHeader2State> {
-  declare context: React.ContextType<typeof context>;
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   override render() {
     return (

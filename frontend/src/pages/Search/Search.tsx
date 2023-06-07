@@ -8,7 +8,8 @@ import { backgroundColor, surfaceColor } from "src/components";
 import { styles } from "./style";
 
 export class Search extends React.PureComponent {
-  declare context: React.ContextType<typeof Context>
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   override render() {
     return (

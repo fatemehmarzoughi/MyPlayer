@@ -4,7 +4,10 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {NavigationProp} from '@react-navigation/native';
 import {Text, View, ScrollView, Image} from 'react-native';
-import {DrawerContentScrollView} from '@react-navigation/drawer';
+import {
+  DrawerContentComponentProps,
+  DrawerContentScrollView,
+} from '@react-navigation/drawer';
 import Context, {Theme} from 'src/context/context';
 import {backgroundColor, contentColor} from 'src/components';
 
@@ -12,18 +15,12 @@ import {dark, gray} from 'src/assets';
 
 import {styles} from './styles';
 
-export interface IMenuContentProps extends NavigationProp<any, any> {
+export interface IMenuContentProps {
   navigation: {closeDrawer: () => void} & NavigationProp<any, any>;
 }
 
-export const MenuContent = React.memo((props: IMenuContentProps) => {
+export const MenuContent: React.FC<any> = React.memo(props => {
   const context = useContext(Context);
-  const [toggleIsOn, setToggleIsOn] = useState<boolean>(false);
-
-  const themeSwitcher = async () => {
-    context.setTheme(context.theme === 'dark' ? 'light' : 'dark');
-    setToggleIsOn(context.theme === 'light' ? false : true);
-  };
 
   return (
     <DrawerContentScrollView {...props} style={backgroundColor(context.theme)}>
@@ -53,12 +50,12 @@ export const MenuContent = React.memo((props: IMenuContentProps) => {
               size={25}
             />
             <ToggleSwitch
-              isOn={toggleIsOn}
+              isOn={context.theme === 'dark'}
               //   isOn={true}
               onColor={gray}
               offColor={dark}
               size="small"
-              onToggle={() => themeSwitcher()}
+              onToggle={isOn => context.setTheme(isOn ? 'dark' : 'light')}
             />
             <Icon
               style={[styles.switcherText, contentColor(context.theme)]}
@@ -74,7 +71,7 @@ export const MenuContent = React.memo((props: IMenuContentProps) => {
         <View style={styles.section}>
           <Text
             style={[styles.menuItem, contentColor(context.theme)]}
-            onPress={() => props.navigation.navigate('MyPlayer')}>
+            onPress={() => props.navigation.navigate('BottomTabs')}>
             Home
           </Text>
           <Text style={[styles.menuItem, contentColor(context.theme)]}>
@@ -112,4 +109,4 @@ export const MenuContent = React.memo((props: IMenuContentProps) => {
       </ScrollView>
     </DrawerContentScrollView>
   );
-})
+});

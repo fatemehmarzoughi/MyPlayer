@@ -1,9 +1,8 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-
-import context from "src/context/context";
-import { contentColor } from "src/components";
+import Context from "src/context/context";
+import { backgroundColor, contentColor } from "src/components";
 import { statusBarIOS, width } from "src/assets/constants";
 
 export interface IMainHeaderProps {
@@ -19,7 +18,8 @@ export class MainHeader extends React.PureComponent<
   IMainHeaderProps,
   IMainHeaderStates
 > {
-  declare context: React.ContextType<typeof context>
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   override render() {
     return (
