@@ -17,8 +17,7 @@ import { GET } from 'src/API';
 
 import {styles} from './style';
 
-export interface IChangeProfilePhotoProps
-  extends NavigationProp<any, any> {
+export interface IChangeProfilePhotoProps {
   navigation: NavigationProp<any, any>;
 }
 

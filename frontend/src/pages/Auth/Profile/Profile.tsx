@@ -33,11 +33,11 @@ export interface IProfileState {
   modalVisible: boolean;
   isGoogleAccount: boolean;
   appNotification: boolean;
-  setIsLogin: () => void;
 }
 export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
   static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
+
   focusListener: any;
 
   constructor(props: IProfileProps) {
@@ -47,7 +47,6 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
       refreshing: false,
       modalVisible: false,
       isGoogleAccount: false,
-      setIsLogin: () => {},
     };
   }
 
@@ -57,12 +56,13 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
       if (accessToken === 'GoogleToken') {
         await GoogleSignin.signOut();
       }
-      await storeData('accessToken', '');
+      await storeData('accessToken', null);
+      await storeData('userId', null);
       this.setState({
         modalVisible: false,
       });
-      await checkLoginStatus(this.state.setIsLogin);
-      this.props.navigation.navigate('Home');
+      // DO NOT CHANGE THE POSITION OF THIS CODE (THE APP WILL CRASH)
+      this.context.setIsLogin(false);
     } catch (err) {
       console.log(err);
     }

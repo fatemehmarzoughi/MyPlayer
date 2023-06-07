@@ -11,17 +11,15 @@ export const useFilter = ({
 }) => {
   if (category && label) {
     return {
-      filter: `?populate=${
-        populate ?? `*`
-      }?filters[category][$eq]=${category}&filters[label][$eq]=${label}`,
+      filter: `?filters[category][$eq]=${category}&filters[label][$eq]=${label}`,
     };
   } else if (category) {
     return {
-      filter: `?populate=${populate ?? `*`}?filters[category][$eq]=${category}`,
+      filter: `?filters[category][$eq]=${category}`,
     };
   } else {
     return {
-      filter: `?populate=${populate ?? `*`}?filters[label][$eq]=${label}`,
+      filter: `?filters[label][$eq]=${label}`,
     };
   }
 };

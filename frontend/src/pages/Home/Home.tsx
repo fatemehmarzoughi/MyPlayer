@@ -11,7 +11,7 @@ import {Heading, Text, VStack, FlatList} from 'native-base';
 import Context from 'src/context/context';
 import Notification from 'src/Notification/NotificationSetup';
 
-import {HomeFlatLists, MainHeader, contentColor} from 'src/components';
+import {HomeFlatLists, MainHeader, ModalClass, contentColor} from 'src/components';
 import {
   getAllItems,
   getAllMovies,
@@ -64,22 +64,6 @@ export interface IHomeStates {
   refreshingCategories: boolean;
   subCategoryVisibility: boolean;
 }
-
-// function useHook(Component: React.ComponentClass<IHomeProps, IHomeStates>) {
-//   return (props: IHomeProps) => {
-//     const offset = useSharedValue(5);
-
-//     const animatedStyles = useAnimatedStyle(() => {
-//       return {
-//         transform: [{translateX: offset.value}],
-//       };
-//     });
-
-//     return (
-//       <Component {...props} animatedStyles={animatedStyles} offset={offset} />
-//     );
-//   };
-// }
 
 class Home extends React.PureComponent<IHomeProps, IHomeStates> {
   declare context: React.ContextType<typeof Context>;
@@ -359,13 +343,6 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
             />
           ) : (
             <View>
-              {/* <FlatLists
-                 title="My Playlist"
-                 data = {this.state.falstListData}
-                 type = "small"
-                 onPress={(id) => console.log(id)}
-                /> */}
-
               <HomeFlatLists
                 title="Recommended"
                 data={
@@ -374,7 +351,6 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
-                //  onPress={(id) => console.log(id)}
               />
 
               <HomeFlatLists
@@ -385,7 +361,6 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
-                //  onPress={(id) => console.log(id)}
               />
 
               <HomeFlatLists
@@ -396,7 +371,6 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="large"
-                //  onPress={(id) => console.log(id)}
               />
 
               <HomeFlatLists
@@ -407,22 +381,21 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
-                //  onPress={(id) => console.log(id)}
               />
             </View>
           )}
         </>
 
         {/* <ModalClass
-          // closeModal={(props) => {
-          //   this.setState({
-          //     subCategoryVisibility: false,
-          //   });
-          // }}
+          closeModal={(props) => {
+            this.setState({
+              subCategoryVisibility: false,
+            });
+          }}
           selectedSbCategory={this.selectedSbCategory}
           subCategoryVisibility={this.state.subCategoryVisibility}
           data={
-            this.state.data.find(i => i.id === this.state.selectedCategory)
+            this.state.data.find(i => String(i.id) === this.state.selectedSubCategory)
               ?.subCategory
           }
         /> */}

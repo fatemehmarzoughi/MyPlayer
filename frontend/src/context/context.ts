@@ -10,9 +10,6 @@ export type ContextType = {
   isLogin: boolean;
   setIsLogin: (value: boolean) => void;
 
-  isFirstInstallation: boolean;
-  setIsFirstInstallation: (value: boolean) => void;
-
   theme: Theme;
   setTheme: (value: Theme) => void;
 
@@ -26,9 +23,6 @@ export default React.createContext<ContextType>({
 
   isLogin: false,
   setIsLogin: (value: boolean) => {},
-
-  isFirstInstallation: false,
-  setIsFirstInstallation: (value: boolean) => {},
 
   theme: 'dark',
   setTheme: (value: 'dark' | 'light') => {},

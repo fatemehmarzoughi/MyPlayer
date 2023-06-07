@@ -58,7 +58,6 @@ export const GET = async ({endpoint}: {endpoint: string}) => {
   const accessToken = await getData('accessToken');
 
   try {
-    console.log('accessToken = ' + accessToken);
     if (accessToken) {
       const res = await axios({
         method: 'get',
@@ -77,3 +76,32 @@ export const GET = async ({endpoint}: {endpoint: string}) => {
     throw new Error(String(err));
   }
 };
+
+export async function PUT<T extends Object>({
+  endpoint,
+  reqBody,
+}: {
+  endpoint: string;
+  reqBody: T;
+}) {
+  const accessToken = await getData('accessToken');
+
+  try {
+    if (accessToken) {
+      const res = await axios({
+        method: 'put',
+        url: endpoint,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: reqBody
+      });
+      return res;
+    } else {
+      throw Error('no access token');
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error(String(error));
+  }
+}

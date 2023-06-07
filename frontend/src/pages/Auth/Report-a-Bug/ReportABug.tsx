@@ -16,7 +16,7 @@ import {toastMessageDuration} from 'src/assets';
 import {POST} from 'src/API';
 import {Header} from 'src/components';
 
-export interface IReportABugProps extends NavigationProp<any, any> {
+export interface IReportABugProps {
   navigation: NavigationProp<any, any>;
 }
 

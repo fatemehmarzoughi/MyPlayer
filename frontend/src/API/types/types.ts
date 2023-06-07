@@ -397,3 +397,10 @@ export type BannerDates = {
 };
 
 export type BannerResponseBody = Data<BannerDates, Attributes<BannerDates>>;
+
+/* -------------------------------------------------------------------------- */
+/*                                 UpdateUser                                 */
+/* -------------------------------------------------------------------------- */
+
+export type UserUpdatedResponseBody = User;
+export type UserUpdatedRequestBody = Partial<User>;

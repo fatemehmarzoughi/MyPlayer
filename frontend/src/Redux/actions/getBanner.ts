@@ -1,4 +1,4 @@
-import {store} from 'App';
+import {store} from 'AppProvider';
 
 import {BannerResponseBody, GET} from 'src/API';
 import {GET_BANNER, GET_BANNER_FAILED} from 'src/assets';

@@ -6,24 +6,30 @@ import {
   CreateAccount,
   EntriesOptions,
   ForgetPassword,
+  Live,
+  ReportABug,
+  UpgradeToPremium,
+  ResetPassword,
+  EditProfile,
+  ChangeProfilePhoto,
 } from 'src/pages';
 import React, {useContext} from 'react';
 import Home from './Home/Home';
+import Context from 'src/context/context';
 import {gray, mainColor} from 'src/assets';
 import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import Context from 'src/context/context';
-
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {styles} from './style';
-
-export type IAppRouteProps = {
-  isFirstInstallation: boolean;
-};
+import {backgroundColor, contentColor} from 'src/components';
+import {getData} from 'src/LocalStorage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
+const BottomTab = createMaterialBottomTabNavigator();
 
 const LoginCreateAccount = React.memo(() => (
   <Tab.Navigator
@@ -44,6 +50,7 @@ const LoginCreateAccount = React.memo(() => (
 
 const Auth = React.memo(() => {
   const {isLogin} = useContext(Context);
+  // const {isLogin} = useContext(Context);
 
   return (
     <Stack.Navigator
@@ -56,6 +63,41 @@ const Auth = React.memo(() => {
               headerShown: false,
             }}>
             {props => <Profile {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="ReportABug"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <ReportABug {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="UpgradeToPremium"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <UpgradeToPremium {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="ResetPassword"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <ResetPassword {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="EditProfile"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <EditProfile {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="ChangeProfilePhoto"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <ChangeProfilePhoto {...props} />}
           </Stack.Screen>
         </>
       ) : (
@@ -81,20 +123,62 @@ const Auth = React.memo(() => {
   );
 });
 
-export const AppRoute: React.FC<IAppRouteProps> = React.memo(
-  ({isFirstInstallation}) => {
+const BottomTabs = React.memo(function BottomTabs() {
+  const contexts = useContext(Context);
+  return (
+    <BottomTab.Navigator
+      initialRouteName="Home"
+      shifting={true}
+      activeColor={mainColor}
+      inactiveColor={contexts.theme === 'light' ? 'black' : 'white'}
+      barStyle={backgroundColor(contexts.theme)}>
+      <BottomTab.Screen
+        name="Home"
+        options={{
+          tabBarIcon: ({color}) => (
+            <Icon name="home-sharp" size={22} color={color} />
+          ),
+          tabBarLabel: 'Home',
+        }}>
+        {props => <Home {...props} />}
+      </BottomTab.Screen>
+      <BottomTab.Screen
+        name="Live"
+        options={{
+          tabBarIcon: ({color}) => <Icon name="wifi" size={22} color={color} />,
+        }}>
+        {props => <Live {...props} />}
+      </BottomTab.Screen>
+      <BottomTab.Screen
+        name="Auth"
+        component={Auth}
+        options={{
+          tabBarIcon: ({color}) => (
+            <Icon name="person" size={22} color={color} />
+          ),
+        }}
+      />
+    </BottomTab.Navigator>
+  );
+});
+
+export const AppRoute: React.FC<{isFirstInstallation: false | null}> =
+  React.memo(({isFirstInstallation}) => {
     return (
       <PaperProvider theme={MD3DarkTheme}>
         <NavigationContainer theme={DarkTheme}>
           <Stack.Navigator
-            initialRouteName={isFirstInstallation ? 'onBoarding' : 'Home'}>
+            initialRouteName={
+              isFirstInstallation === null ? 'onBoarding' : 'Home'
+            }>
             <Stack.Screen
-              name="Home"
+              name="appRoute"
+              component={BottomTabs}
               options={{
+                title: 'Home',
                 headerShown: false,
-              }}>
-              {props => <Home {...props} />}
-            </Stack.Screen>
+              }}
+            />
             <Stack.Screen name="Search">
               {props => <Search {...props} />}
             </Stack.Screen>
@@ -112,16 +196,15 @@ export const AppRoute: React.FC<IAppRouteProps> = React.memo(
               }}>
               {props => <EntriesOptions {...props} />}
             </Stack.Screen>
-            <Stack.Screen
-              name="Auth"
-              component={Auth}
-              options={{
-                headerShown: false,
-              }}
-            />
+            {/* <Stack.Screen
+            name="BottomTabs"
+            component={BottomTabs}
+            options={{
+              headerShown: false,
+            }}
+          /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
     );
-  },
-);
+  });

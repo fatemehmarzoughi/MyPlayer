@@ -13,7 +13,7 @@ import {Header2, SavingModal, backgroundColor} from 'src/components';
 
 import {styles} from './style';
 
-export interface IResetPasswordProps extends NavigationProp<any, any> {
+export interface IResetPasswordProps {
   navigation: NavigationProp<any, any>;
 }
 export interface IResetPasswordState {
