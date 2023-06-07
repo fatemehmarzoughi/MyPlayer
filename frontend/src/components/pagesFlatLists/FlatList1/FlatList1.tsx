@@ -4,8 +4,8 @@ import LottieView from "lottie-react-native";
 import FastImage from "react-native-fast-image";
 import Animated, { BounceIn } from "react-native-reanimated";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
-import { backgroundColor } from "src/components/lightDarkTheme";
-import context from 'src/context/context';
+import { backgroundColor, surfaceColor } from "src/components/lightDarkTheme";
+import Context from 'src/context/context';
 import { styles } from "./style";
 
 export type IFlatList1Props = {
@@ -26,7 +26,8 @@ export class FlatList1 extends React.PureComponent<
   IFlatList1Props,
   IFlatList1State
 > {
-  declare context: React.ContextType<typeof context>;
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: IFlatList1Props) {
     super(props);
@@ -60,7 +61,7 @@ export class FlatList1 extends React.PureComponent<
                 <TouchableOpacity
                   style={[
                     styles.Image,
-                    backgroundColor(this.context.theme),
+                    surfaceColor(this.context.theme),
                   ]}
                 >
                   <LottieView

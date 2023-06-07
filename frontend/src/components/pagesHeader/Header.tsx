@@ -1,10 +1,9 @@
 import React from "react";
 import Icon from "react-native-vector-icons/EvilIcons";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-
+import Context from "src/context/context";
 import { width } from "src/assets";
 import * as Colors from "src/assets/constants/Colors";
-import Context from "react-redux/es/components/Context";
 import { contentColor } from "src/components/lightDarkTheme";
 
 const usedWidth = width - 20;
@@ -20,7 +19,8 @@ export class Header extends React.PureComponent<
   IHeaderProps,
   IHeaderState
 > {
-  declare context: React.ContextType<typeof Context>
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   override render() {
     return (

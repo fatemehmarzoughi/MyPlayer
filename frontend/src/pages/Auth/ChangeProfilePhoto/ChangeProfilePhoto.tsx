@@ -9,10 +9,10 @@ import {
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {NavigationProp} from '@react-navigation/native';
 
-import context from 'src/context/context';
+import Context from 'src/context/context';
 import * as Colors from 'src/assets/constants/Colors';
 
-import {contentColor, FlatList1} from 'src/components';
+import {backgroundColor, contentColor, FlatList1, surfaceColor} from 'src/components';
 import { GET } from 'src/API';
 
 import {styles} from './style';
@@ -32,7 +32,8 @@ export class ChangeProfilePhoto extends React.PureComponent<
   IChangeProfilePhotoProps,
   IChangeProfilePhotoState
 > {
-  declare context: React.ContextType<typeof context>;
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: IChangeProfilePhotoProps) {
     super(props);
@@ -44,35 +45,35 @@ export class ChangeProfilePhoto extends React.PureComponent<
     };
   }
 
-  getImages = async () => {
-    try {
-      const resultAnimation = await GET('/images/imageLists/Animation');
-      const Animation = await (resultAnimation as any).json();
+  // getImages = async () => {
+  //   try {
+  //     const resultAnimation = await GET('/images/imageLists/Animation');
+  //     const Animation = await (resultAnimation as any).json();
 
-      const resultArtists = await GET('/images/imageLists/Artists');
-      const Artists = await (resultArtists as any).json();
+  //     const resultArtists = await GET('/images/imageLists/Artists');
+  //     const Artists = await (resultArtists as any).json();
 
-      const resultActors = await GET('/images/imageLists/Actors');
-      const Actors = await (resultActors as any).json();
+  //     const resultActors = await GET('/images/imageLists/Actors');
+  //     const Actors = await (resultActors as any).json();
 
-      this.setState({
-        Animation,
-        Artists,
-        Actors,
-        refreshing: false,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     this.setState({
+  //       Animation,
+  //       Artists,
+  //       Actors,
+  //       refreshing: false,
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   override async componentDidMount() {
-    await this.getImages();
+    // await this.getImages();
   }
 
   onPress = (imageURL: string) => {
     console.log('imageURL  == ' + imageURL);
-    this.context.setUserImage(imageURL);
+    // this.context.setUserImage(imageURL);
     this.props.navigation.navigate('EditProfile');
   };
 
@@ -81,7 +82,7 @@ export class ChangeProfilePhoto extends React.PureComponent<
       <ScrollView
         refreshControl={
           <RefreshControl
-            onRefresh={() => this.getImages()}
+            // onRefresh={() => this.getImages()}
             refreshing={this.state.refreshing}
           />
         }>

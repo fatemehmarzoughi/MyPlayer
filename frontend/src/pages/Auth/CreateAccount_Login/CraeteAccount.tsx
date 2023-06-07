@@ -49,6 +49,7 @@ export class CreateAccount extends React.PureComponent<
   ICreateAccountProps,
   ICreateAccountState
 > {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: ICreateAccountProps) {

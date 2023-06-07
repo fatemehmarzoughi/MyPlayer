@@ -40,7 +40,7 @@ export type ISubjectCategory = {
 };
 
 export interface IHomeProps extends IHomeDispatchProps {
-  navigation: {openDrawer: () => void} & NavigationProp<any, any>;
+  navigation: any;
 }
 
 export interface IHomeMapState {
@@ -66,6 +66,7 @@ export interface IHomeStates {
 }
 
 class Home extends React.PureComponent<IHomeProps, IHomeStates> {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
   private _isMounted: boolean;
 

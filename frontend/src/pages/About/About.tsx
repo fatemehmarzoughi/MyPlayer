@@ -5,8 +5,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationProp } from "@react-navigation/native";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 
-import context from "src/context/context";
-import { contentColor, surfaceColor, backgroundColor } from "src/components";
+import Context from "src/context/context";
+import { contentColor, surfaceColor } from "src/components";
 import { MainHeader } from "src/components";
 
 import { styles } from "./style";
@@ -16,12 +16,13 @@ export type IAboutState = {
   item2IsCollapse: boolean;
 };
 
-export interface IAboutProps extends NavigationProp<any, any> {
+export interface IAboutProps {
   navigation: { openDrawer: () => void } & NavigationProp<any, any>;
 }
 
 export class About extends React.PureComponent<IAboutProps, IAboutState> {
-  declare context: React.ContextType<typeof context>
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
 
   constructor(props: IAboutProps) {
     super(props);
@@ -44,7 +45,7 @@ export class About extends React.PureComponent<IAboutProps, IAboutState> {
 
   override render() {
     return (
-      <View style={[backgroundColor(this.context.theme), { flex: 1 }]}>
+      <View style={{ flex: 1 }}>
         <MainHeader
           menuOnPress={() => this.props.navigation.openDrawer()}
           searchOnPress={() => this.props.navigation.navigate("Search")}

@@ -12,23 +12,57 @@ import {
   ResetPassword,
   EditProfile,
   ChangeProfilePhoto,
+  MenuContent,
+  About,
+  TermsAndPolicy,
 } from 'src/pages';
 import React, {useContext} from 'react';
 import Home from './Home/Home';
 import Context from 'src/context/context';
 import {gray, mainColor} from 'src/assets';
-import {DarkTheme, NavigationContainer} from '@react-navigation/native';
+import {DarkTheme, NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
+import { MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {styles} from './style';
 import {backgroundColor} from 'src/components';
+
+import {styles} from './style';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+const DrawerPages = React.memo(function DrawerPages() {
+  return (
+    <Drawer.Navigator
+      initialRouteName="BottomTabs"
+      screenOptions={{
+        headerShown: false,
+      }}
+      drawerContent={props => <MenuContent {...props} />}
+    >
+      <Stack.Screen
+        name="BottomTabs"
+        component={BottomTabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Drawer.Screen name="About">
+        {props => <About {...props} />}
+      </Drawer.Screen>
+
+      <Drawer.Screen name="TermsAndPolicy">
+        {props => <TermsAndPolicy {...props} />}
+      </Drawer.Screen>
+    </Drawer.Navigator>
+  );
+});
 
 const LoginCreateAccount = React.memo(() => (
   <Tab.Navigator
@@ -162,21 +196,15 @@ const BottomTabs = React.memo(function BottomTabs() {
 
 export const AppRoute: React.FC = React.memo(() => {
   const {isFirstInstallation} = useContext(Context);
+  const contexts = useContext(Context);
+
   return (
     <PaperProvider theme={MD3DarkTheme}>
-      <NavigationContainer theme={DarkTheme}>
+      <NavigationContainer theme={contexts.theme === 'light' ? DefaultTheme : DarkTheme}>
         <Stack.Navigator
           initialRouteName={
-            isFirstInstallation === null ? 'onBoarding' : 'Home'
+            isFirstInstallation === null ? 'onBoarding' : 'AppRoute'
           }>
-          <Stack.Screen
-            name="appRoute"
-            component={BottomTabs}
-            options={{
-              title: 'Home',
-              headerShown: false,
-            }}
-          />
           <Stack.Screen name="Search">
             {props => <Search {...props} />}
           </Stack.Screen>
@@ -194,6 +222,13 @@ export const AppRoute: React.FC = React.memo(() => {
             }}>
             {props => <EntriesOptions {...props} />}
           </Stack.Screen>
+          <Stack.Screen
+            name="AppRoute"
+            component={DrawerPages}
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

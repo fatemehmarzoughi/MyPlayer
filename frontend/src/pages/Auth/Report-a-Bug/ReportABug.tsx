@@ -28,6 +28,7 @@ export class ReportABug extends React.PureComponent<
   IReportABugProps,
   IReportABugStates
 > {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: IReportABugProps) {
@@ -44,81 +45,81 @@ export class ReportABug extends React.PureComponent<
     });
   };
 
-  handleReport = async () => {
-    this.setState({
-      loading: true,
-    });
-    if (this.state.input === '') {
-      Toast.show({
-        type: 'error',
-        position: 'bottom',
-        text1: 'Text input is empty',
-        text2: 'Please explain the bug.',
-        visibilityTime: toastMessageDuration,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
-      this.setState({
-        loading: false,
-      });
-      return;
-    }
+  // handleReport = async () => {
+  //   this.setState({
+  //     loading: true,
+  //   });
+  //   if (this.state.input === '') {
+  //     Toast.show({
+  //       type: 'error',
+  //       position: 'bottom',
+  //       text1: 'Text input is empty',
+  //       text2: 'Please explain the bug.',
+  //       visibilityTime: toastMessageDuration,
+  //       topOffset: 30,
+  //       bottomOffset: 40,
+  //     });
+  //     this.setState({
+  //       loading: false,
+  //     });
+  //     return;
+  //   }
 
-    const reqBody = {
-      bugExplenation: this.state.input,
-    };
+  //   const reqBody = {
+  //     bugExplenation: this.state.input,
+  //   };
 
-    try {
-      const result = await POST('/editProfile/reportBug', reqBody);
-      const message = await result.text();
-      if (result.status === 200) {
-        Toast.show({
-          type: 'success',
-          position: 'top',
-          autoHide: true,
-          text1: message,
-          text2: 'Thanks for the feedback',
-          visibilityTime: toastMessageDuration,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
-        this.setState({
-          loading: false,
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          position: 'bottom',
-          autoHide: true,
-          text1: message,
-          text2: 'Please try again',
-          visibilityTime: toastMessageDuration,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
-        this.setState({
-          loading: false,
-        });
-      }
+  //   try {
+  //     const result = await POST('/editProfile/reportBug', reqBody);
+  //     const message = await result.text();
+  //     if (result.status === 200) {
+  //       Toast.show({
+  //         type: 'success',
+  //         position: 'top',
+  //         autoHide: true,
+  //         text1: message,
+  //         text2: 'Thanks for the feedback',
+  //         visibilityTime: toastMessageDuration,
+  //         topOffset: 30,
+  //         bottomOffset: 40,
+  //       });
+  //       this.setState({
+  //         loading: false,
+  //       });
+  //     } else {
+  //       Toast.show({
+  //         type: 'error',
+  //         position: 'bottom',
+  //         autoHide: true,
+  //         text1: message,
+  //         text2: 'Please try again',
+  //         visibilityTime: toastMessageDuration,
+  //         topOffset: 30,
+  //         bottomOffset: 40,
+  //       });
+  //       this.setState({
+  //         loading: false,
+  //       });
+  //     }
 
-      console.log(this.state.loading);
-    } catch (err) {
-      console.log(err);
-      Toast.show({
-        type: 'error',
-        position: 'bottom',
-        autoHide: true,
-        text1: 'Something went wrong',
-        text2: 'Please check your network',
-        visibilityTime: toastMessageDuration,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
-      this.setState({
-        loading: false,
-      });
-    }
-  };
+  //     console.log(this.state.loading);
+  //   } catch (err) {
+  //     console.log(err);
+  //     Toast.show({
+  //       type: 'error',
+  //       position: 'bottom',
+  //       autoHide: true,
+  //       text1: 'Something went wrong',
+  //       text2: 'Please check your network',
+  //       visibilityTime: toastMessageDuration,
+  //       topOffset: 30,
+  //       bottomOffset: 40,
+  //     });
+  //     this.setState({
+  //       loading: false,
+  //     });
+  //   }
+  // };
 
   override render() {
     return (
@@ -138,7 +139,7 @@ export class ReportABug extends React.PureComponent<
           />
           <TouchableOpacity
             style={styles.btn}
-            onPress={() => this.handleReport()}>
+            onPress={() => {}}>
             <LottieView
               style={this.state.loading ? {opacity: 1} : {opacity: 0}}
               autoPlay={true}

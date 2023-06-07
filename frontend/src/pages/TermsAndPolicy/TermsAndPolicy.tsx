@@ -14,7 +14,7 @@ import {View, TouchableOpacity, ScrollView} from 'react-native';
 
 import {styles} from './style';
 
-export interface ITermsAndPolicyProps extends NavigationProp<any, any> {
+export interface ITermsAndPolicyProps {
   navigation: {openDrawer: () => void} & NavigationProp<any, any>;
 }
 
@@ -23,6 +23,7 @@ export interface ITermsAndPolicyState {
   item2IsCollapse: boolean;
 }
 export class TermsAndPolicy extends React.PureComponent<ITermsAndPolicyProps, ITermsAndPolicyState> {
+  static override contextType = Context;
   declare context: React.ContextType<typeof Context>;
 
   constructor(props: ITermsAndPolicyProps) {
@@ -49,7 +50,7 @@ export class TermsAndPolicy extends React.PureComponent<ITermsAndPolicyProps, IT
 
   override render() {
     return (
-      <View style={[backgroundColor(this.context.theme), {flex: 1}]}>
+      <View style={{flex: 1}}>
         <MainHeader
           menuOnPress={() => this.props.navigation.openDrawer()}
           searchOnPress={() => this.props.navigation.navigate('Search')}
