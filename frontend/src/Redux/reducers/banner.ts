@@ -30,7 +30,7 @@ export const banner = (
       return {
         ...state,
         loadingBanner: false,
-        banner: action.error,
+        error: action.error,
       };
 
     default:

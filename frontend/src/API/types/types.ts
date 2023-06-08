@@ -273,11 +273,20 @@ export enum CountryCode {
   AX = 'AX',
 }
 
-export enum Plan {
+export enum PlanType {
   free = 'free',
   annual = 'annual',
   monthly = 'monthly',
 }
+
+export type Plan = {
+  id: number;
+  title: string;
+  type: PlanType;
+  price: number;
+  subTitle: string;
+  users?: Omit<Data<User, Attributes<User>>, 'meta'>;
+};
 
 export type User = {
   id: number;
@@ -286,11 +295,12 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
 
+  password?: string,
   provider?: 'local';
   confirmed?: boolean;
   blocked?: boolean;
   avatar?: string;
-  plan?: Plan;
+  plan?: Omit<Data<Plan, Attributes<Plan>>, 'meta'>;
   country?: CountryCode;
 };
 
@@ -355,7 +365,7 @@ export type CreateAccountRequestBody = {
   password: string;
   username: string;
 
-  plan?: Plan;
+  plan?: {connect?: {id: number}[]};
   country?: CountryCode;
 };
 
@@ -403,4 +413,31 @@ export type BannerResponseBody = Data<BannerDates, Attributes<BannerDates>>;
 /* -------------------------------------------------------------------------- */
 
 export type UserUpdatedResponseBody = User;
-export type UserUpdatedRequestBody = Partial<User>;
+export type UserUpdatedRequestBody = Omit<Partial<User>, 'plan'> & {
+  plan?: {connect?: {id: number}[]};
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                  Get Plans                                 */
+/* -------------------------------------------------------------------------- */
+export type GetPlansResponseBody = Data<Plan, Attributes<Plan>[]>;
+
+/* -------------------------------------------------------------------------- */
+/*                                 Report Bug                                 */
+/* -------------------------------------------------------------------------- */
+
+export type ReportBugRequestBody = {
+  data: {
+    description: string;
+    user: {connect?: {id: number}[]};
+  };
+};
+
+export type Bug = {
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date;
+};
+
+export type ReportBugResponseBody = Data<Bug, Attributes<Bug>>;

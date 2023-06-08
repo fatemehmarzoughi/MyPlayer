@@ -15,14 +15,19 @@ import {
   MenuContent,
   About,
   TermsAndPolicy,
+  NetworkError,
 } from 'src/pages';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import Home from './Home/Home';
 import Context from 'src/context/context';
 import {gray, mainColor} from 'src/assets';
-import {DarkTheme, NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import {
+  DarkTheme,
+  NavigationContainer,
+  DefaultTheme,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
+import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -30,6 +35,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {backgroundColor} from 'src/components';
 
 import {styles} from './style';
+import {getData} from 'src/LocalStorage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -43,8 +49,7 @@ const DrawerPages = React.memo(function DrawerPages() {
       screenOptions={{
         headerShown: false,
       }}
-      drawerContent={props => <MenuContent {...props} />}
-    >
+      drawerContent={props => <MenuContent {...props} />}>
       <Stack.Screen
         name="BottomTabs"
         component={BottomTabs}
@@ -82,7 +87,13 @@ const LoginCreateAccount = React.memo(() => (
 ));
 
 const Auth = React.memo(() => {
-  const {isLogin} = useContext(Context);
+  const {isLogin, setIsLogin} = useContext(Context);
+
+  useEffect(() => {
+    getData('accessToken').then(accessToken => {
+      if (!accessToken) setIsLogin(false);
+    });
+  }, []);
 
   return (
     <Stack.Navigator
@@ -200,7 +211,8 @@ export const AppRoute: React.FC = React.memo(() => {
 
   return (
     <PaperProvider theme={MD3DarkTheme}>
-      <NavigationContainer theme={contexts.theme === 'light' ? DefaultTheme : DarkTheme}>
+      <NavigationContainer
+        theme={contexts.theme === 'light' ? DefaultTheme : DarkTheme}>
         <Stack.Navigator
           initialRouteName={
             isFirstInstallation === null ? 'onBoarding' : 'AppRoute'

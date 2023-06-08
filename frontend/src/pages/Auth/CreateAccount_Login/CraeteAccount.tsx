@@ -6,9 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {
-  toastMessageDuration,
-} from 'src/assets';
+import {toastMessageDuration} from 'src/assets';
 import React from 'react';
 import Context from 'src/context/context';
 import {contentColor} from 'src/components';
@@ -18,12 +16,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as Colors from 'src/assets/constants/Colors';
 import {NavigationProp} from '@react-navigation/native';
 import Icon2 from 'react-native-vector-icons/EvilIcons';
-import {CountryCode, Plan, createAccount} from 'src/API';
+import {Attributes, CountryCode, Plan, createAccount, getPlans} from 'src/API';
 import {validateEmail, validatePassword} from 'src/pages';
 import CountryPicker from 'react-native-country-picker-modal';
 
 import {styles} from './style';
-import { storeData } from 'src/LocalStorage';
+import {storeData} from 'src/LocalStorage';
 
 export interface ICreateAccountProps {
   navigation: NavigationProp<any, any>;
@@ -35,8 +33,10 @@ export type ICreateAccountState = {
   name: string;
   email: string;
   password: string;
-  choosedPlan: Plan;
+  choosedPlanId: number;
   countryCode: CountryCode;
+
+  plans?: Attributes<Plan>[];
 
   nameErrorMessage: string;
   emailErrorMessage: string;
@@ -61,7 +61,7 @@ export class CreateAccount extends React.PureComponent<
       name: '',
       email: '',
       password: '',
-      choosedPlan: Plan.free,
+      choosedPlanId: 3,
 
       nameErrorMessage: '',
 
@@ -71,62 +71,6 @@ export class CreateAccount extends React.PureComponent<
       createingAccount: false,
     };
   }
-
-  plans: {
-    planType: Plan;
-    name: string;
-    price: string;
-    description: string;
-  }[] = [
-    {
-      planType: Plan.free,
-      name: 'Free',
-      price: '0.0$',
-      description: 'Free Account',
-    },
-    {
-      planType: Plan.monthly,
-      name: '30 Days',
-      price: '30.0$',
-      description: 'Premium Account',
-    },
-    {
-      planType: Plan.annual,
-      name: '365 Days',
-      price: '9.0$',
-      description: 'Premium Account',
-    },
-  ];
-
-  passwordVisibility = () => {
-    if (!this.state.passwordIconVisibility) {
-      this.setState({
-        passwordIconVisibility: 1,
-      });
-    } else {
-      this.setState({
-        passwordIconVisibility: 0,
-      });
-    }
-  };
-
-  handleNameInput = (input: string) => {
-    this.setState({
-      name: input,
-    });
-  };
-
-  handleEmailInput = (input: string) => {
-    this.setState({
-      email: input,
-    });
-  };
-
-  handlePasswordInput = (input: string) => {
-    this.setState({
-      password: input,
-    });
-  };
 
   inputValidation = () => {
     let nameIsValid = false;
@@ -211,7 +155,9 @@ export class CreateAccount extends React.PureComponent<
         username: this.state.name,
         password: this.state.password,
 
-        plan: this.state.choosedPlan,
+        plan: {
+          connect: [{id: this.state.choosedPlanId}],
+        },
         // country: this.state.countryCode, TODO: solve country code problem on registration
       },
       onSuccess: async data => {
@@ -230,7 +176,7 @@ export class CreateAccount extends React.PureComponent<
           topOffset: 30,
           bottomOffset: 40,
         });
-        this.props.navigation.navigate('Home');
+        this.context.setIsLogin(true);
       },
       onError: err => {
         this.setState({
@@ -322,6 +268,18 @@ export class CreateAccount extends React.PureComponent<
   //   }
   // };
 
+  override async componentDidMount() {
+    await getPlans({
+      onSuccess: plans => {
+        this.setState({
+          plans: plans.data,
+        });
+      },
+      onError: err => {
+        console.log(err);
+      },
+    });
+  }
   /* -------------------------------------------------------------------------- */
   /*                                   Return                                   */
   /* -------------------------------------------------------------------------- */
@@ -343,7 +301,11 @@ export class CreateAccount extends React.PureComponent<
               placeholderTextColor={
                 this.context.theme ? Colors.gray : Colors.lightGray
               }
-              onChangeText={input => this.handleNameInput(input)}></TextInput>
+              onChangeText={input =>
+                this.setState({
+                  name: input,
+                })
+              }></TextInput>
             <Text
               style={[
                 styles.errorMessage,
@@ -359,7 +321,11 @@ export class CreateAccount extends React.PureComponent<
               placeholderTextColor={
                 this.context.theme ? Colors.gray : Colors.lightGray
               }
-              onChangeText={input => this.handleEmailInput(input)}
+              onChangeText={input =>
+                this.setState({
+                  email: input,
+                })
+              }
               autoCapitalize="none"></TextInput>
             <Text
               style={[
@@ -378,11 +344,17 @@ export class CreateAccount extends React.PureComponent<
               }
               secureTextEntry={!!!this.state.passwordIconVisibility}
               onChangeText={input =>
-                this.handlePasswordInput(input)
+                this.setState({
+                  password: input,
+                })
               }></TextInput>
             <View style={styles.eyeIconsStyle}>
               <Icon
-                onPress={() => this.passwordVisibility()}
+                onPress={() =>
+                  this.setState({
+                    passwordIconVisibility: 0,
+                  })
+                }
                 style={[
                   styles.eyeIconStyle,
                   {opacity: this.state.passwordIconVisibility},
@@ -392,7 +364,11 @@ export class CreateAccount extends React.PureComponent<
                 color={Colors.mainColor}
               />
               <Icon
-                onPress={() => this.passwordVisibility()}
+                onPress={() =>
+                  this.setState({
+                    passwordIconVisibility: 1,
+                  })
+                }
                 style={[
                   styles.eyeIconStyle,
                   {opacity: this.state.passwordIconVisibility ? 0 : 1},
@@ -439,17 +415,17 @@ export class CreateAccount extends React.PureComponent<
               style={styles.plansFlatlist}
               horizontal
               keyExtractor={(item, index) => index.toString()}
-              data={this.plans}
+              data={this.state.plans}
               renderItem={({item}) => (
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
-                      choosedPlan: item.planType,
+                      choosedPlanId: item.id,
                     });
                   }}
                   style={[
                     styles.planContainer,
-                    this.state.choosedPlan === item.planType
+                    this.state.choosedPlanId === item.id
                       ? {
                           borderColor: Colors.mainColor,
                           borderWidth: 3.5,
@@ -459,7 +435,7 @@ export class CreateAccount extends React.PureComponent<
                   <Icon
                     style={[
                       styles.planIcon,
-                      this.state.choosedPlan === item.planType
+                      this.state.choosedPlanId === item.id
                         ? {color: Colors.mainColor}
                         : {color: Colors.gray},
                     ]}
@@ -470,33 +446,33 @@ export class CreateAccount extends React.PureComponent<
                     <Text
                       style={[
                         styles.planText,
-                        this.state.choosedPlan === item.planType
+                        this.state.choosedPlanId === item.id
                           ? {fontWeight: 'bold'}
                           : {fontWeight: 'normal'},
                         contentColor(this.context.theme),
                       ]}>
-                      {item.name}
+                      {item.attributes.title}
                     </Text>
                     <Text
                       style={[
                         styles.planText,
-                        this.state.choosedPlan === item.planType
+                        this.state.choosedPlanId === item.id
                           ? {fontWeight: 'bold'}
                           : {fontWeight: 'normal'},
                         contentColor(this.context.theme),
                       ]}>
-                      {item.price}
+                      {item.attributes.price} $
                     </Text>
                   </View>
                   <Text
                     style={[
                       styles.description,
-                      this.state.choosedPlan === item.planType
+                      this.state.choosedPlanId === item.id
                         ? {color: Colors.mainColor}
                         : {color: Colors.gray},
                       contentColor(this.context.theme),
                     ]}>
-                    {item.description}
+                    {item.attributes.subTitle}
                   </Text>
                 </TouchableOpacity>
               )}

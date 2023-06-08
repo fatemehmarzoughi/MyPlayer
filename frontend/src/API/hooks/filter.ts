@@ -9,6 +9,7 @@ export const useFilter = ({
   category?: ItemCategory;
   label?: ItemLabel;
 }) => {
+
   if (category && label) {
     return {
       filter: `?filters[category][$eq]=${category}&filters[label][$eq]=${label}`,

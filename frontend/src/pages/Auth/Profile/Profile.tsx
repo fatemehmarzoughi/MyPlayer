@@ -104,7 +104,9 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
   };
 
   override async componentDidMount() {
-    await this.getUser();
+    setTimeout(async () => {
+      await this.getUser();
+    }, 1000);
 
     // this.focusListener = this.props.navigation?.addListener("focus", async () => {
     //   await this.getUser();
@@ -157,7 +159,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                         <Icon2
                           name="person"
                           size={25}
-                          color={this.context.theme ? dark : white}
+                          color={this.context.theme === 'light' ? dark : white}
                         />
                         <Text
                           style={[
@@ -221,7 +223,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                 <Icon2
                   name="logo-usd"
                   size={20}
-                  color={this.context.theme ? dark : white}
+                  color={this.context.theme === 'light' ? dark : white}
                 />
                 <Text
                   style={[
@@ -234,7 +236,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
               <Icon
                 name="chevron-right"
                 size={35}
-                color={this.context.theme ? dark : white}
+                color={this.context.theme === 'light' ? dark : white}
               />
             </TouchableOpacity>
 
@@ -264,7 +266,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                     <Icon2
                       name="basket"
                       size={20}
-                      color={this.context.theme ? dark : white}
+                      color={this.context.theme === 'light' ? dark : white}
                     />
                     <Text
                       style={[
@@ -277,7 +279,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                   <Icon
                     name="chevron-right"
                     size={35}
-                    color={this.context.theme ? dark : white}
+                    color={this.context.theme === 'light' ? dark : white}
                   />
                 </TouchableOpacity>
               )}
@@ -290,20 +292,20 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                 <Icon2
                   name="bug"
                   size={20}
-                  color={this.context.theme ? dark : white}
+                  color={this.context.theme === 'light' ? dark : white}
                 />
                 <Text
                   style={[
                     styles.optionTitle,
                     contentColor(this.context.theme),
                   ]}>
-                  Report a Bug
+                  Report Bug
                 </Text>
               </View>
               <Icon
                 name="chevron-right"
                 size={35}
-                color={this.context.theme ? dark : white}
+                color={this.context.theme === 'light' ? dark : white}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.premiumOption}>
@@ -354,7 +356,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                 <Icon2
                   name="alarm"
                   size={20}
-                  color={this.context.theme ? dark : white}
+                  color={this.context.theme === 'light' ? dark : white}
                 />
                 <Text
                   style={[

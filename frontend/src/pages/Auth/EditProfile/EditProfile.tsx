@@ -11,17 +11,15 @@ import CountryPicker, {
   TranslationLanguageCodeMap,
 } from 'react-native-country-picker-modal';
 import {
-  ModalClass,
-  SavingModal,
   contentColor,
-  backgroundColor,
+  surfaceColor,
 } from 'src/components';
 import React from 'react';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {NavigationProp} from '@react-navigation/native';
 import Context from 'src/context/context';
-import {DELETE, POST, updateUser} from 'src/API';
+import {DELETE, UserUpdatedRequestBody, updateUser} from 'src/API';
 import {storeData} from 'src/LocalStorage';
 import {dark, gray, toastMessageDuration, white} from 'src/assets';
 
@@ -31,8 +29,8 @@ export interface IEditProfileProps {
   navigation: NavigationProp<any, any>;
 }
 export interface IEditProfileState {
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
   saving: boolean;
   modalVisible: boolean;
   countrySelectorVisibility: boolean;
@@ -53,8 +51,8 @@ export class EditProfile extends React.PureComponent<
       modalVisible: false,
       countrySelectorVisibility: false,
       choosedCountry: TranslationLanguageCodeList['0'],
-      name: '',
-      email: '',
+      name: undefined,
+      email: undefined,
       saving: false,
     };
   }
@@ -101,11 +99,30 @@ export class EditProfile extends React.PureComponent<
       saving: true,
     });
 
+    const reqBody = (): UserUpdatedRequestBody => {
+      switch (true) {
+        case !!this.state.email && !!this.state.name:
+          return {
+            email: this.state.email,
+            username: this.state.name,
+          };
+
+        case !!this.state.email:
+          return {
+            email: this.state.email,
+          };
+
+        case !!this.state.name:
+          return {
+            username: this.state.name,
+          };
+        default:
+          return {};
+      }
+    };
+
     updateUser({
-      reqBody: {
-        email: this.state.email,
-        username: this.state.name,
-      },
+      reqBody: reqBody(),
       onSuccess: data => {
         Toast.show({
           type: 'success',
@@ -138,16 +155,14 @@ export class EditProfile extends React.PureComponent<
       },
     });
   };
-  
+
   override render() {
     return (
       <ScrollView>
         <View style={[styles.container]}>
           <View style={styles.header}>
             <View style={styles.row1}>
-              <TouchableOpacity
-                onPress={this.onSave}
-                style={styles.btn}>
+              <TouchableOpacity onPress={this.onSave} style={styles.btn}>
                 <Text style={styles.saveText}>Save</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -176,8 +191,8 @@ export class EditProfile extends React.PureComponent<
           <View style={styles.inputs}>
             <TextInput
               placeholder={this.context.userInfo?.username}
-              placeholderTextColor={this.context.theme ? dark : white}
-              style={[styles.input, backgroundColor(this.context.theme)]}
+              placeholderTextColor={this.context.theme === 'light' ? dark : gray}
+              style={[styles.input, surfaceColor(this.context.theme), contentColor(this.context.theme)]}
               onChangeText={name =>
                 this.setState({
                   name,
@@ -186,8 +201,9 @@ export class EditProfile extends React.PureComponent<
             />
             <TextInput
               placeholder={this.context.userInfo?.email}
-              placeholderTextColor={this.context.theme ? dark : white}
-              style={[styles.input, backgroundColor(this.context.theme)]}
+              placeholderTextColor={this.context.theme === 'light' ? dark : gray}
+              style={[styles.input, surfaceColor(this.context.theme), contentColor(this.context.theme)]}              
+
               onChangeText={email =>
                 this.setState({
                   email,
@@ -195,10 +211,15 @@ export class EditProfile extends React.PureComponent<
               }
             />
             <TouchableOpacity
-              style={[styles.input, backgroundColor(this.context.theme)]}
+              style={[styles.input, surfaceColor(this.context.theme)]}
               onPress={() => this.setState({countrySelectorVisibility: true})}>
               <CountryPicker
-                // theme={this.context.theme ? "" : DARK_THEME}
+                theme={{
+                  primaryColor: this.context.theme === 'light' ? dark : white,
+                  onBackgroundTextColor: this.context.theme === 'light' ? dark : white,
+                  backgroundColor: this.context.theme === 'dark' ? dark : white,
+                  primaryColorVariant: this.context.theme === 'light' ? dark : white
+                }}
                 preferredCountries={['US', 'IR']}
                 withFilter={true}
                 withCountryNameButton={true}
@@ -233,7 +254,7 @@ export class EditProfile extends React.PureComponent<
                 modalVisible: true,
               })
             }
-            style={[styles.deleteBtn, backgroundColor(this.context.theme)]}>
+            style={[styles.deleteBtn, surfaceColor(this.context.theme)]}>
             <Text style={[styles.deleteBtnText]}>Delete Account</Text>
           </TouchableOpacity>
           {/* <ModalClass

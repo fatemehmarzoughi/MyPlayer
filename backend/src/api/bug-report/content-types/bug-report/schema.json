@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bug_reports",
+  "info": {
+    "singularName": "bug-report",
+    "pluralName": "bug-reports",
+    "displayName": "BugReports",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "description": {
+      "type": "richtext"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "bug_reports"
+    }
+  }
+}

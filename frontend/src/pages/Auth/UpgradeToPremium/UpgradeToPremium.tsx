@@ -1,5 +1,13 @@
 import React from 'react';
-import {POST} from 'src/API';
+import {
+  Attributes,
+  POST,
+  Plan,
+  PlanType,
+  User,
+  getPlans,
+  updateUser,
+} from 'src/API';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Context from 'src/context/context';
 import Toast from 'react-native-toast-message';
@@ -15,7 +23,8 @@ export interface IUpgradeToPremiumProps {
 }
 
 export interface IUpgradeToPremiumStates {
-  selectedPlan: number;
+  selectedPlan?: number;
+  plans?: Attributes<Plan>[];
 }
 export class UpgradeToPremium extends React.PureComponent<
   IUpgradeToPremiumProps,
@@ -26,82 +35,53 @@ export class UpgradeToPremium extends React.PureComponent<
 
   constructor(props: IUpgradeToPremiumProps) {
     super(props);
-    this.state = {
-      selectedPlan: 1,
-    };
+    this.state = {};
   }
 
-  selectPlan = (id: number) => {
-    this.setState({
-      selectedPlan: id,
+  override componentDidMount(): void {
+    getPlans({
+      onSuccess: ({data: plans}) => {
+        this.setState({
+          plans,
+        });
+      },
+      onError: err => {},
+    });
+  }
+
+  handleSelectPlan = async () => {
+    updateUser({
+      reqBody: {
+        plan: {
+          connect: [{id: this.state.selectedPlan ?? 3}],
+        },
+      },
+      onSuccess: data => {
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Saved changes',
+          autoHide: true,
+          visibilityTime: toastMessageDuration,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        this.props.navigation.navigate('Profile');
+      },
+      onError: err => {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: String(err),
+          text2: 'Please try again later',
+          autoHide: true,
+          visibilityTime: toastMessageDuration,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      },
     });
   };
-
-  // handleSelectPlan = async () => {
-  //   // const url = 'http://www.google.com';
-
-  //   // const canOpen = await Linking.canOpenURL(url);
-  //   // console.log(canOpen)
-  //   // if(!canOpen) {
-  //   //     Toast.show({
-  //   //         type: 'error',
-  //   //         position: 'bottom',
-  //   //         text1: "Something went wrong",
-  //   //         text2: 'Please Report this as a bug',
-  //   //         visibilityTime: toastMessageDuration,
-  //   //         autoHide: true,
-  //   //         topOffset: 30,
-  //   //         bottomOffset: 40,
-  //   //     })
-  //   //     return;
-  //   // }
-
-  //   // await Linking.openURL(url);
-
-  //   const reqBody = {
-  //     planId: this.state.selectedPlan,
-  //   };
-
-  //   try {
-  //     const result = await POST('/editProfile/changePlan', reqBody);
-  //     const messageText = await result.text();
-  //     if (result.status === 200) {
-  //       Toast.show({
-  //         type: 'success',
-  //         position: 'top',
-  //         text1: messageText,
-  //         text2: 'Your Account upgraded successfully',
-  //         visibilityTime: toastMessageDuration,
-  //         bottomOffset: 40,
-  //         topOffset: 30,
-  //         autoHide: true,
-  //       });
-  //     } else {
-  //       Toast.show({
-  //         type: 'error',
-  //         position: 'bottom',
-  //         text1: messageText,
-  //         text2: 'Please try again.',
-  //         visibilityTime: toastMessageDuration,
-  //         bottomOffset: 40,
-  //         topOffset: 30,
-  //         autoHide: true,
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //     Toast.show({
-  //       type: 'error',
-  //       position: 'bottom',
-  //       text1: 'Something went wrong',
-  //       text2: 'Please try again',
-  //       visibilityTime: toastMessageDuration,
-  //       bottomOffset: 40,
-  //       topOffset: 30,
-  //       autoHide: true,
-  //     });
-  //   }
-  // };
 
   override render() {
     return (
@@ -114,100 +94,69 @@ export class UpgradeToPremium extends React.PureComponent<
           <Text style={styles.subTitle}>
             By choosing our premium account, you can watch with no ads.
           </Text>
+
           <View style={styles.plans}>
-            <TouchableOpacity
-              onPress={() => this.selectPlan(1)}
-              style={[
-                styles.plan,
-                this.state.selectedPlan === 1
-                  ? {borderColor: mainColor, borderWidth: 3}
-                  : {borderColor: gray, borderWidth: 1},
-              ]}>
-              <Icon
-                name="checkmark-outline"
-                size={45}
-                color={this.state.selectedPlan === 1 ? mainColor : gray}
-              />
-              <View style={styles.planTitle}>
-                <Text
-                  style={[
-                    styles.planTitleText,
-                    contentColor(this.context.theme),
-                    this.state.selectedPlan === 1
-                      ? {fontWeight: 'bold'}
-                      : {fontWeight: 'normal'},
-                  ]}>
-                  30Days
-                </Text>
-                <Text
-                  style={[
-                    styles.planTitleText,
-                    contentColor(this.context.theme),
-                    this.state.selectedPlan === 1
-                      ? {fontWeight: 'bold'}
-                      : {fontWeight: 'normal'},
-                  ]}>
-                  12$
-                </Text>
-              </View>
-              <Text
-                style={[
-                  styles.planSubTitle,
-                  this.state.selectedPlan === 1
-                    ? {color: mainColor}
-                    : {color: gray},
-                ]}>
-                Premium Account
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.selectPlan(2)}
-              style={[
-                styles.plan,
-                this.state.selectedPlan === 2
-                  ? {borderColor: mainColor, borderWidth: 3}
-                  : {borderColor: gray, borderWidth: 1},
-              ]}>
-              <Icon
-                name="checkmark-outline"
-                size={45}
-                color={this.state.selectedPlan === 2 ? mainColor : gray}
-              />
-              <View style={styles.planTitle}>
-                <Text
-                  style={[
-                    styles.planTitleText,
-                    contentColor(this.context.theme),
-                    this.state.selectedPlan === 2
-                      ? {fontWeight: 'bold'}
-                      : {fontWeight: 'normal'},
-                  ]}>
-                  30Days
-                </Text>
-                <Text
-                  style={[
-                    styles.planTitleText,
-                    contentColor(this.context.theme),
-                    this.state.selectedPlan === 2
-                      ? {fontWeight: 'bold'}
-                      : {fontWeight: 'normal'},
-                  ]}>
-                  12$
-                </Text>
-              </View>
-              <Text
-                style={[
-                  styles.planSubTitle,
-                  this.state.selectedPlan === 2
-                    ? {color: mainColor}
-                    : {color: gray},
-                ]}>
-                Premium Account
-              </Text>
-            </TouchableOpacity>
+            {this.state.plans?.map(p => {
+              if (p.attributes.type === PlanType.free) return null;
+              else
+                return (
+                  <TouchableOpacity
+                    key={p.id}
+                    onPress={() =>
+                      this.setState({
+                        selectedPlan: p.id,
+                      })
+                    }
+                    style={[
+                      styles.plan,
+                      this.state.selectedPlan === p.id
+                        ? {borderColor: mainColor, borderWidth: 3}
+                        : {borderColor: gray, borderWidth: 1},
+                    ]}>
+                    <Icon
+                      name="checkmark-outline"
+                      size={45}
+                      color={
+                        this.state.selectedPlan === p.id ? mainColor : gray
+                      }
+                    />
+                    <View style={styles.planTitle}>
+                      <Text
+                        style={[
+                          styles.planTitleText,
+                          contentColor(this.context.theme),
+                          this.state.selectedPlan === p.attributes.id
+                            ? {fontWeight: 'bold'}
+                            : {fontWeight: 'normal'},
+                        ]}>
+                        {p.attributes.title}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.planTitleText,
+                          contentColor(this.context.theme),
+                          this.state.selectedPlan === p.id
+                            ? {fontWeight: 'bold'}
+                            : {fontWeight: 'normal'},
+                        ]}>
+                        {p.attributes.price} $
+                      </Text>
+                    </View>
+                    <Text
+                      style={[
+                        styles.planSubTitle,
+                        this.state.selectedPlan === p.id
+                          ? {color: mainColor}
+                          : {color: gray},
+                      ]}>
+                      {p.attributes.subTitle} Account
+                    </Text>
+                  </TouchableOpacity>
+                );
+            })}
           </View>
           <TouchableOpacity
-            // onPress={() => this.handleSelectPlan()}
+            onPress={() => this.handleSelectPlan()}
             style={styles.btn}>
             <Text style={styles.btnText}>Select Plan</Text>
           </TouchableOpacity>

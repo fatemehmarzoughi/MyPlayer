@@ -1,18 +1,19 @@
 import {GET} from '../API';
-import {GetUserInfoResponseBody} from '../types';
+import {GetPlansResponseBody} from '../types';
 
-export type GetUserInfo = {
-  onSuccess?: (data: GetUserInfoResponseBody) => void;
+export type GetPlans = {
+  onSuccess?: (data: GetPlansResponseBody) => void;
   onError?: (err: Error) => void;
 };
 
-export const getUserInfo = async ({
+export const getPlans = async ({
   onError,
   onSuccess,
-}: GetUserInfo) => {
+}: GetPlans) => {
+
   try {
     const res = await GET({
-      endpoint: "api/users/me?populate=*",
+      endpoint: "api/plans",
     });
     if (res.status === 200) {
       onSuccess?.(res.data);

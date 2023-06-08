@@ -30,7 +30,8 @@ export async function POST<T extends Object>({
   const accessToken = await getData('accessToken');
 
   try {
-    if (accessToken) {
+    
+    if (accessToken !== 'null') {
       const res = await axios({
         method: 'post',
         url: endpoint,
@@ -39,6 +40,7 @@ export async function POST<T extends Object>({
         },
         data: reqBody,
       });
+
       return res;
     } else {
       const res = await axios({
@@ -58,7 +60,7 @@ export const GET = async ({endpoint}: {endpoint: string}) => {
   const accessToken = await getData('accessToken');
 
   try {
-    if (accessToken) {
+    if (accessToken !== 'null') {
       const res = await axios({
         method: 'get',
         url: endpoint,
@@ -68,7 +70,10 @@ export const GET = async ({endpoint}: {endpoint: string}) => {
       });
       return res;
     } else {
-      const res = await axios.get(endpoint);
+      const res = await axios({
+        method: 'get',
+        url: endpoint
+      });
       return res;
     }
   } catch (err) {
@@ -87,14 +92,14 @@ export async function PUT<T extends Object>({
   const accessToken = await getData('accessToken');
 
   try {
-    if (accessToken) {
+    if (accessToken !== 'null') {
       const res = await axios({
         method: 'put',
         url: endpoint,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        data: reqBody
+        data: reqBody,
       });
       return res;
     } else {
