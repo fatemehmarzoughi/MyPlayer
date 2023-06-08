@@ -3,11 +3,11 @@ React-Native
 
 # App Installation<br>
 <b> For Android run : </b><br>
-1- cd frontend
+1- cd frontend<br>
 2- yarn install<br>
 3- yarn android<br><br>
 <b> For IOS </b><br>
-1- cd frontend
+1- cd frontend<br>
 2- yarn install<br>
 3- cd ios <br>
 4- pod install <br>
