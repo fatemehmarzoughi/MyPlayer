@@ -3,7 +3,7 @@ import {getData} from 'src/LocalStorage';
 
 import './config';
 
-export async function DELETE(endpoint: string) {
+export const DELETE = async ({endpoint}: {endpoint: string}) => {
   const accessToken = await getData('accessToken');
 
   try {
@@ -18,7 +18,7 @@ export async function DELETE(endpoint: string) {
   } catch (err) {
     throw new Error(String(err));
   }
-}
+};
 
 export async function POST<T extends Object>({
   endpoint,
@@ -30,7 +30,6 @@ export async function POST<T extends Object>({
   const accessToken = await getData('accessToken');
 
   try {
-    
     if (accessToken !== 'null') {
       const res = await axios({
         method: 'post',
@@ -72,7 +71,7 @@ export const GET = async ({endpoint}: {endpoint: string}) => {
     } else {
       const res = await axios({
         method: 'get',
-        url: endpoint
+        url: endpoint,
       });
       return res;
     }

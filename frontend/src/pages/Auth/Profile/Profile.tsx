@@ -58,11 +58,12 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
       }
       await storeData('accessToken', null);
       await storeData('userId', null);
+      /* ------ DO NOT CHANGE THE POSITION OF THIS CODE (THE APP WILL CRASH) ------ */
       this.setState({
         modalVisible: false,
       });
-      // DO NOT CHANGE THE POSITION OF THIS CODE (THE APP WILL CRASH)
       this.context.setIsLogin(false);
+      /* ---------------------------------- **** ---------------------------------- */
     } catch (err) {
       console.log(err);
     }
@@ -402,7 +403,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
             question="Are you sure, you want to logout?"
             modalVisible={this.state.modalVisible}
             btnTitle="Logout"
-            handleMainBtn={() => this.handleLogOut()}
+            handleMainBtn={this.handleLogOut}
             handleCancelBtn={() => {
               this.setState({
                 modalVisible: false,

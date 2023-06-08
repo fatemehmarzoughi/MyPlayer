@@ -441,3 +441,9 @@ export type Bug = {
 };
 
 export type ReportBugResponseBody = Data<Bug, Attributes<Bug>>;
+
+/* -------------------------------------------------------------------------- */
+/*                               Delete Account                               */
+/* -------------------------------------------------------------------------- */
+
+export type DeleteAccountResponseBody = User;

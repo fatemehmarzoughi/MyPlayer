@@ -91,7 +91,7 @@ const Auth = React.memo(() => {
 
   useEffect(() => {
     getData('accessToken').then(accessToken => {
-      if (!accessToken) setIsLogin(false);
+      if (accessToken === 'null') setIsLogin(false);
     });
   }, []);
 
