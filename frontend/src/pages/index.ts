@@ -4,6 +4,7 @@ export * from './Live';
 export * from './Menu';
 export * from './About';
 export * from './Search';
+export * from './Errors';
 export * from './AppRoute';
 export * from './onBoarding';
 export * from './TermsAndPolicy';

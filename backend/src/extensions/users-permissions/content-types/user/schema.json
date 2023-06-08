@@ -320,16 +320,21 @@
         "\"AX\""
       ]
     },
-    "plan": {
-      "type": "enumeration",
-      "enum": [
-        "free",
-        "annual",
-        "monthly"
-      ]
-    },
     "avatar": {
-      "type": "richtext"
+      "type": "richtext",
+      "default": "http://localhost:1337/uploads/thumbnail_profilepic_14009cf058.png"
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::plan.plan",
+      "inversedBy": "users"
+    },
+    "bug_reports": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::bug-report.bug-report",
+      "mappedBy": "user"
     }
   }
 }

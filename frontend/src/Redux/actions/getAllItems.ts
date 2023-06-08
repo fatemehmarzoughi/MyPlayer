@@ -1,6 +1,6 @@
 import {store} from 'AppProvider';
 import {GET, GetItemsResponseBody} from 'src/API';
-import { GET_ALL_ITEMS, GET_ALL_ITEMS_FAILED } from 'src/assets';
+import {GET_ALL_ITEMS, GET_ALL_ITEMS_FAILED} from 'src/assets';
 
 export const getAllItems = () => {
   return async (dispatch: typeof store.dispatch) => {
@@ -12,14 +12,14 @@ export const getAllItems = () => {
         dispatch({
           type: GET_ALL_ITEMS,
           allItems: res.data as GetItemsResponseBody,
-          loadingAllItems: false
+          loadingAllItems: false,
         });
       else throw Error;
     } catch (err: any) {
       dispatch({
         type: GET_ALL_ITEMS_FAILED,
-        error: 'Something went wrong',
-        loadingAllItems: false
+        error: String(err),
+        loadingAllItems: false,
       });
       throw new Error(err);
     }

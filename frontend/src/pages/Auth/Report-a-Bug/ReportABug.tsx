@@ -13,8 +13,9 @@ import Context from 'src/context/context';
 import * as Colors from 'src/assets/constants/Colors';
 import {styles} from './style';
 import {toastMessageDuration} from 'src/assets';
-import {POST} from 'src/API';
+import {POST, reportBug} from 'src/API';
 import {Header} from 'src/components';
+import {getData} from 'src/LocalStorage';
 
 export interface IReportABugProps {
   navigation: NavigationProp<any, any>;
@@ -45,81 +46,55 @@ export class ReportABug extends React.PureComponent<
     });
   };
 
-  // handleReport = async () => {
-  //   this.setState({
-  //     loading: true,
-  //   });
-  //   if (this.state.input === '') {
-  //     Toast.show({
-  //       type: 'error',
-  //       position: 'bottom',
-  //       text1: 'Text input is empty',
-  //       text2: 'Please explain the bug.',
-  //       visibilityTime: toastMessageDuration,
-  //       topOffset: 30,
-  //       bottomOffset: 40,
-  //     });
-  //     this.setState({
-  //       loading: false,
-  //     });
-  //     return;
-  //   }
+  handleReport = async () => {
+    this.setState({
+      loading: true,
+    });
+    const userId = await getData('userId');
 
-  //   const reqBody = {
-  //     bugExplenation: this.state.input,
-  //   };
+    if (!userId) return;
 
-  //   try {
-  //     const result = await POST('/editProfile/reportBug', reqBody);
-  //     const message = await result.text();
-  //     if (result.status === 200) {
-  //       Toast.show({
-  //         type: 'success',
-  //         position: 'top',
-  //         autoHide: true,
-  //         text1: message,
-  //         text2: 'Thanks for the feedback',
-  //         visibilityTime: toastMessageDuration,
-  //         topOffset: 30,
-  //         bottomOffset: 40,
-  //       });
-  //       this.setState({
-  //         loading: false,
-  //       });
-  //     } else {
-  //       Toast.show({
-  //         type: 'error',
-  //         position: 'bottom',
-  //         autoHide: true,
-  //         text1: message,
-  //         text2: 'Please try again',
-  //         visibilityTime: toastMessageDuration,
-  //         topOffset: 30,
-  //         bottomOffset: 40,
-  //       });
-  //       this.setState({
-  //         loading: false,
-  //       });
-  //     }
-
-  //     console.log(this.state.loading);
-  //   } catch (err) {
-  //     console.log(err);
-  //     Toast.show({
-  //       type: 'error',
-  //       position: 'bottom',
-  //       autoHide: true,
-  //       text1: 'Something went wrong',
-  //       text2: 'Please check your network',
-  //       visibilityTime: toastMessageDuration,
-  //       topOffset: 30,
-  //       bottomOffset: 40,
-  //     });
-  //     this.setState({
-  //       loading: false,
-  //     });
-  //   }
-  // };
+    await reportBug({
+      reqBody: {
+        data: {
+          description: this.state.input,
+          user: {
+            connect: [{id: Number(userId)}],
+          },
+        },
+      },
+      onSuccess: data => {
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          autoHide: true,
+          text1: 'Bug reported successfully',
+          text2: 'Thanks for the feedback',
+          visibilityTime: toastMessageDuration,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        this.setState({
+          loading: false,
+        });
+        this.props.navigation.navigate('Profile');
+      },
+      onError: err => {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Text input is empty',
+          text2: 'Please explain the bug.',
+          visibilityTime: toastMessageDuration,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        this.setState({
+          loading: false,
+        });
+      },
+    });
+  };
 
   override render() {
     return (
@@ -137,9 +112,7 @@ export class ReportABug extends React.PureComponent<
             style={styles.input}
             onChangeText={input => this.handleTextInput(input)}
           />
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => {}}>
+          <TouchableOpacity style={styles.btn} onPress={this.handleReport}>
             <LottieView
               style={this.state.loading ? {opacity: 1} : {opacity: 0}}
               autoPlay={true}

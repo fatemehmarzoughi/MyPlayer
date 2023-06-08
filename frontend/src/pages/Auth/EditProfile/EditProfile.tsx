@@ -14,14 +14,19 @@ import {
   ModalClass,
   SavingModal,
   contentColor,
-  backgroundColor,
+  surfaceColor,
 } from 'src/components';
 import React from 'react';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {NavigationProp} from '@react-navigation/native';
 import Context from 'src/context/context';
-import {DELETE, POST, updateUser} from 'src/API';
+import {
+  DELETE,
+  UserUpdatedRequestBody,
+  deleteAccount,
+  updateUser,
+} from 'src/API';
 import {storeData} from 'src/LocalStorage';
 import {dark, gray, toastMessageDuration, white} from 'src/assets';
 
@@ -31,8 +36,8 @@ export interface IEditProfileProps {
   navigation: NavigationProp<any, any>;
 }
 export interface IEditProfileState {
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
   saving: boolean;
   modalVisible: boolean;
   countrySelectorVisibility: boolean;
@@ -53,47 +58,47 @@ export class EditProfile extends React.PureComponent<
       modalVisible: false,
       countrySelectorVisibility: false,
       choosedCountry: TranslationLanguageCodeList['0'],
-      name: '',
-      email: '',
+      name: undefined,
+      email: undefined,
       saving: false,
     };
   }
 
   handleDeleteAccount = async () => {
-    try {
-      const result = await DELETE('/editProfile/deleteAccount');
-      const message = await (result as any).text();
-
-      if ((result as {status: number}).status === 200) {
-        await storeData('accessToken', '');
+    await deleteAccount({
+      onSuccess: async data => {
+        await storeData('accessToken', null);
         await storeData('userId', null);
-        this.context.setIsLogin(false);
-        this.props.navigation.navigate('Auth');
         Toast.show({
           type: 'success',
           position: 'top',
-          text1: message,
+          text1: 'Account deleted successfully',
           text2: '',
           topOffset: 30,
           bottomOffset: 40,
           visibilityTime: toastMessageDuration,
           autoHide: true,
         });
-      } else {
+        /* ------ DO NOT CHANGE THE POSITION OF THIS CODE (THE APP WILL CRASH) ------ */
+        this.setState({
+          modalVisible: false
+        });
+        this.context.setIsLogin(false);
+        /* ---------------------------------- ***** --------------------------------- */
+      },
+      onError: err => {
         Toast.show({
           type: 'error',
           position: 'bottom',
-          text1: message,
+          text1: 'Something went wrong',
           text2: 'Please try again',
           topOffset: 30,
           bottomOffset: 40,
           visibilityTime: toastMessageDuration,
           autoHide: true,
         });
-      }
-    } catch (err) {
-      console.log(err);
-    }
+      },
+    });
   };
 
   onSave = async () => {
@@ -101,11 +106,30 @@ export class EditProfile extends React.PureComponent<
       saving: true,
     });
 
+    const reqBody = (): UserUpdatedRequestBody => {
+      switch (true) {
+        case !!this.state.email && !!this.state.name:
+          return {
+            email: this.state.email,
+            username: this.state.name,
+          };
+
+        case !!this.state.email:
+          return {
+            email: this.state.email,
+          };
+
+        case !!this.state.name:
+          return {
+            username: this.state.name,
+          };
+        default:
+          return {};
+      }
+    };
+
     updateUser({
-      reqBody: {
-        email: this.state.email,
-        username: this.state.name,
-      },
+      reqBody: reqBody(),
       onSuccess: data => {
         Toast.show({
           type: 'success',
@@ -138,16 +162,14 @@ export class EditProfile extends React.PureComponent<
       },
     });
   };
-  
+
   override render() {
     return (
       <ScrollView>
         <View style={[styles.container]}>
           <View style={styles.header}>
             <View style={styles.row1}>
-              <TouchableOpacity
-                onPress={this.onSave}
-                style={styles.btn}>
+              <TouchableOpacity onPress={this.onSave} style={styles.btn}>
                 <Text style={styles.saveText}>Save</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -176,8 +198,14 @@ export class EditProfile extends React.PureComponent<
           <View style={styles.inputs}>
             <TextInput
               placeholder={this.context.userInfo?.username}
-              placeholderTextColor={this.context.theme ? dark : white}
-              style={[styles.input, backgroundColor(this.context.theme)]}
+              placeholderTextColor={
+                this.context.theme === 'light' ? dark : gray
+              }
+              style={[
+                styles.input,
+                surfaceColor(this.context.theme),
+                contentColor(this.context.theme),
+              ]}
               onChangeText={name =>
                 this.setState({
                   name,
@@ -186,8 +214,14 @@ export class EditProfile extends React.PureComponent<
             />
             <TextInput
               placeholder={this.context.userInfo?.email}
-              placeholderTextColor={this.context.theme ? dark : white}
-              style={[styles.input, backgroundColor(this.context.theme)]}
+              placeholderTextColor={
+                this.context.theme === 'light' ? dark : gray
+              }
+              style={[
+                styles.input,
+                surfaceColor(this.context.theme),
+                contentColor(this.context.theme),
+              ]}
               onChangeText={email =>
                 this.setState({
                   email,
@@ -195,10 +229,17 @@ export class EditProfile extends React.PureComponent<
               }
             />
             <TouchableOpacity
-              style={[styles.input, backgroundColor(this.context.theme)]}
+              style={[styles.input, surfaceColor(this.context.theme)]}
               onPress={() => this.setState({countrySelectorVisibility: true})}>
               <CountryPicker
-                // theme={this.context.theme ? "" : DARK_THEME}
+                theme={{
+                  primaryColor: this.context.theme === 'light' ? dark : white,
+                  onBackgroundTextColor:
+                    this.context.theme === 'light' ? dark : white,
+                  backgroundColor: this.context.theme === 'dark' ? dark : white,
+                  primaryColorVariant:
+                    this.context.theme === 'light' ? dark : white,
+                }}
                 preferredCountries={['US', 'IR']}
                 withFilter={true}
                 withCountryNameButton={true}
@@ -233,19 +274,21 @@ export class EditProfile extends React.PureComponent<
                 modalVisible: true,
               })
             }
-            style={[styles.deleteBtn, backgroundColor(this.context.theme)]}>
+            style={[styles.deleteBtn, surfaceColor(this.context.theme)]}>
             <Text style={[styles.deleteBtnText]}>Delete Account</Text>
           </TouchableOpacity>
-          {/* <ModalClass
+          <SavingModal modalVisible={this.state.saving} />
+          <ModalClass
             question="Are you sure, you want to delete your account?"
             modalVisible={this.state.modalVisible}
             btnTitle="Delete Account"
-            handleMainBtn={() => this.handleDeleteAccount()}
-            handleCancelBtn={() =>     this.setState({
-      modalVisible: false,
-    })}
+            handleMainBtn={this.handleDeleteAccount}
+            handleCancelBtn={() =>
+              this.setState({
+                modalVisible: false,
+              })
+            }
           />
-          <SavingModal modalVisible={this.state.saving} /> */}
         </View>
       </ScrollView>
     );

@@ -210,8 +210,8 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
           </Text>
           <View style={styles.input}>
             <TextInput
-              style={styles.textInput}
-              placeholderTextColor={this.context.theme ? gray : lightGray}
+              style={[styles.textInput, contentColor(this.context.theme)]}
+              placeholderTextColor={this.context.theme === 'light' ? gray : lightGray}
               placeholder="Email"
               onChangeText={input => {
                 this.setState({email: input});
@@ -220,8 +220,8 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
           </View>
           <View style={styles.input}>
             <TextInput
-              style={styles.textInput}
-              placeholderTextColor={this.context.theme ? gray : lightGray}
+              style={[styles.textInput, contentColor(this.context.theme)]}
+              placeholderTextColor={this.context.theme === 'light' ? gray : lightGray}
               placeholder="Password"
               secureTextEntry={this.state.passwordIconVisibility}
               onChangeText={input => {

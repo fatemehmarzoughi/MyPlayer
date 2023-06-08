@@ -5,13 +5,12 @@ import {ConnectedProps, connect} from 'react-redux';
 import LottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {NavigationProp} from '@react-navigation/native';
 import {Heading, Text, VStack, FlatList} from 'native-base';
 
 import Context from 'src/context/context';
 import Notification from 'src/Notification/NotificationSetup';
 
-import {HomeFlatLists, MainHeader, ModalClass, contentColor} from 'src/components';
+import {HomeFlatLists, MainHeader, contentColor} from 'src/components';
 import {
   getAllItems,
   getAllMovies,
@@ -29,6 +28,7 @@ import {
 import {GetItemsResponseBody, ItemCategory, ItemLabel} from 'src/API';
 
 import {styles} from './style';
+import {NetworkError} from '../Errors';
 
 export type ISubjectCategory = {
   id: number;
@@ -226,14 +226,31 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
   };
 
   override render() {
-    const {banner} = this.props.banner;
+    if (
+      [
+        !!this.props.allItems.error,
+        !!this.props.musics.error,
+        !!this.props.movies.error,
+        !!this.props.sports.error,
+        !!this.props.radio.error,
+      ].includes(true)
+    ) {
+      console.log([
+        this.props.allItems.error,
+        this.props.musics.error,
+        this.props.movies.error,
+        this.props.sports.error,
+        this.props.radio.error,
+      ]);
+      return <NetworkError onReload={this.onRefresh} />;
+    }
 
     return (
       <ScrollView
         refreshControl={
           <RefreshControl
             refreshing={this.state.loading}
-            onRefresh={() => this.onRefresh()}
+            onRefresh={this.onRefresh}
           />
         }>
         <MainHeader
@@ -245,7 +262,8 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
           <FastImage
             style={styles.bannerImage}
             source={{
-              uri: banner?.data.attributes.items.data.attributes.cover,
+              uri: this.props.banner.banner?.data.attributes.items.data
+                .attributes.cover,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
