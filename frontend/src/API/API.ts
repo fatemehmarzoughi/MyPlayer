@@ -1,0 +1,111 @@
+import axios from 'axios';
+import {getData} from 'src/LocalStorage';
+
+import './config';
+
+export const DELETE = async ({endpoint}: {endpoint: string}) => {
+  const accessToken = await getData('accessToken');
+
+  try {
+    const res = await axios({
+      method: 'delete',
+      url: endpoint,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return res;
+  } catch (err) {
+    throw new Error(String(err));
+  }
+};
+
+export async function POST<T extends Object>({
+  endpoint,
+  reqBody,
+}: {
+  endpoint: string;
+  reqBody: T;
+}) {
+  const accessToken = await getData('accessToken');
+
+  try {
+    if (accessToken !== 'null') {
+      const res = await axios({
+        method: 'post',
+        url: endpoint,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: reqBody,
+      });
+
+      return res;
+    } else {
+      const res = await axios({
+        method: 'post',
+        url: endpoint,
+        data: reqBody,
+      });
+
+      return res;
+    }
+  } catch (error) {
+    throw new Error(String(error));
+  }
+}
+
+export const GET = async ({endpoint}: {endpoint: string}) => {
+  const accessToken = await getData('accessToken');
+
+  try {
+    if (accessToken !== 'null') {
+      const res = await axios({
+        method: 'get',
+        url: endpoint,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return res;
+    } else {
+      const res = await axios({
+        method: 'get',
+        url: endpoint,
+      });
+      return res;
+    }
+  } catch (err) {
+    console.log('error in get func = ' + err);
+    throw new Error(String(err));
+  }
+};
+
+export async function PUT<T extends Object>({
+  endpoint,
+  reqBody,
+}: {
+  endpoint: string;
+  reqBody: T;
+}) {
+  const accessToken = await getData('accessToken');
+
+  try {
+    if (accessToken !== 'null') {
+      const res = await axios({
+        method: 'put',
+        url: endpoint,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: reqBody,
+      });
+      return res;
+    } else {
+      throw Error('no access token');
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error(String(error));
+  }
+}

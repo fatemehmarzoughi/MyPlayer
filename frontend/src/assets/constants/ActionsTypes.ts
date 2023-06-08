@@ -1,0 +1,24 @@
+// HOME PAGES ACTIONS
+
+// ALL
+export const GET_ALL_ITEMS = "GET_ALL_ITEMS";
+export const GET_ALL_ITEMS_FAILED = "GET_ALL_ITEMS_FAILED";
+
+export const GET_BANNER = "GET_BANNER";
+export const GET_BANNER_FAILED = "GET_BANNER_FAILED";
+
+// Musics
+export const GET_ALL_MUSICS = "GET_ALL_MUSICS";
+export const GET_ALL_MUSICS_FAILED = "GET_ALL_MUSICS_FAILED";
+
+// Movies
+export const GET_ALL_MOVIES = "GET_ALL_MOVIES";
+export const GET_ALL_MOVIES_FAILED = "GET_ALL_MOVIES_FAILED";
+
+// Sports
+export const GET_ALL_SPORTS = "GET_ALL_SPORTS";
+export const GET_ALL_SPORTS_FAILED = "GET_ALL_SPORTS_FAILED";
+
+// Radio
+export const GET_ALL_RADIO = "GET_ALL_RADIO";
+export const GET_ALL_RADIO_FAILED = "GET_ALL_RADIO_FAILED";

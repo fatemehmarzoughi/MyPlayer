@@ -1,0 +1,22 @@
+import {POST} from 'src';
+import {ReportBugRequestBody, ReportBugResponseBody} from 'src/API';
+
+export type ReportBug = {
+  reqBody: ReportBugRequestBody;
+  onSuccess?: (data: ReportBugResponseBody) => void;
+  onError?: (err: Error) => void;
+};
+
+export const reportBug = async ({reqBody, onError, onSuccess}: ReportBug) => {
+  try {
+    const res = await POST<ReportBugRequestBody>({
+      endpoint: '/api/bug-reports',
+      reqBody,
+    });
+    onSuccess?.(res.data);
+    return res;
+  } catch (error) {
+    onError?.(error as Error);
+    throw new Error(String(error));
+  }
+};
