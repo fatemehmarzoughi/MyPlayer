@@ -4,9 +4,8 @@ import {getData} from 'src/LocalStorage';
 import './config';
 
 export const DELETE = async ({endpoint}: {endpoint: string}) => {
-  const accessToken = await getData('accessToken');
-
   try {
+    const accessToken = await getData('accessToken');
     const res = await axios({
       method: 'delete',
       url: endpoint,
@@ -27,10 +26,9 @@ export async function POST<T extends Object>({
   endpoint: string;
   reqBody: T;
 }) {
-  const accessToken = await getData('accessToken');
-
   try {
-    if (accessToken !== 'null') {
+    const accessToken = await getData('accessToken');
+    if (accessToken !== null || accessToken !== null) {
       const res = await axios({
         method: 'post',
         url: endpoint,
@@ -56,10 +54,9 @@ export async function POST<T extends Object>({
 }
 
 export const GET = async ({endpoint}: {endpoint: string}) => {
-  const accessToken = await getData('accessToken');
-
   try {
-    if (accessToken !== 'null') {
+    const accessToken = await getData('accessToken');
+    if (accessToken !== null || accessToken !== null) {
       const res = await axios({
         method: 'get',
         url: endpoint,
@@ -88,10 +85,9 @@ export async function PUT<T extends Object>({
   endpoint: string;
   reqBody: T;
 }) {
-  const accessToken = await getData('accessToken');
-
   try {
-    if (accessToken !== 'null') {
+    const accessToken = await getData('accessToken');
+    if (accessToken !== 'null' || accessToken !== null) {
       const res = await axios({
         method: 'put',
         url: endpoint,
