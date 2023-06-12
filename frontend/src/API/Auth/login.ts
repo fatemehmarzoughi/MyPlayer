@@ -1,4 +1,4 @@
-import {POST} from 'src';
+import {POST} from 'src/API';
 import {LoginRequestBody, LoginResponseBody} from 'src/API';
 
 export type Login = {

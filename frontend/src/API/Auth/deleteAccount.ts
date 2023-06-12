@@ -1,4 +1,5 @@
-import {DELETE, getData} from 'src';
+import { getData } from 'src/LocalStorage';
+import {DELETE} from '../API';
 import {DeleteAccountResponseBody} from 'src/API';
 
 export type DeleteAccount = {
