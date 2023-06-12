@@ -3,21 +3,28 @@ React-Native
 
 # App Installation<br>
 <b> For Android run : </b><br>
-1- cd frontend<br>
-2- yarn install<br>
-3- yarn android<br><br>
+```code
+1- cd frontend
+2- yarn install
+3- yarn android
+```
 <b> For IOS </b><br>
-1- cd frontend<br>
-2- yarn install<br>
-3- cd ios <br>
-4- pod install <br>
-5- cd ../ <br>
-6- yarn ios<br>
+```code
+1- cd frontend
+2- yarn install
+3- cd ios 
+4- pod install
+5- cd ../ 
+6- yarn ios
+```
+
 
 # Running Backend<br>
-1- cd backend<br>
-2- yarn<br>
-3- yarn develop <br><br>
+```code
+1- cd backend
+2- yarn
+3- yarn develop 
+```
 <b>This will run the APIs on localhost:1337, so you can add your own data to the items</b><br>
 
 # Technologies<br>
