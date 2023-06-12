@@ -435,9 +435,9 @@ export type ReportBugRequestBody = {
 
 export type Bug = {
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  publishedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  publishedAt?: Date;
 };
 
 export type ReportBugResponseBody = Data<Bug, Attributes<Bug>>;

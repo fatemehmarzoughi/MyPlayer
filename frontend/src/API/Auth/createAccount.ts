@@ -1,4 +1,4 @@
-import {POST} from 'src';
+import {POST} from '../API';
 import {CreateAccountRequestBody, CreateAccountResponseBody} from 'src/API';
 
 export type CreateAccount = {
