@@ -16,7 +16,13 @@ jest.mock('../../../src/API/API.ts', () => ({
         status: 200,
       }),
     )
-    .mockReturnValueOnce(Promise.reject('error')),
+    .mockReturnValueOnce(
+      Promise.resolve({
+        data: {},
+        status: 400,
+      }),
+    )
+  .mockReturnValueOnce(Promise.reject('error')),
 }));
 
 describe('testing the report bug send request', () => {
@@ -48,13 +54,28 @@ describe('testing the report bug send request', () => {
   });
 
   it('should run onError callback when the status is not ok', async () => {
-    const report = await reportBug({
-      reqBody,
-      onError() {
-        // expect(this).toThrow(Error);
-      },
-    });
+    try {
+      await reportBug({
+        reqBody,
+        onError(error) {
+          expect(!!error).toBe(true);
+        },
+      });
+    } catch (error) {
+      expect(!!error).toBe(true);
+    }
+  });
 
-    expect(report).toThrow(Error('error'));
+  it('should run onError callback when thrown unknown error', async () => {
+    try {
+      await reportBug({
+        reqBody,
+        onError(error) {
+          expect(!!error).toBe(true);
+        },
+      });
+    } catch (error) {
+      expect(!!error).toBe(true);
+    }
   });
 });

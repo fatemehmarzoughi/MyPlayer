@@ -292,9 +292,9 @@ export type User = {
   id: number;
   email: string;
   username: string;
-  createdAt: Date;
-  updatedAt: Date;
-
+  
+  createdAt?: Date;
+  updatedAt?: Date;
   password?: string,
   provider?: 'local';
   confirmed?: boolean;
@@ -372,7 +372,7 @@ export type CreateAccountRequestBody = {
 export type CreateAccountResponseBody = {
   jwt: string;
   user: User & {
-    role: {
+    role?: {
       id: number;
       name: string;
       description: string;

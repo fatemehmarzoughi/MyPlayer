@@ -26,7 +26,7 @@ export class ModalClass extends React.PureComponent<
         transparent={true}
         onRequestClose={this.props.cancelModal}
       >
-        <View style={styles.container}>
+        <View testID="container" style={styles.container}>
           <View style={styles.modalStyle}>
             <Text style={styles.textColor}>{this.props.question}</Text>
             <View style={styles.btns}>

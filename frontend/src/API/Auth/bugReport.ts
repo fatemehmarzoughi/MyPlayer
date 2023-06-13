@@ -16,7 +16,7 @@ export const reportBug = async ({reqBody, onError, onSuccess}: ReportBug) => {
     if (res.status === 200) {
       onSuccess?.(res.data);
       return res;
-    } else throw Error;
+    } else throw Error();
   } catch (error) {
     onError?.(error as Error);
     throw Error(String(error));
