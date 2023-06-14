@@ -1,4 +1,4 @@
-import { getData } from 'src/LocalStorage';
+import {getData} from 'src/LocalStorage';
 import {DELETE} from '../API';
 import {DeleteAccountResponseBody} from 'src/API';
 
@@ -8,14 +8,16 @@ export type DeleteAccount = {
 };
 
 export const deleteAccount = async ({onError, onSuccess}: DeleteAccount) => {
-  const userId = await getData('userId');
   try {
+    const userId = await getData('userId');
+    if (!userId) throw Error('There is no logged in user');
     const res = await DELETE({
       endpoint: `/api/users/${userId}`,
     });
-    onSuccess?.(res.data);
+    if (res.status === 200) onSuccess?.(res.data);
+    else throw Error('Something went wrong');
   } catch (error) {
     onError?.(error as Error);
-    throw new Error(String(error));
+    throw Error(String(error));
   }
 };

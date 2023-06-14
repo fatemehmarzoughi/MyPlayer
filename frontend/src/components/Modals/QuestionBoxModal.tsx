@@ -1,8 +1,8 @@
-import React from "react";
-import { Modal, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React from 'react';
+import {Modal, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-import * as Colors from "src/assets/constants/Colors";
-import { width, height } from "src/assets";
+import * as Colors from 'src/assets/constants/Colors';
+import {width, height} from 'src/assets';
 
 export interface IModalClassProps {
   btnTitle: string;
@@ -24,22 +24,20 @@ export class ModalClass extends React.PureComponent<
       <Modal
         visible={this.props.modalVisible}
         transparent={true}
-        onRequestClose={this.props.cancelModal}
-      >
-        <View style={styles.container}>
+        onRequestClose={this.props.cancelModal}>
+        <View testID="container" style={styles.container}>
           <View style={styles.modalStyle}>
             <Text style={styles.textColor}>{this.props.question}</Text>
             <View style={styles.btns}>
               <TouchableOpacity
                 style={styles.btnStyle}
-                onPress={this.props.handleMainBtn}
-              >
+                onPress={this.props.handleMainBtn}>
                 <Text style={styles.textColor}>{this.props.btnTitle}</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                testID="cancelBtn"
                 style={styles.btnStyle}
-                onPress={this.props.handleCancelBtn}
-              >
+                onPress={this.props.handleCancelBtn}>
                 <Text style={[styles.textColor]}>Cancel</Text>
               </TouchableOpacity>
             </View>
@@ -54,40 +52,40 @@ const usedWidth = width - 20;
 const styles = StyleSheet.create({
   modalStyle: {
     backgroundColor: Colors.mainColor,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: "auto",
-    marginBottom: "auto",
-    marginRight: "auto",
-    marginLeft: "auto",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginRight: 'auto',
+    marginLeft: 'auto',
     width: usedWidth,
     padding: 30,
     borderRadius: 10,
   },
   btns: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-around",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
     width: usedWidth,
-    flexDirection: "row-reverse",
+    flexDirection: 'row-reverse',
     marginTop: 30,
   },
   btnStyle: {
     padding: 20,
     paddingRight: 30,
     paddingLeft: 30,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderColor: Colors.white,
     borderRadius: 10,
     borderWidth: 1,
   },
   textColor: {
     color: Colors.white,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   container: {
-    backgroundColor: "rgba(0,0,0,0.6)",
+    backgroundColor: 'rgba(0,0,0,0.6)',
     height,
     width,
   },

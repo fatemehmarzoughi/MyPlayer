@@ -29,10 +29,10 @@ React-Native
 
 # Technologies<br>
 <b>Frontend</b><br>
-Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google signin, Gesture Recognizer, Notification, ... .<br>
+Jest, Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google signin, Gesture Recognizer, Notification, ... .<br>
 
 <b>Backend</b><br>
-Strapi(CMS), render<br>
+Strapi(CMS)<br>
 
 # Application 
 <!-- https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-8251-ecb529e9f593.mp4 -->
