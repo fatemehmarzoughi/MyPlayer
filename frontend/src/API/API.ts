@@ -6,6 +6,8 @@ import './config';
 export const DELETE = async ({endpoint}: {endpoint: string}) => {
   try {
     const accessToken = await getData('accessToken');
+    if(!accessToken) throw Error('no access token');
+
     const res = await axios({
       method: 'delete',
       url: endpoint,
@@ -15,7 +17,7 @@ export const DELETE = async ({endpoint}: {endpoint: string}) => {
     });
     return res;
   } catch (err) {
-    throw new Error(String(err));
+    throw Error(String(err));
   }
 };
 
