@@ -3,29 +3,36 @@ React-Native
 
 # App Installation<br>
 <b> For Android run : </b><br>
+```code
 1- cd frontend
-2- yarn install<br>
-3- yarn android<br><br>
+2- yarn install
+3- yarn android
+```
 <b> For IOS </b><br>
+```code
 1- cd frontend
-2- yarn install<br>
-3- cd ios <br>
-4- pod install <br>
-5- cd ../ <br>
-6- yarn ios<br>
+2- yarn install
+3- cd ios 
+4- pod install
+5- cd ../ 
+6- yarn ios
+```
+
 
 # Running Backend<br>
-1- cd backend<br>
-2- yarn<br>
-3- yarn develop <br><br>
+```code
+1- cd backend
+2- yarn
+3- yarn develop 
+```
 <b>This will run the APIs on localhost:1337, so you can add your own data to the items</b><br>
 
 # Technologies<br>
 <b>Frontend</b><br>
-Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google signin, Gesture Recognizer, Notification, ... .<br>
+Jest, Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google signin, Gesture Recognizer, Notification, ... .<br>
 
 <b>Backend</b><br>
-Strapi(CMS), render<br>
+Strapi(CMS)<br>
 
 # Application 
 <!-- https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-8251-ecb529e9f593.mp4 -->

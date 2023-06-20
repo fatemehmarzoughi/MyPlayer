@@ -1,4 +1,4 @@
-import {POST} from 'src';
+import {POST} from '../API';
 import {ReportBugRequestBody, ReportBugResponseBody} from 'src/API';
 
 export type ReportBug = {
@@ -13,10 +13,12 @@ export const reportBug = async ({reqBody, onError, onSuccess}: ReportBug) => {
       endpoint: '/api/bug-reports',
       reqBody,
     });
-    onSuccess?.(res.data);
-    return res;
+    if (res.status === 200) {
+      onSuccess?.(res.data);
+      return res;
+    } else throw Error();
   } catch (error) {
     onError?.(error as Error);
-    throw new Error(String(error));
+    throw Error(String(error));
   }
 };

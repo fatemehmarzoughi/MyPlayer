@@ -292,9 +292,9 @@ export type User = {
   id: number;
   email: string;
   username: string;
-  createdAt: Date;
-  updatedAt: Date;
-
+  
+  createdAt?: Date;
+  updatedAt?: Date;
   password?: string,
   provider?: 'local';
   confirmed?: boolean;
@@ -309,6 +309,11 @@ export enum ItemCategory {
   Movie = 'Movie',
   Sport = 'Sport',
   Radio = 'Radio',
+}
+
+export enum ItemType {
+  Video = 'Video',
+  Audio = 'Audio',
 }
 
 export enum ItemLabel {
@@ -328,6 +333,7 @@ export enum ItemMood {
 export type Item = {
   title: string;
   cover: string;
+  type: ItemType;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date;
@@ -372,7 +378,7 @@ export type CreateAccountRequestBody = {
 export type CreateAccountResponseBody = {
   jwt: string;
   user: User & {
-    role: {
+    role?: {
       id: number;
       name: string;
       description: string;
@@ -435,9 +441,9 @@ export type ReportBugRequestBody = {
 
 export type Bug = {
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  publishedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  publishedAt?: Date;
 };
 
 export type ReportBugResponseBody = Data<Bug, Attributes<Bug>>;
@@ -447,3 +453,10 @@ export type ReportBugResponseBody = Data<Bug, Attributes<Bug>>;
 /* -------------------------------------------------------------------------- */
 
 export type DeleteAccountResponseBody = User;
+
+
+/* -------------------------------------------------------------------------- */
+/*                            GET One Item Details                            */
+/* -------------------------------------------------------------------------- */
+
+export type GETItemDetailsResponseBody = Data<Item, Attributes<Item>>

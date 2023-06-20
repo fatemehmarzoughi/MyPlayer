@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {},
     "allowJs": true,
+    "module": "commonjs",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
@@ -34,7 +35,7 @@
     "node_modules",
     "babel.config.js",
     "metro.config.js",
-    "jest.config.js",
+    "jest.config.ts",
     "@tsconfig/react-native/tsconfig.json"
   ]
 }

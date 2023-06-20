@@ -25,7 +25,7 @@ import {
   ISportActions,
   IRadioActions,
 } from 'src/Redux';
-import {GetItemsResponseBody, ItemCategory, ItemLabel} from 'src/API';
+import {GetItemsResponseBody, ItemCategory, ItemLabel, ItemType} from 'src/API';
 
 import {styles} from './style';
 import {NetworkError} from '../Errors';
@@ -162,6 +162,20 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
       selectedSubCategory,
       subCategoryVisibility: false,
     });
+  };
+
+  navigateToVideoAudio = (id: number, type: ItemType) => {
+    switch (type) {
+      case ItemType.Audio:
+        this.props.navigation.navigate('Audio', {id});
+        break;
+      case ItemType.Video:
+        this.props.navigation.navigate('Video', {id});
+        break;
+      default:
+        'unhandled';
+        break;
+    }
   };
 
   onRefresh = async () => {
@@ -370,6 +384,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
+                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
               />
 
               <HomeFlatLists
@@ -380,6 +395,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
+                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
               />
 
               <HomeFlatLists
@@ -390,6 +406,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="large"
+                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
               />
 
               <HomeFlatLists
@@ -400,6 +417,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
+                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
               />
             </View>
           )}

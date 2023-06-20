@@ -20,7 +20,6 @@ export const getPlans = async ({
       return res.data;
     } else throw Error();
   } catch (error) {
-    console.log(error);
     onError?.(error as Error);
   }
 };
