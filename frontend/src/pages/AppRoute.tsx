@@ -15,7 +15,8 @@ import {
   MenuContent,
   About,
   TermsAndPolicy,
-  NetworkError,
+  Video,
+  Audio,
 } from 'src/pages';
 import React, {useContext, useEffect} from 'react';
 import Home from './Home/Home';
@@ -33,9 +34,9 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {backgroundColor} from 'src/components';
+import {getData} from 'src/LocalStorage';
 
 import {styles} from './style';
-import {getData} from 'src/LocalStorage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -233,6 +234,20 @@ export const AppRoute: React.FC = React.memo(() => {
               headerShown: false,
             }}>
             {props => <EntriesOptions {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Video"
+            options={{
+              headerShown: true,
+            }}>
+            {props => <Video {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Audio"
+            options={{
+              headerShown: true,
+            }}>
+            {props => <Audio {...props} />}
           </Stack.Screen>
           <Stack.Screen
             name="AppRoute"

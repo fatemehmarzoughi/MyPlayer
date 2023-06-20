@@ -62,6 +62,15 @@
         "Horror",
         "Comedy"
       ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Audio",
+        "Video"
+      ],
+      "required": true,
+      "default": "Audio"
     }
   }
 }

@@ -311,6 +311,11 @@ export enum ItemCategory {
   Radio = 'Radio',
 }
 
+export enum ItemType {
+  Video = 'Video',
+  Audio = 'Audio',
+}
+
 export enum ItemLabel {
   Recommended = 'Recommended',
   MostWatched = 'MostWatched',
@@ -328,6 +333,7 @@ export enum ItemMood {
 export type Item = {
   title: string;
   cover: string;
+  type: ItemType;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date;
@@ -447,3 +453,10 @@ export type ReportBugResponseBody = Data<Bug, Attributes<Bug>>;
 /* -------------------------------------------------------------------------- */
 
 export type DeleteAccountResponseBody = User;
+
+
+/* -------------------------------------------------------------------------- */
+/*                            GET One Item Details                            */
+/* -------------------------------------------------------------------------- */
+
+export type GETItemDetailsResponseBody = Data<Item, Attributes<Item>>

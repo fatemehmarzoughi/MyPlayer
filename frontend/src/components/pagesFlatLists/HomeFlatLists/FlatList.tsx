@@ -1,7 +1,7 @@
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import {Item, Attributes} from 'src/API';
+import {Item, Attributes, ItemType} from 'src/API';
 import Context from 'src/context/context';
 import { contentColor } from 'src/components/lightDarkTheme';
 
@@ -10,8 +10,9 @@ import {styles} from './style';
 export interface IHomeFlatListsStates {}
 export interface IHomeFlatListsProps {
   title: string;
-  type: 'large' | 'medium' | 'small';
   data: Attributes<Item>[];
+  type: 'large' | 'medium' | 'small';
+  onPress: (id: number, type: ItemType) => void
 }
 
 export class HomeFlatLists extends React.PureComponent<
@@ -30,8 +31,7 @@ export class HomeFlatLists extends React.PureComponent<
           data={this.props.data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => (
-            // <TouchableOpacity onPress={() => this.props.onPress(item.id)}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.onPress(item.id, item.attributes.type)}>
               <FastImage
                 style={[
                   styles.item,
