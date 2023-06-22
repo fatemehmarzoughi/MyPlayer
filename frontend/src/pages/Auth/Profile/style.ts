@@ -3,15 +3,6 @@ import { dark, gray, lightGray, mainColor, statusBarIOS, white, width } from "sr
 
 const usedWidth = width - 30;
 export const styles = StyleSheet.create({
-  container: {
-    marginRight: "auto",
-    marginLeft: "auto",
-    marginTop: statusBarIOS,
-    width: usedWidth,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  },
   header: {
     display: "flex",
     alignItems: "flex-start",

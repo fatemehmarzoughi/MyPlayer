@@ -1,5 +1,5 @@
 import React from 'react';
-import {ModalClass} from '../../../src/components/Modals/QuestionBoxModal';
+import {ModalClass} from '../../../src/components/modals/questionBoxModal';
 import {render, cleanup, screen, waitFor} from '@testing-library/react-native';
 
 import '@testing-library/jest-dom';

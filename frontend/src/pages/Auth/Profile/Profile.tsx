@@ -19,7 +19,7 @@ import {getUserInfo} from 'src/API';
 import Context from 'src/context/context';
 import {checkLoginStatus} from 'src/utils';
 import {getData, storeData} from 'src/LocalStorage';
-import {ModalClass, contentColor} from 'src/components';
+import {ModalClass, PageWrapper, contentColor} from 'src/components';
 import Notification from 'src/Notification/NotificationSetup';
 import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
 
@@ -130,7 +130,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
             onRefresh={() => this.getUser()}
           />
         }>
-        <View style={styles.container}>
+        <PageWrapper>
           <View style={styles.header}>
             <Text style={[styles.title, contentColor(this.context.theme)]}>
               Profile
@@ -410,7 +410,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
               });
             }}
           />
-        </View>
+        </PageWrapper>
       </ScrollView>
     );
   }

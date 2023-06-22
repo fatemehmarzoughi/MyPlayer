@@ -7,7 +7,8 @@ export enum ItemDetailEnum {
 
 export type ItemDetailsActions = {
   type: ItemDetailEnum;
-  loadingItemDetail?: boolean;
+  loadingItemDetail: boolean;
+
   itemDetails?: GETItemDetailsResponseBody;
   error?: Error;
 };
@@ -25,17 +26,17 @@ export const itemDetails = (
     case ItemDetailEnum.GET_ITEM_DETAILS:
       return {
         ...state,
-        loadingItemDetail: false,
-        itemDetails: state.itemDetails,
+        itemDetails: action.itemDetails,
+        loadingItemDetail: action.loadingItemDetail,
       };
     case ItemDetailEnum.GET_ITEM_DETAILS_FAILED:
       return {
         ...state,
-        error: state.error,
-        loadingItemDetail: false,
+        error: action.error,
+        loadingItemDetail: action.loadingItemDetail,
       };
 
     default:
-      return {...state};
+      return state;
   }
 };

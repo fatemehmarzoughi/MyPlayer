@@ -12,6 +12,7 @@ import CountryPicker, {
 } from 'react-native-country-picker-modal';
 import {
   ModalClass,
+  PageWrapper,
   SavingModal,
   contentColor,
   surfaceColor,
@@ -81,7 +82,7 @@ export class EditProfile extends React.PureComponent<
         });
         /* ------ DO NOT CHANGE THE POSITION OF THIS CODE (THE APP WILL CRASH) ------ */
         this.setState({
-          modalVisible: false
+          modalVisible: false,
         });
         this.context.setIsLogin(false);
         /* ---------------------------------- ***** --------------------------------- */
@@ -166,14 +167,14 @@ export class EditProfile extends React.PureComponent<
   override render() {
     return (
       <ScrollView>
-        <View style={[styles.container]}>
+        <PageWrapper>
           <View style={styles.header}>
             <View style={styles.row1}>
               <TouchableOpacity onPress={this.onSave} style={styles.btn}>
                 <Text style={styles.saveText}>Save</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Profile')}
+                onPress={() => this.props.navigation.goBack()}
                 style={styles.btn}>
                 <Text
                   style={[styles.cancelText, contentColor(this.context.theme)]}>
@@ -289,7 +290,7 @@ export class EditProfile extends React.PureComponent<
               })
             }
           />
-        </View>
+        </PageWrapper>
       </ScrollView>
     );
   }

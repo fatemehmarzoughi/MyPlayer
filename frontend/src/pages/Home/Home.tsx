@@ -164,20 +164,6 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
     });
   };
 
-  navigateToVideoAudio = (id: number, type: ItemType) => {
-    switch (type) {
-      case ItemType.Audio:
-        this.props.navigation.navigate('Audio', {id});
-        break;
-      case ItemType.Video:
-        this.props.navigation.navigate('Video', {id});
-        break;
-      default:
-        'unhandled';
-        break;
-    }
-  };
-
   onRefresh = async () => {
     this.setState({
       loading: true,
@@ -384,7 +370,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
-                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
+                onPress={(id) => this.props.navigation.navigate('AVRoot', {id})}
               />
 
               <HomeFlatLists
@@ -395,7 +381,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
-                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
+                onPress={(id) => this.props.navigation.navigate('AVRoot', {id})}
               />
 
               <HomeFlatLists
@@ -406,7 +392,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="large"
-                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
+                onPress={(id) => this.props.navigation.navigate('AVRoot', {id})}
               />
 
               <HomeFlatLists
@@ -417,7 +403,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
-                onPress={(id, type) => this.navigateToVideoAudio(id, type)}
+                onPress={(id) => this.props.navigation.navigate('AVRoot', {id})}
               />
             </View>
           )}
