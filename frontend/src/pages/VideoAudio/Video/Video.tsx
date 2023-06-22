@@ -1,27 +1,27 @@
-import {
-  RouteProp,
-  ParamListBase,
-  NavigationProp,
-} from '@react-navigation/native';
 import React from 'react';
 import {Text} from 'react-native';
+import {ItemDetailsActions} from 'src/Redux/reducers';
 
-export type IVideoProps = {
-  navigation: {openDrawer: () => void} & NavigationProp<any, any>;
-  route: RouteProp<ParamListBase, 'Video'>;
+export type IVideoMapState = {
+  itemDetails: ItemDetailsActions;
 };
-export type IVideoStates = {};
+
+export interface IVideoProps {
+
+}
+export type IVideoStates = {
+  refreshing: boolean;
+};
 
 export class Video extends React.PureComponent<IVideoProps, IVideoStates> {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      refreshing: false,
+    };
   }
 
-  override componentDidMount(): void {
-    console.log('this.props.route.params = ');
-    console.log(this.props.route.params);
-  }
+  override async componentDidMount() {}
 
   override render(): React.ReactNode {
     return <Text>Video</Text>;

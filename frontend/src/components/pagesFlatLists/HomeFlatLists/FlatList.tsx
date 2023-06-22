@@ -12,7 +12,7 @@ export interface IHomeFlatListsProps {
   title: string;
   data: Attributes<Item>[];
   type: 'large' | 'medium' | 'small';
-  onPress: (id: number, type: ItemType) => void
+  onPress: (id: number) => void
 }
 
 export class HomeFlatLists extends React.PureComponent<
@@ -31,7 +31,7 @@ export class HomeFlatLists extends React.PureComponent<
           data={this.props.data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => (
-            <TouchableOpacity onPress={() => this.props.onPress(item.id, item.attributes.type)}>
+            <TouchableOpacity onPress={() => this.props.onPress(item.id)}>
               <FastImage
                 style={[
                   styles.item,

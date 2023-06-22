@@ -1,28 +1,27 @@
-import {
-  RouteProp,
-  ParamListBase,
-  NavigationProp,
-} from '@react-navigation/native';
 import React from 'react';
 import {Text} from 'react-native';
+import {ItemDetailsActions} from 'src/Redux/reducers';
 
-export type IAudioProps = {
-  navigation: {openDrawer: () => void} & NavigationProp<any, any>;
-  route: RouteProp<ParamListBase, 'Audio'>;
+export type IAudioMapState = {
+  itemDetails: ItemDetailsActions;
 };
 
-export type IAudioStates = {};
+export interface IAudioProps {
+
+}
+export type IAudioStates = {
+  refreshing: boolean;
+};
 
 export class Audio extends React.PureComponent<IAudioProps, IAudioStates> {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      refreshing: false,
+    };
   }
 
-  override componentDidMount(): void {
-    console.log('this.props.route.params = ');
-    console.log(this.props.route.params);
-  }
+  override async componentDidMount() {}
 
   override render(): React.ReactNode {
     return <Text>Audio</Text>;

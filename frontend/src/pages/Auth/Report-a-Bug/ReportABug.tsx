@@ -14,7 +14,7 @@ import * as Colors from 'src/assets/constants/Colors';
 import {styles} from './style';
 import {toastMessageDuration} from 'src/assets';
 import {POST, reportBug} from 'src/API';
-import {Header} from 'src/components';
+import {Header, PageWrapper} from 'src/components';
 import {getData} from 'src/LocalStorage';
 
 export interface IReportABugProps {
@@ -99,10 +99,10 @@ export class ReportABug extends React.PureComponent<
   override render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <PageWrapper>
           <Header
             title="Report a Bug"
-            customClick={() => this.props.navigation.navigate('Profile')}
+            customClick={() => this.props.navigation.goBack()}
           />
           <TextInput
             placeholder="Your explenation goes here ... "
@@ -121,7 +121,7 @@ export class ReportABug extends React.PureComponent<
             />
             <Text style={styles.btnText}>Report</Text>
           </TouchableOpacity>
-        </View>
+        </PageWrapper>
       </ScrollView>
     );
   }

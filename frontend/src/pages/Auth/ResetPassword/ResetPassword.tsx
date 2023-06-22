@@ -5,7 +5,7 @@ import Context from 'src/context/context';
 import Toast from 'react-native-toast-message';
 import {NavigationProp} from '@react-navigation/native';
 import {dark, gray, toastMessageDuration, white} from 'src/assets';
-import {Header2, SavingModal, backgroundColor, contentColor} from 'src/components';
+import {Header2, PageWrapper, SavingModal, backgroundColor, contentColor} from 'src/components';
 
 import {styles} from './style';
 
@@ -74,10 +74,10 @@ export class ResetPassword extends React.PureComponent<
   override render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <PageWrapper>
           <Header2
             onSave={this.onSave}
-            onCancel={() => this.props.navigation.navigate('Profile')}
+            onCancel={() => this.props.navigation.goBack()}
             title="Reset Password"
           />
           <TextInput
@@ -91,7 +91,7 @@ export class ResetPassword extends React.PureComponent<
               })
             }
           />
-        </View>
+        </PageWrapper>
         <SavingModal modalVisible={this.state.saving} />
       </ScrollView>
     );
