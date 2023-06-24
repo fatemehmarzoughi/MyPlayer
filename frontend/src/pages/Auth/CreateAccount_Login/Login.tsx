@@ -5,23 +5,18 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {
-  gray,
-  lightGray,
-  mainColor,
-  toastMessageDuration,
-} from 'src/assets';
+import {gray, lightGray, mainColor, toastMessageDuration} from 'src/assets';
 import React from 'react';
 import {login} from 'src/API';
 import Context from 'src/context/context';
 import {storeData} from 'src/LocalStorage';
 import {contentColor} from 'src/components';
-import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {NavigationProp} from '@react-navigation/native';
 
 import {styles} from './style';
+import {Spinner} from 'native-base';
 
 export interface ILoginProps {
   navigation: NavigationProp<any, any>;
@@ -211,7 +206,9 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
           <View style={styles.input}>
             <TextInput
               style={[styles.textInput, contentColor(this.context.theme)]}
-              placeholderTextColor={this.context.theme === 'light' ? gray : lightGray}
+              placeholderTextColor={
+                this.context.theme === 'light' ? gray : lightGray
+              }
               placeholder="Email"
               onChangeText={input => {
                 this.setState({email: input});
@@ -221,7 +218,9 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
           <View style={styles.input}>
             <TextInput
               style={[styles.textInput, contentColor(this.context.theme)]}
-              placeholderTextColor={this.context.theme === 'light' ? gray : lightGray}
+              placeholderTextColor={
+                this.context.theme === 'light' ? gray : lightGray
+              }
               placeholder="Password"
               secureTextEntry={this.state.passwordIconVisibility}
               onChangeText={input => {
@@ -260,13 +259,20 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
           <TouchableOpacity
             onPress={() => this.handleLogin()}
             style={styles.btn}>
-            <LottieView
-              style={this.state.loggingIn ? {opacity: 1} : {opacity: 0}}
-              loop={true}
-              autoPlay={true}
-              source={require('../../../assets/Images/loading.json')}
-            />
-            <Text style={styles.btnText}>Login</Text>
+            {this.state.loggingIn ? (
+              <Spinner
+                size="sm"
+                accessibilityLabel="Loading posts"
+                color="warning.100"
+                style={{
+                  alignSelf: 'center',
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}
+              />
+            ) : (
+              <Text style={styles.btnText}>Login</Text>
+            )}
           </TouchableOpacity>
           <View style={styles.seperator}>
             <View style={styles.line}></View>

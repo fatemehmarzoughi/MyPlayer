@@ -10,7 +10,7 @@ export const getItemDetails = ({id}: IGetItemDetails) => {
   return async (dispatch: typeof store.dispatch) => {
     try {
       const res = await GET({
-        endpoint: `/api/items/${id}`,
+        endpoint: `/api/items/${id}?populate=*`,
       });
 
       if (res.status === 200) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Image} from 'native-base';
 import {ItemDetailsActions} from 'src/Redux/reducers';
 
 export type IVideoMapState = {
@@ -7,23 +7,10 @@ export type IVideoMapState = {
 };
 
 export interface IVideoProps {
-
+  filePath: string;
+  cover: string
 }
-export type IVideoStates = {
-  refreshing: boolean;
-};
 
-export class Video extends React.PureComponent<IVideoProps, IVideoStates> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      refreshing: false,
-    };
-  }
-
-  override async componentDidMount() {}
-
-  override render(): React.ReactNode {
-    return <Text>Video</Text>;
-  }
-}
+export const Video: React.FC<IVideoProps> = React.memo(({filePath, cover}) => {
+  return <Image width={'100%'} height={220} source={{uri: cover}} alt={cover} />;
+});

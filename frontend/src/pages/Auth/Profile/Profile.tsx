@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import LottieView from 'lottie-react-native';
+import {Spinner} from 'native-base';
 import Toast from 'react-native-toast-message';
 import ToggleSwitch from 'toggle-switch-react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
@@ -17,7 +17,6 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {getUserInfo} from 'src/API';
 import Context from 'src/context/context';
-import {checkLoginStatus} from 'src/utils';
 import {getData, storeData} from 'src/LocalStorage';
 import {ModalClass, PageWrapper, contentColor} from 'src/components';
 import Notification from 'src/Notification/NotificationSetup';
@@ -81,8 +80,6 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
   };
 
   getUser = async () => {
-    this.setState({refreshing: true});
-
     await getUserInfo({
       onSuccess: data => {
         this.context.setUserInfo(data);
@@ -104,21 +101,27 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
     });
   };
 
+  onRefresh = async () => {
+    this.setState({refreshing: true});
+    await this.getUser();
+  };
+
   override async componentDidMount() {
     setTimeout(async () => {
       await this.getUser();
     }, 1000);
 
-    // this.focusListener = this.props.navigation?.addListener("focus", async () => {
-    //   await this.getUser();
-    // });
+    this.focusListener = this.props.navigation?.addListener(
+      'focus',
+      async () => {
+        await this.getUser();
+      },
+    );
 
     const appNotification = await getData('appNotification');
     appNotification === 'false'
       ? this.setState({appNotification: false})
       : this.setState({appNotification: true});
-    console.log(this.context.userInfo?.username);
-    console.log(this.context.userInfo?.email);
   }
 
   override render() {
@@ -127,7 +130,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={() => this.getUser()}
+            onRefresh={this.onRefresh}
           />
         }>
         <PageWrapper>
@@ -147,11 +150,11 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                   (this.context.userInfo?.email === undefined &&
                     this.context.userInfo?.username === undefined) ? (
                     <>
-                      <LottieView
+                      <Spinner
+                        size={'lg'}
+                        accessibilityLabel="Loading posts"
+                        color="warning.500"
                         style={styles.loadingIcon}
-                        loop={true}
-                        autoPlay={true}
-                        source={require('../../../assets/Images/loading2.json')}
                       />
                     </>
                   ) : (

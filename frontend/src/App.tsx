@@ -7,6 +7,7 @@ import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import {getData, storeData} from 'src/LocalStorage';
 import SplashScreen from 'react-native-splash-screen';
+import {Spinner} from 'native-base';
 
 export interface IAppProps {}
 export interface IAppStates {
@@ -38,22 +39,24 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
 
       const isFirstInstallation = await getData('isFirstInstallation');
       // if(isFirstInstallation === null)
-      if(isFirstInstallation !== null) // for test
-      {
-        await storeData('isFirstInstallation' , 'false')
+      if (isFirstInstallation !== null) {
+        // for test
+        await storeData('isFirstInstallation', 'false');
         this._isMount && this.context.setIsFirstInstallation(null);
-        this._isMount && this.setState({
-          checkingFirstTimeUsers : false
-        })
-        console.log(`isFirstInstallation in App.js = ${this.context.isFirstInstallation}`)
-      }
-      else
-      {
+        this._isMount &&
+          this.setState({
+            checkingFirstTimeUsers: false,
+          });
+        console.log(
+          `isFirstInstallation in App.js = ${this.context.isFirstInstallation}`,
+        );
+      } else {
         this._isMount && this.context.setIsFirstInstallation(false);
 
-        this._isMount && this.setState({
-          checkingFirstTimeUsers : false
-        })
+        this._isMount &&
+          this.setState({
+            checkingFirstTimeUsers: false,
+          });
       }
     } catch {
       (err: any) => console.log(err);
@@ -73,10 +76,15 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
         <StatusBar style="auto" hidden />
         <>
           {checkingFirstTimeUsers ? (
-            <LottieView
-              loop={true}
-              autoPlay={true}
-              source={require('./assets/Images/loading2.json')}
+            <Spinner
+              size="lg"
+              accessibilityLabel="Loading posts"
+              color="warning.500"
+              style={{
+                alignSelf: 'center',
+                marginTop: 'auto',
+                marginBottom: 'auto',
+              }}
             />
           ) : (
             <AppRoute />

@@ -1,21 +1,17 @@
 import {
   Text,
-  View,
   TextInput,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import LottieView from 'lottie-react-native';
-import Toast from 'react-native-toast-message';
 import {
   NavigationProp,
   ParamListBase,
   RouteProp,
 } from '@react-navigation/native';
-import {POST} from 'src/API';
+import { Spinner } from 'native-base';
 import {Header, PageWrapper} from 'src/components';
-import {toastMessageDuration} from 'src/assets';
 
 import {styles} from './style';
 
@@ -143,10 +139,15 @@ export class ForgetPassword extends React.PureComponent<
                 style={styles.btn}
                 // onPress={() => this.handleSend()}
               >
-                <LottieView
-                  loop={true}
-                  autoPlay={true}
-                  source={require('../../../assets/Images/loading.json')}
+                <Spinner
+                  size={'lg'}
+                  accessibilityLabel="Loading posts"
+                  color="warning.500"
+                  style={{
+                    alignSelf: 'center',
+                    marginTop: 'auto',
+                    marginBottom: 'auto',
+                  }}
                 />
                 <Text style={styles.btnText}>Sending</Text>
               </TouchableOpacity>
