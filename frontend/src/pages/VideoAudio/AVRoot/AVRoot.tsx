@@ -235,6 +235,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     /* -------------------------------------------------------------------------- */
     /*                                  UseEffect                                 */
     /* -------------------------------------------------------------------------- */
+    
     const onRefresh = useCallback(async () => {
       setRefreshing(true);
 
