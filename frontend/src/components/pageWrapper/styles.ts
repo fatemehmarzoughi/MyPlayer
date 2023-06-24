@@ -10,6 +10,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 'auto',
     marginLeft: 'auto',
+  },
+  statusBar: {
     marginTop: statusBarIOS,
   },
 });

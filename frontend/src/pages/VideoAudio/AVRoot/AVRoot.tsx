@@ -1,18 +1,39 @@
+/* -------------------------------------------------------------------------- */
+/*                                   Imports                                  */
+/* -------------------------------------------------------------------------- */
 import {
   RouteProp,
   ParamListBase,
   NavigationProp,
 } from '@react-navigation/native';
-import React from 'react';
-import {RefreshControl, ScrollView, Text} from 'react-native';
-import {ConnectedProps, connect} from 'react-redux';
-import {getItemDetails} from 'src/Redux/actions';
-import {ItemDetailsActions} from 'src/Redux/reducers';
-import {NetworkError} from 'src/pages/Errors';
-import {Header, PageWrapper} from 'src/components';
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  useRef,
+} from 'react';
 import {ItemType} from 'src/API';
+import {height, mainColor} from 'src/assets';
 import {Audio, Video} from 'src/pages';
-import LottieView from 'lottie-react-native';
+import Context from 'src/context/context';
+import {NetworkError} from 'src/pages/Errors';
+import {getItemDetails} from 'src/Redux/actions';
+import {ConnectedProps, connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {ItemDetailsActions} from 'src/Redux/reducers';
+import {FlatList, TouchableOpacity} from 'react-native';
+import EvIcon from 'react-native-vector-icons/EvilIcons';
+import {Header, PageWrapper, contentColor} from 'src/components';
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import {View, Text, Image, VStack, HStack, Divider, Spinner} from 'native-base';
+
+import {styles} from './styles';
+
+/* -------------------------------------------------------------------------- */
+/*                                    Types                                   */
+/* -------------------------------------------------------------------------- */
 
 type Props = {
   id: number;
@@ -26,101 +47,242 @@ export interface IAudioVideoRootProps extends IAudioVideoRootDispatchProps {
   navigation: {openDrawer: () => void} & NavigationProp<any, any>;
   route: RouteProp<ParamListBase, 'AVRoot'>;
 }
-export type IAudioVideoRootStates = {
-  refreshing: boolean;
-};
 
-class AudioVideoRoot extends React.PureComponent<
-  IAudioVideoRootProps,
-  IAudioVideoRootStates
-> {
-  private _isMounted = true;
-  constructor(props) {
-    super(props);
-    this.state = {
-      refreshing: false,
-    };
-  }
+/* -------------------------------------------------------------------------- */
+/*                               AudioVideoRoot                               */
+/* -------------------------------------------------------------------------- */
+const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
+  ({
+    route,
+    navigation,
+    itemDetails: itemDetailsProps,
+    getItemDetails: getItemDetailsProps,
+  }) => {
+    /* -------------------------------------------------------------------------- */
+    /*                                 Attributes                                 */
+    /* -------------------------------------------------------------------------- */
+    const isMounted = useRef<boolean>(true);
+    const context = useContext(Context);
+    const {loadingItemDetail, itemDetails, error} = itemDetailsProps;
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  override async componentDidMount() {
-    this._isMounted = false;
-    const {id} = this.props.route.params as Props;
-    await this.props.getItemDetails({id});
-  }
+    /* -------------------------------------------------------------------------- */
+    /*                              Content Renderers                             */
+    /* -------------------------------------------------------------------------- */
 
-  override componentWillUnmount(): void {
-    this._isMounted = false;
-  }
+    const _render_tools = useMemo(() => {
+      if (!itemDetails) return <NetworkError onReload={onRefresh} />;
+      const {title, relatedItems, label, likes} = itemDetails.data.attributes;
+      return (
+        <VStack width={'100%'} marginTop={7}>
+          <HStack justifyContent={'space-between'}>
+            <Text color={mainColor} fontSize={'xs'}>
+              {label}
+            </Text>
+            <HStack space={1}>
+              <TouchableOpacity>
+                <EvIcon
+                  name="share-google"
+                  style={contentColor(context.theme)}
+                  size={32}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <AwesomeIcon
+                  name="bookmark"
+                  style={contentColor(context.theme)}
+                  size={22}
+                />
+              </TouchableOpacity>
+            </HStack>
+          </HStack>
+          <Text
+            width={'80%'}
+            {...contentColor(context.theme)}
+            fontSize={'2xl'}
+            marginBottom={3}
+            fontWeight="bold">
+            {title}
+          </Text>
+          <HStack space={3}>
+            <HStack alignItems={'center'} space={1}>
+              <Icon
+                name="heart"
+                style={contentColor(context.theme)}
+                size={12}
+              />
+              <Text {...contentColor(context.theme)} fontSize="xs">
+                {likes} Likes
+              </Text>
+            </HStack>
+            <HStack alignItems={'center'} space={1}>
+              <Icon name="play" style={contentColor(context.theme)} size={12} />
+              <Text {...contentColor(context.theme)} fontSize="xs">
+                {relatedItems.data.length} Videos
+              </Text>
+            </HStack>
+          </HStack>
+        </VStack>
+      );
+    }, [itemDetails]);
 
-  onRefresh = () => {
-    this.setState(
-      {
-        refreshing: true,
-      },
-      async () => {
-        const {id} = this.props.route.params as Props;
-        await this.props.getItemDetails({id});
-        this.setState({refreshing: false});
-      },
-    );
-  };
+    const _render_relatedItems = useMemo(() => {
+      if (!itemDetails) return <NetworkError onReload={onRefresh} />;
+      const {title, type, relatedItems} = itemDetails.data.attributes;
+      return (
+        <>
+          <Text
+            width="100%"
+            marginTop={8}
+            marginBottom={4}
+            fontWeight={'bold'}
+            color={mainColor}
+            fontSize={'lg'}>
+            Related {type}s
+          </Text>
 
-  _render_content = () => {
-    if (!this.props.itemDetails.itemDetails) return <>Error loading data</>;
-    const {title, cover, type} =
-      this.props.itemDetails.itemDetails.data.attributes;
-
-    return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this.onRefresh}
+          <FlatList
+            data={relatedItems.data}
+            keyExtractor={item => String(item.id)}
+            renderItem={({item}) => {
+              const {
+                title: relatedItemTitle,
+                cover: relatedItemCover,
+                watched: relatedItemWatched,
+                likes: relatedItemLikes,
+              } = item.attributes;
+              return (
+                <View key={item.id}>
+                  <TouchableOpacity
+                    style={styles.card}
+                    onPress={() =>
+                      navigation.navigate('AVRoot', {id: item.id})
+                    }>
+                    <View style={styles.startPart}>
+                      <Image
+                        alt={title}
+                        source={{uri: relatedItemCover}}
+                        style={styles.coverImage}
+                      />
+                      <VStack width="60%" style={styles.titles}>
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          numberOfLines={1}
+                          ellipsizeMode="tail"
+                          {...contentColor(context.theme)}>
+                          {relatedItemTitle}
+                        </Text>
+                        <HStack alignItems={'center'} space={1}>
+                          <Icon
+                            name="heart"
+                            style={contentColor(context.theme)}
+                            size={12}
+                          />
+                          <Text {...contentColor(context.theme)} fontSize="xs">
+                            {relatedItemLikes} Likes
+                          </Text>
+                        </HStack>
+                      </VStack>
+                    </View>
+                    {relatedItemWatched ? (
+                      <Icon
+                        name="checkmark-circle"
+                        style={{color: 'green'}}
+                        size={32}
+                      />
+                    ) : (
+                      <Icon
+                        name="play-circle"
+                        style={{color: mainColor}}
+                        size={32}
+                      />
+                    )}
+                  </TouchableOpacity>
+                  <Divider height={0.45} />
+                </View>
+              );
+            }}
           />
-        }>
-        <PageWrapper>
+        </>
+      );
+    }, [itemDetails]);
+
+    const _render_content = useMemo(() => {
+      if (!itemDetails) return <NetworkError onReload={onRefresh} />;
+      const {title, cover, type, filePath} = itemDetails.data.attributes;
+
+      return (
+        <PageWrapper customStyles={{height: height - 80}}>
           {/* /* --------------------------------- Header --------------------------------- */}
-          <Header
-            title={title}
-            customClick={() => this.props.navigation.goBack()}
-          />
+          <Header title={title} customClick={() => navigation.goBack()} />
           {/* /* ------------------------------- Player ------------------------------ */}
-          {type === ItemType.Audio ? <Audio /> : <Video />}
+          {type === ItemType.Audio ? (
+            <Audio cover={cover} filePath={filePath} />
+          ) : (
+            <Video cover={cover} filePath={filePath} />
+          )}
 
           {/* /* ---------------------------------- Tools --------------------------------- */}
+          {_render_tools}
 
           {/* /* ------------------------------ Related Items ----------------------------- */}
+          {_render_relatedItems}
         </PageWrapper>
-      </ScrollView>
-    );
-  };
+      );
+    }, [itemDetails]);
 
-  override render(): React.ReactNode {
-    const {loadingItemDetail, error} = this.props.itemDetails;
+    /* -------------------------------------------------------------------------- */
+    /*                                  UseEffect                                 */
+    /* -------------------------------------------------------------------------- */
+    const onRefresh = useCallback(async () => {
+      setRefreshing(true);
 
+      const {id} = route.params as Props;
+      await getItemDetailsProps({id});
+      setRefreshing(false);
+    }, [getItemDetailsProps, setRefreshing, route]);
+
+    useEffect(() => {
+      isMounted.current = false;
+      const {id} = route.params as Props;
+      getItemDetailsProps({id});
+
+      return () => {
+        isMounted.current = false;
+      };
+    }, [getItemDetailsProps, route.params]);
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   Return                                   */
+    /* -------------------------------------------------------------------------- */
     switch (true) {
-      case loadingItemDetail || this._isMounted:
+      case loadingItemDetail || refreshing || isMounted.current:
         return (
-          <LottieView
-            loop={true}
-            autoPlay={true}
+          <Spinner
+            size={'lg'}
+            accessibilityLabel="Loading posts"
+            color="warning.500"
             style={{
-              width: 300,
               alignSelf: 'center',
               marginTop: 'auto',
               marginBottom: 'auto',
             }}
-            source={require('../../../assets/Images/loading2.json')}
           />
         );
       case !!error:
-        return <NetworkError onReload={() => console.log('reload')} />;
+        console.log(error);
+        return <NetworkError onReload={onRefresh} />;
 
       default:
-        return this._render_content();
+        return _render_content;
     }
-  }
-}
+  },
+);
+
+/* -------------------------------------------------------------------------- */
+/*                                    Redux                                   */
+/* -------------------------------------------------------------------------- */
 
 const mapStateToProps = (state: IAudioVideoRootMapState) => {
   return {

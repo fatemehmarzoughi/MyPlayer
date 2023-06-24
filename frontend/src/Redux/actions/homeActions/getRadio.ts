@@ -9,7 +9,7 @@ export const getAllRadio = () => {
     try {
       const res = await GET({endpoint: `/api/items${filter}`});
 
-      if (res.status === 200) {
+      if (res.status === 200) {        
         dispatch({
           type: GET_ALL_RADIO,
           radio: res.data as GetItemsResponseBody,

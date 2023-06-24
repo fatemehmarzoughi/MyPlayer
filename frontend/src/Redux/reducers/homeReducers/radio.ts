@@ -19,10 +19,10 @@ export const radio = (
   action: IRadioActions,
 ) => {
   switch (action.type) {
-    case GET_ALL_RADIO:
+    case GET_ALL_RADIO:      
       return {
         loadingRadio: false,
-        radios: action.radio,
+        radio: action.radio,
       };
 
     case GET_ALL_RADIO_FAILED:

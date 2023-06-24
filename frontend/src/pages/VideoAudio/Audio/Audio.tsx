@@ -1,29 +1,17 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Image} from 'native-base';
 import {ItemDetailsActions} from 'src/Redux/reducers';
 
 export type IAudioMapState = {
   itemDetails: ItemDetailsActions;
 };
-
 export interface IAudioProps {
-
+  cover: string;
+  filePath: string;
 }
-export type IAudioStates = {
-  refreshing: boolean;
-};
 
-export class Audio extends React.PureComponent<IAudioProps, IAudioStates> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      refreshing: false,
-    };
-  }
-
-  override async componentDidMount() {}
-
-  override render(): React.ReactNode {
-    return <Text>Audio</Text>;
-  }
-}
+export const Audio: React.FC<IAudioProps> = React.memo(({cover, filePath}) => {
+  return (
+    <Image width={'100%'} height={220} source={{uri: cover}} alt={cover} />
+  );
+});

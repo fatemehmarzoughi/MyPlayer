@@ -10,7 +10,6 @@ import {toastMessageDuration} from 'src/assets';
 import React from 'react';
 import Context from 'src/context/context';
 import {contentColor} from 'src/components';
-import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Colors from 'src/assets/constants/Colors';
@@ -22,6 +21,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 
 import {styles} from './style';
 import {storeData} from 'src/LocalStorage';
+import { Spinner } from 'native-base';
 
 export interface ICreateAccountProps {
   navigation: NavigationProp<any, any>;
@@ -483,13 +483,20 @@ export class CreateAccount extends React.PureComponent<
           <TouchableOpacity
             style={styles.btn}
             onPress={() => this.handleCreateAccount()}>
-            <LottieView
-              style={this.state.createingAccount ? {opacity: 1} : {opacity: 0}}
-              loop={true}
-              autoPlay={true}
-              source={require('../../../assets/Images/loading.json')}
-            />
-            <Text style={styles.btnText}>Create Account</Text>
+            {this.state.createingAccount ? (
+              <Spinner
+                size="sm"
+                accessibilityLabel="Loading posts"
+                color="warning.100"
+                style={{
+                  alignSelf: 'center',
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}
+              />
+            ) : (
+              <Text style={styles.btnText}>Create Account</Text>
+            )}
           </TouchableOpacity>
 
           {/* /* -------------------------------- Separator ------------------------------- */}

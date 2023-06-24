@@ -4,10 +4,19 @@ import {styles} from './styles';
 
 export type PageWrapperProps = {
   children: React.ReactNode;
+  withStatusBar?: boolean;
+  customStyles?: Object;
 };
 
 export const PageWrapper: React.FC<PageWrapperProps> = React.memo(
-  ({children}) => {
-    return <View style={styles.container}>{children}</View>;
+  ({children, withStatusBar = true, customStyles}) => {
+    return (
+      <View
+        {...customStyles}
+        style={[styles.container, withStatusBar ? styles.statusBar : {}]}
+        >
+        {children}
+      </View>
+    );
   },
 );

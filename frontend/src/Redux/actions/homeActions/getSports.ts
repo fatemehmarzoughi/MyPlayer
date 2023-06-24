@@ -11,7 +11,7 @@ export const getAllSports = () => {
       if (res.status === 200) {
         dispatch({
           type: GET_ALL_SPORTS,
-          radio: res.data as GetItemsResponseBody,
+          sports: res.data as GetItemsResponseBody,
           loadingSports: false,
         });
       } else throw Error;

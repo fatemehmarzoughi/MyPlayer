@@ -1,18 +1,19 @@
-import React from "react";
-import { Theme } from "src/context";
-import LottieView from "lottie-react-native";
-import FastImage from "react-native-fast-image";
-import Animated, { BounceIn } from "react-native-reanimated";
-import { Text, View, FlatList, TouchableOpacity } from "react-native";
-import { backgroundColor, surfaceColor } from "src/components/lightDarkTheme";
+import React from 'react';
+import {Theme} from 'src/context';
+import LottieView from 'lottie-react-native';
+import FastImage from 'react-native-fast-image';
+import Animated, {BounceIn} from 'react-native-reanimated';
+import {Text, View, FlatList, TouchableOpacity} from 'react-native';
+import {backgroundColor, surfaceColor} from 'src/components/lightDarkTheme';
 import Context from 'src/context/context';
-import { styles } from "./style";
+import {styles} from './style';
+import {Spinner} from 'native-base';
 
 export type IFlatList1Props = {
   loading?: boolean;
   title: string;
   theme: Theme;
-  data: { imageURL: string }[];
+  data: {imageURL: string}[];
   func: (imgUrl: string) => void;
 };
 
@@ -57,17 +58,18 @@ export class FlatList1 extends React.PureComponent<
               data={this.state.loadingData}
               style={styles.flatlist}
               keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <TouchableOpacity
-                  style={[
-                    styles.Image,
-                    surfaceColor(this.context.theme),
-                  ]}
-                >
-                  <LottieView
-                    autoPlay={true}
-                    loop={true}
-                    source={require("../../../assets/Images/loading2.json")}
+                  style={[styles.Image, surfaceColor(this.context.theme)]}>
+                  <Spinner
+                    size={'lg'}
+                    accessibilityLabel="Loading posts"
+                    color="warning.500"
+                    style={{
+                      alignSelf: 'center',
+                      marginTop: 'auto',
+                      marginBottom: 'auto',
+                    }}
                   />
                 </TouchableOpacity>
               )}
@@ -81,10 +83,9 @@ export class FlatList1 extends React.PureComponent<
               data={this.props.data}
               style={styles.flatlist}
               keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <TouchableOpacity
-                  onPress={() => this.props.func(item.imageURL)}
-                >
+                  onPress={() => this.props.func(item.imageURL)}>
                   <Animated.View entering={BounceIn.duration(500).delay(300)}>
                     {/* <Image style={[styles.Image , backgroundColor()]} source={{uri : item.imageURL}} /> */}
                     <FastImage
