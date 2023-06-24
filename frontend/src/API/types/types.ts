@@ -17,7 +17,7 @@ export type Attributes<T> = {
 
 export type Data<T, D extends Attributes<T> | Attributes<T>[]> = {
   data: D;
-  meta: Meta;
+  meta?: Meta;
 };
 
 export enum CountryCode {
@@ -311,6 +311,11 @@ export enum ItemCategory {
   Radio = 'Radio',
 }
 
+export enum ItemType {
+  Video = 'Video',
+  Audio = 'Audio',
+}
+
 export enum ItemLabel {
   Recommended = 'Recommended',
   MostWatched = 'MostWatched',
@@ -328,15 +333,16 @@ export enum ItemMood {
 export type Item = {
   title: string;
   cover: string;
+  type: ItemType;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date;
+  filePath: string;
+  watched: boolean;
+  category: ItemCategory;
+  label: ItemLabel;
 
-  filePath?: string;
-  watched?: boolean;
   likes?: number;
-  category?: ItemCategory;
-  label?: ItemLabel;
   mood?: ItemMood;
   relatedItems?: Omit<Data<Item, Attributes<Item>>, 'meta'>;
   likeListUser?: Omit<Data<User, Attributes<User>>, 'meta'>;
@@ -447,3 +453,15 @@ export type ReportBugResponseBody = Data<Bug, Attributes<Bug>>;
 /* -------------------------------------------------------------------------- */
 
 export type DeleteAccountResponseBody = User;
+
+
+/* -------------------------------------------------------------------------- */
+/*                            GET One Item Details                            */
+/* -------------------------------------------------------------------------- */
+
+export type ItemWithRelations = {
+  relatedItems: Data<Item, Attributes<Item>[]>,
+  likeListUser: Data<User, Attributes<User>[]>
+} & Item;
+
+export type GETItemDetailsResponseBody = Data<ItemWithRelations, Attributes<ItemWithRelations>>

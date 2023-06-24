@@ -2,10 +2,9 @@ import {View, ScrollView, RefreshControl, TouchableOpacity} from 'react-native';
 import Animated, {FadeInLeft, FadeOutLeft} from 'react-native-reanimated';
 import React from 'react';
 import {ConnectedProps, connect} from 'react-redux';
-import LottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Heading, Text, VStack, FlatList} from 'native-base';
+import {Heading, Text, VStack, FlatList, Spinner} from 'native-base';
 
 import Context from 'src/context/context';
 import Notification from 'src/Notification/NotificationSetup';
@@ -25,7 +24,7 @@ import {
   ISportActions,
   IRadioActions,
 } from 'src/Redux';
-import {GetItemsResponseBody, ItemCategory, ItemLabel} from 'src/API';
+import {GetItemsResponseBody, ItemCategory, ItemLabel, ItemType} from 'src/API';
 
 import {styles} from './style';
 import {NetworkError} from '../Errors';
@@ -349,15 +348,14 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
 
         <>
           {this.state.refreshingCategories ? (
-            <LottieView
-              loop={true}
-              autoPlay={true}
-              source={require('../../assets/Images/loading.json')}
+            <Spinner
+              size={'lg'}
+              accessibilityLabel="Loading posts"
+              color="warning.500"
               style={{
-                width: 50,
-                height: 50,
-                marginLeft: 'auto',
-                marginRight: 'auto',
+                alignSelf: 'center',
+                marginTop: 'auto',
+                marginBottom: 'auto',
               }}
             />
           ) : (
@@ -370,6 +368,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
+                onPress={id => this.props.navigation.navigate('AVRoot', {id})}
               />
 
               <HomeFlatLists
@@ -380,6 +379,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
+                onPress={id => this.props.navigation.navigate('AVRoot', {id})}
               />
 
               <HomeFlatLists
@@ -390,6 +390,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="large"
+                onPress={id => this.props.navigation.navigate('AVRoot', {id})}
               />
 
               <HomeFlatLists
@@ -400,6 +401,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                   ) ?? []
                 }
                 type="medium"
+                onPress={id => this.props.navigation.navigate('AVRoot', {id})}
               />
             </View>
           )}

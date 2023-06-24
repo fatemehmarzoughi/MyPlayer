@@ -1,12 +1,10 @@
 import {
   Text,
-  View,
   ScrollView,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import {NavigationProp} from '@react-navigation/native';
 import Context from 'src/context/context';
@@ -14,8 +12,9 @@ import * as Colors from 'src/assets/constants/Colors';
 import {styles} from './style';
 import {toastMessageDuration} from 'src/assets';
 import {POST, reportBug} from 'src/API';
-import {Header} from 'src/components';
+import {Header, PageWrapper} from 'src/components';
 import {getData} from 'src/LocalStorage';
+import {Spinner} from 'native-base';
 
 export interface IReportABugProps {
   navigation: NavigationProp<any, any>;
@@ -99,10 +98,10 @@ export class ReportABug extends React.PureComponent<
   override render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <PageWrapper>
           <Header
             title="Report a Bug"
-            customClick={() => this.props.navigation.navigate('Profile')}
+            customClick={() => this.props.navigation.goBack()}
           />
           <TextInput
             placeholder="Your explenation goes here ... "
@@ -113,15 +112,22 @@ export class ReportABug extends React.PureComponent<
             onChangeText={input => this.handleTextInput(input)}
           />
           <TouchableOpacity style={styles.btn} onPress={this.handleReport}>
-            <LottieView
-              style={this.state.loading ? {opacity: 1} : {opacity: 0}}
-              autoPlay={true}
-              loop={true}
-              source={require('../../../assets/Images/loading.json')}
-            />
-            <Text style={styles.btnText}>Report</Text>
+            {this.state.loading ? (
+              <Spinner
+                size={'lg'}
+                accessibilityLabel="Loading posts"
+                color="warning.500"
+                style={{
+                  alignSelf: 'center',
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}
+              />
+            ) : (
+              <Text style={styles.btnText}>Report</Text>
+            )}
           </TouchableOpacity>
-        </View>
+        </PageWrapper>
       </ScrollView>
     );
   }

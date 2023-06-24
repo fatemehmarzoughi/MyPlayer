@@ -1,23 +1,23 @@
 import {
   Text,
-  View,
   TextInput,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import LottieView from 'lottie-react-native';
-import Toast from 'react-native-toast-message';
-import {NavigationProp, ParamListBase, RouteProp} from '@react-navigation/native';
-import {POST} from 'src/API';
-import {Header} from 'src/components';
-import {toastMessageDuration} from 'src/assets';
+import {
+  NavigationProp,
+  ParamListBase,
+  RouteProp,
+} from '@react-navigation/native';
+import { Spinner } from 'native-base';
+import {Header, PageWrapper} from 'src/components';
 
 import {styles} from './style';
 
 export interface IForgetPasswordProps {
   navigation: NavigationProp<any, any>;
-  route: RouteProp<ParamListBase, "ForgetPassword">;
+  route: RouteProp<ParamListBase, 'ForgetPassword'>;
 }
 export interface IForgetPasswordState {
   email: string;
@@ -120,12 +120,10 @@ export class ForgetPassword extends React.PureComponent<
   override render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <PageWrapper>
           <Header
             title="Forgot Password"
-            customClick={() =>
-              this.props.navigation.navigate('Login_CreateAccount')
-            }
+            customClick={() => this.props.navigation.goBack()}
           />
           <Text style={{textAlign: 'center'}}>
             You will receive an email for reseting the password
@@ -140,11 +138,16 @@ export class ForgetPassword extends React.PureComponent<
               <TouchableOpacity
                 style={styles.btn}
                 // onPress={() => this.handleSend()}
-                >
-                <LottieView
-                  loop={true}
-                  autoPlay={true}
-                  source={require('../../../assets/Images/loading.json')}
+              >
+                <Spinner
+                  size={'lg'}
+                  accessibilityLabel="Loading posts"
+                  color="warning.500"
+                  style={{
+                    alignSelf: 'center',
+                    marginTop: 'auto',
+                    marginBottom: 'auto',
+                  }}
                 />
                 <Text style={styles.btnText}>Sending</Text>
               </TouchableOpacity>
@@ -152,12 +155,12 @@ export class ForgetPassword extends React.PureComponent<
               <TouchableOpacity
                 style={styles.btn}
                 // onPress={() => this.handleSend()}
-                >
+              >
                 <Text style={styles.btnText}>Send</Text>
               </TouchableOpacity>
             )}
           </>
-        </View>
+        </PageWrapper>
       </ScrollView>
     );
   }

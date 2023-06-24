@@ -6,6 +6,7 @@ export * from './About';
 export * from './Search';
 export * from './Errors';
 export * from './AppRoute';
+export * from './VideoAudio';
 export * from './onBoarding';
 export * from './TermsAndPolicy';
 export * from './EntriesOptions';

@@ -1,18 +1,10 @@
-export * from './allItems';
-export * from './banner';
-export * from './movies';
-export * from './musics';
-export * from './radio';
-export * from './sports';
-
+export * from './homeReducers';
+export * from './AVItemReducer';
 
 import {combineReducers} from 'redux';
-import {allItems} from './allItems';
-import {banner} from './banner';
-import {musics} from './musics';
-import {movies} from './movies';
-import {sports} from './sports';
-import {radio} from './radio';
+
+import {radio, allItems, banner, musics, movies, sports} from './homeReducers';
+import {itemDetails} from './AVItemReducer';
 
 export const mainReducer = combineReducers({
   allItems,
@@ -21,4 +13,6 @@ export const mainReducer = combineReducers({
   movies,
   sports,
   radio,
+
+  itemDetails,
 });

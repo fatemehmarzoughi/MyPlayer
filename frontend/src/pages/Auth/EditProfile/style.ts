@@ -1,17 +1,8 @@
 import { StyleSheet } from "react-native";
-import { lightGray, mainColor, statusBarIOS, titleFontSize, width } from "src/assets";
+import { lightGray, mainColor, titleFontSize, width } from "src/assets";
 
 const usedWidth = width - 20;
 export const styles = StyleSheet.create({
-  container: {
-    marginTop: statusBarIOS,
-    width: usedWidth,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: "auto",
-    marginLeft: "auto"
-  },
   image: {
     width: 130,
     height: 130,

@@ -1,17 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {lightGray, mainColor, statusBarIOS, white, width} from 'src/assets';
+import {lightGray, mainColor, white, width} from 'src/assets';
 
 const usedWidth = width - 30;
 export const styles = StyleSheet.create({
-  container: {
-    width: usedWidth,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    marginTop: statusBarIOS,
-  },
   input: {
     width: usedWidth,
     paddingLeft: 20,

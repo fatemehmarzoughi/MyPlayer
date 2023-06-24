@@ -15,7 +15,6 @@ import {
   MenuContent,
   About,
   TermsAndPolicy,
-  NetworkError,
 } from 'src/pages';
 import React, {useContext, useEffect} from 'react';
 import Home from './Home/Home';
@@ -33,9 +32,10 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {backgroundColor} from 'src/components';
+import {getData} from 'src/LocalStorage';
 
 import {styles} from './style';
-import {getData} from 'src/LocalStorage';
+import AVRoot from './VideoAudio/AVRoot/AVRoot';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -97,6 +97,7 @@ const Auth = React.memo(() => {
 
   return (
     <Stack.Navigator
+      screenOptions={{animation: 'fade', animationDuration: 10}}
       initialRouteName={isLogin ? 'Login_CreateAccount' : 'Profile'}>
       {isLogin ? (
         <>
@@ -214,10 +215,15 @@ export const AppRoute: React.FC = React.memo(() => {
       <NavigationContainer
         theme={contexts.theme === 'light' ? DefaultTheme : DarkTheme}>
         <Stack.Navigator
+          screenOptions={{animation: 'fade', animationDuration: 10}}
           initialRouteName={
             isFirstInstallation === null ? 'onBoarding' : 'AppRoute'
           }>
-          <Stack.Screen name="Search">
+          <Stack.Screen
+            name="Search"
+            options={{
+              headerShown: false,
+            }}>
             {props => <Search {...props} />}
           </Stack.Screen>
           <Stack.Screen
@@ -233,6 +239,13 @@ export const AppRoute: React.FC = React.memo(() => {
               headerShown: false,
             }}>
             {props => <EntriesOptions {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="AVRoot"
+            options={{
+              headerShown: false,
+            }}>
+            {props => <AVRoot {...props} />}
           </Stack.Screen>
           <Stack.Screen
             name="AppRoute"

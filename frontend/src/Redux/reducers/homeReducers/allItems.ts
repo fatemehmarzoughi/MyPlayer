@@ -29,7 +29,7 @@ export const allItems = (
     case GET_ALL_ITEMS_FAILED:
       return {
         ...state,
-        loading: false,
+        loadingAllItems: false,
         error: action.error,
       };
 

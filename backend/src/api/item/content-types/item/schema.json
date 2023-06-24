@@ -18,10 +18,13 @@
     },
     "cover": {
       "type": "richtext",
-      "required": true
+      "required": true,
+      "default": "http://localhost:1337/uploads/thumbnail_profilepic_14009cf058.png"
     },
     "filePath": {
-      "type": "richtext"
+      "type": "richtext",
+      "required": true,
+      "default": "http://localhost:1337/uploads/thumbnail_profilepic_14009cf058.png"
     },
     "relatedItems": {
       "type": "relation",
@@ -43,7 +46,9 @@
         "Movie",
         "Sport",
         "Radio"
-      ]
+      ],
+      "required": true,
+      "default": "Music"
     },
     "label": {
       "type": "enumeration",
@@ -52,7 +57,9 @@
         "MostWatched",
         "TrendingNow",
         "NewReleases"
-      ]
+      ],
+      "required": true,
+      "default": "Recommended"
     },
     "mood": {
       "type": "enumeration",
@@ -62,6 +69,20 @@
         "Horror",
         "Comedy"
       ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Audio",
+        "Video"
+      ],
+      "required": true,
+      "default": "Audio"
+    },
+    "watched": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Context from 'src/context/context';
 import Toast from 'react-native-toast-message';
-import {Header, contentColor} from 'src/components';
+import {Header, PageWrapper, contentColor} from 'src/components';
 import {NavigationProp} from '@react-navigation/native';
 import {gray, mainColor, toastMessageDuration} from 'src/assets';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
@@ -86,10 +86,10 @@ export class UpgradeToPremium extends React.PureComponent<
   override render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <PageWrapper>
           <Header
             title="Choose Your Plan"
-            customClick={() => this.props.navigation.navigate('Profile')}
+            customClick={() => this.props.navigation.goBack()}
           />
           <Text style={styles.subTitle}>
             By choosing our premium account, you can watch with no ads.
@@ -160,7 +160,7 @@ export class UpgradeToPremium extends React.PureComponent<
             style={styles.btn}>
             <Text style={styles.btnText}>Select Plan</Text>
           </TouchableOpacity>
-        </View>
+        </PageWrapper>
       </ScrollView>
     );
   }

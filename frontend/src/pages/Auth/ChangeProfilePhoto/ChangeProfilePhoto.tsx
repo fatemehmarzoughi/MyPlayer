@@ -12,8 +12,14 @@ import {NavigationProp} from '@react-navigation/native';
 import Context from 'src/context/context';
 import * as Colors from 'src/assets/constants/Colors';
 
-import {backgroundColor, contentColor, FlatList1, surfaceColor} from 'src/components';
-import { GET } from 'src/API';
+import {
+  backgroundColor,
+  contentColor,
+  FlatList1,
+  PageWrapper,
+  surfaceColor,
+} from 'src/components';
+import {GET} from 'src/API';
 
 import {styles} from './style';
 
@@ -86,14 +92,15 @@ export class ChangeProfilePhoto extends React.PureComponent<
             refreshing={this.state.refreshing}
           />
         }>
-        <View style={styles.container}>
+        <PageWrapper>
           <View style={[styles.header]}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('EditProfile')}
+              onPress={() => this.props.navigation.goBack()}
               style={styles.iconBack}>
               <Icon name="chevron-left" size={40} color={Colors.white} />
             </TouchableOpacity>
-            <Text style={[styles.titleHeader, contentColor(this.context.theme)]}>
+            <Text
+              style={[styles.titleHeader, contentColor(this.context.theme)]}>
               Choose a Photo
             </Text>
           </View>
@@ -156,7 +163,7 @@ export class ChangeProfilePhoto extends React.PureComponent<
               </View>
             )}
           </>
-        </View>
+        </PageWrapper>
       </ScrollView>
     );
   }
