@@ -30,7 +30,7 @@ export async function POST<T extends Object>({
 }) {
   try {
     const accessToken = await getData('accessToken');
-    if (accessToken !== 'null') {
+    if ( accessToken !== null) {
       const res = await axios({
         method: 'post',
         url: endpoint,
@@ -59,7 +59,7 @@ export const GET = async ({endpoint}: {endpoint: string}) => {
   try {
     const accessToken = await getData('accessToken');
     
-    if (accessToken !== 'null') {
+    if ( accessToken !== null) {
       const res = await axios({
         method: 'get',
         url: endpoint,
@@ -90,7 +90,7 @@ export async function PUT<T extends Object>({
 }) {
   try {
     const accessToken = await getData('accessToken');
-    if (accessToken !== 'null') {
+    if (accessToken !== 'null' || accessToken !== null) {
       const res = await axios({
         method: 'put',
         url: endpoint,
