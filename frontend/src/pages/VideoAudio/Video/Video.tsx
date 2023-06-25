@@ -15,10 +15,15 @@ export interface IVideoProps {
 export const Video: React.FC<IVideoProps> = React.memo(({filePath, cover}) => {
   return (
     <VideoPlayer
+      repeat
       controls
+      pictureInPicture
+      playInBackground
       source={{uri: filePath}}
       style={{height: 350, width: width}}
-      onVideoEnd={() => { /** should update the "watched" field in database */ }}
+      onVideoEnd={() => {
+        /** should update the "watched" field in database */
+      }}
     />
   );
 });

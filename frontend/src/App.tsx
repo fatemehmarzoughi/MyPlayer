@@ -38,8 +38,9 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
       });
 
       const isFirstInstallation = await getData('isFirstInstallation');
-      // if(isFirstInstallation === null)
-      if (isFirstInstallation !== null) {
+      if(isFirstInstallation === null){
+        await storeData('accessToken', null)
+      // if (isFirstInstallation !== null) {
         // for test
         await storeData('isFirstInstallation', 'false');
         this._isMount && this.context.setIsFirstInstallation(null);

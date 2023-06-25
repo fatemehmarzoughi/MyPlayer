@@ -1,6 +1,8 @@
 import React from 'react';
 import {Image} from 'native-base';
 import {ItemDetailsActions} from 'src/Redux/reducers';
+import AudioPlayer from 'react-native-video';
+import {width} from 'src/assets';
 
 export type IAudioMapState = {
   itemDetails: ItemDetailsActions;
@@ -12,6 +14,17 @@ export interface IAudioProps {
 
 export const Audio: React.FC<IAudioProps> = React.memo(({cover, filePath}) => {
   return (
-    <Image width={'100%'} height={220} source={{uri: cover}} alt={cover} />
+    <AudioPlayer
+      repeat
+      controls
+      audioOnly
+      pictureInPicture
+      accessibilityLanguage="en"
+      source={{uri: filePath}}
+      style={{height: 350, width: width}}
+      onVideoEnd={() => {
+        /** should update the "watched" field in database */
+      }}
+    />
   );
 });

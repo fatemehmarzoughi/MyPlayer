@@ -33,13 +33,13 @@ export class EntriesOptions extends React.PureComponent<
         <View style={styles.btnContainer}>
           <TouchableOpacity
             style={styles.mainBtn}
-            onPress={() => this.props.navigation.navigate("appRoute")}
+            onPress={() => this.props.navigation.navigate("AppRoute")}
           >
             <Text style={styles.BtnText}>Create Account</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.minorBtn}
-            onPress={() => this.props.navigation.navigate("appRoute")}
+            onPress={() => this.props.navigation.navigate("AppRoute")}
           >
             <Text style={styles.BtnText}>Join the App</Text>
           </TouchableOpacity>
