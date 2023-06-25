@@ -84,7 +84,7 @@ export class EditProfile extends React.PureComponent<
         this.setState({
           modalVisible: false,
         });
-        this.context.setIsLogin(false);
+        this.context.setIsLogin(false); // by setting this state to false we are migrating from an unknown user to a loggedIn user
         /* ---------------------------------- ***** --------------------------------- */
       },
       onError: err => {

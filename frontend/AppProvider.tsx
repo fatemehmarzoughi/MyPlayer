@@ -9,21 +9,27 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import {mainReducer} from 'src/Redux';
 import ContextProvider from 'src/context/contextProvider';
 import {App} from 'src';
+import {createRealmContext} from '@realm/react';
+import {realmConfig} from 'src/Realm';
 
 export const store = createStore(
   mainReducer,
   composeWithDevTools(applyMiddleware(thunk)),
 );
 
+const {RealmProvider} = createRealmContext(realmConfig);
+
 export default class AppProvider extends React.PureComponent {
   override render() {
     return (
       <Provider store={store}>
-        <NativeBaseProvider>
-          <ContextProvider>
-            <App />
-          </ContextProvider>
-        </NativeBaseProvider>
+        <RealmProvider>
+          <NativeBaseProvider>
+            <ContextProvider>
+              <App />
+            </ContextProvider>
+          </NativeBaseProvider>
+        </RealmProvider>
       </Provider>
     );
   }

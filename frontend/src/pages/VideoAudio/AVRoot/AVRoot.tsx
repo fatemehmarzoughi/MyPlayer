@@ -26,7 +26,6 @@ import {ItemDetailsActions} from 'src/Redux/reducers';
 import {FlatList, TouchableOpacity} from 'react-native';
 import EvIcon from 'react-native-vector-icons/EvilIcons';
 import {Header, PageWrapper, contentColor} from 'src/components';
-import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {View, Text, Image, VStack, HStack, Divider, Spinner} from 'native-base';
 
 import {styles} from './styles';
@@ -88,8 +87,8 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                 />
               </TouchableOpacity>
               <TouchableOpacity>
-                <AwesomeIcon
-                  name="bookmark"
+                <Icon
+                  name="bookmark-outline"
                   style={contentColor(context.theme)}
                   size={22}
                 />
