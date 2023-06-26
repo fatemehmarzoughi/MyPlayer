@@ -1,7 +1,7 @@
-# MyPlayer
+# 💚 MyPlayer
 React-Native
 
-# App Installation<br>
+# 🎉 App Installation<br>
 <b> For Android run : </b><br>
 ```code
 1- cd frontend
@@ -19,7 +19,7 @@ React-Native
 ```
 
 
-# Running Backend<br>
+<b> For running Backend </b><br>
 ```code
 1- cd backend
 2- yarn
@@ -27,22 +27,17 @@ React-Native
 ```
 <b>This will run the APIs on localhost:1337, so you can add your own data to the items</b><br>
 
-# Technologies<br>
+# 🧑‍💻 Technologies<br>
 <b>Frontend</b><br>
 Jest, Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google signin, Gesture Recognizer, Notification, ... .<br>
 
 <b>Backend</b><br>
 Strapi(CMS)<br>
 
-# Application 
+# 📸 ScreenShots
 <!-- https://user-images.githubusercontent.com/48021528/145693209-68bf15a2-6390-44fd-8251-ecb529e9f593.mp4 -->
-
-
 https://user-images.githubusercontent.com/48021528/146699996-e4d2c141-24b6-452e-a248-2f22d152d8e5.mp4
 
-
-
-# ScreenShots
 <b> Authentication Pages </b><br>
 <div>
   <img src="https://user-images.githubusercontent.com/48021528/145692675-7b663f09-0caa-457c-9e94-48a68355b8a9.png" alt="createAccount" width="180" height="400">
@@ -78,3 +73,7 @@ https://user-images.githubusercontent.com/48021528/146699996-e4d2c141-24b6-452e-
   <img src="https://user-images.githubusercontent.com/48021528/145693165-f46d72fa-a72c-45e8-b543-d32748abcdc2.png" alt="subCategory" width="180" height="400">
 </div>
 
+# 🚧 TODOs
+1- should migrate from class component to functional components</br>
+2- should be able to save the Audio/Video in the localStorage on the device</br>
+3- should be able to add the Audio/Video to favorites list</br>
