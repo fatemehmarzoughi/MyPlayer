@@ -2,33 +2,33 @@
 /*                                   Imports                                  */
 /* -------------------------------------------------------------------------- */
 import {
-  RouteProp,
-  ParamListBase,
   NavigationProp,
-} from '@react-navigation/native';
+  ParamListBase,
+  RouteProp,
+} from "@react-navigation/native";
+import {Divider, HStack, Image, Spinner, Text, View, VStack} from "native-base";
 import React, {
-  useMemo,
-  useState,
-  useEffect,
-  useContext,
   useCallback,
+  useContext,
+  useEffect,
+  useMemo,
   useRef,
-} from 'react';
-import {ItemType} from 'src/API';
-import {height, mainColor} from 'src/assets';
-import {Audio, Video} from 'src/pages';
-import Context from 'src/context/context';
-import {NetworkError} from 'src/pages/Errors';
-import {getItemDetails} from 'src/Redux/actions';
-import {ConnectedProps, connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {ItemDetailsActions} from 'src/Redux/reducers';
-import {FlatList, TouchableOpacity} from 'react-native';
-import EvIcon from 'react-native-vector-icons/EvilIcons';
-import {Header, PageWrapper, contentColor} from 'src/components';
-import {View, Text, Image, VStack, HStack, Divider, Spinner} from 'native-base';
+  useState,
+} from "react";
+import {FlatList, TouchableOpacity} from "react-native";
+import EvIcon from "react-native-vector-icons/EvilIcons";
+import Icon from "react-native-vector-icons/Ionicons";
+import {connect, ConnectedProps} from "react-redux";
+import {ItemType} from "src/API";
+import {height, mainColor} from "src/assets";
+import {contentColor, Header, PageWrapper} from "src/components";
+import Context from "src/context/context";
+import {Audio, Video} from "src/pages";
+import {NetworkError} from "src/pages/Errors";
+import {getItemDetails} from "src/Redux/actions";
+import {ItemDetailsActions} from "src/Redux/reducers";
 
-import {styles} from './styles';
+import {styles} from "./styles";
 
 /* -------------------------------------------------------------------------- */
 /*                                    Types                                   */
@@ -44,7 +44,7 @@ export type IAudioVideoRootMapState = {
 
 export interface IAudioVideoRootProps extends IAudioVideoRootDispatchProps {
   navigation: {openDrawer: () => void} & NavigationProp<any, any>;
-  route: RouteProp<ParamListBase, 'AVRoot'>;
+  route: RouteProp<ParamListBase, "AVRoot">;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -73,9 +73,9 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
       const {title, relatedItems, label, likes} = itemDetails.data.attributes;
       return (
-        <VStack width={'100%'} marginTop={7}>
-          <HStack justifyContent={'space-between'}>
-            <Text color={mainColor} fontSize={'xs'}>
+        <VStack width={"100%"} marginTop={7}>
+          <HStack justifyContent={"space-between"}>
+            <Text color={mainColor} fontSize={"xs"}>
               {label}
             </Text>
             <HStack space={1}>
@@ -96,15 +96,15 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
             </HStack>
           </HStack>
           <Text
-            width={'80%'}
+            width={"80%"}
             {...contentColor(context.theme)}
-            fontSize={'2xl'}
+            fontSize={"2xl"}
             marginBottom={3}
             fontWeight="bold">
             {title}
           </Text>
           <HStack space={3}>
-            <HStack alignItems={'center'} space={1}>
+            <HStack alignItems={"center"} space={1}>
               <Icon
                 name="heart"
                 style={contentColor(context.theme)}
@@ -114,7 +114,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                 {likes} Likes
               </Text>
             </HStack>
-            <HStack alignItems={'center'} space={1}>
+            <HStack alignItems={"center"} space={1}>
               <Icon name="play" style={contentColor(context.theme)} size={12} />
               <Text {...contentColor(context.theme)} fontSize="xs">
                 {relatedItems.data.length} Videos
@@ -134,9 +134,9 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
             width="100%"
             marginTop={8}
             marginBottom={4}
-            fontWeight={'bold'}
+            fontWeight={"bold"}
             color={mainColor}
-            fontSize={'lg'}>
+            fontSize={"lg"}>
             Related {type}s
           </Text>
 
@@ -155,7 +155,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                   <TouchableOpacity
                     style={styles.card}
                     onPress={() =>
-                      navigation.navigate('AVRoot', {id: item.id})
+                      navigation.navigate("AVRoot", {id: item.id})
                     }>
                     <View style={styles.startPart}>
                       <Image
@@ -172,7 +172,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                           {...contentColor(context.theme)}>
                           {relatedItemTitle}
                         </Text>
-                        <HStack alignItems={'center'} space={1}>
+                        <HStack alignItems={"center"} space={1}>
                           <Icon
                             name="heart"
                             style={contentColor(context.theme)}
@@ -187,7 +187,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                     {relatedItemWatched ? (
                       <Icon
                         name="checkmark-circle"
-                        style={{color: 'green'}}
+                        style={{color: "green"}}
                         size={32}
                       />
                     ) : (
@@ -234,7 +234,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     /* -------------------------------------------------------------------------- */
     /*                                  UseEffect                                 */
     /* -------------------------------------------------------------------------- */
-    
+
     const onRefresh = useCallback(async () => {
       setRefreshing(true);
 
@@ -260,13 +260,13 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
       case loadingItemDetail || refreshing || isMounted.current:
         return (
           <Spinner
-            size={'lg'}
+            size={"lg"}
             accessibilityLabel="Loading posts"
             color="warning.500"
             style={{
-              alignSelf: 'center',
-              marginTop: 'auto',
-              marginBottom: 'auto',
+              alignSelf: "center",
+              marginTop: "auto",
+              marginBottom: "auto",
             }}
           />
         );

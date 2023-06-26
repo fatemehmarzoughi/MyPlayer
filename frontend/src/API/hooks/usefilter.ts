@@ -1,11 +1,11 @@
-import {ItemCategory, ItemLabel} from '../types';
+import {ItemCategory, ItemLabel} from "../types";
 
 export const useFilter = ({
   populate,
   category,
   label,
 }: {
-  populate?: '*' | string;
+  populate?: "*" | string;
   category?: ItemCategory;
   label?: ItemLabel;
 }) => {

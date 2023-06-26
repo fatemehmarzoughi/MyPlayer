@@ -1,8 +1,7 @@
-import React from 'react';
-import {Image} from 'native-base';
-import {ItemDetailsActions} from 'src/Redux/reducers';
-import AudioPlayer from 'react-native-video';
-import {width} from 'src/assets';
+import AudioPlayer from "react-native-video";
+import {ItemDetailsActions} from "src/Redux/reducers";
+import React from "react";
+import {width} from "src/assets";
 
 export type IAudioMapState = {
   itemDetails: ItemDetailsActions;

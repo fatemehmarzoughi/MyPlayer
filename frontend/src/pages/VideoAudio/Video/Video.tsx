@@ -1,7 +1,7 @@
-import React from 'react';
-import {ItemDetailsActions} from 'src/Redux/reducers';
-import VideoPlayer from 'react-native-video';
-import {width} from 'src/assets';
+import {ItemDetailsActions} from "src/Redux/reducers";
+import React from "react";
+import VideoPlayer from "react-native-video";
+import {width} from "src/assets";
 
 export type IVideoMapState = {
   itemDetails: ItemDetailsActions;
