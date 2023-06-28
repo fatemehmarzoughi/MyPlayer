@@ -24,13 +24,14 @@
     ],
     "rules": {
         "semi": ["warn", "always"],
-        "quotes": ["warn", "double"],
+        "quotes": "off",
         "no-unused-vars": "warn",
         "simple-import-sort/imports": "warn",
+        "@typescript-eslint/no-empty-interface": "warn",
         
         "react-hooks/rules-of-hooks": "warn",
         "react-hooks/exhaustive-deps": "warn",
         "react/display-name": "off",
-        "react/prop-types": "warn"
+        "react/prop-types": "off"
     }
 }

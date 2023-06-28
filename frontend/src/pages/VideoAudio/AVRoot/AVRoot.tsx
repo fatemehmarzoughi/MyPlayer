@@ -25,6 +25,7 @@ import {contentColor, Header, PageWrapper} from "src/components";
 import Context from "src/context/context";
 import {Audio, Video} from "src/pages";
 import {NetworkError} from "src/pages/Errors";
+import {useRealmCRUD} from "src/Realm/hooks";
 import {getItemDetails} from "src/Redux/actions";
 import {ItemDetailsActions} from "src/Redux/reducers";
 
@@ -64,6 +65,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     const context = useContext(Context);
     const {loadingItemDetail, itemDetails, error} = itemDetailsProps;
     const [refreshing, setRefreshing] = useState<boolean>(false);
+    const {writeObject} = useRealmCRUD({});
 
     /* -------------------------------------------------------------------------- */
     /*                              Content Renderers                             */
@@ -71,7 +73,20 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
 
     const _render_tools = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
-      const {title, relatedItems, label, likes} = itemDetails.data.attributes;
+      const {
+        title,
+        relatedItems,
+        label,
+        likes,
+        category,
+        cover,
+        createdAt,
+        filePath,
+        publishedAt,
+        type,
+        watched,
+        updatedAt,
+      } = itemDetails.data.attributes;
       return (
         <VStack width={"100%"} marginTop={7}>
           <HStack justifyContent={"space-between"}>
@@ -86,7 +101,25 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                   size={32}
                 />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  writeObject({
+                    name: "Item",
+                    object: {
+                      id: String(itemDetails.data.id),
+                      type,
+                      title,
+                      cover,
+                      label,
+                      watched,
+                      category,
+                      filePath,
+                      createdAt,
+                      updatedAt,
+                      publishedAt,
+                    },
+                  })
+                }>
                 <Icon
                   name="bookmark-outline"
                   style={contentColor(context.theme)}

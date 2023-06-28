@@ -1,1 +1,1 @@
-export * from './useRealmMethods';
+export * from './useRealmCRUD';

@@ -1,36 +1,32 @@
-import React from 'react';
-import thunk from 'redux-thunk';
-import {Provider} from 'react-redux';
-
 import {NativeBaseProvider} from 'native-base';
-import {createStore, applyMiddleware} from 'redux';
+import React from 'react';
+import {Provider} from 'react-redux';
+import {applyMiddleware, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
-
-import {mainReducer} from 'src/Redux';
+import thunk from 'redux-thunk';
+import {App, realmConfig} from 'src';
 import ContextProvider from 'src/context/contextProvider';
-import {App} from 'src';
-import {createRealmContext} from '@realm/react';
-import {realmConfig} from 'src/Realm';
+import {useRealmContext} from 'src/Realm/context';
+import {mainReducer} from 'src/Redux';
 
 export const store = createStore(
   mainReducer,
   composeWithDevTools(applyMiddleware(thunk)),
 );
 
-const {RealmProvider} = createRealmContext(realmConfig);
-
-export default class AppProvider extends React.PureComponent {
-  override render() {
-    return (
+const AppProvider: React.FC = React.memo(() => {
+  const {RealmProvider} = useRealmContext();
+  return (
+    <RealmProvider>
       <Provider store={store}>
-        <RealmProvider>
-          <NativeBaseProvider>
-            <ContextProvider>
-              <App />
-            </ContextProvider>
-          </NativeBaseProvider>
-        </RealmProvider>
+        <NativeBaseProvider>
+          <ContextProvider>
+            <App />
+          </ContextProvider>
+        </NativeBaseProvider>
       </Provider>
-    );
-  }
-}
+    </RealmProvider>
+  );
+});
+
+export default AppProvider;
