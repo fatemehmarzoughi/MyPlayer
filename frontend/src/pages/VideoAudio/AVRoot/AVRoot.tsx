@@ -68,6 +68,17 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     const {writeObject} = useRealmCRUD({});
 
     /* -------------------------------------------------------------------------- */
+    /*                                   Methods                                  */
+    /* -------------------------------------------------------------------------- */
+    const onRefresh = useCallback(async () => {
+      setRefreshing(true);
+
+      const {id} = route.params as Props;
+      await getItemDetailsProps({id});
+      setRefreshing(false);
+    }, [getItemDetailsProps, setRefreshing, route]);
+
+    /* -------------------------------------------------------------------------- */
     /*                              Content Renderers                             */
     /* -------------------------------------------------------------------------- */
 
@@ -156,7 +167,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           </HStack>
         </VStack>
       );
-    }, [itemDetails]);
+    }, [context.theme, itemDetails, onRefresh, writeObject]);
 
     const _render_relatedItems = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
@@ -238,7 +249,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           />
         </>
       );
-    }, [itemDetails]);
+    }, [context.theme, itemDetails, navigation, onRefresh]);
 
     const _render_content = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
@@ -262,19 +273,11 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           {_render_relatedItems}
         </PageWrapper>
       );
-    }, [itemDetails]);
+    }, [_render_relatedItems, _render_tools, itemDetails, navigation, onRefresh]);
 
     /* -------------------------------------------------------------------------- */
     /*                                  UseEffect                                 */
     /* -------------------------------------------------------------------------- */
-
-    const onRefresh = useCallback(async () => {
-      setRefreshing(true);
-
-      const {id} = route.params as Props;
-      await getItemDetailsProps({id});
-      setRefreshing(false);
-    }, [getItemDetailsProps, setRefreshing, route]);
 
     useEffect(() => {
       isMounted.current = false;

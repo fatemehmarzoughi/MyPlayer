@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {applyMiddleware, createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import {App, realmConfig} from 'src';
+import {App} from 'src';
 import ContextProvider from 'src/context/contextProvider';
 import {useRealmContext} from 'src/Realm/context';
 import {mainReducer} from 'src/Redux';
@@ -17,15 +17,15 @@ export const store = createStore(
 const AppProvider: React.FC = React.memo(() => {
   const {RealmProvider} = useRealmContext();
   return (
-    <RealmProvider>
-      <Provider store={store}>
-        <NativeBaseProvider>
-          <ContextProvider>
+    <Provider store={store}>
+      <NativeBaseProvider>
+        <ContextProvider>
+          <RealmProvider>
             <App />
-          </ContextProvider>
-        </NativeBaseProvider>
-      </Provider>
-    </RealmProvider>
+          </RealmProvider>
+        </ContextProvider>
+      </NativeBaseProvider>
+    </Provider>
   );
 });
 
