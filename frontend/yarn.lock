@@ -9563,7 +9563,7 @@ readline@^1.3.0:
   resolved "https://registry.yarnpkg.com/readline/-/readline-1.3.0.tgz#c580d77ef2cfc8752b132498060dc9793a7ac01c"
   integrity sha512-k2d6ACCkiNYz222Fs/iNze30rRJ1iIicW7JuX/7/cozvih6YCkFZH+J6mAFDVgv0dRBaAyr4jDqC95R2y4IADg==
 
-realm@^11.10.1:
+realm@^11.9.0:
   version "11.10.1"
   resolved "https://registry.yarnpkg.com/realm/-/realm-11.10.1.tgz#a67b96dd01529fd17c985329f6f8f944d692b288"
   integrity sha512-WIro2gQ2OTixeJTs/vYYyElLkbY8Rkl9tVRGkKelndzy5S1YPsga3ha4DRJ9BNPlMCVpa9eVvW/28wtNBvx9pQ==

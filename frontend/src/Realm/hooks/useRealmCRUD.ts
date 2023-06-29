@@ -2,7 +2,7 @@ import {createRealmContext} from '@realm/react';
 import {useCallback, useEffect} from 'react';
 
 import {useRealmContext} from '../context';
-import {ItemProperties, realmConfig} from '../models';
+import {ItemProperties} from '../models';
 
 export type IUseRealmCRUD = {
   onRealmChange?: () => void;

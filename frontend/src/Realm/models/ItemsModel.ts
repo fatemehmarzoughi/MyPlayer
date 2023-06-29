@@ -1,3 +1,4 @@
+import { createRealmContext } from '@realm/react';
 import Realm from 'realm';
 import {ItemCategory, ItemLabel, ItemType} from 'src/API';
 
@@ -56,4 +57,6 @@ class Item extends Realm.Object<Item> {
 
 export const realmConfig: Realm.Configuration = {
   schema: [Item],
+  inMemory: true,
 };
+
