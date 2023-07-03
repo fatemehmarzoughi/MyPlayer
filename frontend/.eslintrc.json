@@ -28,6 +28,7 @@
         "no-unused-vars": "warn",
         "simple-import-sort/imports": "warn",
         "@typescript-eslint/no-empty-interface": "warn",
+        "@typescript-eslint/no-empty-function": "warn",
         
         "react-hooks/rules-of-hooks": "warn",
         "react-hooks/exhaustive-deps": "warn",

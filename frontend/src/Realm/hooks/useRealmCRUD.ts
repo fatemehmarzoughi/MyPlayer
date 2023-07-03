@@ -1,8 +1,8 @@
-import {createRealmContext} from '@realm/react';
+import {useQuery, useRealm} from '@realm/react';
 import {useCallback, useEffect} from 'react';
 
-import {useRealmContext} from '../context';
 import {ItemProperties} from '../models';
+import Toast from 'react-native-toast-message';
 
 export type IUseRealmCRUD = {
   onRealmChange?: () => void;
@@ -14,13 +14,21 @@ export type IWrite = {
 };
 
 export const useRealmCRUD = ({onRealmChange}: IUseRealmCRUD) => {
-  const {useRealm, useQuery, useObject} = useRealmContext();
   const realm = useRealm();
 
   const writeObject = useCallback(
     ({object, name}: IWrite) => {
       realm.write(() => {
         realm.create(name, object);
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Saved to successfully',
+          autoHide: true,
+          visibilityTime: 10,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
       });
     },
     [realm],
@@ -29,6 +37,15 @@ export const useRealmCRUD = ({onRealmChange}: IUseRealmCRUD) => {
   const updateObject = useCallback(
     ({updatingQuery}: {updatingQuery: () => void}) => {
       realm.write(updatingQuery);
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Updated successfully',
+        autoHide: true,
+        visibilityTime: 10,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     },
     [realm],
   );
@@ -37,6 +54,15 @@ export const useRealmCRUD = ({onRealmChange}: IUseRealmCRUD) => {
     ({name}: Omit<IWrite, 'object'>) => {
       realm.write(() => {
         realm.delete(name);
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Deleted successfully',
+          autoHide: true,
+          visibilityTime: 10,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
       });
     },
     [realm],
@@ -56,5 +82,5 @@ export const useRealmCRUD = ({onRealmChange}: IUseRealmCRUD) => {
     };
   }, [onRealmChange, realm]);
 
-  return {writeObject, updateObject, deleteObject, useQuery, useObject};
+  return {writeObject, updateObject, deleteObject};
 };
