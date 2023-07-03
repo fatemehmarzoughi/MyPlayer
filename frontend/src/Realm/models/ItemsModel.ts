@@ -1,4 +1,3 @@
-import { createRealmContext } from '@realm/react';
 import Realm from 'realm';
 import {ItemCategory, ItemLabel, ItemType} from 'src/API';
 
@@ -7,7 +6,6 @@ export enum ISchemas {
 }
 
 export type ItemProperties = {
-  _id?: Realm.BSON.ObjectId;
   id: string;
   title: string;
   cover: string;
@@ -22,34 +20,32 @@ export type ItemProperties = {
 };
 
 class Item extends Realm.Object<Item> {
-  _id!: Realm.BSON.ObjectId;
   id!: string;
   title!: string;
   cover!: string;
-  type!: ItemType;
+  type!: string;
   createdAt!: Date;
   updatedAt!: Date;
   publishedAt!: Date;
   filePath!: string;
   watched!: boolean;
-  category!: ItemCategory;
-  label!: ItemLabel;
+  category!: string;
+  label!: string;
 
   static schema = {
     name: ISchemas.Item,
     properties: {
-      _id: 'objectId',
       id: 'string',
       title: 'string',
       cover: 'string',
-      type: '{}',
+      type: 'string',
       createdAt: 'date',
       updatedAt: 'date',
       publishedAt: 'date',
       filePath: 'string',
       watched: 'bool',
-      category: '{}',
-      label: '{}',
+      category: 'string',
+      label: 'string',
     },
     primaryKey: 'id',
   };
@@ -57,6 +53,5 @@ class Item extends Realm.Object<Item> {
 
 export const realmConfig: Realm.Configuration = {
   schema: [Item],
-  inMemory: true,
 };
 

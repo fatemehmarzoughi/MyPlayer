@@ -1,15 +1,14 @@
-import {View, ScrollView, RefreshControl, TouchableOpacity} from 'react-native';
-import Animated, {FadeInLeft, FadeOutLeft} from 'react-native-reanimated';
+import {FlatList, Heading, Spinner,Text, VStack} from 'native-base';
 import React from 'react';
-import {ConnectedProps, connect} from 'react-redux';
+import {RefreshControl, ScrollView, TouchableOpacity,View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Animated, {FadeInLeft, FadeOutLeft} from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Heading, Text, VStack, FlatList, Spinner} from 'native-base';
-
+import {connect,ConnectedProps} from 'react-redux';
+import {GetItemsResponseBody, ItemCategory, ItemLabel, ItemType} from 'src/API';
+import {contentColor,HomeFlatLists, MainHeader} from 'src/components';
 import Context from 'src/context/context';
 import Notification from 'src/Notification/NotificationSetup';
-
-import {HomeFlatLists, MainHeader, contentColor} from 'src/components';
 import {
   getAllItems,
   getAllMovies,
@@ -21,13 +20,12 @@ import {
   IBannerAction,
   IMoviesAction,
   IMusicsAction,
-  ISportActions,
   IRadioActions,
+  ISportActions,
 } from 'src/Redux';
-import {GetItemsResponseBody, ItemCategory, ItemLabel, ItemType} from 'src/API';
 
-import {styles} from './style';
 import {NetworkError} from '../Errors';
+import {styles} from './style';
 
 export type ISubjectCategory = {
   id: number;
@@ -273,7 +271,7 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
                 Audio/Video of the day
               </Text>
               <Heading style={styles.texts} bold fontSize="2xl">
-                The Item's Title
+                The Items Title
               </Heading>
               <TouchableOpacity>
                 <VStack flexDirection="row">
