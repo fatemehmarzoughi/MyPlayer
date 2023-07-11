@@ -20,10 +20,16 @@ React-Native
 
 
 <b> For running Backend </b><br>
+<p>In the backend folder you will find 2different folders (CMS and Go-lang), as it is obvious from its name, CMS folder contains folders for Strapi CMS and Go-lang is going to have the same API structure as the CMS (Coming Soon)</p><br>
+
 ```code
-1- cd backend
+CMS: 
+1- cd backend/CMS
 2- yarn
 3- yarn develop 
+
+GOlang:
+(comming soon)
 ```
 <b>This will run the APIs on localhost:1337, so you can add your own data to the items</b><br>
 
