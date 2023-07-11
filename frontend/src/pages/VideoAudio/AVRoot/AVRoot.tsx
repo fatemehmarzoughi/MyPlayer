@@ -131,11 +131,11 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                     },
                   })
                 }>
-                <Icon
+                {/* <Icon
                   name="bookmark-outline"
                   style={contentColor(context.theme)}
                   size={22}
-                />
+                /> */}
               </TouchableOpacity>
             </HStack>
           </HStack>
