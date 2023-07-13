@@ -26,7 +26,8 @@ React-Native
 CMS: 
 1- cd backend/CMS
 2- yarn
-3- yarn develop 
+3- create an `.env` file and just copy and paste the content of `.env.example` into it
+4- yarn develop 
 
 GOlang:
 (comming soon)
