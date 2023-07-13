@@ -1,26 +1,25 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
-import React from 'react';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {Spinner} from 'native-base';
+import React from 'react';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
-import ToggleSwitch from 'toggle-switch-react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
 import {getUserInfo} from 'src/API';
+import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
+import {contentColor,ModalClass, PageWrapper} from 'src/components';
 import Context from 'src/context/context';
 import {getData, storeData} from 'src/LocalStorage';
-import {ModalClass, PageWrapper, contentColor} from 'src/components';
 import Notification from 'src/Notification/NotificationSetup';
-import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
+import ToggleSwitch from 'toggle-switch-react-native';
 
 import {styles} from './style';
 
