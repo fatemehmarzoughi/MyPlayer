@@ -29,7 +29,7 @@ CMS:
 3- create a `.env` file and just copy and paste the content of `.env.example` into it
 4- yarn develop 
 ```
-<p>For more details on the CMS configs please check <a href="">this document</a></p><br>
+<p>For more details on the CMS configs please check <a href="https://github.com/fatemehmarzoughi/MyPlayer/blob/master/backend/CMS/README.md">this document</a></p><br>
 
 ```code
 GOlang:
