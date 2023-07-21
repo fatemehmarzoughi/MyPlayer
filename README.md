@@ -39,7 +39,7 @@ GOlang:
 
 # 🧑‍💻 Technologies<br>
 <b>Frontend</b><br>
-Jest, Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google signin, Gesture Recognizer, Notification, ... .<br>
+Jest, Native Base, Reanimated 2, Context, Async storage, Navigation, Flatlist, google sign in, Gesture Recognizer, Notification, ... .<br>
 
 <b>Backend</b><br>
 Strapi(CMS)<br>
@@ -83,7 +83,11 @@ https://user-images.githubusercontent.com/48021528/146699996-e4d2c141-24b6-452e-
   <img src="https://user-images.githubusercontent.com/48021528/145693165-f46d72fa-a72c-45e8-b543-d32748abcdc2.png" alt="subCategory" width="180" height="400">
 </div>
 
+# 🔑 Keywords
+
+MyPlayer, Music player, Video player, Audio player, Strapi, React-Native, React Native, iOS, Android, CMS, Go lang, Realm, local storage, Spotify, Netflix, 
+
 # 🚧 TODOs
 1- should migrate from class component to functional components</br>
 2- should be able to save the Audio/Video in the localStorage on the device</br>
-3- should be able to add the Audio/Video to favorites list</br>
+3- should be able to add the Audio/Video to the favorites list</br>
