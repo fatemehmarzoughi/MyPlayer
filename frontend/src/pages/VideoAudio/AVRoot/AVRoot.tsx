@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {connect, ConnectedProps} from 'react-redux';
 import {ItemType} from 'src/API';
 import {height, mainColor} from 'src/assets';
-import {contentColor, Header, PageWrapper} from 'src/components';
+import {CommonList, contentColor, Header, PageWrapper} from 'src/components';
 import Context from 'src/context/context';
 import {Audio, Video} from 'src/pages';
 import {NetworkError} from 'src/pages/Errors';
@@ -129,7 +129,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                     writeObject({
                       name: 'Item',
                       object: {
-                        id: String(itemDetails.data.id),
+                        id: itemDetails.data.id,
                         likes: Number(likes),
                         type,
                         title,
@@ -185,7 +185,16 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           </HStack>
         </VStack>
       );
-    }, [context.theme, deleteObject, id, isBookMarked, itemDetails, onRefresh, realm, writeObject]);
+    }, [
+      context.theme,
+      deleteObject,
+      id,
+      isBookMarked,
+      itemDetails,
+      onRefresh,
+      realm,
+      writeObject,
+    ]);
 
     const _render_relatedItems = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
@@ -202,7 +211,12 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
             Related {type}s
           </Text>
 
-          <FlatList
+          <CommonList
+            items={relatedItems.data}
+            onPress={id => navigation.navigate('AVRoot', {id})}
+          />
+
+          {/* <FlatList
             data={relatedItems.data}
             keyExtractor={item => String(item.id)}
             renderItem={({item}) => {
@@ -264,10 +278,10 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                 </View>
               );
             }}
-          />
+          /> */}
         </>
       );
-    }, [context.theme, itemDetails, navigation, onRefresh]);
+    }, [itemDetails, navigation, onRefresh]);
 
     const _render_content = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;

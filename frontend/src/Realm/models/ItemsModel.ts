@@ -6,7 +6,7 @@ export enum ISchemas {
 }
 
 export type ItemProperties = {
-  id: string;
+  id: number;
   title: string;
   cover: string;
   type: ItemType;
@@ -21,7 +21,7 @@ export type ItemProperties = {
 };
 
 export class ItemRealm extends Realm.Object<ItemRealm> {
-  id!: string;
+  id!: number;
   title!: string;
   cover!: string;
   type!: string;
@@ -37,7 +37,7 @@ export class ItemRealm extends Realm.Object<ItemRealm> {
   static schema = {
     name: ISchemas.Item,
     properties: {
-      id: 'string',
+      id: 'int',
       title: 'string',
       cover: 'string',
       type: 'string',

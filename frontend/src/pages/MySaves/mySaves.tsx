@@ -6,8 +6,7 @@ import {FlatList, Image, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {mainColor} from 'src/assets';
-import {contentColor, MainHeader} from 'src/components';
-import {backgroundColor, surfaceColor} from 'src/components/lightDarkTheme';
+import {CommonList, contentColor, MainHeader} from 'src/components';
 import Context from 'src/context/context';
 import {ItemProperties} from 'src/Realm';
 
@@ -32,6 +31,18 @@ export const MySaves: React.FC<IMySavesProps> = React.memo(({navigation}) => {
         searchOnPress={() => navigation.navigate('Search')}
         menuOnPress={() => navigation.openDrawer()}
       />
+
+      {/* <CommonList
+        items={items.map(i => {
+          const {id, ...attributes} = i;
+          return {
+            id,
+            attributes,
+          };
+        })}
+        onPress={id => navigation.navigate('AVRoot', {id})}
+      /> */}
+
       <FlatList
         data={items}
         keyExtractor={item => String(item.id)}
