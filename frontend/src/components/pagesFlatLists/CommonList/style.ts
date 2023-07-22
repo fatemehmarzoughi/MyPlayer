@@ -1,21 +1,7 @@
 import { StyleSheet } from "react-native";
-import { width } from "src/assets";
+import { width } from "src/assets/constants";
 
 export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginHorizontal: 15,
-        marginVertical: 10
-    },
-
-    image: {
-        width: 100,
-        height: 50,
-        borderRadius: 5,
-    },
-
-
-
     card: {
         display: 'flex',
         alignItems: 'center',
@@ -43,5 +29,4 @@ export const styles = StyleSheet.create({
         width: 80,
         height: 50
     }
-
 })

@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react';
+import {User} from 'src/API';
+import {getData, storeData} from 'src/LocalStorage';
 
 import Context, {Theme} from './context';
-import {getData, storeData} from 'src/LocalStorage';
-import {User} from 'src/API';
 
 export type IContextProviderProps = {
   children: ReactNode;

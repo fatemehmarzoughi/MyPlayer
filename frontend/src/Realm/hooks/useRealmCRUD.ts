@@ -1,8 +1,8 @@
-import {useQuery, useRealm} from '@realm/react';
+import {useQuery, useRealm, useObject} from '@realm/react';
 import {useCallback, useEffect} from 'react';
+import Toast from 'react-native-toast-message';
 
 import {ItemProperties} from '../models';
-import Toast from 'react-native-toast-message';
 
 export type IUseRealmCRUD = {
   onRealmChange?: () => void;
@@ -51,9 +51,9 @@ export const useRealmCRUD = ({onRealmChange}: IUseRealmCRUD) => {
   );
 
   const deleteObject = useCallback(
-    ({name}: Omit<IWrite, 'object'>) => {
+    (collection: Omit<IWrite | unknown, 'object' | never>) => {
       realm.write(() => {
-        realm.delete(name);
+        realm.delete(collection);
         Toast.show({
           type: 'success',
           position: 'top',
@@ -82,5 +82,5 @@ export const useRealmCRUD = ({onRealmChange}: IUseRealmCRUD) => {
     };
   }, [onRealmChange, realm]);
 
-  return {writeObject, updateObject, deleteObject};
+  return {writeObject, updateObject, deleteObject, useQuery, useObject, realm};
 };

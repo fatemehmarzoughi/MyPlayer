@@ -6,7 +6,7 @@ export enum ISchemas {
 }
 
 export type ItemProperties = {
-  id: string;
+  id: number;
   title: string;
   cover: string;
   type: ItemType;
@@ -17,10 +17,11 @@ export type ItemProperties = {
   watched: boolean;
   category: ItemCategory;
   label: ItemLabel;
+  likes: number;
 };
 
-class Item extends Realm.Object<Item> {
-  id!: string;
+export class ItemRealm extends Realm.Object<ItemRealm> {
+  id!: number;
   title!: string;
   cover!: string;
   type!: string;
@@ -31,11 +32,12 @@ class Item extends Realm.Object<Item> {
   watched!: boolean;
   category!: string;
   label!: string;
+  likes!: number;
 
   static schema = {
     name: ISchemas.Item,
     properties: {
-      id: 'string',
+      id: 'int',
       title: 'string',
       cover: 'string',
       type: 'string',
@@ -46,12 +48,13 @@ class Item extends Realm.Object<Item> {
       watched: 'bool',
       category: 'string',
       label: 'string',
+      likes: 'int'
     },
     primaryKey: 'id',
   };
 }
 
 export const realmConfig: Realm.Configuration = {
-  schema: [Item],
+  schema: [ItemRealm],
 };
 

@@ -1,27 +1,28 @@
-import {
-  Text,
-  View,
-  FlatList,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {toastMessageDuration} from 'src/assets';
-import React from 'react';
-import Context from 'src/context/context';
-import {contentColor} from 'src/components';
-import Toast from 'react-native-toast-message';
-import Icon from 'react-native-vector-icons/Ionicons';
-import * as Colors from 'src/assets/constants/Colors';
 import {NavigationProp} from '@react-navigation/native';
-import Icon2 from 'react-native-vector-icons/EvilIcons';
-import {Attributes, CountryCode, Plan, createAccount, getPlans} from 'src/API';
-import {validateEmail, validatePassword} from 'src/pages';
+import {Spinner} from 'native-base';
+import React from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
+import Toast from 'react-native-toast-message';
+import Icon2 from 'react-native-vector-icons/EvilIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Attributes, CountryCode, createAccount, getPlans, Plan} from 'src/API';
+import {toastMessageDuration} from 'src/assets';
+import * as Colors from 'src/assets/constants/Colors';
+import {contentColor} from 'src/components';
+import Context from 'src/context/context';
+import {storeData} from 'src/LocalStorage';
+import {validateEmail, validatePassword} from 'src/pages';
 
 import {styles} from './style';
-import {storeData} from 'src/LocalStorage';
-import { Spinner } from 'native-base';
 
 export interface ICreateAccountProps {
   navigation: NavigationProp<any, any>;
@@ -29,6 +30,8 @@ export interface ICreateAccountProps {
 
 export type ICreateAccountState = {
   passwordIconVisibility: 0 | 1;
+
+  refreshing: boolean;
 
   name: string;
   email: string;
@@ -57,6 +60,8 @@ export class CreateAccount extends React.PureComponent<
     this.state = {
       countryCode: CountryCode.US,
       passwordIconVisibility: 0,
+
+      refreshing: false,
 
       name: '',
       email: '',
@@ -268,17 +273,31 @@ export class CreateAccount extends React.PureComponent<
   //   }
   // };
 
-  override async componentDidMount() {
+  onGetPlans = async () => {
+    this.setState({
+      refreshing: true,
+    });
     await getPlans({
       onSuccess: plans => {
+        console.log(plans);
+
         this.setState({
           plans: plans.data,
+          refreshing: false,
         });
       },
       onError: err => {
         console.log(err);
+        this.setState({
+          refreshing: false,
+        });
       },
     });
+  };
+
+  override async componentDidMount() {
+    await this.onGetPlans();
+    console.log(this.state.plans);
   }
   /* -------------------------------------------------------------------------- */
   /*                                   Return                                   */
@@ -286,7 +305,13 @@ export class CreateAccount extends React.PureComponent<
 
   override render() {
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onGetPlans}
+          />
+        }>
         <View style={styles.container}>
           {/* /* --------------------------------- Header --------------------------------- */}
           <Text style={[styles.mainTitle, contentColor(this.context.theme)]}>
@@ -342,7 +367,7 @@ export class CreateAccount extends React.PureComponent<
               placeholderTextColor={
                 this.context.theme ? Colors.gray : Colors.lightGray
               }
-              secureTextEntry={!!!this.state.passwordIconVisibility}
+              secureTextEntry={!this.state.passwordIconVisibility}
               onChangeText={input =>
                 this.setState({
                   password: input,
@@ -404,80 +429,85 @@ export class CreateAccount extends React.PureComponent<
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.planSection}>
-            <Text style={[styles.planTitle, contentColor(this.context.theme)]}>
-              Choose Your Plan
-            </Text>
-            <Text style={styles.planSubTitle}>
-              By choosing our premium account, you can watch with no ads.
-            </Text>
-            <FlatList
-              style={styles.plansFlatlist}
-              horizontal
-              keyExtractor={(item, index) => index.toString()}
-              data={this.state.plans}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({
-                      choosedPlanId: item.id,
-                    });
-                  }}
-                  style={[
-                    styles.planContainer,
-                    this.state.choosedPlanId === item.id
-                      ? {
-                          borderColor: Colors.mainColor,
-                          borderWidth: 3.5,
-                        }
-                      : {borderColor: Colors.gray},
-                  ]}>
-                  <Icon
+          {this.state.plans ? (
+            <View style={styles.planSection}>
+              <Text
+                style={[styles.planTitle, contentColor(this.context.theme)]}>
+                Choose Your Plan
+              </Text>
+              <Text style={styles.planSubTitle}>
+                By choosing our premium account, you can watch with no ads.
+              </Text>
+              <FlatList
+                style={styles.plansFlatlist}
+                horizontal
+                keyExtractor={(item, index) => index.toString()}
+                data={this.state.plans}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({
+                        choosedPlanId: item.id,
+                      });
+                    }}
                     style={[
-                      styles.planIcon,
+                      styles.planContainer,
                       this.state.choosedPlanId === item.id
-                        ? {color: Colors.mainColor}
-                        : {color: Colors.gray},
-                    ]}
-                    name="checkmark-outline"
-                    size={60}
-                  />
-                  <View style={styles.planTextContainer}>
-                    <Text
-                      style={[
-                        styles.planText,
-                        this.state.choosedPlanId === item.id
-                          ? {fontWeight: 'bold'}
-                          : {fontWeight: 'normal'},
-                        contentColor(this.context.theme),
-                      ]}>
-                      {item.attributes.title}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.planText,
-                        this.state.choosedPlanId === item.id
-                          ? {fontWeight: 'bold'}
-                          : {fontWeight: 'normal'},
-                        contentColor(this.context.theme),
-                      ]}>
-                      {item.attributes.price} $
-                    </Text>
-                  </View>
-                  <Text
-                    style={[
-                      styles.description,
-                      this.state.choosedPlanId === item.id
-                        ? {color: Colors.mainColor}
-                        : {color: Colors.gray},
-                      contentColor(this.context.theme),
+                        ? {
+                            borderColor: Colors.mainColor,
+                            borderWidth: 3.5,
+                          }
+                        : {borderColor: Colors.gray},
                     ]}>
-                    {item.attributes.subTitle}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
+                    <Icon
+                      style={[
+                        styles.planIcon,
+                        this.state.choosedPlanId === item.id
+                          ? {color: Colors.mainColor}
+                          : {color: Colors.gray},
+                      ]}
+                      name="checkmark-outline"
+                      size={60}
+                    />
+                    <View style={styles.planTextContainer}>
+                      <Text
+                        style={[
+                          styles.planText,
+                          this.state.choosedPlanId === item.id
+                            ? {fontWeight: 'bold'}
+                            : {fontWeight: 'normal'},
+                          contentColor(this.context.theme),
+                        ]}>
+                        {item.attributes.title}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.planText,
+                          this.state.choosedPlanId === item.id
+                            ? {fontWeight: 'bold'}
+                            : {fontWeight: 'normal'},
+                          contentColor(this.context.theme),
+                        ]}>
+                        {item.attributes.price} $
+                      </Text>
+                    </View>
+                    <Text
+                      style={[
+                        styles.description,
+                        this.state.choosedPlanId === item.id
+                          ? {color: Colors.mainColor}
+                          : {color: Colors.gray},
+                        contentColor(this.context.theme),
+                      ]}>
+                      {item.attributes.subTitle}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          ) : (
+            <></>
+          )}
 
           {/* /* ---------------------------------- Plans --------------------------------- */}
           <TouchableOpacity

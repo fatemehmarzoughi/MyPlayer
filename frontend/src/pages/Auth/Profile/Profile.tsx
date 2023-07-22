@@ -1,26 +1,25 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
-import React from 'react';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {Spinner} from 'native-base';
+import React from 'react';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
-import ToggleSwitch from 'toggle-switch-react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
-import {getUserInfo} from 'src/API';
+import {getUserInfo, PlanType} from 'src/API';
+import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
+import {contentColor, ModalClass, PageWrapper} from 'src/components';
 import Context from 'src/context/context';
 import {getData, storeData} from 'src/LocalStorage';
-import {ModalClass, PageWrapper, contentColor} from 'src/components';
 import Notification from 'src/Notification/NotificationSetup';
-import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
+import ToggleSwitch from 'toggle-switch-react-native';
 
 import {styles} from './style';
 
@@ -83,6 +82,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
     await getUserInfo({
       onSuccess: data => {
         this.context.setUserInfo(data);
+
         this.setState({refreshing: false});
       },
       onError: err => {
@@ -220,6 +220,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
             <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
               Account Settings
             </Text>
+
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('UpgradeToPremium')}
               style={[styles.option, {borderColor: white}]}>
@@ -229,13 +230,26 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                   size={20}
                   color={this.context.theme === 'light' ? dark : white}
                 />
-                <Text
-                  style={[
-                    styles.optionTitle,
-                    contentColor(this.context.theme),
-                  ]}>
-                  Upgrade to premium
-                </Text>
+                {this.context.userInfo?.plan?.type &&
+                [PlanType.monthly, PlanType.annual].includes(
+                  this.context.userInfo?.plan?.type,
+                ) ? (
+                  <Text
+                    style={[
+                      styles.optionTitle,
+                      contentColor(this.context.theme),
+                    ]}>
+                    Change Plan
+                  </Text>
+                ) : (
+                  <Text
+                    style={[
+                      styles.optionTitle,
+                      contentColor(this.context.theme),
+                    ]}>
+                    Upgrade to premium
+                  </Text>
+                )}
               </View>
               <Icon
                 name="chevron-right"

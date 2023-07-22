@@ -5,8 +5,8 @@ import {
   NavigationProp,
   ParamListBase,
   RouteProp,
-} from "@react-navigation/native";
-import {Divider, HStack, Image, Spinner, Text, View, VStack} from "native-base";
+} from '@react-navigation/native';
+import {Divider, HStack, Image, Spinner, Text, View, VStack} from 'native-base';
 import React, {
   useCallback,
   useContext,
@@ -14,22 +14,22 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from "react";
-import {FlatList, TouchableOpacity} from "react-native";
-import EvIcon from "react-native-vector-icons/EvilIcons";
-import Icon from "react-native-vector-icons/Ionicons";
-import {connect, ConnectedProps} from "react-redux";
-import {ItemType} from "src/API";
-import {height, mainColor} from "src/assets";
-import {contentColor, Header, PageWrapper} from "src/components";
-import Context from "src/context/context";
-import {Audio, Video} from "src/pages";
-import {NetworkError} from "src/pages/Errors";
-import {useRealmCRUD} from "src/Realm/hooks";
-import {getItemDetails} from "src/Redux/actions";
-import {ItemDetailsActions} from "src/Redux/reducers";
+} from 'react';
+import {FlatList, TouchableOpacity} from 'react-native';
+import EvIcon from 'react-native-vector-icons/EvilIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {connect, ConnectedProps} from 'react-redux';
+import {ItemType} from 'src/API';
+import {height, mainColor} from 'src/assets';
+import {CommonList, contentColor, Header, PageWrapper} from 'src/components';
+import Context from 'src/context/context';
+import {Audio, Video} from 'src/pages';
+import {NetworkError} from 'src/pages/Errors';
+import {useRealmCRUD} from 'src/Realm/hooks';
+import {getItemDetails} from 'src/Redux/actions';
+import {ItemDetailsActions} from 'src/Redux/reducers';
 
-import {styles} from "./styles";
+import {styles} from './styles';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Types                                   */
@@ -45,7 +45,7 @@ export type IAudioVideoRootMapState = {
 
 export interface IAudioVideoRootProps extends IAudioVideoRootDispatchProps {
   navigation: {openDrawer: () => void} & NavigationProp<any, any>;
-  route: RouteProp<ParamListBase, "AVRoot">;
+  route: RouteProp<ParamListBase, 'AVRoot'>;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -65,7 +65,9 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     const context = useContext(Context);
     const {loadingItemDetail, itemDetails, error} = itemDetailsProps;
     const [refreshing, setRefreshing] = useState<boolean>(false);
-    const {writeObject} = useRealmCRUD({});
+    const {writeObject, deleteObject, realm} = useRealmCRUD({});
+    const [isBookMarked, setIsBookMarked] = useState<boolean>(false);
+    const {id} = route.params as Props;
 
     /* -------------------------------------------------------------------------- */
     /*                                   Methods                                  */
@@ -73,10 +75,18 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     const onRefresh = useCallback(async () => {
       setRefreshing(true);
 
-      const {id} = route.params as Props;
       await getItemDetailsProps({id});
       setRefreshing(false);
-    }, [getItemDetailsProps, setRefreshing, route]);
+    }, [getItemDetailsProps, id]);
+
+    /* -------------------------------------------------------------------------- */
+    /*                                  UseEffect                                 */
+    /* -------------------------------------------------------------------------- */
+    useEffect(() => {
+      const item = realm.objectForPrimaryKey('Item', String(id));
+      if (item) setIsBookMarked(true);
+      else setIsBookMarked(false);
+    }, [id, realm]);
 
     /* -------------------------------------------------------------------------- */
     /*                              Content Renderers                             */
@@ -99,9 +109,9 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
         updatedAt,
       } = itemDetails.data.attributes;
       return (
-        <VStack width={"100%"} marginTop={7}>
-          <HStack justifyContent={"space-between"}>
-            <Text color={mainColor} fontSize={"xs"}>
+        <VStack width={'100%'} marginTop={7}>
+          <HStack justifyContent={'space-between'}>
+            <Text color={mainColor} fontSize={'xs'}>
               {label}
             </Text>
             <HStack space={1}>
@@ -113,26 +123,34 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  writeObject({
-                    name: "Item",
-                    object: {
-                      id: String(itemDetails.data.id),
-                      type,
-                      title,
-                      cover,
-                      label,
-                      watched,
-                      category,
-                      filePath,
-                      createdAt,
-                      updatedAt,
-                      publishedAt,
-                    },
-                  })
-                }>
+                onPress={() => {
+                  if (!isBookMarked) {
+                    setIsBookMarked(true);
+                    writeObject({
+                      name: 'Item',
+                      object: {
+                        id: itemDetails.data.id,
+                        likes: Number(likes),
+                        type,
+                        title,
+                        cover,
+                        label,
+                        watched,
+                        category,
+                        filePath,
+                        createdAt,
+                        updatedAt,
+                        publishedAt,
+                      },
+                    });
+                  } else {
+                    setIsBookMarked(false);
+                    const i = realm.objectForPrimaryKey('Item', String(id));
+                    if (i && i?.isValid()) deleteObject(i);
+                  }
+                }}>
                 <Icon
-                  name="bookmark-outline"
+                  name={isBookMarked ? 'bookmark' : 'bookmark-outline'}
                   style={contentColor(context.theme)}
                   size={22}
                 />
@@ -140,15 +158,15 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
             </HStack>
           </HStack>
           <Text
-            width={"80%"}
+            width={'80%'}
             {...contentColor(context.theme)}
-            fontSize={"2xl"}
+            fontSize={'2xl'}
             marginBottom={3}
             fontWeight="bold">
             {title}
           </Text>
           <HStack space={3}>
-            <HStack alignItems={"center"} space={1}>
+            <HStack alignItems={'center'} space={1}>
               <Icon
                 name="heart"
                 style={contentColor(context.theme)}
@@ -158,7 +176,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                 {likes} Likes
               </Text>
             </HStack>
-            <HStack alignItems={"center"} space={1}>
+            <HStack alignItems={'center'} space={1}>
               <Icon name="play" style={contentColor(context.theme)} size={12} />
               <Text {...contentColor(context.theme)} fontSize="xs">
                 {relatedItems.data.length} Videos
@@ -167,7 +185,16 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           </HStack>
         </VStack>
       );
-    }, [context.theme, itemDetails, onRefresh, writeObject]);
+    }, [
+      context.theme,
+      deleteObject,
+      id,
+      isBookMarked,
+      itemDetails,
+      onRefresh,
+      realm,
+      writeObject,
+    ]);
 
     const _render_relatedItems = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
@@ -178,13 +205,18 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
             width="100%"
             marginTop={8}
             marginBottom={4}
-            fontWeight={"bold"}
+            fontWeight={'bold'}
             color={mainColor}
-            fontSize={"lg"}>
+            fontSize={'lg'}>
             Related {type}s
           </Text>
 
-          <FlatList
+          <CommonList
+            items={relatedItems.data}
+            onPress={id => navigation.navigate('AVRoot', {id})}
+          />
+
+          {/* <FlatList
             data={relatedItems.data}
             keyExtractor={item => String(item.id)}
             renderItem={({item}) => {
@@ -199,7 +231,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                   <TouchableOpacity
                     style={styles.card}
                     onPress={() =>
-                      navigation.navigate("AVRoot", {id: item.id})
+                      navigation.navigate('AVRoot', {id: item.id})
                     }>
                     <View style={styles.startPart}>
                       <Image
@@ -216,7 +248,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                           {...contentColor(context.theme)}>
                           {relatedItemTitle}
                         </Text>
-                        <HStack alignItems={"center"} space={1}>
+                        <HStack alignItems={'center'} space={1}>
                           <Icon
                             name="heart"
                             style={contentColor(context.theme)}
@@ -231,7 +263,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                     {relatedItemWatched ? (
                       <Icon
                         name="checkmark-circle"
-                        style={{color: "green"}}
+                        style={{color: 'green'}}
                         size={32}
                       />
                     ) : (
@@ -246,10 +278,10 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                 </View>
               );
             }}
-          />
+          /> */}
         </>
       );
-    }, [context.theme, itemDetails, navigation, onRefresh]);
+    }, [itemDetails, navigation, onRefresh]);
 
     const _render_content = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
@@ -273,7 +305,13 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           {_render_relatedItems}
         </PageWrapper>
       );
-    }, [_render_relatedItems, _render_tools, itemDetails, navigation, onRefresh]);
+    }, [
+      _render_relatedItems,
+      _render_tools,
+      itemDetails,
+      navigation,
+      onRefresh,
+    ]);
 
     /* -------------------------------------------------------------------------- */
     /*                                  UseEffect                                 */
@@ -296,13 +334,13 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
       case loadingItemDetail || refreshing || isMounted.current:
         return (
           <Spinner
-            size={"lg"}
+            size={'lg'}
             accessibilityLabel="Loading posts"
             color="warning.500"
             style={{
-              alignSelf: "center",
-              marginTop: "auto",
-              marginBottom: "auto",
+              alignSelf: 'center',
+              marginTop: 'auto',
+              marginBottom: 'auto',
             }}
           />
         );
