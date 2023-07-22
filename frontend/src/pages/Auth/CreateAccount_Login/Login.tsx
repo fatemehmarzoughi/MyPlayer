@@ -1,22 +1,22 @@
+import {NavigationProp} from '@react-navigation/native';
+import {Spinner} from 'native-base';
+import React from 'react';
 import {
-  Text,
-  View,
   ScrollView,
+  Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import {gray, lightGray, mainColor, toastMessageDuration} from 'src/assets';
-import React from 'react';
-import {login} from 'src/API';
-import Context from 'src/context/context';
-import {storeData} from 'src/LocalStorage';
-import {contentColor} from 'src/components';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {NavigationProp} from '@react-navigation/native';
+import {login} from 'src/API';
+import {gray, lightGray, mainColor, toastMessageDuration} from 'src/assets';
+import {contentColor} from 'src/components';
+import Context from 'src/context/context';
+import {storeData} from 'src/LocalStorage';
 
 import {styles} from './style';
-import {Spinner} from 'native-base';
 
 export interface ILoginProps {
   navigation: NavigationProp<any, any>;
@@ -253,8 +253,8 @@ export class Login extends React.PureComponent<ILoginProps, ILoginState> {
           <TouchableOpacity
             onPress={() => this.handleResetPass()}
             style={styles.resetPassword}>
-            <Text style={[styles.forgetPassText]}>Forgot Your Password?</Text>
-            <Text style={[styles.resetText]}> Reset</Text>
+            <Text style={[styles.forgetPassText, contentColor(this.context.theme)]}>Forgot Your Password?</Text>
+            <Text style={[styles.resetText, contentColor(this.context.theme)]}> Reset</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.handleLogin()}

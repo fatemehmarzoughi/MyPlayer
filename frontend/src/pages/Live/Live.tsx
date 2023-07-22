@@ -1,18 +1,16 @@
-import React from "react";
-import { NavigationProp } from "@react-navigation/native";
-import { MainHeader } from "src/components";
-import { Tabs } from "./Tabs";
+import React from 'react';
+import {NavigationProp} from '@react-navigation/native';
+import {MainHeader} from 'src/components';
+import {Tabs} from './Tabs';
+import {Text, VStack} from 'native-base';
 
 export interface ILiveProps {
-  navigation: { openDrawer: () => void } & NavigationProp<any, any>;
+  navigation: {openDrawer: () => void} & NavigationProp<any, any>;
 }
 
 export interface ILiveStates {
   index: number;
-  routes: [
-    { key: "first"; title: "First" },
-    { key: "second"; title: "Second" }
-  ];
+  routes: [{key: 'first'; title: 'First'}, {key: 'second'; title: 'Second'}];
 }
 export class Live extends React.PureComponent<ILiveProps, ILiveStates> {
   constructor(props: ILiveProps) {
@@ -21,8 +19,8 @@ export class Live extends React.PureComponent<ILiveProps, ILiveStates> {
       // animation : '',
       index: 0,
       routes: [
-        { key: "first", title: "First" },
-        { key: "second", title: "Second" },
+        {key: 'first', title: 'First'},
+        {key: 'second', title: 'Second'},
       ],
     };
   }
@@ -38,9 +36,14 @@ export class Live extends React.PureComponent<ILiveProps, ILiveStates> {
       <>
         <MainHeader
           isLive={true}
-          searchOnPress={() => this.props.navigation.navigate("Search")}
+          searchOnPress={() => this.props.navigation.navigate('Search')}
           menuOnPress={() => this.props.navigation.openDrawer()}
         />
+        <VStack flex={1} alignItems={'center'} justifyContent={'center'}>
+          <Text color={'gray.400'} fontSize={'2xl'}>
+            Coming Soon
+          </Text>
+        </VStack>
         {/* <Animated.Text entering={this.state.animation}>my text</Animated.Text> */}
         {/* <NativeText bold={true} textAlign="center" fontSize={20}>Live</NativeText> */}
         {/* <Tabs /> */}
