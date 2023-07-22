@@ -1,19 +1,21 @@
 import {
-  Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import React from 'react';
-import {
   NavigationProp,
   ParamListBase,
   RouteProp,
 } from '@react-navigation/native';
-import { Spinner } from 'native-base';
-import {Header, PageWrapper} from 'src/components';
+import {Spinner} from 'native-base';
+import React from 'react';
+import {ScrollView, Text, TextInput, TouchableOpacity} from 'react-native';
+import {
+  backgroundColor,
+  contentColor,
+  Header,
+  PageWrapper,
+} from 'src/components';
+import Context from 'src/context/context';
 
 import {styles} from './style';
+import { gray, lightGray } from 'src/assets/constants';
 
 export interface IForgetPasswordProps {
   navigation: NavigationProp<any, any>;
@@ -27,6 +29,9 @@ export class ForgetPassword extends React.PureComponent<
   IForgetPasswordProps,
   IForgetPasswordState
 > {
+  static override contextType = Context;
+  declare context: React.ContextType<typeof Context>;
+
   constructor(props: IForgetPasswordProps) {
     super(props);
     this.state = {
@@ -130,13 +135,18 @@ export class ForgetPassword extends React.PureComponent<
           </Text>
           <TextInput
             placeholder="Email"
-            style={styles.input}
+            style={[
+              styles.input,
+              backgroundColor(this.context.theme),
+              contentColor(this.context.theme),
+            ]}
+            placeholderTextColor={this.context.theme === 'light' ? gray: lightGray}
             onChangeText={input => this.handleInput(input)}
           />
           <>
             {this.state.sending ? (
               <TouchableOpacity
-                style={styles.btn}
+                style={[styles.btn]}
                 // onPress={() => this.handleSend()}
               >
                 <Spinner
