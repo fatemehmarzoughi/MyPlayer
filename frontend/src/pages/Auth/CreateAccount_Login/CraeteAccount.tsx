@@ -321,10 +321,10 @@ export class CreateAccount extends React.PureComponent<
           {/* /* --------------------------------- Inputs --------------------------------- */}
           <View style={styles.input}>
             <TextInput
-              style={[styles.textInput]}
+              style={[styles.textInput, contentColor(this.context.theme)]}
               placeholder="Name"
               placeholderTextColor={
-                this.context.theme ? Colors.gray : Colors.lightGray
+                this.context.theme === 'light' ? Colors.gray : Colors.lightGray
               }
               onChangeText={input =>
                 this.setState({
@@ -341,10 +341,10 @@ export class CreateAccount extends React.PureComponent<
           </View>
           <View style={styles.input}>
             <TextInput
-              style={[styles.textInput]}
+              style={[styles.textInput, contentColor(this.context.theme)]}
               placeholder="Email"
               placeholderTextColor={
-                this.context.theme ? Colors.gray : Colors.lightGray
+                this.context.theme === 'light' ? Colors.gray : Colors.lightGray
               }
               onChangeText={input =>
                 this.setState({
@@ -362,10 +362,10 @@ export class CreateAccount extends React.PureComponent<
           </View>
           <View style={styles.input}>
             <TextInput
-              style={[styles.textInput]}
+              style={[styles.textInput, contentColor(this.context.theme)]}
               placeholder="Password"
               placeholderTextColor={
-                this.context.theme ? Colors.gray : Colors.lightGray
+                this.context.theme === 'light' ? Colors.gray : Colors.lightGray
               }
               secureTextEntry={!this.state.passwordIconVisibility}
               onChangeText={input =>
@@ -420,6 +420,9 @@ export class CreateAccount extends React.PureComponent<
                 withCountryNameButton={true}
                 withFlag={true}
                 withEmoji={true}
+                theme={{
+                  onBackgroundTextColor: this.context.theme === 'dark' ? Colors.lightGray : Colors.gray
+                }}
                 onSelect={val => {
                   this.setState({
                     countryCode: val.cca2 as unknown as CountryCode,

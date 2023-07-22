@@ -74,7 +74,7 @@ export const MenuContent: React.FC<any> = React.memo(props => {
             Home
           </Text>
           <Text style={[styles.menuItem, contentColor(context.theme)]}>
-            My Playlist
+            My Playlist (Coming Soon)
           </Text>
           <Text
             onPress={() => props.navigation.navigate('MySaves')}
