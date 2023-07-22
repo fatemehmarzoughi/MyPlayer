@@ -268,12 +268,13 @@ class Home extends React.PureComponent<IHomeProps, IHomeStates> {
           <View style={styles.bannerContent}>
             <VStack space={2}>
               <Text style={styles.texts} fontSize="lg">
-                Audio/Video of the day
+                {this.props.banner.banner?.data.attributes.items.data
+                .attributes.type} of the day
               </Text>
-              <Heading style={styles.texts} bold fontSize="2xl">
-                The Items Title
+              <Heading style={styles.texts} bold fontSize="5xl" fontStyle={'italic'}>
+                {this.props.banner.banner?.data.attributes.items.data.attributes.title}
               </Heading>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('AVRoot', {id: this.props.banner.banner?.data.attributes.items.data.id})}>
                 <VStack flexDirection="row">
                   <Text style={styles.texts} fontSize="sm" italic>
                     Watch Now

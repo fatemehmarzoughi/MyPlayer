@@ -1,20 +1,21 @@
+import {NavigationProp} from '@react-navigation/native';
+import {Spinner} from 'native-base';
+import React from 'react';
 import {
-  Text,
   ScrollView,
+  Text,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
 import Toast from 'react-native-toast-message';
-import {NavigationProp} from '@react-navigation/native';
-import Context from 'src/context/context';
-import * as Colors from 'src/assets/constants/Colors';
-import {styles} from './style';
-import {toastMessageDuration} from 'src/assets';
 import {POST, reportBug} from 'src/API';
-import {Header, PageWrapper} from 'src/components';
+import {toastMessageDuration} from 'src/assets';
+import * as Colors from 'src/assets/constants/Colors';
+import {contentColor, Header, PageWrapper} from 'src/components';
+import Context from 'src/context/context';
 import {getData} from 'src/LocalStorage';
-import {Spinner} from 'native-base';
+
+import {styles} from './style';
 
 export interface IReportABugProps {
   navigation: NavigationProp<any, any>;
@@ -106,9 +107,9 @@ export class ReportABug extends React.PureComponent<
           <TextInput
             placeholder="Your explenation goes here ... "
             placeholderTextColor={
-              this.context.theme ? Colors.dark : Colors.white
+              this.context.theme === 'light' ? Colors.dark : Colors.white
             }
-            style={styles.input}
+            style={[styles.input, contentColor(this.context.theme)]}
             onChangeText={input => this.handleTextInput(input)}
           />
           <TouchableOpacity style={styles.btn} onPress={this.handleReport}>
