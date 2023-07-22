@@ -5,6 +5,7 @@ export * from './Menu';
 export * from './About';
 export * from './Search';
 export * from './Errors';
+export * from './MySaves';
 export * from './AppRoute';
 export * from './VideoAudio';
 export * from './onBoarding';

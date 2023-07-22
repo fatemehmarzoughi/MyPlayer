@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* -------------------------------------------------------------------------- */
 /*                                   General                                  */
 /* -------------------------------------------------------------------------- */
@@ -300,7 +301,8 @@ export type User = {
   confirmed?: boolean;
   blocked?: boolean;
   avatar?: string;
-  plan?: Omit<Data<Plan, Attributes<Plan>>, 'meta'>;
+  plan?: Plan;
+  // plan?: Omit<Data<Plan, Attributes<Plan>>, 'meta'>;
   country?: CountryCode;
 };
 

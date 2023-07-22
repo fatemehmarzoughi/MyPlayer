@@ -1,17 +1,16 @@
-import {Text as NativeText} from 'native-base';
-import React, {useContext, useState} from 'react';
-import ToggleSwitch from 'toggle-switch-react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {NavigationProp} from '@react-navigation/native';
-import {Text, View, ScrollView, Image} from 'react-native';
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import Context, {Theme} from 'src/context/context';
-import {backgroundColor, contentColor} from 'src/components';
-
+import {NavigationProp} from '@react-navigation/native';
+import {Text as NativeText} from 'native-base';
+import React, {useContext, useState} from 'react';
+import {Image,ScrollView, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {dark, gray} from 'src/assets';
+import {backgroundColor, contentColor} from 'src/components';
+import Context, {Theme} from 'src/context/context';
+import ToggleSwitch from 'toggle-switch-react-native';
 
 import {styles} from './styles';
 
@@ -77,7 +76,9 @@ export const MenuContent: React.FC<any> = React.memo(props => {
           <Text style={[styles.menuItem, contentColor(context.theme)]}>
             My Playlist
           </Text>
-          <Text style={[styles.menuItem, contentColor(context.theme)]}>
+          <Text
+            onPress={() => props.navigation.navigate('MySaves')}
+            style={[styles.menuItem, contentColor(context.theme)]}>
             My Saves
           </Text>
         </View>

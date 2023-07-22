@@ -1,39 +1,40 @@
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {
-  Login,
-  Search,
-  Profile,
-  OnBoarding,
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useContext, useEffect} from 'react';
+import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {gray, mainColor} from 'src/assets';
+import {backgroundColor} from 'src/components';
+import Context from 'src/context/context';
+import {getData} from 'src/LocalStorage';
+import {
+  About,
+  ChangeProfilePhoto,
   CreateAccount,
+  EditProfile,
   EntriesOptions,
   ForgetPassword,
   Live,
-  ReportABug,
-  UpgradeToPremium,
-  ResetPassword,
-  EditProfile,
-  ChangeProfilePhoto,
+  Login,
   MenuContent,
-  About,
+  MySaves,
+  OnBoarding,
+  Profile,
+  ReportABug,
+  ResetPassword,
+  Search,
   TermsAndPolicy,
+  UpgradeToPremium,
 } from 'src/pages';
-import React, {useContext, useEffect} from 'react';
-import Home from './Home/Home';
-import Context from 'src/context/context';
-import {gray, mainColor} from 'src/assets';
-import {
-  DarkTheme,
-  NavigationContainer,
-  DefaultTheme,
-} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {backgroundColor} from 'src/components';
-import {getData} from 'src/LocalStorage';
 
+import Home from './Home/Home';
 import {styles} from './style';
 import AVRoot from './VideoAudio/AVRoot/AVRoot';
 
@@ -60,6 +61,10 @@ const DrawerPages = React.memo(function DrawerPages() {
 
       <Drawer.Screen name="About">
         {props => <About {...props} />}
+      </Drawer.Screen>
+
+      <Drawer.Screen name="MySaves">
+        {props => <MySaves {...props} />}
       </Drawer.Screen>
 
       <Drawer.Screen name="TermsAndPolicy">

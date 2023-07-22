@@ -1,13 +1,12 @@
-import React from 'react';
-import {AppRoute} from 'src/pages';
-import {checkLoginStatus} from 'src';
-import Context from 'src/context/context';
-import {StatusBar} from 'expo-status-bar';
-import LottieView from 'lottie-react-native';
-import Toast from 'react-native-toast-message';
-import {getData, storeData} from 'src/LocalStorage';
-import SplashScreen from 'react-native-splash-screen';
-import {Spinner} from 'native-base';
+import {StatusBar} from "expo-status-bar";
+import {Spinner} from "native-base";
+import React from "react";
+import SplashScreen from "react-native-splash-screen";
+import Toast from "react-native-toast-message";
+import {checkLoginStatus} from "src";
+import Context from "src/context/context";
+import {getData, storeData} from "src/LocalStorage";
+import {AppRoute} from "src/pages";
 
 export interface IAppProps {}
 export interface IAppStates {
@@ -37,11 +36,12 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
         this.context.setIsLogin(isLogin);
       });
 
-      const isFirstInstallation = await getData('isFirstInstallation');
-      // if(isFirstInstallation === null)
-      if (isFirstInstallation !== null) {
+      const isFirstInstallation = await getData("isFirstInstallation");
+      if (isFirstInstallation === null) {
+        await storeData("accessToken", null);
+        // if (isFirstInstallation !== null) {
         // for test
-        await storeData('isFirstInstallation', 'false');
+        await storeData("isFirstInstallation", "false");
         this._isMount && this.context.setIsFirstInstallation(null);
         this._isMount &&
           this.setState({
@@ -81,9 +81,9 @@ export class App extends React.PureComponent<IAppProps, IAppStates> {
               accessibilityLabel="Loading posts"
               color="warning.500"
               style={{
-                alignSelf: 'center',
-                marginTop: 'auto',
-                marginBottom: 'auto',
+                alignSelf: "center",
+                marginTop: "auto",
+                marginBottom: "auto",
               }}
             />
           ) : (

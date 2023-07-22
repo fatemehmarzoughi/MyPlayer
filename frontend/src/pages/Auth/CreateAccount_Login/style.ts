@@ -124,7 +124,7 @@ export const styles = StyleSheet.create({
   },
   plansFlatlist: {
     marginTop: 15,
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
   },
   planIcon: {
     color: gray,

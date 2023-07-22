@@ -1,13 +1,14 @@
-import React from 'react';
-import {Theme} from 'src/context';
 import LottieView from 'lottie-react-native';
+import {Spinner} from 'native-base';
+import React from 'react';
+import {FlatList, Text, TouchableOpacity,View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, {BounceIn} from 'react-native-reanimated';
-import {Text, View, FlatList, TouchableOpacity} from 'react-native';
 import {backgroundColor, surfaceColor} from 'src/components/lightDarkTheme';
+import {Theme} from 'src/context';
 import Context from 'src/context/context';
+
 import {styles} from './style';
-import {Spinner} from 'native-base';
 
 export type IFlatList1Props = {
   loading?: boolean;

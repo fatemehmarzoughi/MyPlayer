@@ -2,34 +2,33 @@
 /*                                   Imports                                  */
 /* -------------------------------------------------------------------------- */
 import {
-  RouteProp,
-  ParamListBase,
   NavigationProp,
+  ParamListBase,
+  RouteProp,
 } from '@react-navigation/native';
+import {HStack, Spinner, Text, VStack} from 'native-base';
 import React, {
-  useMemo,
-  useState,
-  useEffect,
-  useContext,
   useCallback,
+  useContext,
+  useEffect,
+  useMemo,
   useRef,
+  useState,
 } from 'react';
+import {TouchableOpacity} from 'react-native';
+import EvIcon from 'react-native-vector-icons/EvilIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {connect, ConnectedProps} from 'react-redux';
 import {ItemType} from 'src/API';
 import {height, mainColor} from 'src/assets';
-import {Audio, Video} from 'src/pages';
+import {CommonList, contentColor, Header, PageWrapper} from 'src/components';
 import Context from 'src/context/context';
+import {Audio, Video} from 'src/pages';
 import {NetworkError} from 'src/pages/Errors';
+import {useRealmCRUD} from 'src/Realm/hooks';
 import {getItemDetails} from 'src/Redux/actions';
-import {ConnectedProps, connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {ItemDetailsActions} from 'src/Redux/reducers';
-import {FlatList, TouchableOpacity} from 'react-native';
-import EvIcon from 'react-native-vector-icons/EvilIcons';
-import {Header, PageWrapper, contentColor} from 'src/components';
-import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import {View, Text, Image, VStack, HStack, Divider, Spinner} from 'native-base';
 
-import {styles} from './styles';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Types                                   */
@@ -65,6 +64,28 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     const context = useContext(Context);
     const {loadingItemDetail, itemDetails, error} = itemDetailsProps;
     const [refreshing, setRefreshing] = useState<boolean>(false);
+    const {writeObject, deleteObject, realm} = useRealmCRUD({});
+    const [isBookMarked, setIsBookMarked] = useState<boolean>(false);
+    const {id} = route.params as Props;
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   Methods                                  */
+    /* -------------------------------------------------------------------------- */
+    const onRefresh = useCallback(async () => {
+      setRefreshing(true);
+
+      await getItemDetailsProps({id});
+      setRefreshing(false);
+    }, [getItemDetailsProps, id]);
+
+    /* -------------------------------------------------------------------------- */
+    /*                                  UseEffect                                 */
+    /* -------------------------------------------------------------------------- */
+    useEffect(() => {
+      const item = realm.objectForPrimaryKey('Item', id);
+      if (item) setIsBookMarked(true);
+      else setIsBookMarked(false);
+    }, [id, realm]);
 
     /* -------------------------------------------------------------------------- */
     /*                              Content Renderers                             */
@@ -72,7 +93,20 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
 
     const _render_tools = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
-      const {title, relatedItems, label, likes} = itemDetails.data.attributes;
+      const {
+        title,
+        relatedItems,
+        label,
+        likes,
+        category,
+        cover,
+        createdAt,
+        filePath,
+        publishedAt,
+        type,
+        watched,
+        updatedAt,
+      } = itemDetails.data.attributes;
       return (
         <VStack width={'100%'} marginTop={7}>
           <HStack justifyContent={'space-between'}>
@@ -87,9 +121,35 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                   size={32}
                 />
               </TouchableOpacity>
-              <TouchableOpacity>
-                <AwesomeIcon
-                  name="bookmark"
+              <TouchableOpacity
+                onPress={() => {
+                  if (!isBookMarked) {
+                    setIsBookMarked(true);
+                    writeObject({
+                      name: 'Item',
+                      object: {
+                        id: itemDetails.data.id,
+                        likes: Number(likes),
+                        type,
+                        title,
+                        cover,
+                        label,
+                        watched,
+                        category,
+                        filePath,
+                        createdAt,
+                        updatedAt,
+                        publishedAt,
+                      },
+                    });
+                  } else {
+                    setIsBookMarked(false);
+                    const i = realm.objectForPrimaryKey('Item', id);
+                    if (i && i?.isValid()) deleteObject(i);
+                  }
+                }}>
+                <Icon
+                  name={isBookMarked ? 'bookmark' : 'bookmark-outline'}
                   style={contentColor(context.theme)}
                   size={22}
                 />
@@ -124,7 +184,16 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           </HStack>
         </VStack>
       );
-    }, [itemDetails]);
+    }, [
+      context.theme,
+      deleteObject,
+      id,
+      isBookMarked,
+      itemDetails,
+      onRefresh,
+      realm,
+      writeObject,
+    ]);
 
     const _render_relatedItems = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
@@ -141,7 +210,12 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
             Related {type}s
           </Text>
 
-          <FlatList
+          <CommonList
+            items={relatedItems.data}
+            onPress={id => navigation.navigate('AVRoot', {id})}
+          />
+
+          {/* <FlatList
             data={relatedItems.data}
             keyExtractor={item => String(item.id)}
             renderItem={({item}) => {
@@ -203,10 +277,10 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                 </View>
               );
             }}
-          />
+          /> */}
         </>
       );
-    }, [itemDetails]);
+    }, [itemDetails, navigation, onRefresh]);
 
     const _render_content = useMemo(() => {
       if (!itemDetails) return <NetworkError onReload={onRefresh} />;
@@ -230,19 +304,17 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
           {_render_relatedItems}
         </PageWrapper>
       );
-    }, [itemDetails]);
+    }, [
+      _render_relatedItems,
+      _render_tools,
+      itemDetails,
+      navigation,
+      onRefresh,
+    ]);
 
     /* -------------------------------------------------------------------------- */
     /*                                  UseEffect                                 */
     /* -------------------------------------------------------------------------- */
-    
-    const onRefresh = useCallback(async () => {
-      setRefreshing(true);
-
-      const {id} = route.params as Props;
-      await getItemDetailsProps({id});
-      setRefreshing(false);
-    }, [getItemDetailsProps, setRefreshing, route]);
 
     useEffect(() => {
       isMounted.current = false;
