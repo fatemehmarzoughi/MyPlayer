@@ -1,7 +1,7 @@
-import AudioPlayer from "react-native-video";
-import {ItemDetailsActions} from "src/Redux/reducers";
 import React from "react";
+import AudioPlayer from "react-native-video";
 import {width} from "src/assets";
+import {ItemDetailsActions} from "src/Redux/reducers";
 
 export type IAudioMapState = {
   itemDetails: ItemDetailsActions;
@@ -18,6 +18,7 @@ export const Audio: React.FC<IAudioProps> = React.memo(({cover, filePath}) => {
       controls
       audioOnly
       pictureInPicture
+      playInBackground={false}
       accessibilityLanguage="en"
       source={{uri: filePath}}
       style={{height: 350, width: width}}

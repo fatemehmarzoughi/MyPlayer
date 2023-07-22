@@ -1,15 +1,14 @@
 import {Divider, HStack, Text, VStack} from 'native-base';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Attributes, Item } from 'src/API/types';
 import {mainColor} from 'src/assets';
 import {contentColor} from 'src/components/lightDarkTheme';
 import context from 'src/context/context';
-import {ItemProperties} from 'src/Realm/models';
 
 import {styles} from './style';
-import { Attributes, Item } from 'src/API/types';
 
 export type CommonListProps = {
   items: Attributes<Item>[];
@@ -18,6 +17,12 @@ export type CommonListProps = {
 
 export const CommonList = React.memo(({items, onPress}: CommonListProps) => {
   const {theme} = useContext(context);
+
+  useEffect(() => {
+    console.log('items = ');
+    console.log(items);
+    
+  }, [items]);
   return (
     <FlatList
       data={items}
