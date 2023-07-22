@@ -17,9 +17,10 @@ export type ItemProperties = {
   watched: boolean;
   category: ItemCategory;
   label: ItemLabel;
+  likes: number;
 };
 
-class Item extends Realm.Object<Item> {
+export class ItemRealm extends Realm.Object<ItemRealm> {
   id!: string;
   title!: string;
   cover!: string;
@@ -31,6 +32,7 @@ class Item extends Realm.Object<Item> {
   watched!: boolean;
   category!: string;
   label!: string;
+  likes!: number;
 
   static schema = {
     name: ISchemas.Item,
@@ -46,12 +48,13 @@ class Item extends Realm.Object<Item> {
       watched: 'bool',
       category: 'string',
       label: 'string',
+      likes: 'int'
     },
     primaryKey: 'id',
   };
 }
 
 export const realmConfig: Realm.Configuration = {
-  schema: [Item],
+  schema: [ItemRealm],
 };
 

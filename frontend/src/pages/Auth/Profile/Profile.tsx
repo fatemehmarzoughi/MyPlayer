@@ -13,9 +13,9 @@ import {
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-import {getUserInfo} from 'src/API';
+import {getUserInfo, PlanType} from 'src/API';
 import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
-import {contentColor,ModalClass, PageWrapper} from 'src/components';
+import {contentColor, ModalClass, PageWrapper} from 'src/components';
 import Context from 'src/context/context';
 import {getData, storeData} from 'src/LocalStorage';
 import Notification from 'src/Notification/NotificationSetup';
@@ -82,6 +82,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
     await getUserInfo({
       onSuccess: data => {
         this.context.setUserInfo(data);
+
         this.setState({refreshing: false});
       },
       onError: err => {
@@ -219,6 +220,7 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
             <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
               Account Settings
             </Text>
+
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('UpgradeToPremium')}
               style={[styles.option, {borderColor: white}]}>
@@ -228,13 +230,26 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
                   size={20}
                   color={this.context.theme === 'light' ? dark : white}
                 />
-                <Text
-                  style={[
-                    styles.optionTitle,
-                    contentColor(this.context.theme),
-                  ]}>
-                  Upgrade to premium
-                </Text>
+                {this.context.userInfo?.plan?.type &&
+                [PlanType.monthly, PlanType.annual].includes(
+                  this.context.userInfo?.plan?.type,
+                ) ? (
+                  <Text
+                    style={[
+                      styles.optionTitle,
+                      contentColor(this.context.theme),
+                    ]}>
+                    Change Plan
+                  </Text>
+                ) : (
+                  <Text
+                    style={[
+                      styles.optionTitle,
+                      contentColor(this.context.theme),
+                    ]}>
+                    Upgrade to premium
+                  </Text>
+                )}
               </View>
               <Icon
                 name="chevron-right"
