@@ -6,7 +6,7 @@ import {
   ParamListBase,
   RouteProp,
 } from '@react-navigation/native';
-import {Divider, HStack, Image, Spinner, Text, View, VStack} from 'native-base';
+import {HStack, Spinner, Text, VStack} from 'native-base';
 import React, {
   useCallback,
   useContext,
@@ -15,7 +15,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import EvIcon from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect, ConnectedProps} from 'react-redux';
@@ -29,7 +29,6 @@ import {useRealmCRUD} from 'src/Realm/hooks';
 import {getItemDetails} from 'src/Redux/actions';
 import {ItemDetailsActions} from 'src/Redux/reducers';
 
-import {styles} from './styles';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Types                                   */
@@ -83,7 +82,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
     /*                                  UseEffect                                 */
     /* -------------------------------------------------------------------------- */
     useEffect(() => {
-      const item = realm.objectForPrimaryKey('Item', String(id));
+      const item = realm.objectForPrimaryKey('Item', id);
       if (item) setIsBookMarked(true);
       else setIsBookMarked(false);
     }, [id, realm]);
@@ -145,7 +144,7 @@ const AudioVideoRoot: React.FC<IAudioVideoRootProps> = React.memo(
                     });
                   } else {
                     setIsBookMarked(false);
-                    const i = realm.objectForPrimaryKey('Item', String(id));
+                    const i = realm.objectForPrimaryKey('Item', id);
                     if (i && i?.isValid()) deleteObject(i);
                   }
                 }}>

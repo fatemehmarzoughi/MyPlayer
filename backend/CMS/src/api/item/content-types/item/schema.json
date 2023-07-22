@@ -24,7 +24,7 @@
     "filePath": {
       "type": "richtext",
       "required": true,
-      "default": "http://localhost:1337/uploads/thumbnail_profilepic_14009cf058.png"
+      "default": "http://localhost:1337/uploads/audio_cc95d2ba5e.mp3"
     },
     "relatedItems": {
       "type": "relation",
