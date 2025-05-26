@@ -1,4 +1,6 @@
-import { createRealmContext, RealmProvider } from '@realm/react';
+import 'react-native-gesture-handler';
+
+import {createRealmContext, RealmProvider} from '@realm/react';
 import {NativeBaseProvider} from 'native-base';
 import React from 'react';
 import {Provider} from 'react-redux';
