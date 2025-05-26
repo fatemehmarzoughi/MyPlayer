@@ -98,7 +98,7 @@ const Auth = React.memo(() => {
     getData('accessToken').then(accessToken => {
       if (accessToken === 'null') setIsLogin(false);
     });
-  }, []);
+  }, [setIsLogin]);
 
   return (
     <Stack.Navigator
