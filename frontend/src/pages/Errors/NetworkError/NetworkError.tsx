@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import Context from 'src/context/context';
-import {contentColor} from 'src/components';
 import {Text, TouchableOpacity, View} from 'react-native';
+import {contentColor} from 'src/components';
+import Context from 'src/context/context';
 
 import {styles} from './style';
 

@@ -1,97 +1,83 @@
-import {StatusBar} from "expo-status-bar";
-import {Spinner} from "native-base";
-import React from "react";
-import SplashScreen from "react-native-splash-screen";
-import Toast from "react-native-toast-message";
-import {checkLoginStatus} from "src";
-import Context from "src/context/context";
-import {getData, storeData} from "src/LocalStorage";
-import {AppRoute} from "src/pages";
+import {StatusBar} from 'expo-status-bar';
+import {Spinner} from 'native-base';
+import React, {useContext, useEffect, useState} from 'react';
+import SplashScreen from 'react-native-splash-screen';
+import Toast from 'react-native-toast-message';
+import {checkLoginStatus} from 'src';
+import Context from 'src/context/context';
+import {getData, storeData} from 'src/LocalStorage';
+import {AppRoute} from 'src/pages';
 
-export interface IAppProps {}
-export interface IAppStates {
-  checkingFirstTimeUsers: boolean;
-}
+export const App = React.memo(() => {
+  const [checkingFirstTimeUsers, setCheckingFirstTimeUsers] = useState(true);
+  const context = useContext(Context);
 
-export class App extends React.PureComponent<IAppProps, IAppStates> {
-  static override contextType = Context;
-  declare context: React.ContextType<typeof Context>;
+  useEffect(() => {
+    let isMounted = true;
+    console.log('checkingFirstTimeUsers = ', checkingFirstTimeUsers);
+    console.log('isMounted', isMounted);
 
-  private _isMount: boolean;
+    const init = async () => {
+      try {
+        checkLoginStatus().then(isLogin => {
+          if (isMounted) context.setIsLogin(isLogin);
+        });
 
-  constructor(props: IAppProps) {
-    super(props);
-    this.state = {
-      checkingFirstTimeUsers: true,
+        const isFirstInstallation = await getData('isFirstInstallation');
+        console.log('isFirstInstallation', isFirstInstallation);
+
+        if (isFirstInstallation === null) {
+          await storeData('accessToken', null);
+          await storeData('isFirstInstallation', 'false');
+
+          if (isMounted) {
+            context.setIsFirstInstallation(null);
+            setCheckingFirstTimeUsers(false);
+          }
+
+          console.log(
+            `isFirstInstallation in App.js = ${context.isFirstInstallation}`,
+          );
+        } else {
+          if (isMounted) {
+            context.setIsFirstInstallation(false);
+            setCheckingFirstTimeUsers(false);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    this._isMount = false;
+    init();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []); // don't change these dependencies
+
+  if (!checkingFirstTimeUsers) {
+    SplashScreen.hide();
   }
 
-  override async componentDidMount() {
-    // routingInstrumentation.registerAppContainer(this.appContainer);
-    this._isMount = true;
-    try {
-      checkLoginStatus().then(isLogin => {
-        this.context.setIsLogin(isLogin);
-      });
-
-      const isFirstInstallation = await getData("isFirstInstallation");
-      if (isFirstInstallation === null) {
-        await storeData("accessToken", null);
-        // if (isFirstInstallation !== null) {
-        // for test
-        await storeData("isFirstInstallation", "false");
-        this._isMount && this.context.setIsFirstInstallation(null);
-        this._isMount &&
-          this.setState({
-            checkingFirstTimeUsers: false,
-          });
-        console.log(
-          `isFirstInstallation in App.js = ${this.context.isFirstInstallation}`,
-        );
-      } else {
-        this._isMount && this.context.setIsFirstInstallation(false);
-
-        this._isMount &&
-          this.setState({
-            checkingFirstTimeUsers: false,
-          });
-      }
-    } catch {
-      (err: any) => console.log(err);
-    }
-  }
-
-  override componentWillUnmount() {
-    this._isMount = false;
-  }
-
-  override render() {
-    const {checkingFirstTimeUsers} = this.state;
-    if (!checkingFirstTimeUsers) SplashScreen.hide();
-
-    return (
-      <>
-        <StatusBar style="auto" hidden />
-        <>
-          {checkingFirstTimeUsers ? (
-            <Spinner
-              size="lg"
-              accessibilityLabel="Loading posts"
-              color="warning.500"
-              style={{
-                alignSelf: "center",
-                marginTop: "auto",
-                marginBottom: "auto",
-              }}
-            />
-          ) : (
-            <AppRoute />
-          )}
-        </>
-        <Toast />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <StatusBar style="auto" hidden />
+      {checkingFirstTimeUsers ? (
+        <Spinner
+          size="lg"
+          accessibilityLabel="Loading posts"
+          color="warning.500"
+          style={{
+            alignSelf: 'center',
+            marginTop: 'auto',
+            marginBottom: 'auto',
+          }}
+        />
+      ) : (
+        <AppRoute />
+      )}
+      <Toast />
+    </>
+  );
+});

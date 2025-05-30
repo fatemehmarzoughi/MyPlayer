@@ -34,7 +34,7 @@ import {
   UpgradeToPremium,
 } from 'src/pages';
 
-import Home from './Home/Home';
+import Home from './Home/Home_Old';
 import {styles} from './style';
 import AVRoot from './VideoAudio/AVRoot/AVRoot';
 
