@@ -1,4 +1,4 @@
-const Joi = require("react-native-joi-validation");
+import Joi from "react-native-joi-validation";
 
 const emailSchema = Joi.object().keys({
   email: Joi.string().email()

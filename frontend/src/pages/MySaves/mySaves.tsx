@@ -11,7 +11,7 @@ export interface IMySavesProps {
   navigation: {openDrawer: () => void} & NavigationProp<any, any>;
 }
 
-export const MySaves: React.FC<IMySavesProps> = React.memo(({navigation}) => {
+export const MySaves = React.memo<IMySavesProps>(({navigation}) => {
   const items = useQuery<ItemProperties>('Item');
 
   useEffect(() => {

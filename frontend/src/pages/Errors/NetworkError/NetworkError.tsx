@@ -9,7 +9,7 @@ export interface INetworkErrorProps {
   onReload: () => void;
 }
 
-export const NetworkError: React.FC<INetworkErrorProps> = React.memo(({ onReload }) => {
+export const NetworkError = React.memo<INetworkErrorProps>(({onReload}) => {
   const context = useContext(Context);
 
   return (
@@ -17,9 +17,7 @@ export const NetworkError: React.FC<INetworkErrorProps> = React.memo(({ onReload
       <Text style={[contentColor(context.theme), styles.text]}>
         NetworkError
       </Text>
-      <TouchableOpacity
-        style={styles.mainBtn}
-        onPress={onReload}>
+      <TouchableOpacity style={styles.mainBtn} onPress={onReload}>
         <Text style={styles.BtnText}>Try again</Text>
       </TouchableOpacity>
     </View>

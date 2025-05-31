@@ -1,11 +1,12 @@
-import React, { useState, useCallback} from "react";
+import React, {useCallback,useState} from 'react';
+import {StyleSheet,useWindowDimensions} from 'react-native';
+import {Route,TabBar, TabView} from 'react-native-tab-view';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useWindowDimensions, StyleSheet} from 'react-native';
-import {TabView, TabBar, Route} from 'react-native-tab-view';
-import {TV} from './TVTab';
+import {dark, mainColor} from 'src/assets';
+
 import {Radio} from './RadioTab';
 import {Stared} from './StaredTab';
-import {dark, mainColor} from 'src/assets';
+import {TV} from './TVTab';
 
 export const Tabs: React.FC = React.memo(() => {
   const layout = useWindowDimensions();
@@ -70,7 +71,7 @@ export const Tabs: React.FC = React.memo(() => {
       renderScene={props => renderScene(props.route.key)}
     />
   );
-})
+});
 
 const styles = StyleSheet.create({
   tab: {

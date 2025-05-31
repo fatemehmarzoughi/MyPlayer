@@ -1,7 +1,13 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import {Spinner} from 'native-base';
-import React from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Image,
   RefreshControl,
@@ -23,32 +29,21 @@ import ToggleSwitch from 'toggle-switch-react-native';
 
 import {styles} from './style';
 
-export interface IProfileProps extends ParamListBase {
+interface ProfileProps {
   navigation: NavigationProp<any, any>;
 }
-export interface IProfileState {
-  refreshing: boolean;
-  modalVisible: boolean;
-  isGoogleAccount: boolean;
-  appNotification: boolean;
-}
-export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
-  static override contextType = Context;
-  declare context: React.ContextType<typeof Context>;
 
-  focusListener: any;
+export const Profile = React.memo(({navigation}: ProfileProps) => {
+  const context = useContext(Context);
 
-  constructor(props: IProfileProps) {
-    super(props);
-    this.state = {
-      appNotification: true,
-      refreshing: false,
-      modalVisible: false,
-      isGoogleAccount: false,
-    };
-  }
+  const [refreshing, setRefreshing] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isGoogleAccount, setIsGoogleAccount] = useState(false);
+  const [appNotification, setAppNotification] = useState(true);
 
-  handleLogOut = async () => {
+  const mountedRef = useRef(false);
+
+  const handleLogOut = useCallback(async () => {
     try {
       const accessToken = await getData('accessToken');
       if (accessToken === 'GoogleToken') {
@@ -56,36 +51,29 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
       }
       await storeData('accessToken', null);
       await storeData('userId', null);
-      /* ------ DO NOT CHANGE THE POSITION OF THIS CODE (THE APP WILL CRASH) ------ */
-      this.setState({
-        modalVisible: false,
-      });
-      this.context.setIsLogin(false);
-      /* ---------------------------------- **** ---------------------------------- */
+      setModalVisible(false);
+      context.setIsLogin(false);
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [context]);
 
-  setAppNotification = async () => {
-    const newState = '' + !this.state.appNotification + '';
+  const handleAppNotification = useCallback(async () => {
+    const newState = '' + !appNotification + '';
     await storeData('appNotification', newState);
-    this.setState({
-      appNotification: !this.state.appNotification,
-    });
-    if (!this.state.appNotification) {
-      Notification.notifyOnMessage(new Date(Date.now() + 2 * 1000));
+    setAppNotification(prev => !prev);
+    if (!appNotification) {
+      Notification.notifyOnMessage(new Date(Date.now() + 2000));
     }
-  };
+  }, [appNotification]);
 
-  getUser = async () => {
+  const getUser = useCallback(async () => {
     await getUserInfo({
       onSuccess: data => {
-        this.context.setUserInfo(data);
-
-        this.setState({refreshing: false});
+        context.setUserInfo(data);
+        setRefreshing(false);
       },
-      onError: err => {
+      onError: () => {
         Toast.show({
           type: 'error',
           position: 'bottom',
@@ -96,339 +84,285 @@ export class Profile extends React.PureComponent<IProfileProps, IProfileState> {
           topOffset: 30,
           bottomOffset: 40,
         });
-        this.setState({refreshing: false});
+        setRefreshing(false);
       },
     });
-  };
+  }, [context]);
 
-  onRefresh = async () => {
-    this.setState({refreshing: true});
-    await this.getUser();
-  };
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await getUser();
+  }, [getUser]);
 
-  override async componentDidMount() {
-    setTimeout(async () => {
-      await this.getUser();
-    }, 1000);
+  useEffect(() => {
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      setTimeout(() => {
+        getUser();
+      }, 1000);
+    }
 
-    this.focusListener = this.props.navigation?.addListener(
-      'focus',
-      async () => {
-        await this.getUser();
-      },
-    );
+    const loadAppNotification = async () => {
+      const value = await getData('appNotification');
+      setAppNotification(value !== 'false');
+    };
+    loadAppNotification();
 
-    const appNotification = await getData('appNotification');
-    appNotification === 'false'
-      ? this.setState({appNotification: false})
-      : this.setState({appNotification: true});
-  }
+    const unsubscribe = navigation.addListener('focus', () => {
+      getUser();
+    });
 
-  override render() {
-    return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this.onRefresh}
-          />
-        }>
-        <PageWrapper>
-          <View style={styles.header}>
-            <Text style={[styles.title, contentColor(this.context.theme)]}>
-              Profile
-            </Text>
-            <View style={styles.row1}>
-              <Image
-                style={styles.profileImg}
-                source={{uri: this.context.userInfo?.avatar}}
-              />
-              <View style={styles.nameEmail}>
-                <>
-                  {(this.context.userInfo?.email === '' &&
-                    this.context.userInfo?.username === '') ||
-                  (this.context.userInfo?.email === undefined &&
-                    this.context.userInfo?.username === undefined) ? (
-                    <>
-                      <Spinner
-                        size={'lg'}
-                        accessibilityLabel="Loading posts"
-                        color="warning.500"
-                        style={styles.loadingIcon}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <View style={styles.name}>
-                        <Icon2
-                          name="person"
-                          size={25}
-                          color={this.context.theme === 'light' ? dark : white}
-                        />
-                        <Text
-                          style={[
-                            styles.nameText,
-                            contentColor(this.context.theme),
-                          ]}>
-                          {this.context.userInfo?.username}
-                        </Text>
-                      </View>
-                      <Text
-                        style={[
-                          styles.email,
-                          contentColor(this.context.theme),
-                        ]}>
-                        {this.context.userInfo?.email}
-                      </Text>
-                    </>
-                  )}
-                </>
-              </View>
-            </View>
-            <View style={styles.row2}>
-              <View style={styles.My}>
-                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
-                  12
-                </Text>
-                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
-                  My Saved
-                </Text>
-              </View>
-              <View style={styles.My}>
-                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
-                  2
-                </Text>
-                <Text style={[styles.MyText, contentColor(this.context.theme)]}>
-                  My playlist
-                </Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('EditProfile')}
-                style={styles.editProfile}>
-                <Icon name="pencil" size={20} color={white} />
-                <Text style={styles.editProfileText}>Edit Profile</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+    return () => {
+      unsubscribe?.();
+    };
+  }, [navigation, getUser]);
 
-          <View style={styles.seperators}>
-            <Text style={styles.seperator}></Text>
-            <Text style={styles.seperator}></Text>
-          </View>
-
-          <View style={styles.part}>
-            <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
-              Account Settings
-            </Text>
-
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('UpgradeToPremium')}
-              style={[styles.option, {borderColor: white}]}>
-              <View style={styles.optionTitleIcon}>
-                <Icon2
-                  name="logo-usd"
-                  size={20}
-                  color={this.context.theme === 'light' ? dark : white}
+  return (
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
+      <PageWrapper>
+        <View style={styles.header}>
+          <Text style={[styles.title, contentColor(context.theme)]}>
+            Profile
+          </Text>
+          <View style={styles.row1}>
+            <Image
+              style={styles.profileImg}
+              source={{uri: context.userInfo?.avatar}}
+            />
+            <View style={styles.nameEmail}>
+              {!context.userInfo?.email && !context.userInfo?.username ? (
+                <Spinner
+                  size={'lg'}
+                  accessibilityLabel="Loading posts"
+                  color="warning.500"
+                  style={styles.loadingIcon}
                 />
-                {this.context.userInfo?.plan?.type &&
-                [PlanType.monthly, PlanType.annual].includes(
-                  this.context.userInfo?.plan?.type,
-                ) ? (
-                  <Text
-                    style={[
-                      styles.optionTitle,
-                      contentColor(this.context.theme),
-                    ]}>
-                    Change Plan
-                  </Text>
-                ) : (
-                  <Text
-                    style={[
-                      styles.optionTitle,
-                      contentColor(this.context.theme),
-                    ]}>
-                    Upgrade to premium
-                  </Text>
-                )}
-              </View>
-              <Icon
-                name="chevron-right"
-                size={35}
-                color={this.context.theme === 'light' ? dark : white}
-              />
-            </TouchableOpacity>
-
-            <>
-              {this.state.isGoogleAccount ? (
-                <TouchableOpacity style={styles.premiumOption}>
-                  <View style={styles.premium}>
-                    <View style={styles.optionTitleIcon}>
-                      <Icon2 name="basket" size={20} color={gray} />
-                      <Text style={styles.premiumOptionTitle}>
-                        Reset Password
-                      </Text>
-                    </View>
-                    <Icon name="chevron-right" size={35} color={gray} />
-                  </View>
-                  <Text style={styles.premiumOptionText}>
-                    Only available for MyPlayer accounts
-                  </Text>
-                </TouchableOpacity>
               ) : (
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('ResetPassword')
-                  }
-                  style={styles.option}>
-                  <View style={styles.optionTitleIcon}>
+                <>
+                  <View style={styles.name}>
                     <Icon2
-                      name="basket"
-                      size={20}
-                      color={this.context.theme === 'light' ? dark : white}
+                      name="person"
+                      size={25}
+                      color={context.theme === 'light' ? dark : white}
                     />
                     <Text
-                      style={[
-                        styles.optionTitle,
-                        contentColor(this.context.theme),
-                      ]}>
-                      Reset Password
+                      style={[styles.nameText, contentColor(context.theme)]}>
+                      {context.userInfo?.username}
                     </Text>
                   </View>
-                  <Icon
-                    name="chevron-right"
-                    size={35}
-                    color={this.context.theme === 'light' ? dark : white}
-                  />
-                </TouchableOpacity>
+                  <Text style={[styles.email, contentColor(context.theme)]}>
+                    {context.userInfo?.email}
+                  </Text>
+                </>
               )}
-            </>
+            </View>
+          </View>
 
+          <View style={styles.row2}>
+            <View style={styles.My}>
+              <Text style={[styles.MyText, contentColor(context.theme)]}>
+                12
+              </Text>
+              <Text style={[styles.MyText, contentColor(context.theme)]}>
+                My Saved
+              </Text>
+            </View>
+            <View style={styles.My}>
+              <Text style={[styles.MyText, contentColor(context.theme)]}>
+                2
+              </Text>
+              <Text style={[styles.MyText, contentColor(context.theme)]}>
+                My playlist
+              </Text>
+            </View>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ReportABug')}
-              style={styles.option}>
-              <View style={styles.optionTitleIcon}>
-                <Icon2
-                  name="bug"
-                  size={20}
-                  color={this.context.theme === 'light' ? dark : white}
-                />
-                <Text
-                  style={[
-                    styles.optionTitle,
-                    contentColor(this.context.theme),
-                  ]}>
-                  Report Bug
-                </Text>
-              </View>
-              <Icon
-                name="chevron-right"
-                size={35}
-                color={this.context.theme === 'light' ? dark : white}
-              />
+              onPress={() => navigation.navigate('EditProfile')}
+              style={styles.editProfile}>
+              <Icon name="pencil" size={20} color={white} />
+              <Text style={styles.editProfileText}>Edit Profile</Text>
             </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.seperators}>
+          <Text style={styles.seperator}></Text>
+          <Text style={styles.seperator}></Text>
+        </View>
+
+        <View style={styles.part}>
+          <Text style={[styles.subTitle, contentColor(context.theme)]}>
+            Account Settings
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('UpgradeToPremium')}
+            style={[styles.option, {borderColor: white}]}>
+            <View style={styles.optionTitleIcon}>
+              <Icon2
+                name="logo-usd"
+                size={20}
+                color={context.theme === 'light' ? dark : white}
+              />
+              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
+                {context.userInfo?.plan?.type &&
+                [PlanType.monthly, PlanType.annual].includes(
+                  context.userInfo?.plan?.type,
+                )
+                  ? 'Change Plan'
+                  : 'Upgrade to premium'}
+              </Text>
+            </View>
+            <Icon
+              name="chevron-right"
+              size={35}
+              color={context.theme === 'light' ? dark : white}
+            />
+          </TouchableOpacity>
+
+          {isGoogleAccount ? (
             <TouchableOpacity style={styles.premiumOption}>
               <View style={styles.premium}>
                 <View style={styles.optionTitleIcon}>
-                  <Icon2 name="bookmark" size={20} color={gray} />
-                  <Text style={styles.premiumOptionTitle}>
-                    Restore my Saved
-                  </Text>
+                  <Icon2 name="basket" size={20} color={gray} />
+                  <Text style={styles.premiumOptionTitle}>Reset Password</Text>
                 </View>
                 <Icon name="chevron-right" size={35} color={gray} />
               </View>
               <Text style={styles.premiumOptionText}>
-                Only available in premium accounts
+                Only available for MyPlayer accounts
               </Text>
             </TouchableOpacity>
-          </View>
-          <View style={styles.part}>
-            <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
-              Notifications
-            </Text>
-
-            <TouchableOpacity style={styles.premiumOption}>
-              <View style={styles.premium}>
-                <View style={styles.optionTitleIcon}>
-                  <Icon2 name="mail" size={20} color={gray} />
-                  <Text style={styles.premiumOptionTitle}>
-                    Email Notification
-                  </Text>
-                </View>
-                {/* <Icon2 name="toggle" size={35} color={gray}/> */}
-                <ToggleSwitch
-                  isOn={true}
-                  onColor={gray}
-                  offColor={gray}
-                  size="small"
-                  onToggle={() => {}}
-                />
-              </View>
-              <Text style={styles.premiumOptionText}>
-                Only available in premium accounts
-              </Text>
-            </TouchableOpacity>
+          ) : (
             <TouchableOpacity
-              onPress={() => this.setAppNotification()}
+              onPress={() => navigation.navigate('ResetPassword')}
               style={styles.option}>
               <View style={styles.optionTitleIcon}>
                 <Icon2
-                  name="alarm"
+                  name="basket"
                   size={20}
-                  color={this.context.theme === 'light' ? dark : white}
+                  color={context.theme === 'light' ? dark : white}
                 />
-                <Text
-                  style={[
-                    styles.optionTitle,
-                    contentColor(this.context.theme),
-                  ]}>
-                  App notification
+                <Text style={[styles.optionTitle, contentColor(context.theme)]}>
+                  Reset Password
+                </Text>
+              </View>
+              <Icon
+                name="chevron-right"
+                size={35}
+                color={context.theme === 'light' ? dark : white}
+              />
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ReportABug')}
+            style={styles.option}>
+            <View style={styles.optionTitleIcon}>
+              <Icon2
+                name="bug"
+                size={20}
+                color={context.theme === 'light' ? dark : white}
+              />
+              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
+                Report Bug
+              </Text>
+            </View>
+            <Icon
+              name="chevron-right"
+              size={35}
+              color={context.theme === 'light' ? dark : white}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.premiumOption}>
+            <View style={styles.premium}>
+              <View style={styles.optionTitleIcon}>
+                <Icon2 name="bookmark" size={20} color={gray} />
+                <Text style={styles.premiumOptionTitle}>Restore my Saved</Text>
+              </View>
+              <Icon name="chevron-right" size={35} color={gray} />
+            </View>
+            <Text style={styles.premiumOptionText}>
+              Only available in premium accounts
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.part}>
+          <Text style={[styles.subTitle, contentColor(context.theme)]}>
+            Notifications
+          </Text>
+          <TouchableOpacity style={styles.premiumOption}>
+            <View style={styles.premium}>
+              <View style={styles.optionTitleIcon}>
+                <Icon2 name="mail" size={20} color={gray} />
+                <Text style={styles.premiumOptionTitle}>
+                  Email Notification
                 </Text>
               </View>
               <ToggleSwitch
-                isOn={this.state.appNotification}
-                onColor={mainColor}
-                offColor={dark}
+                isOn={true}
+                onColor={gray}
+                offColor={gray}
                 size="small"
-                onToggle={() => this.setAppNotification()}
+                onToggle={() => {}}
               />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.part}>
-            <Text style={[styles.subTitle, contentColor(this.context.theme)]}>
-              Setup
+            </View>
+            <Text style={styles.premiumOptionText}>
+              Only available in premium accounts
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({
-                  modalVisible: true,
-                });
-              }}
-              style={styles.option}>
-              <View style={styles.optionTitleIcon}>
-                <Icon2 name="power" size={20} color={mainColor} />
-                <Text
-                  style={[
-                    styles.optionTitle,
-                    contentColor(this.context.theme),
-                  ]}>
-                  Logout
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <ModalClass
-            question="Are you sure, you want to logout?"
-            modalVisible={this.state.modalVisible}
-            btnTitle="Logout"
-            handleMainBtn={this.handleLogOut}
-            handleCancelBtn={() => {
-              this.setState({
-                modalVisible: false,
-              });
-            }}
-          />
-        </PageWrapper>
-      </ScrollView>
-    );
-  }
-}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={handleAppNotification}
+            style={styles.option}>
+            <View style={styles.optionTitleIcon}>
+              <Icon2
+                name="alarm"
+                size={20}
+                color={context.theme === 'light' ? dark : white}
+              />
+              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
+                App notification
+              </Text>
+            </View>
+            <ToggleSwitch
+              isOn={appNotification}
+              onColor={mainColor}
+              offColor={dark}
+              size="small"
+              onToggle={handleAppNotification}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.part}>
+          <Text style={[styles.subTitle, contentColor(context.theme)]}>
+            Setup
+          </Text>
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={styles.option}>
+            <View style={styles.optionTitleIcon}>
+              <Icon2 name="power" size={20} color={mainColor} />
+              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
+                Logout
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <ModalClass
+          question="Are you sure, you want to logout?"
+          modalVisible={modalVisible}
+          btnTitle="Logout"
+          handleMainBtn={handleLogOut}
+          handleCancelBtn={() => setModalVisible(false)}
+        />
+      </PageWrapper>
+    </ScrollView>
+  );
+});

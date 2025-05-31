@@ -1,60 +1,50 @@
-import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import { dark } from "src/assets";
-import { FlatLists, ITVDataType } from "src/components";
+import React, {useMemo} from 'react';
+import {ScrollView,StyleSheet, View} from 'react-native';
+import {dark} from 'src/assets';
+import {FlatLists, ITVDataType} from 'src/components';
 
-export interface IRadioProps {}
+export const Radio = React.memo(() => {
+  const data: ITVDataType[] = useMemo(
+    () => [
+      {
+        id: 0,
+        uri: 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg',
+        stared: true,
+      },
+      {
+        id: 1,
+        uri: 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg',
+        stared: false,
+      },
+      {
+        id: 2,
+        uri: 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg',
+        stared: false,
+      },
+      {
+        id: 3,
+        uri: 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg',
+        stared: false,
+      },
+      {
+        id: 4,
+        uri: 'https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg',
+        stared: false,
+      },
+    ],
+    [],
+  );
 
-export interface IRadioStates {
-  data: ITVDataType[];
-}
-export class Radio extends React.PureComponent<IRadioProps, IRadioStates> {
-  constructor(props: IRadioProps) {
-    super(props);
-
-    this.state = {
-      data: [
-        {
-          id: 0,
-          uri: "https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg",
-          stared: true,
-        },
-        {
-          id: 1,
-          uri: "https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg",
-          stared: false,
-        },
-        {
-          id: 2,
-          uri: "https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg",
-          stared: false,
-        },
-        {
-          id: 3,
-          uri: "https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg",
-          stared: false,
-        },
-        {
-          id: 4,
-          uri: "https://afternoon-ravine-26647.herokuapp.com/images/makeURLs/43100/jpeg",
-          stared: false,
-        },
-      ],
-    };
-  }
-
-  override render() {
-    return (
-      <ScrollView>
-        <View>
-          <FlatLists data={this.state.data} title="Most Watched" />
-          <FlatLists data={this.state.data} title="All" />
-          <FlatLists data={this.state.data} title="News" />
-        </View>
-      </ScrollView>
-    );
-  }
-}
+  return (
+    <ScrollView>
+      <View>
+        <FlatLists data={data} title="Most Watched" />
+        <FlatLists data={data} title="All" />
+        <FlatLists data={data} title="News" />
+      </View>
+    </ScrollView>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -68,11 +58,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   imageContainer: {
-    position: "relative",
+    position: 'relative',
   },
   icon: {
     backgroundColor: dark,
-    position: "absolute",
+    position: 'absolute',
     bottom: 20,
     right: 20,
     borderRadius: 14,

@@ -4,8 +4,8 @@ import { width } from "src/assets";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginHorizontal: 15,
-        marginVertical: 10
+        // marginHorizontal: 15,
+        // marginVertical: 10
     },
 
     image: {

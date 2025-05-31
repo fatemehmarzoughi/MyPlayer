@@ -1,49 +1,41 @@
-import {View, TextInput, ScrollView} from 'react-native';
-import React from 'react';
-import {POST, updateUser} from 'src/API';
-import Context from 'src/context/context';
-import Toast from 'react-native-toast-message';
 import {NavigationProp} from '@react-navigation/native';
-import {dark, gray, toastMessageDuration, white} from 'src/assets';
-import {Header2, PageWrapper, SavingModal, backgroundColor, contentColor} from 'src/components';
+import React, {useCallback, useContext,useState} from 'react';
+import {ScrollView,TextInput, View} from 'react-native';
+import Toast from 'react-native-toast-message';
+import {updateUser} from 'src/API';
+import {
+  dark,
+  gray,
+  toastMessageDuration,
+} from 'src/assets';
+import {
+  backgroundColor,
+  contentColor,
+  Header2,
+  PageWrapper,
+  SavingModal,
+} from 'src/components';
+import Context from 'src/context/context';
 
 import {styles} from './style';
 
-export interface IResetPasswordProps {
+interface IResetPasswordProps {
   navigation: NavigationProp<any, any>;
 }
-export interface IResetPasswordState {
-  newPass: string;
-  saving: boolean;
-}
-export class ResetPassword extends React.PureComponent<
-  IResetPasswordProps,
-  IResetPasswordState
-> {
-  constructor(props: IResetPasswordProps) {
-    super(props);
-    this.state = {
-      newPass: '',
-      saving: false,
-    };
-  }
 
-  static override contextType = Context;
-  declare context: React.ContextType<typeof Context>;
+export const ResetPassword = React.memo(({navigation}: IResetPasswordProps) => {
+  const context = useContext(Context);
 
-  onSave = async () => {
-    this.setState({
-      saving: true,
-    });
+  const [newPass, setNewPass] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const onSave = useCallback(() => {
+    setSaving(true);
 
     updateUser({
-      reqBody: {
-        password: this.state.newPass,
-      },
-      onSuccess: data => {
-        this.setState({
-          saving: false,
-        });
+      reqBody: {password: newPass},
+      onSuccess: () => {
+        setSaving(false);
         Toast.show({
           type: 'success',
           position: 'top',
@@ -54,9 +46,9 @@ export class ResetPassword extends React.PureComponent<
           topOffset: 30,
           bottomOffset: 40,
         });
-        this.props.navigation.navigate('Profile');
+        navigation.navigate('Profile');
       },
-      onError: err => {
+      onError: () => {
         Toast.show({
           type: 'error',
           position: 'bottom',
@@ -67,33 +59,32 @@ export class ResetPassword extends React.PureComponent<
           topOffset: 30,
           bottomOffset: 40,
         });
+        setSaving(false);
       },
     });
-  };
+  }, [newPass, navigation]);
 
-  override render() {
-    return (
-      <ScrollView>
-        <PageWrapper>
-          <Header2
-            onSave={this.onSave}
-            onCancel={() => this.props.navigation.goBack()}
-            title="Reset Password"
-          />
-          <TextInput
-            placeholder="New Password"
-            placeholderTextColor={this.context.theme === 'light' ? dark : gray}
-            style={[styles.input, backgroundColor(this.context.theme), contentColor(this.context.theme)]}
-            secureTextEntry={true}
-            onChangeText={newPass =>
-              this.setState({
-                newPass,
-              })
-            }
-          />
-        </PageWrapper>
-        <SavingModal modalVisible={this.state.saving} />
-      </ScrollView>
-    );
-  }
-}
+  return (
+    <ScrollView>
+      <PageWrapper>
+        <Header2
+          onSave={onSave}
+          onCancel={() => navigation.goBack()}
+          title="Reset Password"
+        />
+        <TextInput
+          placeholder="New Password"
+          placeholderTextColor={context.theme === 'light' ? dark : gray}
+          style={[
+            styles.input,
+            backgroundColor(context.theme),
+            contentColor(context.theme),
+          ]}
+          secureTextEntry
+          onChangeText={setNewPass}
+        />
+      </PageWrapper>
+      <SavingModal modalVisible={saving} />
+    </ScrollView>
+  );
+});

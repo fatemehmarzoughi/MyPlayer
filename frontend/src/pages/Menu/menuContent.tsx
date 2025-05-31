@@ -5,7 +5,7 @@ import {
 import {NavigationProp} from '@react-navigation/native';
 import {Text as NativeText} from 'native-base';
 import React, {useContext, useState} from 'react';
-import {Image,ScrollView, Text, View} from 'react-native';
+import {Image, ScrollView, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {dark, gray} from 'src/assets';
 import {backgroundColor, contentColor} from 'src/components';
@@ -18,7 +18,7 @@ export interface IMenuContentProps {
   navigation: {closeDrawer: () => void} & NavigationProp<any, any>;
 }
 
-export const MenuContent: React.FC<any> = React.memo(props => {
+export const MenuContent = React.memo<any>(props => {
   const context = useContext(Context);
 
   return (
