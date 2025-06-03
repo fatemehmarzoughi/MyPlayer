@@ -48,7 +48,7 @@ export type ICreateAccountState = {
   creatingAccount: boolean;
 };
 
-export const CreateAccount = React.memo<ICreateAccountProps>(() => {
+export const CreateAccount = React.memo<ICreateAccountProps>(({navigation}) => {
   const context = useContext(Context);
 
   const [countryCode, setCountryCode] = useState(CountryCode.US);
@@ -105,7 +105,7 @@ export const CreateAccount = React.memo<ICreateAccountProps>(() => {
       passwordIsValid = false;
     } else if (!validatePassword(password)) {
       setPasswordErrorMessage(
-        'Password must be at least 5, at most 20 characters',
+        'Password must be at least 6, at most 20 characters',
       );
       setCreatingAccount(false);
       passwordIsValid = false;
@@ -135,20 +135,21 @@ export const CreateAccount = React.memo<ICreateAccountProps>(() => {
         // country: countryCode, TODO: solve country code problem on registration
       },
       onSuccess: async data => {
-        setCreatingAccount(false);
         await storeData('userId', data.user.id);
         await storeData('accessToken', data.jwt);
         Toast.show({
           type: 'success',
           position: 'top',
           text1: 'Registered Successfully',
-          text2: 'Please Login',
+          text2: 'Wellcome to MyPlayer',
           visibilityTime: toastMessageDuration,
           autoHide: true,
           topOffset: 30,
           bottomOffset: 40,
         });
+        setCreatingAccount(false);
         context.setIsLogin(true);
+        navigation.navigate('Profile');
       },
       onError: err => {
         setCreatingAccount(false);
@@ -164,7 +165,7 @@ export const CreateAccount = React.memo<ICreateAccountProps>(() => {
         });
       },
     });
-  }, [chosePlanId, context, email, inputValidation, name, password]);
+  }, [chosePlanId, context, email, inputValidation, name, navigation, password]);
 
   const onGetPlans = useCallback(() => {
     const init = async () => {

@@ -8,7 +8,7 @@ export const statusBar =
 export const statusBarIOS = getStatusBarHeight();
 export const titleFontSize = 20;
 
-export const toastMessageDuration = 1000;
+export const toastMessageDuration = 3000;
 
 export const CountryCodeList = [
   'AF',

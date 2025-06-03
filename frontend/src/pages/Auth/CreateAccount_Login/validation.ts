@@ -5,7 +5,7 @@ const emailSchema = Joi.object().keys({
 });
 
 const passwordSchema = Joi.object().keys({
-  password: Joi.string().min(5).max(20)
+  password: Joi.string().min(6).max(20)
 });
 
 export const validateEmail = (input: string) => {

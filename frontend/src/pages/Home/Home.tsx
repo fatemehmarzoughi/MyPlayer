@@ -111,20 +111,25 @@ const Home = React.memo(({navigation, ...props}: IHomeProps) => {
     setSubCategoryVisibility(false);
   };
 
-  const onRefresh = useCallback(async () => {
-    setLoading(true);
-    try {
-      await props.getBanner();
-      await props.getAllItems();
-      await props.getAllMusics();
-      await props.getAllMovies();
-      await props.getAllSports();
-      await props.getAllRadio();
-    } catch (err) {
-      console.log(err);
-    }
-    setLoading(false);
-  }, [props]);
+  const onRefresh = useCallback(() => {
+    const init = async () => {
+      setLoading(true);
+      try {
+        await props.getBanner();
+        await props.getAllItems();
+        await props.getAllMusics();
+        await props.getAllMovies();
+        await props.getAllSports();
+        await props.getAllRadio();
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+      setLoading(false);
+    };
+
+    init();
+  }, []);
 
   useEffect(() => {
     onRefresh();
@@ -156,6 +161,17 @@ const Home = React.memo(({navigation, ...props}: IHomeProps) => {
   ].some(Boolean);
 
   if (hasErrors) {
+    console.log(
+      'props.allItems.error,props.musics.error,props.movies.error,props.sports.error, props.radio.error,',
+    );
+    console.log(
+      props.allItems.error,
+      props.musics.error,
+      props.movies.error,
+      props.sports.error,
+      props.radio.error,
+    );
+
     return <NetworkError onReload={onRefresh} />;
   }
 

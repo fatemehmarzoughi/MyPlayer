@@ -7,7 +7,7 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useLayoutEffect} from 'react';
 import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {gray, mainColor} from 'src/assets';
@@ -34,7 +34,7 @@ import {
   UpgradeToPremium,
 } from 'src/pages';
 
-import Home from './Home/Home_Old';
+import Home from './Home/Home';
 import {styles} from './style';
 import AVRoot from './VideoAudio/AVRoot/AVRoot';
 
@@ -94,80 +94,81 @@ const LoginCreateAccount = React.memo(() => (
 const Auth = React.memo(() => {
   const {isLogin, setIsLogin} = useContext(Context);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getData('accessToken').then(accessToken => {
       if (accessToken === 'null') setIsLogin(false);
-    });
+      else setIsLogin(true);
+    });    
   }, [setIsLogin]);
 
   return (
     <Stack.Navigator
       screenOptions={{animation: 'fade', animationDuration: 10}}
-      initialRouteName={isLogin ? 'Login_CreateAccount' : 'Profile'}>
-      {isLogin ? (
-        <>
-          <Stack.Screen
-            name="Profile"
-            options={{
-              headerShown: false,
-            }}>
-            {props => <Profile {...props} />}
-          </Stack.Screen>
-          <Stack.Screen
-            name="ReportABug"
-            options={{
-              headerShown: false,
-            }}>
-            {props => <ReportABug {...props} />}
-          </Stack.Screen>
-          <Stack.Screen
-            name="UpgradeToPremium"
-            options={{
-              headerShown: false,
-            }}>
-            {props => <UpgradeToPremium {...props} />}
-          </Stack.Screen>
-          <Stack.Screen
-            name="ResetPassword"
-            options={{
-              headerShown: false,
-            }}>
-            {props => <ResetPassword {...props} />}
-          </Stack.Screen>
-          <Stack.Screen
-            name="EditProfile"
-            options={{
-              headerShown: false,
-            }}>
-            {props => <EditProfile {...props} />}
-          </Stack.Screen>
-          <Stack.Screen
-            name="ChangeProfilePhoto"
-            options={{
-              headerShown: false,
-            }}>
-            {props => <ChangeProfilePhoto {...props} />}
-          </Stack.Screen>
-        </>
-      ) : (
-        <>
-          <Stack.Screen
-            name="Login_CreateAccount"
-            component={LoginCreateAccount}
-            options={{
-              headerShown: false,
-            }}
-          />
+      initialRouteName={isLogin ? 'Profile' : 'Login_CreateAccount'}>
+      {/* {isLogin ? (
+        <> */}
+      <Stack.Screen
+        name="Profile"
+        options={{
+          headerShown: false,
+        }}>
+        {props => <Profile {...props} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="ReportABug"
+        options={{
+          headerShown: false,
+        }}>
+        {props => <ReportABug {...props} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="UpgradeToPremium"
+        options={{
+          headerShown: false,
+        }}>
+        {props => <UpgradeToPremium {...props} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="ResetPassword"
+        options={{
+          headerShown: false,
+        }}>
+        {props => <ResetPassword {...props} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="EditProfile"
+        options={{
+          headerShown: false,
+        }}>
+        {props => <EditProfile {...props} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="ChangeProfilePhoto"
+        options={{
+          headerShown: false,
+        }}>
+        {props => <ChangeProfilePhoto {...props} />}
+      </Stack.Screen>
+      {/* </>
+      ) : ( */}
+      {/* <> */}
+      <Stack.Screen
+        name="Login_CreateAccount"
+        component={LoginCreateAccount}
+        options={{
+          headerShown: false,
+        }}
+      />
 
-          <Stack.Screen
-            name="ForgetPassword"
-            options={{
-              headerShown: false,
-            }}>
-            {props => <ForgetPassword {...props} />}
-          </Stack.Screen>
-        </>
-      )}
+      <Stack.Screen
+        name="ForgetPassword"
+        options={{
+          headerShown: false,
+        }}>
+        {props => <ForgetPassword {...props} />}
+      </Stack.Screen>
+      {/* </> */}
+      {/* )} */}
     </Stack.Navigator>
   );
 });

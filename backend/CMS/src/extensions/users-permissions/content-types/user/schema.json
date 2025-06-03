@@ -322,7 +322,7 @@
     },
     "avatar": {
       "type": "richtext",
-      "default": "http://localhost:1337/uploads/thumbnail_profilepic_14009cf058.png"
+      "default": "https://myplayer-backend.onrender.com/uploads/thumbnail_profilepic_14009cf058.png"
     },
     "plan": {
       "type": "relation",

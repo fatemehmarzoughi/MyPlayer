@@ -52,7 +52,7 @@ export const OnBoarding = React.memo<Props>(({navigation}) => {
     };
 
     Dimensions.addEventListener('change', onChange);
-    return () => Dimensions.removeEventListener('change', onChange);
+    return () => (Dimensions as any).removeEventListener('change', onChange);
   }, [context, progress]);
 
   const swipeLeft = () => {
