@@ -22,10 +22,6 @@ export const ReportABug = React.memo(({navigation}: IReportABugProps) => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleTextInput = useCallback((text: string) => {
-    setInput(text);
-  }, []);
-
   const handleReport = useCallback(async () => {
     setLoading(true);
 
@@ -78,12 +74,16 @@ export const ReportABug = React.memo(({navigation}: IReportABugProps) => {
       <PageWrapper>
         <Header title="Report a Bug" customClick={() => navigation.goBack()} />
         <TextInput
-          placeholder="Your explenation goes here ... "
+          placeholder="Your explanation goes here ... "
           placeholderTextColor={
             context.theme === 'light' ? Colors.dark : Colors.white
           }
           style={[styles.input, contentColor(context.theme)]}
-          onChangeText={handleTextInput}
+          onChangeText={(text) => {
+            console.log(text);
+            setInput(text)
+            
+          }}
         />
         <TouchableOpacity style={styles.btn} onPress={handleReport}>
           {loading ? (

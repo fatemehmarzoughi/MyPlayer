@@ -53,10 +53,11 @@ export const Profile = React.memo(({navigation}: ProfileProps) => {
       await storeData('userId', null);
       setModalVisible(false);
       context.setIsLogin(false);
+      navigation.navigate('Login_CreateAccount');
     } catch (err) {
       console.log(err);
     }
-  }, [context]);
+  }, [context, navigation]);
 
   const handleAppNotification = useCallback(async () => {
     const newState = '' + !appNotification + '';
@@ -115,7 +116,7 @@ export const Profile = React.memo(({navigation}: ProfileProps) => {
     return () => {
       unsubscribe?.();
     };
-  }, [navigation, getUser]);
+  }, [navigation, getUser, context.userInfo?.avatar]);
 
   return (
     <ScrollView
@@ -132,6 +133,7 @@ export const Profile = React.memo(({navigation}: ProfileProps) => {
               style={styles.profileImg}
               source={{uri: context.userInfo?.avatar}}
             />
+
             <View style={styles.nameEmail}>
               {!context.userInfo?.email && !context.userInfo?.username ? (
                 <Spinner

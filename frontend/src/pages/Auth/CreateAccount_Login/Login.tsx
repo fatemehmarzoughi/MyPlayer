@@ -82,6 +82,7 @@ export const Login = React.memo<ILoginProps>(({navigation}) => {
           topOffset: 30,
           bottomOffset: 40,
         });
+        setLoggingIn(false);
         navigation.navigate('Profile');
       },
 

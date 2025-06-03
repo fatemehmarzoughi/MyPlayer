@@ -1,7 +1,7 @@
+import './config';
+
 import axios from 'axios';
 import {getData} from 'src/LocalStorage';
-
-import './config';
 
 export const DELETE = async ({endpoint}: {endpoint: string}) => {
   try {
@@ -21,7 +21,7 @@ export const DELETE = async ({endpoint}: {endpoint: string}) => {
   }
 };
 
-export async function POST<T extends Object>({
+export async function POST<T extends object>({
   endpoint,
   reqBody,
 }: {
@@ -58,6 +58,7 @@ export async function POST<T extends Object>({
 export const GET = async ({endpoint}: {endpoint: string}) => {
   try {
     const accessToken = await getData('accessToken');
+    console.log("has accessToken? ", accessToken !== 'null');
 
     if (accessToken !== 'null') {
       const res = await axios({
@@ -77,11 +78,18 @@ export const GET = async ({endpoint}: {endpoint: string}) => {
     }
   } catch (err) {
     console.log('error in get func = ' + err);
-    throw new Error(String(err));
+    if (axios.isAxiosError(err)) {
+      console.log('err STATUS:', err.response?.status);
+      console.log('err DATA:', err.response?.data);
+      console.log('err HEADERS:', err.response?.headers);
+    } else {
+      console.log('Unexpected err:', err);
+    }
+    return [];
   }
 };
 
-export async function PUT<T extends Object>({
+export async function PUT<T extends object>({
   endpoint,
   reqBody,
 }: {
