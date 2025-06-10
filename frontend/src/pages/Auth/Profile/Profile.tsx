@@ -21,11 +21,15 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import {getUserInfo, PlanType} from 'src/API';
 import {dark, gray, mainColor, toastMessageDuration, white} from 'src/assets';
-import {contentColor, ModalClass, PageWrapper} from 'src/components';
+import {
+  contentColor,
+  ModalClass,
+  PageWrapper,
+  ProfileOption,
+} from 'src/components';
 import Context from 'src/context/context';
 import {getData, storeData} from 'src/LocalStorage';
 import Notification from 'src/Notification/NotificationSetup';
-import ToggleSwitch from 'toggle-switch-react-native';
 
 import {styles} from './style';
 
@@ -60,13 +64,13 @@ export const Profile = React.memo(({navigation}: ProfileProps) => {
   }, [context, navigation]);
 
   const handleAppNotification = useCallback(async () => {
-    const newState = '' + !appNotification + '';
-    await storeData('appNotification', newState);
+    // const newState = '' + !appNotification + '';
+    // await storeData('appNotification', newState);
     setAppNotification(prev => !prev);
-    if (!appNotification) {
-      Notification.notifyOnMessage(new Date(Date.now() + 2000));
-    }
-  }, [appNotification]);
+    // if (!appNotification) {
+    //   Notification.notifyOnMessage(new Date(Date.now() + 2000));
+    // }
+  }, []);
 
   const getUser = useCallback(async () => {
     await getUserInfo({
@@ -199,162 +203,94 @@ export const Profile = React.memo(({navigation}: ProfileProps) => {
             Account Settings
           </Text>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('UpgradeToPremium')}
-            style={[styles.option, {borderColor: white}]}>
-            <View style={styles.optionTitleIcon}>
-              <Icon2
-                name="logo-usd"
-                size={20}
-                color={context.theme === 'light' ? dark : white}
-              />
-              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
-                {context.userInfo?.plan?.type &&
-                [PlanType.monthly, PlanType.annual].includes(
-                  context.userInfo?.plan?.type,
-                )
-                  ? 'Change Plan'
-                  : 'Upgrade to premium'}
-              </Text>
-            </View>
-            <Icon
-              name="chevron-right"
-              size={35}
-              color={context.theme === 'light' ? dark : white}
-            />
-          </TouchableOpacity>
+          <ProfileOption
+            title={
+              context.userInfo?.plan?.type &&
+              [PlanType.monthly, PlanType.annual].includes(
+                context.userInfo?.plan?.type,
+              )
+                ? 'Change Plan'
+                : 'Upgrade to premium'
+            }
+            action={() => navigation.navigate('UpgradeToPremium')}
+            leftIcon="logo-usd"
+            isDisable={false}
+            rightIcon="chevron-right"
+          />
 
           {isGoogleAccount ? (
-            <TouchableOpacity style={styles.premiumOption}>
-              <View style={styles.premium}>
-                <View style={styles.optionTitleIcon}>
-                  <Icon2 name="basket" size={20} color={gray} />
-                  <Text style={styles.premiumOptionTitle}>Reset Password</Text>
-                </View>
-                <Icon name="chevron-right" size={35} color={gray} />
-              </View>
-              <Text style={styles.premiumOptionText}>
-                Only available for MyPlayer accounts
-              </Text>
-            </TouchableOpacity>
+            <ProfileOption
+              title="Reset Password"
+              subTitle="Only available for MyPlayer accounts"
+              action={() => navigation.navigate('ResetPassword')}
+              leftIcon="basket"
+              isDisable={true}
+              rightIcon="chevron-right"
+            />
           ) : (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ResetPassword')}
-              style={styles.option}>
-              <View style={styles.optionTitleIcon}>
-                <Icon2
-                  name="basket"
-                  size={20}
-                  color={context.theme === 'light' ? dark : white}
-                />
-                <Text style={[styles.optionTitle, contentColor(context.theme)]}>
-                  Reset Password
-                </Text>
-              </View>
-              <Icon
-                name="chevron-right"
-                size={35}
-                color={context.theme === 'light' ? dark : white}
-              />
-            </TouchableOpacity>
+            <ProfileOption
+              title="Reset Password"
+              action={() => navigation.navigate('ResetPassword')}
+              leftIcon="basket"
+              isDisable={false}
+              rightIcon="chevron-right"
+            />
           )}
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ReportABug')}
-            style={styles.option}>
-            <View style={styles.optionTitleIcon}>
-              <Icon2
-                name="bug"
-                size={20}
-                color={context.theme === 'light' ? dark : white}
-              />
-              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
-                Report Bug
-              </Text>
-            </View>
-            <Icon
-              name="chevron-right"
-              size={35}
-              color={context.theme === 'light' ? dark : white}
-            />
-          </TouchableOpacity>
+          <ProfileOption
+            title="Report Bug"
+            action={() => navigation.navigate('ReportABug')}
+            leftIcon="bug"
+            isDisable={false}
+            rightIcon="chevron-right"
+          />
 
-          <TouchableOpacity style={styles.premiumOption}>
-            <View style={styles.premium}>
-              <View style={styles.optionTitleIcon}>
-                <Icon2 name="bookmark" size={20} color={gray} />
-                <Text style={styles.premiumOptionTitle}>Restore my Saved</Text>
-              </View>
-              <Icon name="chevron-right" size={35} color={gray} />
-            </View>
-            <Text style={styles.premiumOptionText}>
-              Only available in premium accounts
-            </Text>
-          </TouchableOpacity>
+          <ProfileOption
+            title="Restore my Saves"
+            subTitle="Only available in premium accounts"
+            action={() => console.log('action not implemented')}
+            leftIcon="bookmark"
+            isDisable={true}
+            rightIcon="chevron-right"
+          />
         </View>
 
         <View style={styles.part}>
           <Text style={[styles.subTitle, contentColor(context.theme)]}>
             Notifications
           </Text>
-          <TouchableOpacity style={styles.premiumOption}>
-            <View style={styles.premium}>
-              <View style={styles.optionTitleIcon}>
-                <Icon2 name="mail" size={20} color={gray} />
-                <Text style={styles.premiumOptionTitle}>
-                  Email Notification
-                </Text>
-              </View>
-              <ToggleSwitch
-                isOn={true}
-                onColor={gray}
-                offColor={gray}
-                size="small"
-                onToggle={() => {}}
-              />
-            </View>
-            <Text style={styles.premiumOptionText}>
-              Only available in premium accounts
-            </Text>
-          </TouchableOpacity>
+          <ProfileOption
+            title="Email notification"
+            subTitle="Only available for premium accounts"
+            action={() => console.log('action not implemented')}
+            leftIcon="mail"
+            isDisable={true}
+            toggle={{
+              isOn: true,
+            }}
+          />
 
-          <TouchableOpacity
-            onPress={handleAppNotification}
-            style={styles.option}>
-            <View style={styles.optionTitleIcon}>
-              <Icon2
-                name="alarm"
-                size={20}
-                color={context.theme === 'light' ? dark : white}
-              />
-              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
-                App notification
-              </Text>
-            </View>
-            <ToggleSwitch
-              isOn={appNotification}
-              onColor={mainColor}
-              offColor={dark}
-              size="small"
-              onToggle={handleAppNotification}
-            />
-          </TouchableOpacity>
+          <ProfileOption
+            title="App notification"
+            action={handleAppNotification}
+            leftIcon="alarm"
+            isDisable={false}
+            toggle={{
+              isOn: appNotification,
+            }}
+          />
         </View>
 
         <View style={styles.part}>
           <Text style={[styles.subTitle, contentColor(context.theme)]}>
             Setup
           </Text>
-          <TouchableOpacity
-            onPress={() => setModalVisible(true)}
-            style={styles.option}>
-            <View style={styles.optionTitleIcon}>
-              <Icon2 name="power" size={20} color={mainColor} />
-              <Text style={[styles.optionTitle, contentColor(context.theme)]}>
-                Logout
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <ProfileOption
+            title="Logout"
+            action={() => setModalVisible(true)}
+            leftIcon={<Icon2 name="power" size={20} color={mainColor} />}
+            isDisable={false}
+          />
         </View>
 
         <ModalClass

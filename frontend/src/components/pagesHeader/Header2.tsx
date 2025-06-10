@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import Context from 'src/context/context';
+import {StyleSheet,Text, TouchableOpacity, View} from 'react-native';
 import {titleFontSize, width} from 'src/assets';
 import * as Colors from 'src/assets/constants/Colors';
 import {contentColor} from 'src/components/lightDarkTheme';
+import Context from 'src/context/context';
 
 export interface IHeader2Props {
   onSave: () => void;
@@ -30,7 +30,7 @@ export class Header2 extends React.PureComponent<IHeader2Props, IHeader2State> {
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={styles.title}>{this.props.title}</Text>
+          <Text style={[styles.title, contentColor(this.context.theme)]}>{this.props.title}</Text>
         </View>
       </View>
     );

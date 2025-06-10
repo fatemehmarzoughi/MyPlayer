@@ -134,7 +134,7 @@ export const EditProfile = React.memo<EditProfileProps>(({navigation}) => {
             </TouchableOpacity>
           </View>
           <View>
-            <Text style={styles.title}>Edit Profile</Text>
+            <Text style={[styles.title, contentColor(context.theme)]}>Edit Profile</Text>
           </View>
         </View>
 
