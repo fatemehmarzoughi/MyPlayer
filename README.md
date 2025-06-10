@@ -88,6 +88,8 @@ https://user-images.githubusercontent.com/48021528/146699996-e4d2c141-24b6-452e-
 MyPlayer, Music player, Video player, Audio player, Strapi, React-Native, React Native, iOS, Android, CMS, Go lang, Realm, local storage, Spotify, Netflix, 
 
 # 🚧 TODOs
-1- should migrate from class component to functional components</br>
-2- should be able to save the Audio/Video in the localStorage on the device</br>
-3- should be able to add the Audio/Video to the favorites list</br>
+1- Middle tab should be activated</br>
+2- Refactor to have a cleaner structure</br>
+3- Add playlist feature to the app</br>
+4- Profile actions should be completed</br>
+5- App notification</br>
