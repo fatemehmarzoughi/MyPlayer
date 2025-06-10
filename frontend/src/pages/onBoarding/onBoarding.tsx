@@ -47,12 +47,12 @@ export const OnBoarding = React.memo<Props>(({navigation}) => {
       useNativeDriver: true,
     }).start();
 
-    const onChange = ({window: {width, height}}) => {
-      context.setIsRotate(width > height);
-    };
+    // const onChange = ({window: {width, height}}) => {
+    //   context.setIsRotate(width > height);
+    // };
 
-    Dimensions.addEventListener('change', onChange);
-    return () => (Dimensions as any).removeEventListener('change', onChange);
+    // Dimensions.addEventListener('change', onChange);
+    // return () => (Dimensions as any).removeEventListener('change', onChange);
   }, [context, progress]);
 
   const swipeLeft = () => {
