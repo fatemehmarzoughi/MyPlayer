@@ -4,3 +4,4 @@ export * from './pagesHeader';
 export * from './IsRotate';
 export * from './lightDarkTheme';
 export * from './pageWrapper';
+export * from './profileOption';

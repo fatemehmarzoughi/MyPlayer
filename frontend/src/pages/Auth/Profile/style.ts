@@ -102,47 +102,6 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: dark
   },
-  option: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    borderBottomColor: dark,
-    borderBottomWidth: 1,
-    borderStyle: "solid",
-    padding: 15
-  },
-  premium: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row"
-  },
-  premiumOption: {
-    padding: 15,
-    borderBottomColor: dark,
-    borderBottomWidth: 1,
-    borderStyle: "solid"
-
-  },
-  premiumOptionText: {
-    fontSize: 10,
-    color: gray
-  },
-  optionTitleIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row"
-  },
-  optionTitle: {
-    marginLeft: 7,
-    color: dark
-  },
-  premiumOptionTitle: {
-    marginLeft: 7,
-    color: gray
-  },
   loadingIcon: {
     width: 100,
     height: 100
